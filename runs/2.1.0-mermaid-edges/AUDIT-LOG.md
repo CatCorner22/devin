@@ -464,3 +464,10 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Rests on: A-1, A-9, A-10, A-11
 - Reason: (1) and (4) repair F-4; (2) repairs F-1; (3) repairs F-2. Each follows the fix the correctness auditor proposed.
 - Alternatives rejected: (a) read edges only inside the fence with no fallback — a file whose graph has no fence would lose the test that commit 93311ab gives it; (b) test every link on a line — the USER answered `leave it` (E-37); (c) delete quoted text and special-case labels — the placeholder is 1 change and keeps node text out of the label test.
+
+### E-42 · 2026-11-18T20:00:13Z · TRACE · builder
+
+- Change: the constants at `scripts/hinshitsu_check.py:27-37` and the connections block at lines 293-301 (D-3), and new tests in the class `Check` of `tests/test_check.py` for the lines that F-1, F-2 and F-4 name.
+- Forward: `tests/test_check.py` — does not break: the fixture of `good_run()` writes its edge inside a `mermaid` fence, so the 7 existing edge tests read the same line. `main()` — does not break: it still receives a list of strings. A run's record check — does not break for the 4 `CONNECTIONS.md` files in the repository, each of which holds 1 fence (A-9); a file with no fence is read as before.
+- Backward: A-1, A-9, A-10, A-11 and D-2, D-3 — not violated. D-1 — amended by D-3 through the reversal in E-40. C1 to C7 (E-25) — not changed: no CRITERION is added, dropped or reworded, and no existing test is edited (rule 3.6).
+- Lateral: no other WORK UNIT exists — nothing to invalidate.
