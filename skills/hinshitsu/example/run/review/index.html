@@ -89,7 +89,7 @@ function readAmount(text, typing) {
   if (whole.length > String(MAX_BILL_CENTS / 100).length) { return { error: tooMuch }; }
   var cents = parseInt(whole, 10) * 100 + parseInt(((m[2] || "") + "00").slice(0, 2), 10);
   if (cents === 0) { return { error: "Enter an amount above 0." }; }
-  if (cents > MAX_BILL_CENTS) { return { error: tooMuch }; }
+  if (cents >= MAX_BILL_CENTS) { return { error: tooMuch }; }
   return { cents: cents };
 }
 
