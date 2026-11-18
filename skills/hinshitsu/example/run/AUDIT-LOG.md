@@ -1978,3 +1978,634 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-304de9649d3d48f6a067d877242ab3a8 (https://app.devin.ai/sessions/304de9649d3d48f6a067d877242ab3a8)
 - Report: `audits/WU-1-r2-red-cell-probe-E-190.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-191 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-81
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION; the message it shows is also false).
+- Where: `skills/hinshitsu/example/run/review/index.html`, line 92: `if (cents >= MAX_BILL_CENTS) { return { error: tooMuch }; }`
+- Trigger: Open the file. Type `1000000.00` in "Bill total, tax included", `100` in "Tip percent", `100` in "Number of people". The message "Enter 1000000.00 or less." shows below the bill and no result shows. `1000000`, `0`, `1` does the same. Required: bill total 1000000.00, tip amount 1000000.00, total with tip 2000000.00, "100 people pay 20000.00 each".
+- Violates: C2 (a bill from 0.01 to 1000000.00), C3 (spot case `1000000.00`, `100`, `100`), C4 (only a bill above 1000000.00 gets a message).
+- Raised by: correctness auditor, LAUNCH E-183, `audits/WU-1-r2-correctness-E-183.md`, finding 1
+- Lens: structural integrity
+
+### E-192 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-82
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION).
+- Where: `skills/hinshitsu/example/run/review/index.html`, line 92: `if (cents >= MAX_BILL_CENTS) { return { error: tooMuch }; }`.
+- Trigger: Open the file. Type `1000000.00` in the bill, `100` in the tip, `100` in people. The bill shows "Enter 1000000.00 or less." and no result shows. `1000000` with tip `0` and 1 person does the same. `999999.99` gives a result. My code expects: tip amount 1000000.00, total with tip 2000000.00, "100 people pay 20000.00 each". The message also tells the person to enter the value they entered.
+- Violates: C2 (bill from 0.01 to 1000000.00), C3 (spot case `1000000.00`, `100`, `100`), C4 (only a bill above 1000000.00 gets a message).
+- Raised by: adversarial auditor, LAUNCH E-184, `audits/WU-1-r2-adversarial-E-184.md`, finding 1
+- Lens: structural integrity
+- Same fault as: F-81
+
+### E-193 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-83
+- Class: BLOCKER
+- Where: `index.html`, function `plain`, the call `text.normalize("NFKC")`; C4 of E-175.
+- Trigger: open the page. Type tip `18` and people `4`. Type each bill below (code points given) and leave the field. | Bill typed | Page shows | |---|---| | `5` U+00B2 (5²) | Bill total: 52.00, 4 people pay 15.34 each | | `12` U+2075 U+2070 (12⁵⁰) | Bill total: 1250.00, 4 people pay 368.75 each | | U+2460 U+2461 (①②) | Bill total: 12.00 | | U+1D7CF U+1D7D0 (bold 𝟏𝟐) | Bill total: 12.00 | | `12` U+2024 `50` (one-dot leader) | Bill total: 12.50 | With bill `100.00`: tip `1` U+00B2 shows "Tip percent: 12"; people U+2463 (④) shows "Number of people: 4".
+- Violates: C4. "The bill is digits"; "A whole number is digits only"; only "a full-width or Arabic-Indic digit or decimal mark counts as its plain form". Each input above must get a message and no result. The page gives a result, and for superscripts the amount is not what the person typed.
+- Raised by: RED CELL, probe, LAUNCH E-190, `audits/WU-1-r2-red-cell-probe-E-190.md`, finding 1
+- Lens: structural integrity
+
+### E-194 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-84
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION: a value outside the formats shows a result and no message).
+- Where: `index.html`, line 72: `text.normalize("NFKC")`.
+- Trigger: With valid values in the other 2 fields, paste each of these and read the result. Bill `①` shows "Bill total: 1.00". Bill `1²` shows 12.00. Bill `⒈⑤` (U+2488 U+2464) shows 1.50. Bill `㊿` shows 50.00. Bill `𝟏𝟐` (U+1D7CF U+1D7D0) shows 12.00. Bill `12․50` (U+2024) and `12﹒50` (U+FE52) show 12.50. Tip `²` shows "Tip percent: 2", tip `⑳` shows 20, tip `⁵` shows 5. People `③` shows 3, people `₂` shows 2. None shows a message.
+- Violates: C4 ("The bill is digits, with an optional decimal mark…", "A whole number is digits only", "a full-width or Arabic-Indic digit or decimal mark counts as its plain form"; no other form is named).
+- Raised by: correctness auditor, LAUNCH E-183, `audits/WU-1-r2-correctness-E-183.md`, finding 3
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-195 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-85
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION). If the ORCHESTRATOR reads a superscript or circled number as "digits", the class is DEFECT: the page still reads `5²` as 52.
+- Where: line 72, `text.normalize("NFKC")`.
+- Trigger: Bill `100`, people `4`, tip `5²` (5 then U+00B2): the result shows "Tip percent: 52" and "4 people pay 38.00 each". Also accepted: tip `1⁰` as 10, `①` as 1, `⑱` as 18, `㊿` as 50, `₁₈` as 18, `𝟏𝟖` as 18; people `２²` as 22, `④` as 4, `٤²` as 42; bill `1²` as 12.00, `³.⁵` as 3.50, `⒓50` (U+2493 then 50) as 12.50, and `12․50` (U+2024), `12﹒50` (U+FE52), `12﹐50` (U+FE50) as 12.50. None shows a message.
+- Violates: C4: "A whole number is digits only", "The bill is digits", and a value that fails the formats shows a message and no result. C4 grants the plain form only to a full-width or Arabic-Indic digit or decimal mark.
+- Raised by: adversarial auditor, LAUNCH E-184, `audits/WU-1-r2-adversarial-E-184.md`, finding 3
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-196 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-86
+- Class: BLOCKER (a). C4 names 2 kinds of character that count as their plain form: full-width and Arabic-Indic. If the ORCHESTRATOR rules that C4's list is open, this is a STYLE finding about the comment only.
+- Where: `index.html` line 72 (`text.normalize("NFKC")`); the comment on line 70; `run/FRAMEWORK.md` line 33.
+- Trigger: type 10 in the bill, 15 in the tip, 2 in the people field. Then replace 1 field. Bill `①②` (U+2460 U+2461): no message, result shows "Bill total: 12.00". Bill `1².5` (U+00B2): shows 12.50. Bill `⒈5` (U+2488 U+0035): shows 1.50. Bill `𝟏𝟐` (U+1D7CF U+1D7D0): shows 12.00. Bill `12․5` (U+2024, one dot leader): shows 12.50. Tip `²`: shows "Tip percent: 2". Tip `⑦` (U+2466): shows 7.
+- Violates: C4 ("The bill is digits…", "A whole number is digits only", "a full-width or Arabic-Indic digit or decimal mark counts as its plain form"). The comment on line 70 and the contract in `FRAMEWORK.md` part 4 say `plain` converts full-width and Arabic-Indic forms; the code converts every NFKC compatibility form, so the name and comment do not match what the code does.
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 1
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-197 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-87
+- Class: BLOCKER, part (a). C4 says a whole number "is digits only" and names 2 families that count as plain forms. If the ORCHESTRATOR reads C4 as allowing any compatibility form, this is a FRAGILITY: the set of accepted characters then depends on the Unicode version of the browser's NFKC tables.
+- Where: `skills/hinshitsu/example/index.html` line 72, `text.normalize("NFKC")`.
+- Trigger: Open the page. Type `100.00` in bill and `18` in tip. Put `②` (U+2461) in people: the result shows "Number of people: 2" and "2 people pay 59.00 each", with no message. Same outcome, each observed: `²` (U+00B2) → 2 people; `𝟒` (U+1D7D2) → 4 people; `⑫` (U+246B) → 12 people; tip `㊿` (U+32BF) → "Tip percent: 50"; tip `₁₅` → 15; bill `12․50` (U+2024), `12﹒50` (U+FE52), `12﹐50` (U+FE50) → "Bill total: 12.50"; bill `⒈⁵` (U+2488 U+2075) → "Bill total: 1.50". Bill `⒈` alone is treated as `1.`: no message while focused. Evidence: the probe lines under "characters that are neither plain, full-width nor Arabic-Indic" in the C4 output.
+- Violates: C4, "A whole number is digits only", "a full-width or Arabic-Indic digit or decimal mark counts as its plain form", and "a value that fails the formats below shows a message … and no result shows". Practice: UAX #15, section 1.2, says the compatibility forms NFKC and NFKD "must not be blindly applied to arbitrary text" because they remove distinctions; the comment on line 70 states a narrower rule than the code applies.
+- Raised by: best-practices auditor, LAUNCH E-186, `audits/WU-1-r2-best-practices-E-186.md`, finding 2
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-198 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-88
+- Class: BLOCKER (part (a)), if C4's list of 2 kinds is complete. If the ORCHESTRATOR reads "digits" as any character that Unicode folds to a digit, the page is right and C4's wording is the DEFECT.
+- Where: `skills/hinshitsu/example/index.html`, line 72, `text.normalize("NFKC")`.
+- Trigger: open the page; type `10` as tip and `2` as people; put `²` (U+00B2) into the bill field. No message shows, and the result shows "Bill total: 2.00". Also as bill: `①` gives 1.00; `⑳` gives 20.00; `㊿` gives 50.00; `₁₂` gives 12.00; `𝟏𝟐` gives 12.00; `⒈5` gives 1.50; `12․50` (U+2024), `12﹒50` (U+FE52) and `12﹐50` (U+FE50) give 12.50. As tip: `²` gives 2; `①⑧` and `⑱` give 18. As people: `④` and `⁴` give 4; `⑩` gives 10. These are the 16 lines marked NOT AS C4 under "characters that are neither full-width nor Arabic-Indic" in command 3.
+- Violates: C4: "a value that fails the formats below shows a message … and no result shows"; "A whole number is digits only"; "a full-width or Arabic-Indic digit or decimal mark counts as its plain form" (2 kinds, no others).
+- Raised by: recipient-experience auditor, LAUNCH E-187, `audits/WU-1-r2-recipient-experience-E-187.md`, finding 2
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-199 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-89
+- Class: BLOCKER (a): the DELIVERABLE fails a CRITERION. It is also drift: the page does more than the contract records.
+- Where: `skills/hinshitsu/example/index.html` line 72 (`text.normalize("NFKC")` in `plain`), with lines 84 and 100 (`\d` tests after `plain`); `FRAMEWORK.md` line 33 (part 4, "Decimal mark").
+- Trigger: open the file in Chrome. Type `1²` (U+0031 U+00B2) as the bill, `18` as the tip, `4` as the people. No message shows; the result shows "Bill total: 12.00", "Tip amount: 2.16", "Total with tip: 14.16", "4 people pay 3.54 each". Also: bill `①` (U+2460) gives "Bill total: 1.00"; bill `𝟏𝟐.𝟓𝟎` (U+1D7CF …) gives "Bill total: 12.50"; bill `12․50` (U+2024, one dot leader) gives "Bill total: 12.50"; tip `²` with bill `10.00`, people `2` gives "Tip percent: 2"; people `③` gives "Number of people: 3". Each line is in the script output under `## C4`.
+- Violates: C4: "The bill is digits …", "A whole number is digits only", and "a full-width or Arabic-Indic digit or decimal mark counts as its plain form". A superscript, a circled digit, a mathematical bold digit and U+2024 are none of these, so each is "a value that fails the formats below" and must show a message and no result. `FRAMEWORK.md` part 4 records only "full-width and Arabic-Indic digits and decimal marks"; the comment on line 70 of the page says the same. The page also turns Extended Arabic-Indic digits (U+06F0 to U+06F9, line 74) into plain digits; C4 and the framework say "Arabic-Indic" and do not say whether that range is meant.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 1
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-200 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-90
+- Class: BLOCKER (glossary (a)), on the reading that a circled or superscript number is not "digits".
+- Where: C4, "The bill is digits", "A whole number is digits only", "a full-width or Arabic-Indic digit or decimal mark counts as its plain form"; `index.html` lines 72 to 75 (`normalize("NFKC")`).
+- Trigger: bill `①②` (U+2460 U+2461) gives "Bill total: 12.00"; `¹²` gives 12.00; `𝟏𝟐` (U+1D7CF U+1D7D0) gives 12.00; `㉑` (U+3251, 1 character) gives 21.00; `①` in Tip percent gives "Tip percent: 1", and in Number of people gives "Number of people: 1". No message shows. `۱۲` (U+06F1 U+06F2, Extended Arabic-Indic) gives 12.00; `१२` (Devanagari) gives `<A>`.
+- Violates: C4 ("a value that fails the formats below shows a message"). Adams: lexical ambiguity ("Arabic-Indic": U+0660 to U+0669 only, or also U+06F0 to U+06F9); syntactic ambiguity ("full-width or Arabic-Indic" may modify "digit" alone or "digit or decimal mark"); vagueness ("plain form").
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 2
+- Lens: structural integrity
+- Same fault as: F-83
+
+### E-201 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-91
+- Class: BLOCKER
+- Where: `index.html`, function `plain`, last `replace`; C4 of E-175.
+- Trigger: tip `18`, people `4`. Type or paste each bill below and leave the field. | Bill typed | Page shows | |---|---| | U+200B `12.50` (zero-width space) | result, 12.50 | | U+FEFF `12.50` | result, 12.50 | | U+200E `12.50` (left-to-right mark) | error | | `12.50` U+200F (right-to-left mark) | error | | U+061C `12.50` (Arabic letter mark) | error | | U+00AD `12.50` (soft hyphen) | error | | U+2066 `12.50` U+2069 (isolates) | error | | U+202A `12.50` U+202C (embedding) | error | The same marks fail in the tip and people fields (`U+200E 18`, `18 U+200F`, `U+200E 4`).
+- Violates: C4, "Spaces and invisible characters at either end are ignored". The page ignores 5 of them (U+200B to U+200D, U+2060, U+FEFF) and no others. The CRITERION names no list, so it also reads 2 ways, which is the fault E-174 says it fixes (F-71 to F-78).
+- Raised by: RED CELL, probe, LAUNCH E-190, `audits/WU-1-r2-red-cell-probe-E-190.md`, finding 2
+- Lens: recipient experience
+
+### E-202 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-92
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION).
+- Where: `index.html`, line 76 (the character class in `plain`).
+- Trigger: With `18` and `4` in the other fields, paste `12.50` with U+200E (left-to-right mark) before it into the bill, then leave the field. The message "Enter an amount above 0, in digits. …" shows and no result shows; the field looks the same as `12.50`. The same happens with U+200F after the value, U+061C before it, U+202A…U+202C and U+2066…U+2069 around it, and U+00AD, U+2063, U+180E or U+FE0F at an end. U+200E before a tip of `18` and U+200F after `4` people are rejected in the same way. The page ignores only white space, U+200B to U+200D, U+2060 and U+FEFF.
+- Violates: C4 ("Spaces and invisible characters at either end are ignored").
+- Raised by: correctness auditor, LAUNCH E-183, `audits/WU-1-r2-correctness-E-183.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-203 · 2026-11-18T17:45:54Z · FINDING · orchestrator
+
+- ID: F-93
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION).
+- Where: line 76, the character list `[\s\u200B-\u200D\u2060\uFEFF]`.
+- Trigger: Fill the bill with `12.50` with 1 of these characters before or after it, tip `18`, people `4`. Each one gives the bill's format message and no result: U+200E (left-to-right mark), U+200F (right-to-left mark), U+061C (Arabic letter mark), U+00AD (soft hyphen), U+202A, U+202C, U+2066, U+2069 (direction controls), U+180E, U+034F, U+2062, U+3164, U+FE0F, U+2800, U+0000, U+007F. The page ignores only spaces and U+200B, U+200C, U+200D, U+2060, U+FEFF. The case most likely in use: `١٢٫٥٠` with U+200F at the start, `١٨` with U+200F at the end and `٤` with U+200F at the start give 3 messages. A person cannot see what to correct.
+- Violates: C4, "Spaces and invisible characters at either end are ignored". C4's test list holds no invisible character, so the listed tests pass while the sentence fails.
+- Raised by: adversarial auditor, LAUNCH E-184, `audits/WU-1-r2-adversarial-E-184.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-204 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-94
+- Class: BLOCKER (a).
+- Where: `index.html` line 76.
+- Trigger: with tip 15 and people 2, paste into the bill U+200E then `12.50`; or `12.50` then U+200F; or U+202A `12.50` U+202C; or U+00AD then `12.50`. Each shows "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" and no result. Tip U+200E `7` and people U+200F `4` show "Enter a whole number from … to 100, in digits only." U+200B, U+FEFF and U+00A0 at the ends are ignored, as C4 requires.
+- Violates: C4 ("Spaces and invisible characters at either end are ignored"). The error text also tells the person to type what they see they typed. My inference, not observed: direction marks travel with copied Arabic text, which this page accepts.
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-205 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-95
+- Class: BLOCKER, part (a): the DELIVERABLE fails a CRITERION. C4 does not list which characters are "invisible". If the ORCHESTRATOR reads the term as only the 5 that line 76 names, this is a FRAGILITY (a paste from another app fails).
+- Where: `skills/hinshitsu/example/index.html` line 76, the character class `[\s\u200B-\u200D\u2060\uFEFF]`.
+- Trigger: Open the page. Type `18` in tip and `4` in people. Put any of these in the bill field (paste, or `insertText`): U+200E then `12.50`; `12.50` then U+200F; U+061C then `١٢`; U+202A `12.50` U+202C; U+2066 `12.50` U+2069; U+00AD then `12.50`; `12.50` then U+180E. The field looks like `12.50`. The page shows "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" and no result. Evidence: the 7 probe lines under "invisible characters at an end" in the C4 output.
+- Violates: C4, "Spaces and invisible characters at either end are ignored". Practice: all 7 are Unicode General_Category Cf (Format) characters, which have no visible glyph (UAX #9 defines the bidi marks among them). The page accepts Arabic-Indic digits, and right-to-left text is where U+200E, U+200F and U+061C occur. The message also tells the person to type what the field already appears to hold.
+- Raised by: best-practices auditor, LAUNCH E-186, `audits/WU-1-r2-best-practices-E-186.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-206 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-96
+- Class: BLOCKER (part (a): the DELIVERABLE fails a CRITERION).
+- Where: `skills/hinshitsu/example/index.html`, line 76, the last `replace` in `plain`. It removes white space and 5 characters only: U+200B, U+200C, U+200D, U+2060, U+FEFF.
+- Trigger: open the page; type `10` as tip and `2` as people; put `12.50` followed by U+200E (LEFT-TO-RIGHT MARK) into the bill field. The bill field shows "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" and no result shows. The same happens with each of these at an end of the bill: U+200F; U+202A with U+202C; U+202B with U+202C around `١٢٫٥٠`; U+2066 with U+2069; U+061C; U+00AD; U+180E; U+2061; U+2063; U+034F; U+FE0F; U+115F; U+3164; U+2800. Tip `18` + U+200E and people `4` + U+200E show "Enter a whole number from … in digits only." These are the 19 lines under "invisible characters at either end" in command 3. The person sees a correct amount and a message that calls it wrong. I inserted the characters as text; I did not copy a value from another app. The direction marks (U+200E, U+200F, U+202A to U+202C, U+2066 to U+2069, U+061C) are the ones that right-to-left text carries around numbers.
+- Violates: C4, "Spaces and invisible characters at either end are ignored".
+- Raised by: recipient-experience auditor, LAUNCH E-187, `audits/WU-1-r2-recipient-experience-E-187.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-207 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-97
+- Class: BLOCKER (a): the DELIVERABLE fails a CRITERION as C4 is worded.
+- Where: `skills/hinshitsu/example/index.html` line 76 (the character class `[\s\u200B-\u200D\u2060\uFEFF]` in `plain`); `FRAMEWORK.md` part 4, which records no rule for the characters removed at the ends.
+- Trigger: type `12.50` followed by U+200E (left-to-right mark) as the bill, `18`, `4`, and press Tab. The bill shows "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" and no result shows, though the field looks like `12.50`. The same happens with U+202A … U+202C around the value, U+2066 … U+2069 around it, U+00AD after it, and U+061C before it. As tip, `18` followed by U+200E gives "Enter a whole number from 0 to 100, in digits only." U+200B and U+FEFF at the ends are ignored, as C4 asks.
+- Violates: C4: "Spaces and invisible characters at either end are ignored". C4 does not list which characters are invisible; these 5 kinds are invisible and are not ignored. The message tells the person to type what the field already appears to hold.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-208 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-98
+- Class: BLOCKER (glossary (a)), on the reading that "invisible characters" includes the direction marks.
+- Where: C4, "Spaces and invisible characters at either end are ignored"; `index.html` line 76.
+- Trigger: type 18 in Tip percent and 4 in Number of people; paste into the bill field `U+200E 12.50`, or `12.50 U+200F`, or `U+202D 12.50 U+202C`, or `U+2066 12.50 U+2069`, or `U+00AD 12.50`. Message `<A>` shows and no result shows. With `U+200B 12.50 U+FEFF` or `U+00A0 12.50` the result shows. The person sees `12.50` in the field in every case.
+- Violates: C4. Adams: vagueness.
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-91
+
+### E-209 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-99
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION as written).
+- Where: `index.html`, lines 178-179: the page recomputes on `input` and `blur` only, not when the field gets the cursor.
+- Trigger: Type `18` and `4` in the tip and the people. Type `12.` in the bill: no message. Press Tab: the message shows (required). Press Shift+Tab, or click the bill: the cursor is in the bill, the value is `12.`, and the message and the red border stay until the next key. Observed in headless Chrome and in desktop Chrome.
+- Violates: C4 ("While the bill field has the cursor, digits followed by a decimal mark and nothing else (`12.`) show no message and no result").
+- Raised by: correctness auditor, LAUNCH E-183, `audits/WU-1-r2-correctness-E-183.md`, finding 4
+- Lens: recipient experience
+
+### E-210 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-100
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION as written). The effect is small: a stale message, and no wrong number.
+- Where: lines 178 to 179: the page updates on `input` and `blur` and not on `focus`. Line 121 reads the cursor's place only when an update runs.
+- Trigger: Real keys. Click the bill, type `12.`, press Tab: the bill's format message shows, as C4 states. Press Shift+Tab: the cursor is back in the bill, the field holds `12.`, and the message still shows (`t2.log`, section C, line "Shift+Tab back to bill"). The same happens on a click back into the bill with `12,` in it. The message goes on the next key.
+- Violates: C4, "While the bill field has the cursor, digits followed by a decimal mark and nothing else (`12.`) show no message and no result".
+- Raised by: adversarial auditor, LAUNCH E-184, `audits/WU-1-r2-adversarial-E-184.md`, finding 4
+- Lens: recipient experience
+- Same fault as: F-99
+
+### E-211 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-101
+- Class: BLOCKER (part (a)), on the plain reading of the sentence. If C4 means only the time before the person first leaves the field, the page is right and C4's wording is the DEFECT.
+- Where: `skills/hinshitsu/example/index.html`, lines 178 and 179. The page listens for `input` and `blur`, not for `focus`. Line 121 decides "the person is typing" from `document.activeElement`, but nothing runs `update()` when the field gets the cursor.
+- Trigger: open the page; type `4.` in the bill field (no message, no result: as C4 says); click the tip field (the bill's message shows: as C4 says); click the bill field again. Now the cursor is in the bill field, the field holds `4.`, and the message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" still shows. It stays while the caret moves. It goes when the person types a digit. See command 4, the lines from `left bill for tip with "4."` to `moved the caret with the arrow keys`, and screenshot `c4-waiting-cursor-back-in-bill.png`. I did not test a switch to another window and back.
+- Violates: C4, "While the bill field has the cursor, digits followed by a decimal mark and nothing else (`12.`) show no message and no result".
+- Raised by: recipient-experience auditor, LAUNCH E-187, `audits/WU-1-r2-recipient-experience-E-187.md`, finding 3
+- Lens: recipient experience
+- Same fault as: F-99
+
+### E-212 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-102
+- Class: BLOCKER (d), a false statement in the DELIVERABLE, if the ORCHESTRATOR confirms my reading; I did not read the run's check scripts.
+- Where: `index.html` lines 67 and 68.
+- Trigger: read line 67: "the checks of C3 compare the page with it" (`window.splitBill`). Read C3 in E-175: the AUDITOR compares the page "with a tip amount, total and payments computed by the AUDITOR's own code". Nothing in the page reads `window.splitBill`; the page calls `splitBill` directly on line 160. The comment also cites "FRAMEWORK.md, part 4" with no path: the repository holds 3 files of that name, and a reader of the published page has none.
+- Violates: `GLOSSARY.md` BLOCKER (d); 5S (a comment that no longer matches the thing).
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 3
+- Lens: trust and controls
+
+### E-213 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-103
+- Class: BLOCKER (d), on the words of the glossary: "a statement … in the DELIVERABLE is false". No number on the page is wrong and no RECIPIENT sees the comment, so the ORCHESTRATOR may class it lower.
+- Where: `skills/hinshitsu/example/index.html` line 67: `/* The contract in FRAMEWORK.md, part 4, names window.splitBill; the checks of C3 compare the page with it. */`
+- Trigger: read line 67 against C3 of E-175: the AUDITOR "reads the page's own output, and compares it with a tip amount, total and payments computed by the AUDITOR's own code". C3 does not compare the page with `window.splitBill`. `grep -c splitBill prompts/WU-1-r2-*.md` prints 0 for each of the 9 round-2 scopes, so no scope of round 2 names a use of `window.splitBill`. `FRAMEWORK.md` line 30 says only "reachable from the browser console" and names no user of it either. So the reason the page gives for the line is false, and F-44 to F-46 (a line with no stated use) are answered with a use that does not exist.
+- Violates: `GLOSSARY.md` BLOCKER (d); C3 as worded; `FRAMEWORK.md` part 4, which records no consumer of `window.splitBill`.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 3
+- Lens: trust and controls
+- Same fault as: F-102
+
+### E-214 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-104
+- Class: STYLE.
+- Where: `skills/hinshitsu/example/index.html` lines 67–68.
+- Trigger: Read line 67: "The contract in FRAMEWORK.md, part 4, names window.splitBill". The RECIPIENT gets 1 file (C1), and no `FRAMEWORK.md` is beside it; the file is at `run/FRAMEWORK.md`. Line 68, `window.splitBill = splitBill;`, changes nothing: `misc.js` shows all 14 top-level names are already own properties of `window`, and `splitBill` has `configurable: false`, the mark of a property made by the declaration on line 57.
+- Violates: no CRITERION. `GLOSSARY.md`, DELIVERABLE: "the exact form the RECIPIENT receives it". ECMAScript, GlobalDeclarationInstantiation: a top-level function declaration in a classic script creates the property on the global object.
+- Raised by: best-practices auditor, LAUNCH E-186, `audits/WU-1-r2-best-practices-E-186.md`, finding 3
+- Lens: trust and controls
+- Same fault as: F-102
+
+### E-215 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-105
+- Class: FRAGILITY. The page works today. It fails if a second script is added to the page, or a tool run from the console assigns `fields`, `update`, `money` or `plain`: the name is silently replaced.
+- Where: `index.html` lines 52 to 171 (top-level `var` and `function`); line 30 (`id="fields"`) and line 120 (`var fields`) are 2 different things with 1 name.
+- Trigger: open the page, open the console, type `window.money(1234)`: prints "12.34". The 14 names are in command 7.
+- Violates: `FRAMEWORK.md` part 4 (names only `window.splitBill`); 5S.
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 5
+- Lens: minimal viable sequence
+
+### E-216 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-106
+- Class: STYLE.
+- Where: `skills/hinshitsu/example/index.html` lines 52–54, 71, 81, 97, 109, 114, 120, 125, 126, 129, 146.
+- Trigger: Open the page and type `Object.keys(fields)` or `update` in the console: both resolve. `misc.js` lists `plain`, `readAmount`, `readWhole`, `money`, `payLine`, `fields`, `resultBox`, `shownResult`, `showResult`, `update`, `MAX_BILL_CENTS`, `MAX_TIP_PERCENT`, `MAX_PEOPLE` as own properties of `window`, beside `splitBill`.
+- Violates: no CRITERION. `run/FRAMEWORK.md` part 4 names 1 public name, `window.splitBill`. Practice: MDN, "IIFE" glossary entry (avoid polluting the global namespace).
+- Raised by: best-practices auditor, LAUNCH E-186, `audits/WU-1-r2-best-practices-E-186.md`, finding 4
+- Lens: minimal viable sequence
+- Same fault as: F-105
+
+### E-217 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-107
+- Class: STYLE.
+- Where: `skills/hinshitsu/example/index.html` lines 50 to 193 (the script is not wrapped in a function); `FRAMEWORK.md` line 30.
+- Trigger: in the console of the open page, `['plain','readAmount','readWhole','money','payLine','showResult','update','fields','MAX_BILL_CENTS','resultBox','shownResult'].filter(n => n in window)` returns all 11 names. The contract records 1 name as reachable from the console, `splitBill`; 11 more are reachable, and line 68 (`window.splitBill = splitBill;`) adds nothing that the top-level `function splitBill` does not already give.
+- Violates: `FRAMEWORK.md` part 4 as worded (1 name recorded, 12 exposed). No CRITERION; no result changes.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 11
+- Lens: minimal viable sequence
+- Same fault as: F-105
+
+### E-218 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-108
+- Class: DEFECT (an out-of-date statement in a RUN FOLDER file, rule 14.6).
+- Where: `skills/hinshitsu/example/run/FRAMEWORK.md` line 52.
+- Trigger: read line 52: "(2) form, the 3 states and validation". C4 of E-175: "The page has 4 states."
+- Violates: rule 14.6.
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 4
+- Lens: trust and controls
+
+### E-219 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-109
+- Class: DEFECT (rule 14.6: out-of-date statements in a file of the RUN FOLDER).
+- Where: `FRAMEWORK.md` line 52 (part 6, build order): "(2) form, the 3 states and validation"; `FRAMEWORK.md` line 50 and `SESSION-STATE.md` fields 4 and 8: "audit round 2 not yet run".
+- Trigger: (a) C4 of E-175 reads "The page has 4 states", and `grep -c '<form' index.html` prints 0: the fields sit in `<div id="fields">` (line 30), so the page has no form. (b) E-182 (line 1882) records the LAUNCH of the round-2 seeder at commit f3578b9, and at the commit under review `review/index.html` already holds the seeder's change (SHA-256 dc993923…), so round 2 has started; rule 8.1, as E-90 words it, asks that the state files change in the same commit as the entry that changes a fact.
+- Violates: rule 14.6; rule 8.1.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 8
+- Lens: trust and controls
+- Same fault as: F-108
+
+### E-220 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-110
+- Class: DEFECT (a wrong message; I do not class it BLOCKER because C4 does not say whether a window switch counts as leaving the field).
+- Where: `index.html`, line 179: `f.input.addEventListener("blur", function () { f.touched = true; update(); });`
+- Trigger: In desktop Chrome, open the file and click the empty bill field. Type nothing. Switch to another window (I ran `xdotool windowactivate` on the desktop window). Chrome fires `blur` on the field while `document.activeElement` stays the bill. "Enter the bill total." shows with a red border, and is still there when the person comes back; the cursor is still in the bill. With `12.` in the bill the same switch shows no message, because line 121 treats the field as still having the cursor: the 2 lines disagree on what "left" means.
+- Violates: C4, Incomplete state ("the person has neither typed in nor left them, and no field shows a message").
+- Raised by: correctness auditor, LAUNCH E-183, `audits/WU-1-r2-correctness-E-183.md`, finding 5
+- Lens: structural integrity
+
+### E-221 · 2026-11-18T17:45:55Z · FINDING · orchestrator
+
+- ID: F-111
+- Class: FRAGILITY (works today; fails under a larger input).
+- Where: line 76: the alternative `[\s\u200B-\u200D\u2060\uFEFF]+$` retries from every space when the run does not reach the end, so the time grows with the square of the length. No field has a length limit (lines 33, 38, 43), and line 149 reads all 3 fields on every event in any field.
+- Trigger: Put `1`, then 100,000 spaces, then `x` in the tip field and fire 1 `input` event: the event takes 5,127 ms. With 100,000 U+200B characters: 9,221 ms. 50,000 spaces: 1,310 ms. 20,000 spaces: 105 ms. 1,000,000 digits: 3 ms. I set the value by script and tested the tip field only; I did not paste from the clipboard. While that value stays in the field, each key in any field costs the same time again.
+- Violates: no CRITERION by its listed tests. It bears on C4, "recomputed on every change".
+- Raised by: adversarial auditor, LAUNCH E-184, `audits/WU-1-r2-adversarial-E-184.md`, finding 5
+- Lens: structural integrity
+
+### E-222 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-112
+- Class: STYLE. The copies match today.
+- Where: `index.html` line 76 (the character class, twice in 1 regex); lines 87 and 102 (`replace(/^0+(?=\d)/, "")`); lines 89 and 103 (the digit-count guard); lines 73 and 74 (digit ranges); lines 178 and 179 (2 identical handlers).
+- Trigger: read the lines. Fixing finding 2 needs the same edit in 2 places on line 76.
+- Violates: 5S (copy-paste drift, not yet drifted).
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 6
+- Lens: minimal viable sequence
+
+### E-223 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-113
+- Class: STYLE.
+- Where: `index.html` lines 79 to 81, 85 and 121.
+- Trigger: read line 121: the value passed is `document.activeElement === fields.bill.input`. C4 says "While the bill field has the cursor".
+- Violates: 5S (name does not match what the thing does).
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 7
+- Lens: minimal viable sequence
+
+### E-224 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-114
+- Class: STYLE.
+- Where: `index.html` line 16 and 17 (`#a40000`, 3 times); lines 15 and 19 (`1px solid #555` and `0.25rem`, twice each); line 17 (`min-height: 1.5rem`, which equals 1 line of the `1rem/1.5` on line 10); lines 122 and 123 (minimums `0` and `1` as bare numbers, beside the named maximums of lines 52 to 54); line 86 ("1 or 2 digits" and "12.50" in the message, beside `\d{1,2}` on line 84).
+- Trigger: read the lines. At 360 pixels the message of line 86 takes 3 lines, so the 1-line `min-height` does not hold the layout still there (screenshot `w360-error.png`).
+- Violates: 5S (hardcoded values).
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 8
+- Lens: minimal viable sequence
+
+### E-225 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-115
+- Class: STYLE.
+- Where: `index.html` line 47.
+- Trigger: read the line. C5 asks for `role="status"` only.
+- Violates: 5S (redundant attribute).
+- Raised by: forensic-5s auditor, LAUNCH E-185, `audits/WU-1-r2-forensic-5s-E-185.md`, finding 9
+- Lens: minimal viable sequence
+
+### E-226 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-116
+- Class: DEFECT (rule 14.6: a correction that is itself false).
+- Where: `AUDIT-LOG.md` E-181, lines 1876 ("Wording of the CRITERIA that reads 2 ways: F-36 and F-70 to F-78 … F-79 and F-80 concern E-25 and the glossary, not the CRITERIA.").
+- Trigger: read the `Where` lines of E-160, E-161, E-162 and E-170. F-70 is at "`index.html` line 29 (guide), line 37 (label), lines 138 and 140 (result)"; F-71 is at "`index.html` line 75"; F-72 is at "`index.html` lines 7, 27, 29, 32, 72, 137, 139, 141". These 3 are faults in the page's words, not in the wording of the CRITERIA; E-178 itself answers them as page changes ("the language auditor's findings 3 to 5"). The FINDINGS whose `Where` is the CRITERIA entry are F-36, F-47 and F-73 to F-78. Also, F-80's `Where` holds "E-98 line 1010" and its trigger holds "C4 uses 'the rules below' for input formats", so F-80 does concern the CRITERIA entry; C4 of E-175 now reads "the formats below".
+- Violates: rule 14.6; rule 8.1 (an ID copied from the entry, not written from memory).
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 4
+- Lens: trust and controls
+
+### E-227 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-117
+- Class: DEFECT (rule 14.6: a correction that is itself false, in 1 clause).
+- Where: `AUDIT-LOG.md` E-180, line 1866, last clause: "the card of E-88 … drops the choice that F-19 found unlawful".
+- Trigger: read choice A of E-88 (line 923) with the trigger of F-19 (line 893), as set out under "F-19: STILL OPEN" above. The card of E-88 does not hold the words of E-79's choice B, but its choice A offers the same thing for every record fault, while the BLOCKER F-18 was open.
+- Violates: rule 14.6; rule 14.4.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 5
+- Lens: trust and controls
+
+### E-228 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-118
+- Class: DEFECT.
+- Where: `AUDIT-LOG.md` E-88, the card, choice B (line 924): "1 more round, same rules. May repeat."
+- Trigger: read choice B against rule 14.5: "approve 1 more round, with its cost in SUB-AGENT runs". The choice states no cost. The cards of E-69 and E-79 stated "1 more independent session … About 5 minutes".
+- Violates: rule 14.5.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 6
+- Lens: trust and controls
+
+### E-229 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-119
+- Class: DEFECT (rule 14.6: a false statement in a file of the RUN FOLDER).
+- Where: `AUDIT-LOG.md` E-178, line 1854: "no layout shift on an error". `index.html` line 17 (`.error { min-height: 1.5rem; … }`).
+- Trigger: at a width of 360 pixels, type `abc` as the bill and press Tab. The bill's message takes 4 lines: its paragraph grows from 24 to 96 pixels, and the tip field moves down from 277.19 to 349.19 pixels (72 pixels). At 768 and 1280 pixels the paragraph grows from 24 to 72 pixels and the tip field moves 48 pixels. Script output under `## C5 widths`; screenshot `w360-error.png`.
+- Violates: rule 14.6. No CRITERION: C5 does not forbid the shift. F-61 (STYLE) is not answered by the change that E-178 claims.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 7
+- Lens: trust and controls
+
+### E-230 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-120
+- Class: DEFECT (rules 7.2 and 9.3, as `CONNECTIONS.md` line 3 cites them: each part and each edge is recorded).
+- Where: `CONNECTIONS.md`, the diagram (lines 7 to 30) and the table (lines 35 to 58); `FRAMEWORK.md` part 5.
+- Trigger: `grep -n -i 'red.cell\|probe\|evidence/' FRAMEWORK.md CONNECTIONS.md` prints nothing. Round 2 holds a RED CELL probe (`prompts/WU-1-r2-red-cell-probe.md`; E-174, line 1817: "This entry triggers a RED CELL probe"). Its scope takes the `CRITERIA-CHANGE` entry E-174 and decision D-9 as input, not the CRITERIA entry, and quotes no CRITERION (0 criterion lines), so the edge "CRITERIA entry → AUDITOR reports: is quoted in each scope" does not describe it, and no edge runs from a `CRITERIA-CHANGE` entry to anything. The graph also has no node for a `CRITERIA-CHANGE` entry, though E-174 is what changed C2 to C8 and so what the page was rebuilt from. `evidence/` holds the BUILDER's run that E-178 cites (`evidence/builder-smoke-E-178.txt`) and has no row of its own in part 5 beyond "every other file".
+- Violates: rules 7.2 and 9.3; the same kind of gap as F-66 in round 1.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 9
+- Lens: trust and controls
+
+### E-231 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-121
+- Class: STYLE.
+- Where: `FRAMEWORK.md` part 3, line 26 (report files are `audits/<WU>-<role>-E-<n>.md`); `AUDIT-LOG.md` E-182, line 1889 (`audits/WU-1-r2-seed-E-182.md`); `prompts/WU-1-r2-*.md` (9 files).
+- Trigger: read the name in E-182 against the pattern: it holds a part `r2` that the convention does not record. The 8 report files of round 1 follow the pattern with no round part.
+- Violates: `FRAMEWORK.md` part 3. No result changes.
+- Raised by: framework-drift auditor, LAUNCH E-188, `audits/WU-1-r2-framework-drift-E-188.md`, finding 10
+- Lens: trust and controls
+
+### E-232 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-122
+- Class: DEFECT.
+- Where: C4, sentences 1 to 5 and "While the bill field has the cursor…".
+- Trigger: (a) open the page, type `abc` in the bill field and touch nothing else: message `<A>` shows while 2 fields are empty and untouched. That is "Error", and it also meets the first 2 clauses of "Incomplete", whose third clause says "no field shows a message". The text does not mark which clauses of "Incomplete" are conditions and which are results. (b) "First open" meets every clause of "Incomplete". (c) Type 18, 4 and then `12.` in the bill field: no message and no result, with no field empty. That is none of the 4 states. (d) "Error" says a failing value "shows a message" once the person types; `12.` fails the format and shows none. C4 states the exception later, without "except".
+- Violates: C4 (conflict between 2 statements; syntactic ambiguity). SKILL.md line 86.
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 3
+- Lens: recipient experience
+
+### E-233 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-123
+- Class: DEFECT.
+- Where: C4, "While the bill field has the cursor", "leaves it", "has neither typed in nor left them", "once the person has left the field".
+- Trigger: "cursor" names the mouse pointer and the text cursor. Observed: the page follows the text cursor (keyboard focus) and ignores the pointer (`a.js`, wording probes). "Leaves": click the bill field, type nothing, bring another tab to the front. "Enter the bill total." shows (`blur2.js`, part 1), although the person typed nothing and moved to no other field. C4 does not say whether a change of tab or window is "leaving". I could not make the same test register with `12.` in the field: UNVERIFIED.
+- Violates: C4 (lexical ambiguity). On the reading that a tab change is not "leaving", the trigger is a failure of "Incomplete".
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 4
+- Lens: recipient experience
+
+### E-234 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-124
+- Class: DEFECT.
+- Where: C2, "Under 2 lines, 1 sentence follows".
+- Trigger: reading. (a) below the 2 lines; (b) when the payments take 2 lines; (c) when the payments take fewer than 2 lines. On (c) the page fails: `100.00, 18, 4` shows 1 payment line and no sentence.
+- Violates: C2 (lexical ambiguity).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 5
+- Lens: recipient experience
+
+### E-235 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-125
+- Class: DEFECT.
+- Where: C2; `index.html` lines 162 to 166.
+- Trigger: `100.00, 18, 4`: the result reads "Bill total: 100.00", "Tip percent: 18", "Number of people: 4", "Tip amount: 18.00", "Total with tip: 118.00". C2 lists the values and gives no label text, so an AUDITOR cannot say whether "Tip percent: " is permitted text or "other text", or whether "18%" would pass.
+- Violates: C2 (a rule that a third party cannot test).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 6
+- Lens: recipient experience
+
+### E-236 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-126
+- Class: DEFECT.
+- Where: C2, first sentence.
+- Trigger: reading, and `0.50, 0, 1`, which shows "Bill total: 0.50". "each" may cover 2 items (tip percent, number of people) or 3 (with the bill total). On 3, "0.50" begins with a zero. C2 gives "2 decimal places" for the bill total only; the format of the tip amount, the total with tip and the payments appears only in examples. C2 gives the 1-line form for 2 or more people only; "1 person pays 11.62" as the only line is inferred.
+- Violates: C2 (syntactic ambiguity; vagueness).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 7
+- Lens: recipient experience
+
+### E-237 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-127
+- Class: DEFECT.
+- Where: C2, "Half a cent of tip rounds up"; C3, "computed by the AUDITOR's own code".
+- Trigger: reading. C2 does not say what 0.2 or 0.7 of a cent does. C3 makes each AUDITOR write the rule in code; "rounds up" also fits code that rounds every fraction up. I coded nearest cent, half up, and got 0 mismatches in 26003 cases, so the page does that.
+- Violates: C2, C3 (vagueness).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 8
+- Lens: recipient experience
+
+### E-238 · 2026-11-18T17:45:56Z · FINDING · orchestrator
+
+- ID: F-128
+- Class: DEFECT.
+- Where: - "bill" (C2, C3, C4) and "bill total" (C2, C5, the page). In C4 "the bill" is also the typed text ("The bill is digits") and "a negative or 0 bill" is its value. - "total with tip" (C2, the page) and "total" (C3 test; E-25 row 4). "Bill total" is also a total. - "message" (C4, C5), "error text" (C4, First open), "error paragraph" (C5). - "payments" (C2, C3), "the larger payment" (C2), "the higher amount" (C2 sentence, the page), "what each person pays" (E-25 row 4). - "person": the one who types ("the person leaves the field", C4; "a person types", C5) and a diner ("1 person pays 3.34", C2; "for 1 person", C3). - "tip": a percent in and an amount out (E-25 row 4: "tip percent … in; tip, total … out"). C2: "a tip that is a whole number". - "valid" (C4, Result) is not defined; C4 elsewhere says "fails the formats" and "gets a message". A bill of 0 or above 1000000.00 fails no format and still gets a message. - "the formats below" (later in the text) and "a message below that field" (position), in 1 sentence of C4. - "page", "file" and "calculator" (C1, C6).
+- Trigger: the report gives the place and the trigger together, under "Where and trigger" in this finding
+- Violates: SKILL.md line 8 and the glossary's rule of 1 meaning for each term, applied by rule 13.1 (inconsistency).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 9
+- Lens: recipient experience
+
+### E-239 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-129
+- Class: DEFECT.
+- Where: - C1, C2, C4, C5, C6, C7: the test names no actor. Only C3 and C8 name an AUDITOR. The glossary makes VERIFIED depend on who ran the check. - C4: "Test: each input, in the browser." Several "inputs" are classes ("letters", "a currency sign", "a tip that is not a whole number from 0 to 100"); each AUDITOR picks different instances. The test names no input for the accepted forms or for the 4 states. - C5: "a count of the changes … while a person types in another field (0 changes)". "another" has nothing to refer to. Observed: 0 changes when the bill shows a message and the person types 18 in Tip percent; 2 changes when a result shows and the person types `0` after `4` in Number of people, which is a correct change. The test passes or fails by the AUDITOR's choice of setup. - C4: "is recomputed on every change" cannot be observed when the text stays the same, and C5 forbids writing it again. Observed: typing `.00` after `100` in the bill field gives 2 changes in the result (removed at `100.`, written again with the same text at `100.0`). - C3: "compares it with" states no pass condition. - C5 and C7: "are reported UNVERIFIED" names no reporter. - C8: the test records a time and states no limit; it times an AUDITOR, and the rule is about the USER. "an AUDITOR who did not build the page" repeats the glossary's definition of AUDITOR.
+- Trigger: the report gives the place and the trigger together, under "Where and trigger" in this finding
+- Violates: SKILL.md line 86 ("State the actor, the action and the test"); glossary, CRITERION ("with a named test").
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 10
+- Lens: recipient experience
+
+### E-240 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-130
+- Class: DEFECT.
+- Where: - C7: "The page stores nothing and sends nothing." The test covers 5 names in the source, 1 `fetch` and 1 reload. The policy in the tag does not cover a link, a form or a change of address, so "sends nothing" is wider than the test. The page has none of these today (source search: no `href`, no `<form>`). - C1: "its calculator works" is defined only by "C2's first test passes". - C5: "no element is wider than the window" names no state of the page and no height; "window" may mean the browser window or the viewport. I tested 3 states; the longest message wraps at 360 pixels. - C4: "the message names what to type" has no test. "Enter the bill total." names a thing and no format.
+- Trigger: the report gives the place and the trigger together, under "Where and trigger" in this finding
+- Violates: rule 13.1 (undue generality; a rule that a third party cannot test).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 11
+- Lens: recipient experience
+
+### E-241 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-131
+- Class: DEFECT.
+- Where: C6; `index.html` line 28.
+- Trigger: load with JavaScript disabled. The page shows "This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." C4 writes "1 sentence of guidance" where it means exactly 1; "a sentence" in C6 may mean exactly 1 or at least 1.
+- Violates: C6 (lexical ambiguity).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 12
+- Lens: recipient experience
+
+### E-242 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-132
+- Class: DEFECT.
+- Where: C8.
+- Trigger: reading. "Last" may mean the latest round before the report or the final round of the run; "at" does not say whether the hash is of the file the round received or of the file after the fixes that the round caused. "What to open" does not say whether the USER opens the file or the published link (E-175, last line, puts hosting outside the CRITERIA). No delivery report exists, so whether the report meets C8 is UNVERIFIED.
+- Violates: C8 (lexical ambiguity).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 13
+- Lens: recipient experience
+
+### E-243 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-133
+- Class: DEFECT (glossary, DEFECT, second sentence).
+- Where: `AUDIT-LOG.md` lines 250 to 258.
+- Trigger: reading E-25 beside E-175. No VOC entry follows E-25. - VA1: "they type amounts with a dot". C4 now accepts a comma (E-176 gives the reason: some people cannot type a dot). - Row 2: "each naming what to open and what to see". C8 adds "what to do" and "within 5 minutes in total". - Row 3: "messages and labels on the page in plain words" → C4, C5. Neither holds a test of plain words; C5 fixes 1 label only. "Plain words" is itself vague. - Row 4: T1 sits under the heading "Customer language"; line 248 says the ORCHESTRATOR chose T1. - Row 4: "what each person pays out" reads as "pays out"; "in" and "out" are meant as input and output. - Line 240: "the skill set"; the glossary's term is "the skills".
+- Violates: rule 14.6 as the glossary cites it; rule 13.1 (inconsistency).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 14
+- Lens: recipient experience
+
+### E-244 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-134
+- Class: STYLE.
+- Where: `index.html` line 86.
+- Trigger: type `1,000` or `$12` or `abc` in the bill field. The page shows "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50". "Decimal mark" is not a common word (E-25 row 3 asks for plain words). The message does not say that the mark is a dot or a comma, and does not tell the person who typed `1,000` or `$12` what to remove. "above 0" answers a fault that these inputs do not have.
+- Violates: E-25, translation row 3 (V2). No CRITERION tests it (finding 14).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 15
+- Lens: recipient experience
+
+### E-245 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-135
+- Class: STYLE.
+- Where: `index.html` lines 29, 42, 83, 86, 88, 91, 99, 122, 123.
+- Trigger: reading. The guidance says "Type …"; all 7 messages say "Enter …"; C4 says "what to type". 1 act has 2 verbs. "Number of people" does not say which people; the result says "people pay".
+- Violates: rule 13.1 (inconsistency; vagueness).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 16
+- Lens: recipient experience
+
+### E-246 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-136
+- Class: STYLE.
+- Where: `AUDIT-LOG.md` lines 1823 to 1831 ("Covers G8, G11" and the like).
+- Trigger: reading. E-25 defines V1, V2 and T1. Neither E-175 nor E-25 defines a G item or names the entry or file that does. I did not search the rest of the RUN FOLDER for the definitions.
+- Violates: SKILL.md line 63 (a third party traces a statement to its source).
+- Raised by: language auditor, LAUNCH E-189, `audits/WU-1-r2-language-E-189.md`, finding 17
+- Lens: recipient experience
+
+### E-247 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-137
+- Class: BLOCKER
+- Where: E-172, card, question 1 ("Recommended: A, because it fixes all of them and removes nothing you asked for"); E-174, old text beside new text; E-25, Translation table.
+- Trigger: read the old and new text of C4 and C5 in E-174, then the Translation table of E-25. - C4 old: "shows a message in plain words beside that field". C4 new: "shows a message below that field, the message names what to type". "In plain words" is gone. E-25 traces it to the USER's own words: V2, "I don't … understand all technical aspects", "messages and labels on the page in plain words", C4 and C5. F-77 said that no test names what plain is. The change answered by dropping the rule, not by adding the test. - C5 old: "nothing is cut off". C5 new: "no element is wider than the window". Text cut off by height, or clipped inside an element that fits the window, now passes. - The card lists 4 changes for answer A. It does not name these 2, nor that the page now reads full-width and Arabic-Indic characters. - What the page shows now for bill `1,000`: "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50". No rule now tests whether a person who does not "understand all technical aspects" can read that.
+- Violates: rule 3.5 ("Do not add, drop, weaken or reword a `FROZEN` CRITERION"; the USER's approval was given to a card that said nothing was removed); rule 23.4(c) (for each answer the card must say "what the USER gives up"); the trace V2 → C4 and C5 in E-25, which now ends in CRITERIA that hold no plain-words rule.
+- Raised by: RED CELL, probe, LAUNCH E-190, `audits/WU-1-r2-red-cell-probe-E-190.md`, finding 3
+- Lens: trust and controls
+
+### E-248 · 2026-11-18T17:45:57Z · FINDING · orchestrator
+
+- ID: F-138
+- Class: BLOCKER (rule 6.6). Without that rule it is a DEFECT under rule 14.6.
+- Where: E-176, line "Reversal": "`1,000` now reads as an amount with 3 decimal places and gets the message for decimal places, not a message about commas."
+- Trigger: type bill `1,000`, tip `18`, people `4`; leave the field. Then `1.000`, `1,000.00`, `1.000,00`.
+- Violates: rule 14.6 (a false statement in a file of the RUN FOLDER). It also touches C4, "the message names what to type": a person who typed `1,000` is not told to type `1000`.
+- Raised by: RED CELL, probe, LAUNCH E-190, `audits/WU-1-r2-red-cell-probe-E-190.md`, finding 4
+- Lens: trust and controls
+
+### E-249 · 2026-11-18T17:46:12Z · CHECK · orchestrator
+
+- What: the planted defect of rule 16.7, round 2 of WU-1.
+- Seed: `audits/WU-1-r2-seed-E-182.md`. The seeder changed line 92 of `review/index.html` from `cents > MAX_BILL_CENTS` to `cents >= MAX_BILL_CENTS`, so that a bill of exactly 1000000.00 is refused (C3 spot case, C4), and named 2 roles that must find it: correctness auditor and adversarial tester.
+- Correctness auditor (E-183): found it. `audits/WU-1-r2-correctness-E-183.md`, finding 1 (F-81).
+- Adversarial tester (E-184): found it. `audits/WU-1-r2-adversarial-E-184.md`, finding 1 (F-82).
+- Result: no report of this round is void.
+- The other 5 AUDITORS examined `skills/hinshitsu/example/index.html` at SHA-256 e866bfe5aee8c649d00f992abde6dd869e1fe1dc526b2a458f979e6a90d111d0, which holds no planted defect. The RED CELL probe (E-190) read the same file.
+- Count: the 8 reports hold 58 findings, logged as F-81 to F-138 (E-191 to E-248). A `Same fault as` line marks a FINDING that restates an earlier one in this round.
+- Faults in the product that round 2 found in the BUILDER's change of E-178: `plain` read characters such as U+00B2 as digits (F-83 group); invisible characters other than 5 were not ignored (F-91 group); the message for `12.` stayed when the cursor returned to the bill field (F-99 group).
+
+### E-250 · 2026-11-18T17:46:44Z · CHECK · orchestrator
+
+- What: the BUILDER's second change to WU-1, after audit round 2, and the BUILDER's own run of it. It supports no `PASS` cell (rule 10.5) and closes no FINDING (rule 15.4).
+- File: `skills/hinshitsu/example/index.html`, 219 lines (`wc -l`), SHA-256 d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6 (`sha256sum`). `review/index.html` is identical to it again.
+- Changed, with the FINDINGS each change answers (IDs copied from E-191 to E-248): `plain` no longer calls `normalize`; it maps only full-width, Arabic-Indic and Extended Arabic-Indic digits, the full-width dot and comma, and U+066B (F-83 to F-90). `plain` removes at either end white space, Unicode format characters, default-ignorable code points and U+2800, by a loop and not by a pattern that backtracks (F-91 to F-98; the adversarial tester's finding 5). Each field recomputes on `focus` (F-99 to F-101). A `blur` that leaves keyboard focus in the field, as a window switch does, is not treated as leaving the field (the correctness auditor's finding 5). The comment above `window.splitBill` states only that the function is reachable from the console (the group of the forensic auditor's finding 3). The script is wrapped in 1 function, so `window.splitBill` is the 1 name it adds to `window` (the group of the forensic auditor's finding 5). Each field has `maxlength="64"`. Every message begins with "Type", and the bill's format message reads "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." (the language auditor's findings 15 and 16; the RED CELL's finding 3, "in plain words").
+- Not changed: the label "Number of people"; `aria-live="polite"` beside `role="status"`; the values that the forensic auditor's findings 6 and 8 name. Each is STYLE and gets an `OVERRULE` entry.
+- BUILDER's run: `evidence/builder-smoke-E-250.txt`.
+
+### E-251 · 2026-11-18T17:46:44Z · CORRECTION · orchestrator
+
+- Source: the framework-drift auditor of round 2, `audits/WU-1-r2-framework-drift-E-188.md`, findings 4 to 8 and 10; the RED CELL probe, `audits/WU-1-r2-red-cell-probe-E-190.md`, finding 4.
+- Corrects E-181: the FINDINGS against the wording of the CRITERIA are F-36, F-47, F-73 to F-78 and, in part, F-80. F-70 to F-72 are faults in the page's words, answered by the page change of E-178.
+- Corrects E-180: the clause "drops the choice that F-19 found unlawful" is false. Choice A of the card in E-88 offers for every record fault what F-19 found unlawful for 1. F-19 stays open; the delivery report names it.
+- Corrects E-88: choice B of the card stated no cost. The cost was 1 SUB-AGENT run.
+- Corrects E-178: "no layout shift on an error" is true for a message of 1 line only. A message of 2 or more lines moves the fields below it.
+- Corrects E-176: the line on cost is false. `1,000` gets the bill's general format message; the page has no message for decimal places. After the change of E-250 that message names thousands separators.
+- Report names: from round 2 on a report file is `audits/<WU>-r<round>-<role>-E-<n>.md`. `FRAMEWORK.md` part 3 now says so.

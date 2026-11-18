@@ -1,0 +1,73 @@
+$ sha256sum skills/hinshitsu/example/index.html
+d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6  skills/hinshitsu/example/index.html
+$ node smoke.js <repo>/skills/hinshitsu/example/index.html   # script: evidence/builder-smoke.js; Chrome 156, playwright-core 1.49.1
+first open: true ["","",""]
+100.00 / 18 / 4 => {"hidden":false,"text":"Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each","e":["","",""]}
+0.30 / 15 / 1 => {"hidden":false,"text":"Bill total: 0.30 | Tip percent: 15 | Number of people: 1 | Tip amount: 0.05 | Total with tip: 0.35 | 1 person pays 0.35","e":["","",""]}
+10.10 / 15 / 1 => {"hidden":false,"text":"Bill total: 10.10 | Tip percent: 15 | Number of people: 1 | Tip amount: 1.52 | Total with tip: 11.62 | 1 person pays 11.62","e":["","",""]}
+12.25 / 18 / 1 => {"hidden":false,"text":"Bill total: 12.25 | Tip percent: 18 | Number of people: 1 | Tip amount: 2.21 | Total with tip: 14.46 | 1 person pays 14.46","e":["","",""]}
+10.00 / 0 / 3 => {"hidden":false,"text":"Bill total: 10.00 | Tip percent: 0 | Number of people: 3 | Tip amount: 0.00 | Total with tip: 10.00 | 1 person pays 3.34 | 2 people pay 3.33 each | Your group decides who pays the higher amount.","e":["","",""]}
+1000000.00 / 100 / 100 => {"hidden":false,"text":"Bill total: 1000000.00 | Tip percent: 100 | Number of people: 100 | Tip amount: 1000000.00 | Total with tip: 2000000.00 | 100 people pay 20000.00 each","e":["","",""]}
+0.01 / 0 / 100 => {"hidden":false,"text":"Bill total: 0.01 | Tip percent: 0 | Number of people: 100 | Tip amount: 0.00 | Total with tip: 0.01 | 1 person pays 0.01 | 99 people pay 0.00 each | Your group decides who pays the higher amount.","e":["","",""]}
+12,50 / 18 / 4 => {"hidden":false,"text":"Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount.","e":["","",""]}
+10. / 18.0 / +4 => {"hidden":true,"text":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","Type a whole number from 0 to 100, in digits only.","Type a whole number from 1 to 100, in digits only."]}
+1000000.01 / 101 / 0 => {"hidden":true,"text":"","e":["Type 1000000.00 or less.","Type a whole number from 0 to 100, in digits only.","Type a whole number from 1 to 100, in digits only."]}
+ 5.5  /  0  /  2  => {"hidden":false,"text":"Bill total: 5.50 | Tip percent: 0 | Number of people: 2 | Tip amount: 0.00 | Total with tip: 5.50 | 2 people pay 2.75 each","e":["","",""]}
+requests: 1 errors: []
+fetch: blocked: Failed to fetch
+after reload bill= ""
+360 scrollWidth 360
+768 scrollWidth 768
+1280 scrollWidth 1280
+$ node smoke2.js <repo>/skills/hinshitsu/example/index.html   # script: evidence/builder-smoke2.js; Chrome 156, playwright-core 1.49.1
+["12,50","18","3"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 3 | Tip amount: 2.25 | Total with tip: 14.75 | 2 people pay 4.92 each | 1 person pays 4.91 | Your group decides who pays the higher amount.","e":["","",""]}
+["12.5","18","3"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 3 | Tip amount: 2.25 | Total with tip: 14.75 | 2 people pay 4.92 each | 1 person pays 4.91 | Your group decides who pays the higher amount.","e":["","",""]}
+["1,000.00","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["1.000,00","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["1,000","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["10.","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["10,","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+[".5","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["１２．５０","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["١٢٫٥","٥","٢"] => {"r":"Bill total: 12.50 | Tip percent: 5 | Number of people: 2 | Tip amount: 0.63 | Total with tip: 13.13 | 1 person pays 6.57 | 1 person pays 6.56 | Your group decides who pays the higher amount.","e":["","",""]}
+["12.50​","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["12，50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["0100.5","007","02"] => {"r":"Bill total: 100.50 | Tip percent: 7 | Number of people: 2 | Tip amount: 7.04 | Total with tip: 107.54 | 2 people pay 53.77 each","e":["","",""]}
+["5","18,5","2"] => {"r":"","e":["","Type a whole number from 0 to 100, in digits only.",""]}
+["5","0",""] => {"r":"","e":["","","Type the number of people."]}
+typing 12. focused: {"r":"","e":["","",""]}
+typing 12.5: {"r":"","e":["","",""]}
+12. after leaving: {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+changes while typing in tip with a bill error: 1
+changes while moving focus with a result: 0
+JS off visible text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." visible inputs: 0
+$ node smoke3.js <repo>/skills/hinshitsu/example/index.html   # script: evidence/builder-smoke3.js; Chrome 156, playwright-core 1.49.1
+["5U+B2","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+2075U+2070","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+2460U+2461","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+1D7CFU+1D7D0","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+202450","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["100.00","1U+B2","U+2463"] => {"r":"","e":" / Type a whole number from 0 to  / Type a whole number from 1 to "}
+["U+3251","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+200E12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["12.50U+200F","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+61C12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+AD12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+206612.50U+2069","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+202A12.50U+202C","U+200E18","4U+200F"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | ","e":" /  / "}
+["U+A012.50U+FEFF","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["12U+200B.50","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+FF11U+FF12U+FF0EU+FF15U+FF10","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+661U+662U+66BU+665","U+665","U+662"] => {"r":"Bill total: 12.50 | Tip percent: 5 | Number of people: 2 | T","e":" /  / "}
+["U+6F1U+6F2","0","1"] => {"r":"Bill total: 12.00 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+967U+968","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+FF0C50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["1000000.00","100","100"] => {"r":"Bill total: 1000000.00 | Tip percent: 100 | Number of people","e":" /  / "}
+["1000000.01","0","1"] => {"r":"","e":"Type 1000000.00 or less. /  / "}
+["1,000","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["$12","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+12. focused: {"r":"","e":" /  / "}
+12. left: {"r":"","e":"Type the amount in digits only /  / "}
+12. back in field: {"r":"","e":" /  / "}
+100000 spaces ms: 9 maxlength: 64
+globals: [ 'splitBill', 'fields' ] errors: []

@@ -23,14 +23,15 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 ## 3. Naming conventions
 
 - IDs: `E-<n>`, `C<n>`, `G<n>`, `A-<n>`, `D-<n>`, `WU-<n>`, `F-<n>`, `S<n>` (rule 9.5).
-- Report files: `audits/<WU>-<role>-E-<n>.md` and `memos/lens-<name>-E-<n>.md`, where `E-<n>` is the number of the `LAUNCH` entry.
+- Report files: `audits/<WU>-<role>-E-<n>.md` in round 1 and `audits/<WU>-r<round>-<role>-E-<n>.md` from round 2 on, and `memos/lens-<name>-E-<n>.md`, where `E-<n>` is the number of the `LAUNCH` entry.
 
 ## 4. Contracts between parts
 
 - **`window.splitBill(billCents, tipPercent, people)`** — pure; reachable from the browser console. Inputs: `billCents` a whole number from 1 to 100,000,000; `tipPercent` a whole number from 0 to 100; `people` a whole number from 1 to 100. Output: `{ tipCents, totalCents, shares }`; `shares` is a list of 1 or 2 groups `{ count, cents }`, larger payment first. `tipCents = floor((billCents × tipPercent + 50) / 100)`. `totalCents = billCents + tipCents`. Base payment `floor(totalCents / people)`; `totalCents mod people` people pay 1 cent more.
 - **The page's fields call `splitBill` and no other code computes the tip amount, the total with tip or a payment.** `readAmount` turns the bill's text into cents and `money` writes cents as text.
 - **The sentence under 2 payment lines.** When the result holds 2 payment lines, it ends with "Your group decides who pays the higher amount." (C2 of E-175).
-- **Decimal mark.** A dot or a comma (D-9). `plain` turns full-width and Arabic-Indic digits and decimal marks into their plain forms before any check.
+- **Decimal mark.** A dot or a comma (D-9). `plain` maps exactly these characters before any check: U+FF10 to U+FF19, U+0660 to U+0669 and U+06F0 to U+06F9 to the digit of the same value; U+FF0E to a dot; U+FF0C and U+066B to a comma. Every other character stays as typed. At either end `plain` removes white space, Unicode format characters (Cf), default-ignorable code points and U+2800.
+- **Names on `window`.** The script is 1 function; `window.splitBill` is the 1 name it adds. No part of the page and no check of this run calls `window.splitBill`; it exists for a person at the console.
 - **Text to cents.** The page converts the bill's text to cents from its digits, with no decimal arithmetic.
 - **File identity.** Each AUDITOR scope for WU-1 from audit round 2 on states the SHA-256 of the file it names; the 7 scopes of round 1 did not (F-49, F-50). The delivery report states the SHA-256 at the last audit round.
 
@@ -47,9 +48,9 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; the page changed to the CRITERIA of E-175 (E-178); audit round 2 not yet run |
+| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; the page changed to the CRITERIA of E-175 (E-178); audit round 2 reported (E-249); F-81 to F-138 raised; the page changed again (E-250); audit round 3 (correctness and adversarial only) not yet started |
 
-Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
+Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) the fields, the 4 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 
 Estimate of size, by part: function and conversion 40 lines; validation and states 60; markup 40; style 50; total about 190 lines, which is above the 100-line limit of TIER CORE. The TIER was measured again after the build (E-179): `git show --stat 1c8f220` prints 167 insertions, above the 100-line limit, so the TIER stays `FULL`.
 

@@ -22,6 +22,10 @@ graph LR
   N17[scopes in prompts/] -->|start| N9[AUDITOR reports]
   N9[AUDITOR reports] -->|must pass before| N18[published page]
   N8[index.html] -->|is served as| N18[published page]
+  N7[USER approval] -->|permits| N19[CRITERIA-CHANGE entry]
+  N19[CRITERIA-CHANGE entry] -->|replaces the text of| N3[CRITERIA entry]
+  N19[CRITERIA-CHANGE entry] -->|triggers| N20[RED CELL probe report]
+  N20[RED CELL probe report] -->|raises| N10[FINDING entries]
   N9[AUDITOR reports] -->|raise| N10[FINDING entries]
   N10[FINDING entries] -->|require a fix to| N8[index.html]
   N8[index.html] -->|is examined again after each fix by| N11[re-audit reports]
@@ -50,6 +54,10 @@ graph LR
 | scopes in prompts/ | AUDITOR reports | start | a saved scope differs from the scope sent |
 | AUDITOR reports | published page | must pass before | the page is published with an open BLOCKER |
 | index.html | published page | is served as | the served file's SHA-256 differs from the audited one |
+| USER approval | CRITERIA-CHANGE entry | permits | the entry quotes no approval, or the card behind the approval misstates the change |
+| CRITERIA-CHANGE entry | CRITERIA entry | replaces the text of | the CRITERIA entry differs from the new text |
+| CRITERIA-CHANGE entry | RED CELL probe report | triggers | a change has no probe report |
+| RED CELL probe report | FINDING entries | raises | a finding in the report has no entry |
 | AUDITOR reports | FINDING entries | raise | a finding in a report has no entry |
 | FINDING entries | index.html | require a fix to | a FINDING is closed with no change and no report |
 | index.html | re-audit reports | is examined again after each fix by | a fix has no re-audit report |

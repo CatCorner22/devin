@@ -31,7 +31,7 @@
 <text x="260.0" y="334.0" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#424242">6 of 12 stages complete</text>
 <text x="260.0" y="360.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#212121">Now: S7 Build and audit (hinshitsu-audit)</text>
 <rect x="60" y="368.0" width="400" height="30" rx="4" fill="#c62828"/>
-<text x="260.0" y="388.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ffffff">STOPPED - blocker open: F-21, F-22, F-23, F-24, F-26, F-29, F-30, F-34, F-35</text>
+<text x="260.0" y="388.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ffffff">STOPPED - blocker open: F-21, F-22, F-23, F-24, F-26, F-29, F-30, F-34, F-35, F-81, F-82, F-83, F-84, F-85, F-86, F-87, F-88, F-89, F-90, F-91, F-92, F-93, F-94, F-95, F-96, F-97, F-98, F-99, F-100, F-101, F-102, F-103, F-137, F-138</text>
 <rect x="520" y="48" width="14" height="14" fill="#2e7d32" stroke="#757575"/>
 <text x="542" y="60" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S1 Capability and tier</text>
 <text x="542" y="72" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu - done</text>

@@ -30,23 +30,24 @@
   <div id="fields" hidden>
     <div class="field">
       <label for="bill">Bill total, tax included</label>
-      <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
+      <input maxlength="64" id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
       <p class="error" id="bill-error" role="alert"></p>
     </div>
     <div class="field">
       <label for="tip">Tip percent</label>
-      <input id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
+      <input maxlength="64" id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
       <p class="error" id="tip-error" role="alert"></p>
     </div>
     <div class="field">
       <label for="people">Number of people</label>
-      <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
+      <input maxlength="64" id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
       <p class="error" id="people-error" role="alert"></p>
     </div>
   </div>
   <div id="result" role="status" aria-live="polite"></div>
 </main>
 <script>
+(function () {
 "use strict";
 
 var MAX_BILL_CENTS = 100000000;
@@ -64,31 +65,47 @@ function splitBill(billCents, tipPercent, people) {
   shares.push({ count: people - payOneMore, cents: base });
   return { tipCents: tipCents, totalCents: totalCents, shares: shares };
 }
-/* The contract in FRAMEWORK.md, part 4, names window.splitBill; the checks of C3 compare the page with it. */
+/* Reachable from the browser console as window.splitBill (contract: run/FRAMEWORK.md, part 4). */
 window.splitBill = splitBill;
 
-/* Full-width and Arabic-Indic digits and decimal marks become their plain forms. Spaces and invisible characters at the ends go. */
+/* Characters that count as a plain digit, dot or comma: full-width, Arabic-Indic and Extended Arabic-Indic digits;
+   the full-width dot and comma; the Arabic decimal mark. No other character is changed. */
+function plainChar(c) {
+  var code = c.charCodeAt(0);
+  if (code >= 0xFF10 && code <= 0xFF19) { return String(code - 0xFF10); }
+  if (code >= 0x0660 && code <= 0x0669) { return String(code - 0x0660); }
+  if (code >= 0x06F0 && code <= 0x06F9) { return String(code - 0x06F0); }
+  if (code === 0xFF0E) { return "."; }
+  if (code === 0xFF0C || code === 0x066B) { return ","; }
+  return c;
+}
+
+/* White space and characters that show nothing: Unicode format characters, default-ignorable code points, the blank braille pattern. */
+var IGNORED_AT_ENDS = /[\s\p{Cf}\p{Default_Ignorable_Code_Point}\u2800]/u;
+
+/* The text without ignored characters at either end, with each counted character in its plain form. */
 function plain(text) {
-  return text.normalize("NFKC")
-    .replace(/[\u0660-\u0669]/g, function (c) { return String(c.charCodeAt(0) - 0x0660); })
-    .replace(/[\u06F0-\u06F9]/g, function (c) { return String(c.charCodeAt(0) - 0x06F0); })
-    .replace(/\u066B/g, ",")
-    .replace(/^[\s\u200B-\u200D\u2060\uFEFF]+|[\s\u200B-\u200D\u2060\uFEFF]+$/g, "");
+  var chars = Array.from(text);
+  var start = 0;
+  var end = chars.length;
+  while (start < end && IGNORED_AT_ENDS.test(chars[start])) { start += 1; }
+  while (end > start && IGNORED_AT_ENDS.test(chars[end - 1])) { end -= 1; }
+  return chars.slice(start, end).map(plainChar).join("");
 }
 
 /* Text to cents, from the digits. The decimal mark is a dot or a comma. Returns { cents }, { error } or,
-   while the person is still typing an amount that ends in a decimal mark, { waiting }. */
-function readAmount(text, typing) {
+   while the bill field has keyboard focus and the amount ends in a decimal mark, { waiting }. */
+function readAmount(text, hasFocus) {
   var s = plain(text);
-  if (s === "") { return { error: "Enter the bill total." }; }
+  if (s === "") { return { error: "Type the bill total." }; }
   var m = /^(\d+)(?:[.,](\d{1,2}))?$/.exec(s);
-  if (!m && typing && /^\d+[.,]$/.test(s)) { return { waiting: true }; }
-  if (!m) { return { error: "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" }; }
+  if (!m && hasFocus && /^\d+[.,]$/.test(s)) { return { waiting: true }; }
+  if (!m) { return { error: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." }; }
   var whole = m[1].replace(/^0+(?=\d)/, "");
-  var tooMuch = "Enter " + money(MAX_BILL_CENTS) + " or less.";
+  var tooMuch = "Type " + money(MAX_BILL_CENTS) + " or less.";
   if (whole.length > String(MAX_BILL_CENTS / 100).length) { return { error: tooMuch }; }
   var cents = parseInt(whole, 10) * 100 + parseInt(((m[2] || "") + "00").slice(0, 2), 10);
-  if (cents === 0) { return { error: "Enter an amount above 0." }; }
+  if (cents === 0) { return { error: "Type an amount above 0." }; }
   if (cents > MAX_BILL_CENTS) { return { error: tooMuch }; }
   return { cents: cents };
 }
@@ -96,7 +113,7 @@ function readAmount(text, typing) {
 /* Text to a whole number from min to max. Returns { value } or { error }. */
 function readWhole(text, min, max, emptyMessage) {
   var s = plain(text);
-  var message = "Enter a whole number from " + min + " to " + max + ", in digits only.";
+  var message = "Type a whole number from " + min + " to " + max + ", in digits only.";
   if (s === "") { return { error: emptyMessage }; }
   if (!/^\d+$/.test(s)) { return { error: message }; }
   var digits = s.replace(/^0+(?=\d)/, "");
@@ -119,8 +136,8 @@ function payLine(share) {
 
 var fields = {
   bill: { read: function (t) { return readAmount(t, document.activeElement === fields.bill.input); } },
-  tip: { read: function (t) { return readWhole(t, 0, MAX_TIP_PERCENT, "Enter the tip percent. Enter 0 for no tip."); } },
-  people: { read: function (t) { return readWhole(t, 1, MAX_PEOPLE, "Enter the number of people."); } }
+  tip: { read: function (t) { return readWhole(t, 0, MAX_TIP_PERCENT, "Type the tip percent. Type 0 for no tip."); } },
+  people: { read: function (t) { return readWhole(t, 1, MAX_PEOPLE, "Type the number of people."); } }
 };
 var resultBox = document.getElementById("result");
 var shownResult = "";
@@ -176,7 +193,13 @@ Object.keys(fields).forEach(function (name) {
   f.errorBox = document.getElementById(name + "-error");
   f.touched = false;
   f.input.addEventListener("input", function () { f.touched = true; update(); });
-  f.input.addEventListener("blur", function () { f.touched = true; update(); });
+  f.input.addEventListener("focus", update);
+  /* A switch to another window fires blur while the field keeps keyboard focus; that is not leaving the field. */
+  f.input.addEventListener("blur", function () {
+    if (document.activeElement === f.input) { return; }
+    f.touched = true;
+    update();
+  });
 });
 
 /* A reload or a return through the back button starts from 3 empty fields. */
@@ -190,6 +213,7 @@ window.addEventListener("pageshow", function () {
 /* The guidance and the fields show only when this script runs. */
 document.getElementById("guide").hidden = false;
 document.getElementById("fields").hidden = false;
+}());
 </script>
 </body>
 </html>
