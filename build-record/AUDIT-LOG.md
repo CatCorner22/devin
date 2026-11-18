@@ -376,3 +376,7 @@ Answer: version 2.2.0, listed in `CHANGELOG.md`. 37 of the 41 bugs are answered 
 - The USER, 2026-11-18, chose "Build version 3 first, then the app-specific versions (recommended)" from the 3 choices this session offered after round 3.
 - Version 3.0.0 is listed in `CHANGELOG.md`: the script `scripts/hinshitsu_log.py` writes the log and rebuilds the tested parts of the state files; rules 9.4, 14.6, 17.4 and 0.5 are amended. Each change to a script was written test first. `python3 -m unittest discover -s tests` prints "Ran 156 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
 - ASSERTED: no independent session has reviewed version 3.0.0, and no run has been made under it. 17 of the 29 friction items of the first real run are open.
+
+### E-029 · 2026-11-18T21:21Z · LAUNCH · orchestrator
+
+Proof run under version 3.0.0, announced to the USER before its start. 1 fresh session, mode "Ultra", on a real fault in `gauge.py`. Scope: `prompts/round4-proof-run.txt`. Devin session (platform identifier): https://app.devin.ai/sessions/c52d7b821c8a4a36a781ef3045b0a952 . Report: `audits/round4-proof-run.md`. The USER of that run is this session, acting for the owner.
