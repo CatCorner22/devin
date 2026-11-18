@@ -217,3 +217,119 @@ Sent to: each LENS and the RED CELL, in the scopes of S5; the USER, on the card 
 - SUB-AGENT identifier: devin-61ad9169d7cd40468ef767e26c19e8e1 (https://app.devin.ai/sessions/61ad9169d7cd40468ef767e26c19e8e1)
 - Report: `audits/redcell-plan-E-23.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then; the scope was committed before the call (commit cad8eb5).
+
+### E-24 · 2026-11-18T15:34:08Z · CORRECTION · orchestrator
+
+- Corrects: E-8, `SESSION-STATE.md` field 1, and the absence of a `LAUNCH` entry for the capability probe.
+- Raised by: `memos/lens-trust-controls-E-22.md` points 1 and 8; `audits/redcell-plan-E-23.md` P4.
+- 1. The sentence "Make me a page where friends can split a restaurant bill, tip included." is not the USER's. The ORCHESTRATOR wrote it as the small task for the worked example that the USER's brief asks for (`build-record/BRIEF.md`, the self-test requirement). E-8 said so in V1; `SESSION-STATE.md` wrongly called it "the USER's words".
+- 2. O1 in E-8 quotes "3 checks you can do in 5 minutes with no terminal" as if `build-record/BRIEF.md` held it. It does not. The words are the ORCHESTRATOR's, from a message to the USER on 2026-11-18; the USER did not reply to them. O1 is withdrawn; the replacement is in the `VOC` entry that follows.
+- 3. The capability probe (devin-10c769b84b394fe18fe2afd005703ebd) was started with no `LAUNCH` entry, against rule 1.5. Its scope is `prompts/capability-probe.md` and its reply is `evidence/capability-probe.md`; E-1 records both.
+- 4. E-12 to E-17 were written by 1 script run after the planning was done, which is why they share 1 second. Each time is the time the entry was written.
+
+### E-25 · 2026-11-18T15:34:09Z · VOC · orchestrator
+
+Replaces the RECIPIENT, need and translation parts of E-8 (see the `CORRECTION` entry before this one).
+
+**RECIPIENTS**
+1. The USER (blakereaganlaw), as the reader of the worked example. The USER judges from it whether the skill set runs or only claims to.
+2. A group of friends splitting a bill. VOC-ASSUMED (VA1): nobody of this kind exists in the run. They are a stand-in so that the page has a use.
+
+**Verbatim needs**
+- V1. "EXAMPLE.md must show a real small deliverable (e.g., a single-page frontend) run through the full pipeline: VoC statement, frozen criteria, lens memos, red-cell attack, coverage ledger, findings with resolutions, delivery report. This is how the user verifies the skill executes rather than performs." (USER, 2026-11-18 09:47 EST, `build-record/BRIEF.md`)
+- V2. "I don't know what gaps I left in a plan. Nor do I understand all technical aspects of my requests or directions." (USER, 2026-11-18 09:51 EST, `build-record/BRIEF.md`)
+
+**The task the ORCHESTRATOR chose to meet V1**
+- T1. A page that splits a restaurant bill among friends, with a tip added. Chosen by the ORCHESTRATOR; put to the USER for approval on the card at S6.
+
+**Observed-workflow needs**
+- O1. none found. Looked in: `build-record/BRIEF.md`; `git log` of this repository. The USER has given no earlier task of this kind.
+
+**Translation**
+
+| Customer language | Technical requirement | CRITERION |
+|---|---|---|
+| V1 "a real small deliverable (e.g., a single-page frontend)" | 1 HTML file that works with no install, server or network | C1 |
+| V1 "how the user verifies the skill executes rather than performs" | 3 checks the USER can do in a browser with no terminal, each naming what to open and what to see | C8 |
+| V2 "I don't … understand all technical aspects" | messages and labels on the page in plain words; the card at S6 explains each choice | C4, C5 |
+| T1 "splits a restaurant bill … with a tip added" | bill, tip percent and people in; tip, total and what each person pays out; payments sum to the total | C2, C3 |
+
+**VOC-ASSUMED**
+- VA1. The friends: 1 person holds 1 phone or laptop and reads the result to the table; they split evenly; their currency has 2 decimal places; they type amounts with a dot.
+
+### E-26 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-1
+- Class: BLOCKER
+- Where: `SESSION-STATE.md` line 3; `AUDIT-LOG.md` E-8, V1
+- Trigger: read E-8 ("set by the orchestrator"), then run `grep -rn "restaurant" build-record/`; it prints nothing
+- Violates: rule 2.3 and BLOCKER (d): "Objective (the USER's words)" is a false statement in an artifact
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC1
+- Lens: trust and controls
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-27 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-2
+- Class: BLOCKER
+- Where: E-15 (D-3), E-9 (G11), E-8 (RECIPIENT 2)
+- Trigger: read the 3 entries; run the 2 `curl` commands in P1 of the report: GitHub serves a raw `.html` file as plain text, and `https://catcorner22.github.io/devin/` returns 404
+- Violates: rule 4.4 (D-3 rests on a PREMISE no `ASSUMPTION` entry lists); rule 2.2; rule 23.1 subject 11
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC2
+- Lens: recipient experience
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-28 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-3
+- Class: BLOCKER
+- Where: E-14 (D-2), E-12 (A-4), E-16 (C2, C3)
+- Trigger: bill 10.10, tip 15, people 1: a page that shows 11.61 and a page that shows 11.62 both pass C2's test and C3's test
+- Violates: rule 3.1 (the test does not prove the CRITERION); rule 4.4
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC3
+- Lens: structural integrity
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-29 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-4
+- Class: BLOCKER
+- Where: E-16 (C4), E-9 (G13), E-14 (D-2)
+- Trigger: type `12,50` as the bill: C4 does not say what the page does; `parseFloat` gives 12 and `Number` gives no number
+- Violates: rule 3.1; rule 4.4; rule 23.1 subject 2
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC4
+- Lens: recipient experience
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-30 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-5
+- Class: BLOCKER
+- Where: E-16 (C3)
+- Trigger: build a page whose button truncates `parseFloat(text) * 100` and whose `split` function takes cents; run C3's test; it passes; then enter 0.29 for 1 person and read 0.28
+- Violates: rule 3.1 and rule 22.2 (the test runs on a function, not on what the RECIPIENT uses)
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC5
+- Lens: trust and controls
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-31 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-6
+- Class: BLOCKER
+- Where: E-12 (A-3, A-4)
+- Trigger: run the Chrome command in P7 of the report and its Node script: 1 command settles each PREMISE, and A-4 is false as worded
+- Violates: rule 4.2
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC6
+- Lens: minimal viable sequence
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-32 · 2026-11-18T15:34:09Z · FINDING · orchestrator
+
+- ID: F-7
+- Class: BLOCKER
+- Where: `SESSION-STATE.md` lines 4, 6 and 10; `FRAMEWORK.md` lines 7 and 11; `MINDMAP.md`
+- Trigger: at commit a275dcf read "CRITERIA: none written yet", "Current STAGE … S2", while E-16 holds C1 to C7 and E-17 ends S4; D-1 to D-3 are absent from `FRAMEWORK.md`; `MINDMAP.md` holds no CRITERION
+- Violates: BLOCKER (d); rule 9.2
+- Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC7
+- Lens: structural integrity
+- Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
