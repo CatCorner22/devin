@@ -127,6 +127,17 @@ class Check(unittest.TestCase):
         (d / "audits/WU-1-correctness-E-19.md").write_text("report with no id", encoding="utf-8")
         self.assertFails(d, "rule 1.6", "plan")
 
+    def test_class_word_with_punctuation_passes(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Class: DEFECT\n", "- Class: DEFECT. A note by the AUDITOR.\n")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_devin_identifier_without_prefix_passes(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "identifier: run-abc", "identifier: devin-0abc")
+        edit(d, "audits/WU-1-correctness-E-19.md", "run-abc", "Devin session ID: 0abc")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
     def test_report_with_no_launch_fails(self):
         d = good_run()
         (d / "audits/extra.md").write_text("x", encoding="utf-8")

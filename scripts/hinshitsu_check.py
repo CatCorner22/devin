@@ -173,7 +173,9 @@ def check(folder, stage):
         cited_reports.add(report.group(1))
         lines = (folder / report.group(1)).read_text(encoding="utf-8").splitlines()
         first = lines[0] if lines else ""
-        if ident and ident not in first and not first.startswith("DEGRADED — single-agent audit"):
+        # Devin prints a session identifier with or without its "devin-" prefix.
+        bare = ident[len("devin-"):] if ident and ident.startswith("devin-") else ident
+        if ident and bare not in first and not first.startswith("DEGRADED — single-agent audit"):
             err("%s: first line does not hold the identifier of E-%d (rule 1.6)" % (report.group(1), e["n"]))
     for sub in ("audits", "memos"):
         d = folder / sub
@@ -192,7 +194,8 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d FINDING has no ID (rule 15.1)" % e["n"])
             continue
         fid = fid.split()[0]
-        cls = (field(b, "Class") or "").split()[0:1]
+        # An AUDITOR's words are copied whole, so the class word may carry a full stop or a comma.
+        cls = [w.strip(".,;:") for w in (field(b, "Class") or "").split()[0:1]]
         if not cls or cls[0] not in CLASSES:
             err("AUDIT-LOG.md: %s has no class (rule 15.1)" % fid)
         for name in ("Where", "Trigger", "Violates", "Raised by", "Lens"):
