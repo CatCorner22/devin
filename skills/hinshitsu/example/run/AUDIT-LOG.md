@@ -980,3 +980,50 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Class: STYLE
 - By: the ORCHESTRATOR
 - Reason: the card in E-79 was sent and answered; its words cannot change. The card in E-88 also runs over 120 words (`wc -w` printed 133) because it carried 4 choices. Later cards hold 1 question of at most 120 words, counted with `wc -w` before sending.
+
+### E-96 · 2026-11-18T16:24:03Z · STAGE · orchestrator
+
+- Stage: S5
+- Event: end
+- Artifacts: `memos/` (4 LENS memos, E-19 to E-22); `audits/redcell-plan-E-23.md`, verdict "PLAN SURVIVES WITH CHANGES"; `audits/plan-reaudit-E-40.md`, `audits/plan-reaudit-E-56.md`, `audits/plan-reaudit-E-65.md`, `audits/plan-reaudit-E-71.md`, `audits/plan-reaudit-E-81.md`; `evidence/record-check-E-92.txt`
+- FINDINGS: 20 raised (F-1 to F-20); 19 closed FIXED; 1 STYLE overruled; 0 open
+
+### E-97 · 2026-11-18T16:24:03Z · STAGE · orchestrator
+
+- Stage: S6
+- Event: start
+- Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10655 bytes, SHA-256 0017aa800bb70df079ca9f0271d3a1bcbef3b2a15d86de5cdd49dfba5e2f0a65
+
+### E-98 · 2026-11-18T16:24:03Z · CRITERIA · orchestrator
+
+- Status: FROZEN
+- Text: C1 to C8 and the line "Not covered" below are the text of E-55, word for word. E-55 was `PROPOSED`; this entry freezes it.
+- C1. `skills/hinshitsu/example/index.html` is 1 file that loads no other file, and its calculator works when the file is opened from disk in desktop Chrome. Test: open the file by its `file://` path; the browser's request log shows 1 request; C2's first test passes. Covers G8, G11.
+- C2. Given a bill from 0.01 to 1,000,000.00, a whole-number tip from 0 to 100 percent and 1 to 100 people, the page shows: the bill, tip percent and people as read; the tip amount; the total; and what each person pays, as 1 line ("4 people pay 29.50 each") or 2 lines ("1 person pays 3.34" and "2 people pay 3.33 each"). Half a cent of tip rounds up. Tests, typed into the page: 100.00, 18, 4 gives tip 18.00, total 118.00, "4 people pay 29.50 each"; 0.30, 15, 1 gives tip 0.05; 10.10, 15, 1 gives tip 1.52 and total 11.62; 12.25, 18, 1 gives tip 2.21. Covers T1, G12.
+- C3. The payments sum to the total, to the cent, and no 2 payments differ by more than 0.01. Test: an AUDITOR types values into the page's own fields in a browser driven by a script, reads the page's own output, and compares it with a tip, total and payments computed by the AUDITOR's own code: every bill from 0.01 to 50.00 with tips 0, 15, 18 and 20 for 1 person; every bill from 0.01 to 5.00 with 1 to 12 people at tip 18; and the spot cases, as typed, `10.00`, `0`, `3` (3.34 and 3.33); `1000000.00`, `100`, `100`; and `0.01`, `0`, `100`. Covers G3.
+- C4. The page has 3 states. First open: 3 empty fields, 1 line of guidance, no error text, no result. Error: after a person types in a field or leaves it, a value that fails the rules below shows a message in plain words beside that field, and no result shows. Result: when all 3 fields are valid, the result shows and is recomputed on every change. An amount is digits, with an optional dot followed by 1 or 2 digits. A whole number is digits only. Spaces at either end are ignored. Each of these gets a message and no result: an empty field once left; letters; a comma (`12,50`, `1,000.00`); `1e3`; `10.`; `.5`; a currency sign; a negative or 0 bill; a bill above 1,000,000; 3 or more decimal places; a tip that is not a whole number from 0 to 100; people not a whole number from 1 to 100; `18.0`, `1e1`, `+4` or `4.` as tip or people. The message for a comma says to use a dot. Test: each input, in the browser. Covers G1, G2, G13.
+- C5. At widths of 360, 768 and 1280 pixels nothing is cut off and nothing scrolls sideways. Every field has a visible label; the bill's label reads "Bill total, tax included". Error text and the result sit in regions that screen readers announce. The bill field carries `inputmode="decimal"` and the other 2 fields `inputmode="numeric"`. Test: screenshots at the 3 widths; reading of the markup. A real phone is not tested and is reported UNVERIFIED. Covers G4, G5.
+- C6. With JavaScript off, the page shows a sentence saying that the calculator needs JavaScript. Test: load with JavaScript disabled. Covers G9.
+- C7. The page stores nothing and sends nothing. The file carries the tag `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">`, and each field carries `autocomplete="off"`. Test: with the page open, `fetch('https://example.com')` run in the browser is blocked; the source holds no storage call; a reload in Chrome clears every field. Firefox is not tested and is reported UNVERIFIED. Covers G6, G7.
+- C8. The delivery report opens with 3 checks that a reader can do in 5 minutes in a browser, with no terminal: each names what to open, what to do, and what to see. The report states the SHA-256 of `index.html` as audited. Test: an AUDITOR who did not build the page follows the 3 checks as written. Covers V1, V2.
+- Not covered by a CRITERION: G10 (license), which is the USER's open decision for the whole repository and changes no line of the page.
+- Approval: USER — "1. A.  2. A.  3.  A.  4. A" (2026-11-18 10:52 EST; E-64, answering the card in E-63, whose question 2 asked for approval of these 8 rules)
+- Hosting (D-8) is not a CRITERION. The published link is exercised in the recipient-side checks of S8.
+
+### E-99 · 2026-11-18T16:24:21Z · STAGE · orchestrator
+
+- Stage: S6
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (the `CARD` E-63, the `ANSWER` E-64 and the `CRITERIA` entry E-98, `Status: FROZEN`)
+
+### E-100 · 2026-11-18T16:24:30Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: start
+- Skill read: `skills/hinshitsu-audit/SKILL.md`, 13216 bytes, SHA-256 e7253273f24f0ffde3a034f39884df833ad89389a08d312f4a2644cf76a58f1c
+
+### E-101 · 2026-11-18T16:24:31Z · TIER · orchestrator
+
+- WORK UNIT: WU-1
+- TIER: FULL
+- Reason: 1 file, about 190 lines; more than the 100 changed lines that `CORE` allows (rule 0.5).

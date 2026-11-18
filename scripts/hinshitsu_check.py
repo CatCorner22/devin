@@ -147,7 +147,7 @@ def check(folder, stage):
     if crit:
         last = crit[-1]["body"]
         frozen = re.search(r"^- (?:State|Status):\s*FROZEN", last, re.M)
-        quoted = re.search(r'^- Approval:\s*["“].+["”]', last, re.M)
+        quoted = re.search(r'^- Approval:\s*(?:USER\s*—\s*)?["“].+["”]', last, re.M)
         if frozen and not quoted:
             err("AUDIT-LOG.md: E-%d is FROZEN with no quoted approval (rule 3.3)" % crit[-1]["n"])
         if stage in ("unit", "delivery") and not frozen:

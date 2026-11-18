@@ -4,7 +4,7 @@ Form: section 7. Superseded lines stay, marked.
 
 ## 1. CRITERIA
 
-By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`; approved by the USER in E-64; not yet frozen. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
+By reference: `AUDIT-LOG.md` E-98 (C1 to C8), `Status: FROZEN`, approved by the USER in E-64. ~~E-55~~ is the same text as proposed. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
 
 ## 2. Architecture decisions
 
@@ -43,7 +43,7 @@ By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`; approved by th
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | not started; the USER approved the CRITERIA in E-64; waits until no BLOCKER is open and the CRITERIA are frozen |
+| WU-1 | `index.html`, the whole page | not started; the CRITERIA are frozen (E-98) |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 
