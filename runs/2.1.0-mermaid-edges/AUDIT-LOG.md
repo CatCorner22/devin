@@ -141,3 +141,18 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-13 · 2026-11-18T19:36:36Z · ASSUMPTION · orchestrator
+
+| ID | PREMISE | Decision that rests on it | EVIDENCE | If false |
+|---|---|---|---|---|
+| A-1 | Mermaid writes an arrow link as `-->`, a thick link as `==>` and a dotted link as `-.->`; a label is written either as `|text|` after the link or between the 2 halves of the link (`-- text -->`, `== text ==>`, `-. text .->`); extra `-`, `=` or `.` make a link longer | D-1 | `evidence/mermaid-flowchart-links.txt` | the pattern gives a wrong verdict on a form Mermaid accepts |
+| A-2 | 1 place in the repository tests edge labels: `scripts/hinshitsu_check.py:287-288` | D-1 | `evidence/existing-implementations.txt` | a second test keeps the old fault |
+| A-3 | The fault reproduces at commit 93311ab as the USER states it: `A ==> B` and `C -.-> D` give no failure; `A -- reads --> B` gives `has no label` | D-1 | `evidence/baseline-93311ab.txt` | there is nothing to fix, or the fault is elsewhere |
+| A-4 | Every link in the 3 `CONNECTIONS.md` files in the repository is written `-->|label|`, so the change leaves their verdict as it is | D-1 | `evidence/existing-connections-forms.txt` (the 4 lines printed are table rules, not links) | an existing record starts to fail or to pass |
+| A-5 | The existing test of the failure message asserts only the words `no label` (`tests/test_check.py:211`), so the message may name the arrow as written | D-2 | `evidence/existing-implementations.txt`; `tests/test_check.py:208-211` | an existing test fails |
+| A-6 | A later run writes at most 1 link on a line (VA2) | D-1 | not verified | the second link on a line stays untested, as today |
+| A-7 | A later run writes a labelled thick or dotted link in 1 of the 4 forms of A-1 (VA1) | D-1 | not verified | a labelled link in another form fails as unlabeled |
+| A-8 | The finished change is at most 3 files and 100 lines outside the RUN FOLDER | the TIER of E-4 | not verified — measured before the audit of WU-1 | the run becomes `FULL` |
+
+Sent to: the USER, on the card that follows the `CRITERIA` entry (A-6 and A-7, which concern RECIPIENTS). This is a `CORE` run: no LENS and no RED CELL saw the list (rule 4.3).
