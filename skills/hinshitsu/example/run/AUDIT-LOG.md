@@ -3321,3 +3321,16 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Class: STYLE
 - By: the ORCHESTRATOR
 - Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-346 · 2026-11-18T18:22:25Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: end
+- Artifacts: `audits/WU-1-r3-correctness-E-253.md`, `audits/WU-1-r3-adversarial-E-254.md`, `COVERAGE-LEDGER.md`, `MINDMAP.md`
+- 3 audit rounds ran; each seeded defect was found by both required roles (E-267). Open FINDINGS stay open and go to the delivery report; no further round runs (the USER, 2026-11-18: "We've spent a lot of time on this one issue.").
+
+### E-347 · 2026-11-18T18:22:29Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: start
+- Skill read: `skills/hinshitsu-audit/SKILL.md`, 13216 bytes, SHA-256 e7253273f24f0ffde3a034f39884df833ad89389a08d312f4a2644cf76a58f1c

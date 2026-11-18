@@ -48,7 +48,7 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; the page changed to the CRITERIA of E-175 (E-178); audit round 2 reported (E-249); F-81 to F-138 raised; the page changed again (E-250); audit round 3 (correctness and adversarial only) not yet started |
+| WU-1 | `index.html`, the whole page | 3 audit rounds reported (E-171, E-249, E-267); `maxlength` removed after round 3 with no re-audit (E-268); S7 ended (E-346); open FINDINGS are listed in `SESSION-STATE.md` field 5 |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) the fields, the 4 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 
