@@ -1,6 +1,6 @@
 # CONNECTIONS — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` rules 7.2 and 9.3. Copy this file into the RUN FOLDER at the start of the run.
+Form required by rules 7.2 and 9.3 (`skills/hinshitsu-record/SKILL.md`). Copy this file into the RUN FOLDER at the start of the run.
 
 An edge `A -->|label| B` means B depends on A: a change to A can break B. The label states what B takes from A. An edge with no label is a FINDING. Before changing a node, write a `TRACE` entry (rule 7.6): forward (each node the changed node points to), backward (each assumption and decision it rests on), lateral (each WORK UNIT that shares a provider with it).
 

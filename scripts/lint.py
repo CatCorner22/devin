@@ -161,7 +161,8 @@ def lint(root):
                 for m in CAP_RE.finditer(line):
                     words = m.group(1)
                     if singulars(words) & known or all(
-                            singulars(w) & known for w in re.split(r"[ -]", words)):
+                            singulars(w) & known or all(singulars(x) & known for x in w.split("-"))
+                            for w in words.split(" ")):
                         continue
                     err("%s:%d" % (rel, i), "capitalized term %r is not in the glossary (C3)" % words)
 

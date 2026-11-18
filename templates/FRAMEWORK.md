@@ -1,6 +1,6 @@
 # FRAMEWORK — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` section 7. Create it before the first WORK UNIT. Read it before each WORK UNIT and update it after each one. Mark a superseded line `(superseded <date> → <ID>)`; never delete it. IDs are assigned once and never reused.
+Form required by section 7 (`skills/hinshitsu-record/SKILL.md`). Create it before the first WORK UNIT. Read it before each WORK UNIT and update it after each one. Mark a superseded line `(superseded <date> → <ID>)`; never delete it. IDs are assigned once and never reused.
 
 ## 1. CRITERIA
 

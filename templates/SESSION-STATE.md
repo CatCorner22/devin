@@ -1,6 +1,6 @@
 # SESSION-STATE — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` section 8. This file holds only the current state. Rewrite it after each WORK UNIT, before any compaction, handoff or pause, and when 25 tool calls have passed since the last rewrite. Log each rewrite as a `COMPACTION` entry. On resuming, read this file and `AUDIT-LOG.md` first and confirm that each artifact listed below exists.
+Form required by section 8 (`skills/hinshitsu-record/SKILL.md`). This file holds only the current state. Rewrite it after each WORK UNIT, before any compaction, handoff or pause, and when 25 tool calls have passed since the last rewrite. Log each rewrite as a `COMPACTION` entry. On resuming, read this file and `AUDIT-LOG.md` first and confirm that each artifact listed below exists.
 
 Last rewritten: <UTC time> — log entry E-<n>
 

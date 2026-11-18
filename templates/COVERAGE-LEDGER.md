@@ -1,6 +1,6 @@
 # COVERAGE-LEDGER — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` section 10. Copy this file into the RUN FOLDER. Add the rows for a WORK UNIT before its swarm starts.
+Form required by section 10 (`skills/hinshitsu-record/SKILL.md`). Copy this file into the RUN FOLDER. Add the rows for a WORK UNIT before its swarm starts.
 
 Each cell holds exactly 1 of:
 
@@ -9,7 +9,7 @@ Each cell holds exactly 1 of:
 - `N/A` + the reason that audit cannot apply to that row;
 - `UNVERIFIED` + the reason.
 
-No cell is empty at delivery. A cell that rests on a report older than the last change to its row is `UNVERIFIED` (rule 16.5).
+No cell is empty at delivery. In function rows and branch rows, only COR and ADV are audited; write `N/A — covered at file row` in the other 8 (rule 10.4). A cell that rests on a report older than the last change to its row is `UNVERIFIED` (rule 10.5).
 
 Column key: **COR** correctness · **FOR** forensic (5S) · **BP** best practices · **ADV** adversarial · **RX** recipient experience · **DRIFT** framework drift · **LANG** language · **RED** red cell · **RSV** recipient-side verification (section 11) · **STAB** stability (section 12).
 
@@ -45,4 +45,4 @@ For a document, replace **Functions** and **Branches** with **Sections** and **F
 |---|---|---|---|---|
 | <n> | <n> | <n> | <n> | 0 |
 
-Every `UNVERIFIED` row is listed in the delivery report (rule 19.9).
+Every `UNVERIFIED` row is listed in the delivery report (rule 19.10).

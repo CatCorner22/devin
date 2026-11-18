@@ -1,10 +1,20 @@
 # DELIVERY REPORT — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` section 19. Every claim ends with a citation in square brackets to a file path, a command-output file, a screenshot or an `AUDIT-LOG.md` entry ID. A claim with no citation is ASSERTED and fails the gate (rule 17.2).
+Form required by section 19 (`skills/hinshitsu-delivery/SKILL.md`). Every claim ends with a citation in square brackets to a file path, a command-output file, a screenshot or an `AUDIT-LOG.md` entry ID. A claim with no citation is ASSERTED and fails the gate (rule 17.2).
+
+## Check it yourself in 5 minutes
+
+3 checks, no terminal needed (rule 19.2).
+
+1. Open <the DELIVERABLE, as a RECIPIENT opens it> and <perform the first task of the `VOC` entry>. You see: <what appears>.
+2. Open <the SUB-AGENT run that raised the highest-class FINDING, by its identifier or link> and compare it with `audits/<file>`. You see: the same text.
+3. Open <the final AUDITOR's run, by its identifier or link> and compare it with `audits/final-audit-<LAUNCH ID>.md`. You see: the same text, and the word `passed` or `not passed`.
+
+The checker script tests the shape of the record; it does not prove that any check ran.
 
 ## Summary
 
-At most 250 words, for a reader with no technical background.
+At most 200 words, for a reader with no technical background.
 
 **What you got.** <text> [<citation>]
 
@@ -14,10 +24,12 @@ At most 250 words, for a reader with no technical background.
 
 **What you need to decide next.** <each open decision that belongs to the USER, the recommendation, and what happens if the USER does nothing; or `Nothing`>
 
+You may stop reading here.
+
 ## Status
 
 <DONE | DELIVERED — NOT DONE: <each of the 8 parts of DONE that is not met>>
-Mode: <SWARM | DEGRADED — single-agent audit: <roles that ran DEGRADED>>
+TIER: <CORE | FULL>. Mode: <SWARM | DEGRADED — single-agent audit: <roles that ran DEGRADED>>. SUB-AGENT runs: <count of `LAUNCH` entries>.
 
 ## Voice of the Customer
 
@@ -42,9 +54,11 @@ Mode: <SWARM | DEGRADED — single-agent audit: <roles that ran DEGRADED>>
 
 ## Swarm verdict
 
-| WORK UNIT | Role | BLOCKER | DEFECT | FRAGILITY | STYLE | How each ended | Report |
-|---|---|---|---|---|---|---|---|
-| WU-1 | <role> | <n> | <n> | <n> | <n> | <FIXED n, NOT REPRODUCED n, OVERRULED n, open n> | `audits/<file>` |
+| WORK UNIT | Role | LAUNCH | BLOCKER | DEFECT | FRAGILITY | STYLE | How each ended | Report |
+|---|---|---|---|---|---|---|---|---|
+| WU-1 | <role> | E-<n> | <n> | <n> | <n> | <n> | <FIXED n, WITHDRAWN n, OVERRULED n, open n> | `audits/<file>` |
+
+Planted defect (rule 16.7): <per WORK UNIT: the seed report, the roles named, which found it>
 
 ## Coverage ledger
 
@@ -54,7 +68,7 @@ UNVERIFIED rows: <each row and reason, or `none`>
 
 ## Maps
 
-`MINDMAP.md` · `CONNECTIONS.md`
+`GAUGE.svg` · `MINDMAP.md` · `CONNECTIONS.md`
 
 ## Audit log
 

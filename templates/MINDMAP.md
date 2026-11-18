@@ -1,6 +1,6 @@
 # MINDMAP — <task name>
 
-Form required by `skills/hinshitsu/SKILL.md` rule 9.2. Copy this file into the RUN FOLDER, replace every `<…>`, and update it within the WORK UNIT in which a node appears. Every CRITERION, WORK UNIT, decision and FINDING appears once, in both the list and the diagram. A node with no parent is a FINDING.
+Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`). Copy this file into the RUN FOLDER, replace every `<…>`, and update it within the WORK UNIT in which a node appears. Every CRITERION, WORK UNIT, decision and FINDING appears once, in both the list and the diagram. A node with no parent is a FINDING.
 
 ## Hierarchy
 
@@ -8,7 +8,7 @@ Form required by `skills/hinshitsu/SKILL.md` rule 9.2. Copy this file into the R
   - **C1** <criterion text>
     - **WU-1** <component>
       - **D-001** <decision>
-        - **F-001** <class> — <finding, 1 line> — <FIXED | NOT REPRODUCED | OVERRULED | open>
+        - **F-001** <class> — <finding, 1 line> — <FIXED | WITHDRAWN | OVERRULED | open>
   - **C2** <criterion text>
     - **WU-2** <component>
 
