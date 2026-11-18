@@ -350,3 +350,47 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Commit under review: fe82be2
 - SUB-AGENT identifier: 6b750018b2914b0a9b8d30fafc55d59d https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d
 - Report: `audits/WU-1-correctness-E-31.md`
+
+### E-32 · 2026-11-18T19:54:46Z · FINDING · auditor: correctness
+
+- ID: F-1
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` lines 34-36 (`LABEL_OPEN_RE`) and line 300.
+- Trigger: fixture lines `A --x B --> C`, `A --o B --> C` and `A -- reads --- B --> C`. In each, the edge into `C` has no label. The script of 93311ab returns `CONNECTIONS.md: edge A --> C has no label (rule 9.3)` and `main()` returns 1. The script of fe82be2 returns no failure and `main()` returns 0. Cause: line 300 searches all text before the arrow for `--` followed by a character, so `--x`, `--o` and the label of an earlier link each count as the label of this arrow.
+- Violates: rule 9.3 as the script enforces it (an edge with no label must fail). C4 names 2 verdicts only, so C4 holds; this is a verdict of 93311ab that the change reverses.
+- Raised by: correctness auditor, LAUNCH E-31, `audits/WU-1-correctness-E-31.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: no
+
+### E-33 · 2026-11-18T19:54:46Z · FINDING · auditor: correctness
+
+- ID: F-2
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` line 31 (`NODE_TEXT_RE`) and line 300.
+- Trigger: fixture lines `A == "reads" ==> B` and `C -. "reads" .-> D`. Each edge has a label in quotation marks. The script of fe82be2 returns `CONNECTIONS.md: edge A ==> B has no label (rule 9.3)` and `CONNECTIONS.md: edge C .-> D has no label (rule 9.3)`, and `main()` returns 1; the script of 93311ab returns no failure. The second message also names an arrow, `.->`, that is not the link in the file. Cause: line 300 deletes every quoted, bracketed, parenthesized and braced span before it looks for label text, so it deletes the label. `A -- "reads" --> B`, `A -- (reads) --> B` and `A -- [1] --> B` fail the same way; those 3 also fail under 93311ab.
+- Violates: rule 9.3 as the script enforces it (a labeled edge must not be reported as having no label). No CRITERION names a quoted label. Whether a quoted label lies inside "3 forms only" (E-22) is the USER's call; I report the result and do not class it a BLOCKER. I did not run Mermaid to confirm that it accepts a quoted label between the dashes; that part is UNVERIFIED.
+- Raised by: correctness auditor, LAUNCH E-31, `audits/WU-1-correctness-E-31.md`, finding 2
+- Lens: recipient experience
+- Forward work stopped: no
+
+### E-34 · 2026-11-18T19:54:46Z · FINDING · auditor: correctness
+
+- ID: F-3
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` line 30 (`EDGE_RE`) and lines 28-29 (the comment "The first arrow link on a line").
+- Trigger: fixture line `A -- reads --> B --> C`. The edge from `B` to `C` has no label. The script of 93311ab returns a failure and `main()` returns 1 (for the wrong edge, `A --> B`); the script of fe82be2 returns no failure and `main()` returns 0. The script tests the first link of a line only. 93311ab has the same limit (`A -->|reads| B --> C` passes under both), so the change did not create it, but the change makes 1 more unlabeled edge pass.
+- Violates: rule 9.3 as the script enforces it.
+- Raised by: correctness auditor, LAUNCH E-31, `audits/WU-1-correctness-E-31.md`, finding 3
+- Lens: structural integrity
+- Forward work stopped: no
+
+### E-35 · 2026-11-18T19:54:46Z · FINDING · auditor: correctness
+
+- ID: F-4
+- Class: FRAGILITY
+- Where: `scripts/hinshitsu_check.py` line 30, the alternatives `==+>` and `-?\.+->`.
+- Trigger: the script works on `skills/hinshitsu/example/run` and `build-record` today (C4, `same` 2 times). It fails on a `CONNECTIONS.md` that gains a prose line starting with a word and holding `==>`, or holding dots before `->`: fixture line `note: see A ==> B for detail` returns `CONNECTIONS.md: edge note ==> B has no label (rule 9.3)`; `Text with a.b...-> c` returns `edge Text ...-> c`; `A .-> B` and `A ..-> B`, which are not Mermaid links, are reported as edges. 93311ab returns no failure on each. 93311ab already reported prose that holds `-->`; the change adds 2 more arrow shapes to that behavior, and the optional dash in `-?\.+->` matches more than the dotted arrow needs.
+- Violates: no CRITERION. Behavior nobody asked for: C2 and C5 name `-.->` and `-. reads .->` only.
+- Raised by: correctness auditor, LAUNCH E-31, `audits/WU-1-correctness-E-31.md`, finding 4
+- Lens: recipient experience
+- Forward work stopped: no

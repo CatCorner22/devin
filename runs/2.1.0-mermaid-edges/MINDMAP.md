@@ -8,6 +8,10 @@ Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`).
   - **C1** `A ==> B` fails with `no label`
     - **WU-1** the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py`
       - **D-1** test the first arrow link on each line; 3 link kinds; 2 label forms
+        - **F-1** DEFECT — a second link on a line, or `--x`, `--o`, counts as the label of a later arrow — open
+        - **F-2** DEFECT — a label in quotation marks or brackets between the halves of a link fails as no label — open
+        - **F-3** DEFECT — the second link on a line is not tested, and 1 more unlabeled edge passes — open
+        - **F-4** FRAGILITY — prose lines and `.->` are read as edges — open
       - **D-2** the failure message names the arrow as written
   - **C2** `C -.-> D` fails with `no label`
   - **C3** `A -- reads --> B` passes
@@ -31,6 +35,10 @@ graph TD
   C1 --> WU1["WU-1 edge test and its tests"]
   WU1 --> D1["D-1 first arrow link on each line"]
   WU1 --> D2["D-2 message names the arrow"]
+  D1 --> F1["F-1 DEFECT: earlier link counts as a label (open)"]
+  D1 --> F2["F-2 DEFECT: quoted label fails (open)"]
+  D1 --> F3["F-3 DEFECT: second link on a line not tested (open)"]
+  D1 --> F4["F-4 FRAGILITY: prose lines read as edges (open)"]
 ```
 
 ## Node check
@@ -40,4 +48,4 @@ graph TD
 | CRITERIA | 7 | 7 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 2 | 2 |
-| FINDINGS | 0 | 0 |
+| FINDINGS | 4 | 4 |
