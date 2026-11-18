@@ -560,3 +560,10 @@ Change: fix of F-5. `skills/hinshitsu-gauge/SKILL.md`, rule 24.2 and rule 24.3, 
 - forward: rule 24.2 and 24.3 → a reader of the skill (the ORCHESTRATOR of a later run); `scripts/lint.py` reads `SKILL.md` files for their form. No script reads these 2 sentences. `STAGE` start entries of this run state the SHA-256 of `SKILL.md` files as read; the gauge skill's file changes after those entries, which stay true of the time they were written.
 - backward: C2 (E-21) requires the behavior the 2 sentences now state. C4 "nothing else changes" names the script, the tests and the imports; the rule text is not in it. F-1 (E-36, OVERRULED) named the same 2 rules; this fix also removes the first half of its cause. Rule 20.3 asks for a version and a `CHANGELOG.md` line when an approved amendment changes a skill: the USER's leave covers 2 sentences only, so neither is touched (see `FRICTION.md` item 18).
 - lateral: WU-1 is the only WORK UNIT. Files 4: by the numbers of rule 0.5 the TIER is FULL; the WAIVER of E-50 keeps the run in the CORE form.
+
+### E-54 · 2026-11-18T21:52:58Z · TIER · orchestrator
+
+- Change measured: `git diff --stat a3717b1 1ce96d3806ca886d4749660e07e94074c4cb87c7 -- . ':!runs'` prints:  scripts/hinshitsu_check.py              : 23 ++++++++----; skills/hinshitsu-gauge/SKILL.md         :  4 +--; skills/hinshitsu-gauge/scripts/gauge.py : 11 +++---; tests/test_gauge.py                     : 64 +++++++++++++++++++++++++++++++++; 4 files changed, 90 insertions(+), 12 deletions(-);
+- Section-18 action in the change: no
+- TIER: CORE by the WAIVER of E-50 (FULL by the numbers of rule 0.5: 4 files; the USER keeps the CORE form, and each check a FULL run adds is UNVERIFIED)
+- Planned SUB-AGENT runs: 5 (E-49)

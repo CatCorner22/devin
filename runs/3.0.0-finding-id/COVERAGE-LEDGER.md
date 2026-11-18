@@ -22,6 +22,7 @@ Rows of WU-1, added before its audit (rule 10.1). The rows cover the change of W
 | `skills/hinshitsu-gauge/scripts/gauge.py` | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
 | `tests/test_gauge.py` | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
 | `scripts/hinshitsu_check.py` (lines 85 to 94 and 306 to 317, the fix of the third FINDING) | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
+| `skills/hinshitsu-gauge/SKILL.md` (lines 15 and 16, the fix of the fifth FINDING) | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
 
 ## Functions
 

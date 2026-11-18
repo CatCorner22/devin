@@ -2,7 +2,7 @@
 Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
 - Newest CRITERIA entry: E-21 (FROZEN)
 - STAGE now running: S7
-- Open FINDINGS: F-5 (BLOCKER), F-6 (DEFECT), F-7 (FRAGILITY)
+- Open FINDINGS: F-5 (BLOCKER)
 <!-- from the log: end -->
 
 # SESSION-STATE — gauge counts a FINDING whose ID is not F-<n> as unread
