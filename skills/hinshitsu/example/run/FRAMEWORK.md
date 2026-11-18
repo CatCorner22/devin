@@ -43,7 +43,7 @@ By reference: `AUDIT-LOG.md` E-98 (C1 to C8), `Status: FROZEN`, approved by the 
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | not started; the CRITERIA are frozen (E-98) |
+| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; fixes not yet made |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 

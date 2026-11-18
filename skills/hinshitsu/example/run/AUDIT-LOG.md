@@ -1123,3 +1123,636 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-352a89a6d8da419ebea30c0cc597bb21 (https://app.devin.ai/sessions/352a89a6d8da419ebea30c0cc597bb21)
 - Report: `audits/WU-1-language-E-110.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-111 · 2026-11-18T17:02:25Z · FINDING · orchestrator
+
+- ID: F-21
+- Class: BLOCKER (glossary (a): the DELIVERABLE fails a CRITERION).
+- Where: `skills/hinshitsu/example/run/review/index.html`, line 74: `var m = /^(\d+)(?:\.(\d{0,2}))?$/.exec(s);`
+- Trigger: Open the file in Chrome. Type `10.` as the bill, `18` as the tip, `4` as people. No message shows beside the bill. The result shows "Bill: 10.00", "Tip amount: 1.80", "Total: 11.80", "4 people pay 2.95 each". Any digits followed by a bare dot do the same (`0.` is refused only because it is 0). Seen under script control and by hand.
+- Violates: C4 ("An amount is digits, with an optional dot followed by 1 or 2 digits"; `10.` "gets a message and no result").
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 1
+- Lens: structural integrity
+
+### E-112 · 2026-11-18T17:02:25Z · FINDING · orchestrator
+
+- ID: F-22
+- Class: BLOCKER (a): the DELIVERABLE fails a CRITERION.
+- Where: `skills/hinshitsu/example/run/review/index.html`, line 74: `var m = /^(\d+)(?:\.(\d{0,2}))?$/.exec(s);`
+- Trigger: Open the file in Chrome. Type `10.` in "Bill total, tax included", `18` in "Tip percent", `4` in "Number of people". The page shows no message. It shows "Bill: 10.00 … Tip amount: 1.80, Total: 11.80, 4 people pay 2.95 each". The same happens with `5.`, ` 7. ` and `1000000.` (E4 lines for those inputs; E7 last line, typed with real keys). `0.` and `00.` get "Enter an amount above 0.", which is a message, and no result.
+- Violates: C4 ("An amount is digits, with an optional dot followed by 1 or 2 digits"; `10.` "gets a message and no result").
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 1
+- Lens: structural integrity
+- Same fault as: F-21
+
+### E-113 · 2026-11-18T17:02:25Z · FINDING · orchestrator
+
+- ID: F-23
+- Class: BLOCKER under glossary (d) (a statement in the DELIVERABLE is false). This is my reading of (d); C6 itself passes, so the ORCHESTRATOR may class it lower.
+- Where: line 29 (`<p id="guide">`) and lines 30–46 (the form), which are outside `<noscript>`.
+- Trigger: Load the file with JavaScript disabled. The needs-JavaScript sentence shows. Under it the guidance "Type the bill, the tip and the number of people. The split shows below." and the 3 fields still show. Type `100.00`, `18`, `4`: no result and no error appear.
+- Violates: Glossary BLOCKER (d). No CRITERION.
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 2
+- Lens: recipient experience
+
+### E-114 · 2026-11-18T17:02:25Z · FINDING · orchestrator
+
+- ID: F-24
+- Class: BLOCKER (d), on a literal reading of the glossary: a statement in the DELIVERABLE is false in this state. If the ORCHESTRATOR reads (d) as covering only the JavaScript-on page, this is a STYLE finding. C6's own test passes.
+- Where: line 29 (`<p id="guide">`), lines 30-46 (the form), shown together with line 28 (`<noscript>`).
+- Trigger: Load the file with JavaScript disabled. The page shows "This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." and, directly under it, "Type the bill, the tip and the number of people. The split shows below." and 3 live fields. Type `100.00`, `18`, `4`, press Enter: nothing shows, no message, the URL does not change (E5, `C6 JS-off DOM text nodes`; screenshot `js-off-typed.png`).
+- Violates: Glossary, BLOCKER (d). Not C6.
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-115 · 2026-11-18T17:02:25Z · FINDING · orchestrator
+
+- ID: F-25
+- Class: DEFECT. If the ORCHESTRATOR reads the guidance sentence as a false statement under BLOCKER (d), it is a BLOCKER.
+- Where: `index.html` lines 29-46 (shown whether or not the script runs); line 28 is the only JavaScript-off handling.
+- Trigger: load the file in Chrome with JavaScript disabled. Below "This calculator needs JavaScript…" the page shows "Type the bill, the tip and the number of people. The split shows below." and 3 enabled fields. Type `100.00`, `18`, `4`: no result and no message appear.
+- Violates: C6 passes as written; this is leftover content in a state where it is untrue (5S), and GLOSSARY DEFECT ("gives a wrong result").
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-116 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-26
+- Class: BLOCKER, under part (d) of the glossary: "a statement in … the DELIVERABLE is false". C6 itself passes. The harm is small: the needs-JavaScript sentence sits directly above. I class it by the glossary's rule that the first class that fits applies; if the ORCHESTRATOR reads the 2 paragraphs as 1 statement, the class falls to STYLE.
+- Where: `skills/hinshitsu/example/index.html` lines 28–30 (the `<noscript>`, `#guide` and `<form>` are siblings; nothing hides the guide or the form when the script does not run).
+- Trigger: open the file in Chrome with JavaScript disabled. The page shows "This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page.", then "Type the bill, the tip and the number of people. The split shows below.", then 3 fields that accept typing. Type `100.00` and press Tab: nothing shows (screenshot `js-off-typed.png`).
+- Violates: GLOSSARY "BLOCKER" (d). Documented practice: MDN glossary, "Progressive enhancement" — the page without script is the baseline, and the script adds what needs script.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-117 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-27
+- Class: STYLE. C6 passes. The ORCHESTRATOR may read "The split shows below" as a false statement under BLOCKER (d); I class it STYLE because the sentence before it says that the calculator needs JavaScript.
+- Where: `skills/hinshitsu/example/index.html`, lines 28–46.
+- Trigger: Load the page with JavaScript disabled. The page shows "This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page.", then "Type the bill, the tip and the number of people. The split shows below.", then the 3 fields. Type `100.00`, `18`, `4`: no result and no message appears. Screenshot `70-c6-js-off-1280.png`.
+- Violates: No CRITERION.
+- Raised by: recipient-experience auditor, LAUNCH E-108, `audits/WU-1-recipient-experience-E-108.md`, finding 4
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-118 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-28
+- Class: STYLE
+- Where: `index.html` lines 28 to 46.
+- Trigger: Load the file in Chrome with JavaScript disabled. The page shows the sentence C6 requires. Below it the page still shows "Type the bill, the tip and the number of people. The split shows below." and the 3 fields, which do nothing. C6 passes as written. This is outside my role's hunt; I report it because I saw it.
+- Violates: no CRITERION; `FRAMEWORK.md` part 6, build step (4), records only "the no-JavaScript sentence".
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 9
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-119 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-29
+- Class: BLOCKER (glossary, part d)
+- Where: `index.html` lines 28 to 46
+- Trigger: load the page with JavaScript disabled. Visible text: "This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." and directly under it "Type the bill, the tip and the number of people. The split shows below.", followed by the 3 fields. A person can type in all 3 fields and nothing shows. The 2 sentences conflict, and the second is false in this state. C6 itself passes.
+- Violates: glossary BLOCKER (d); the role scope's category "conflict between 2 statements".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-23
+
+### E-120 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-30
+- Class: BLOCKER, under part (d) of the definition ("a statement in … the DELIVERABLE is false"). It fails no CRITERION test as written.
+- Where: `index.html` line 143.
+- Trigger: type `0.05`, `0`, `3`. The page shows "2 people pay 0.02 each", "1 person pays 0.01", "Your group decides who pays the extra cent." 2 people pay an extra cent, so there are 2 extra cents. With `1000000.00`, `100`, `7` it shows "4 people pay 285714.29 each" and the same sentence (4 extra cents).
+- Violates: GLOSSARY, BLOCKER (d). Also C2 names 1 or 2 pay lines and no third sentence; the CRITERIA do not ask for this line.
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 1
+- Lens: recipient experience
+
+### E-121 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-31
+- Class: DEFECT.
+- Where: line 143: `if (out.shares.length === 2) { addLine("Your group decides who pays the extra cent."); }`
+- Trigger: Type `10.02`, `0`, `4`. The result shows "2 people pay 2.51 each", "2 people pay 2.50 each", "Your group decides who pays the extra cent." There are 2 extra cents, not 1. In my sweep the sentence showed in 4,455 of 6,000 cases, and in 3,395 of those more than 1 person pays the higher amount. `999999.99`, `99`, `97` shows it with 36 extra cents.
+- Violates: C2 lists what the page shows (inputs as read, tip amount, total, and the payments "as 1 line … or 2 lines"); this is a 3rd line that C2 does not list. Scope: "behavior nobody asked for".
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 3
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-122 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-32
+- Class: STYLE.
+- Where: line 143: `addLine("Your group decides who pays the extra cent.")`.
+- Trigger: Type `100.00`, `18`, `18`. The page shows "10 people pay 6.56 each", "8 people pay 6.55 each", "Your group decides who pays the extra cent." 10 people pay an extra cent, not 1 (E4). Same with `1000000.00`, `100`, `99` (2 people).
+- Violates: No CRITERION. C2 names 1 or 2 payment lines and is silent on a third line.
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 3
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-123 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-33
+- Class: STYLE. The amounts are right; the count word in the sentence is wrong. The claim that the group decides stays true.
+- Where: `index.html` line 143.
+- Trigger: type `10.00`, `0`, `6`. The page shows "4 people pay 1.67 each", "2 people pay 1.66 each", "Your group decides who pays the extra cent." 4 people pay 1 cent more, not 1 person.
+- Violates: no CRITERION. Plain-language practice: a number word matches the number shown. The repository's documents write each count as an exact digit (`README.md` lines 3, 11, 27).
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 4
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-124 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-34
+- Class: BLOCKER, under part (d) of the `GLOSSARY.md` definition: a statement in the DELIVERABLE is false. Every number on the page is correct.
+- Where: `skills/hinshitsu/example/index.html`, line 143.
+- Trigger: Open the page. Type `10.01`, `0`, `3`. The result reads "2 people pay 3.34 each", "1 person pays 3.33", "Your group decides who pays the extra cent." 2 people each pay an extra cent. Type `12.50`, `18`, `40`: "35 people pay 0.37 each", "5 people pay 0.36 each", and the same sentence; 35 people pay an extra cent. Type `1000000.00`, `100`, `99`: "2 people pay 20202.03 each", "97 people pay 20202.02 each", and the same sentence. Screenshots `07-c2-10.01_0_3.png`, `60-c5-360-result-max.png`. In sweep B, 4,453 of 6,000 results had 2 payment lines.
+- Violates: `GLOSSARY.md` BLOCKER (d). No CRITERION names this sentence; C2 and C3 pass.
+- Raised by: recipient-experience auditor, LAUNCH E-108, `audits/WU-1-recipient-experience-E-108.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-125 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-35
+- Class: BLOCKER (glossary, part d)
+- Where: `skills/hinshitsu/example/index.html` line 143
+- Trigger: type `0.1`, `100`, `100`. The page shows "20 people pay 0.01 each", "80 people pay 0.00 each", "Your group decides who pays the extra cent." There are 20 extra cents and 20 payers. Also `12.5`, `18`, `3`: "2 people pay 4.92 each", "1 person pays 4.91", then the same sentence; 2 people pay an extra cent.
+- Violates: glossary BLOCKER (d); the role scope's category "syntactic ambiguity (plurals)". C2 does not name this sentence at all (finding 10).
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 1
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-126 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-36
+- Class: STYLE
+- Where: E-98, C2
+- Trigger: type `10.00`, `0`, `3`. The page shows a line C2 does not list: "Your group decides who pays the extra cent." C2 also does not say which of the 2 lines comes first (the page puts the larger payment first), nor what the 2 lines read when each holds 1 person (`12.5`, `18`, `2` gives "1 person pays 7.38" and "1 person pays 7.37").
+- Violates: the role scope's category "undue generality".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 10
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-127 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-37
+- Class: STYLE
+- Where: `index.html` lines 143 and 56; `FRAMEWORK.md` line 30 (part 4); C2.
+- Trigger: (a) Type `10.00`, `0`, `3`. The result holds 8 lines; the last is "Your group decides who pays the extra cent." No CRITERION, decision or contract names this line. Its only source is the card in E-63, choice 4A ("The group picks who"), which the USER approved in E-64. (b) `FRAMEWORK.md` line 30 and the comment at `index.html` line 56 say that no code other than `splitBill` "computes a number shown in the result". The result also shows "Bill: 10.00", "Tip: 0 percent" and "People: 3" (lines 137 to 139). Those numbers come from `readAmount` (line 78: `parseInt(whole, 10) * 100 + parseInt(…)`) and `readWhole`, and `money` (lines 97 to 100) divides and takes a remainder to print each amount. `FRAMEWORK.md` line 31 calls the first of these "converts", so I read the contract as met; a spy on `window.splitBill` in the live page showed 1 call for each valid change, and every tip, total and payment shown equalled its return value. The words "a number shown in the result" still cover more than the code does.
+- Violates: `FRAMEWORK.md` part 4, as worded (form only; no result changes).
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 8
+- Lens: recipient experience
+- Same fault as: F-30
+
+### E-128 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-38
+- Class: FRAGILITY (another browser or screen reader). I did not run a screen reader; C5's test is a reading of the markup, and the markup has the roles.
+- Where: line 47 (`<div id="result" role="status" aria-live="polite" hidden>`), lines 134–144 and line 130.
+- Trigger: When the result first appears, the script fills the region while it is `hidden` and then removes `hidden`. Some screen readers do not announce text that was added while a live region was hidden. Line 130 rewrites all 3 `role="alert"` paragraphs on every keystroke in any field, so a screen reader may repeat an unchanged error on each key.
+- Violates: C5 ("Error text and the result sit in regions that screen readers announce") — at risk, not shown to fail.
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 5
+- Lens: recipient experience
+
+### E-129 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-39
+- Class: FRAGILITY. The change: a screen reader in use. What a screen reader says is UNVERIFIED: no screen reader is on this machine.
+- Where: line 130 (`f.errorBox.textContent = …` on every update), line 134 and lines 137-144 (`resultBox` emptied and rebuilt on every update, including on `blur`; content added before `hidden = false`), line 153 (`blur` calls `update()`).
+- Trigger: (a) With `abc` in the bill field, 4 `input` events in the tip field cause 4 DOM changes inside `#bill-error`, whose text does not change. `#bill-error` has `role="alert"`, so a screen reader can read the bill's message again on each key typed in another field. (b) With a result on screen, moving focus through the 3 fields without changing a value causes 21 DOM changes inside `#result` (`role="status"`). (c) On the first valid input the 6 lines are added while `#result` still has `display: none`; `hidden` goes to false after. Some screen readers do not announce content that was added to a hidden live region.
+- Violates: No CRITERION as tested: C5 tests the markup only, and the markup has the roles. Touches C5 ("regions that screen readers announce").
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 6
+- Lens: recipient experience
+- Same fault as: F-38
+
+### E-130 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-40
+- Class: FRAGILITY. The change that may break it: a screen reader, which may repeat an unchanged `role="alert"` or `role="status"` text each time its node is replaced. UNVERIFIED: I ran no screen reader.
+- Where: `index.html` lines 130 and 134-144, called from lines 152-153.
+- Trigger: with `5`, `5`, `5` in the fields, click bill, people, bill without typing. The mutation counters show 3 records in the result region and 3 in the error regions, though no visible text changed.
+- Violates: the role's waste check (rule 13.1, Forensic role); bears on C5 ("regions that screen readers announce").
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 10
+- Lens: recipient experience
+- Same fault as: F-38
+
+### E-131 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-41
+- Class: FRAGILITY. The change that makes it fail: a machine that runs a screen reader (NVDA, JAWS, VoiceOver, TalkBack). C5's own test, a reading of the markup, passes.
+- Where: `index.html` line 19 (`#result[hidden] { display: none; }`), line 47 (`hidden` in the markup), lines 134–144 (`update()` empties the region, appends 6 to 9 `<p>` elements while it is still hidden, then sets `hidden = false`).
+- Trigger: command 6, "live-region observations". At first open and in the error state Chrome's accessibility tree holds 3 `alert` nodes and no `status` node. The `status` node enters the tree only in the same step as its content. With a result showing, 1 key in the people field gives 7 mutation records in `#result`: the whole result is removed and written again.
+- Violates: documented practice, MDN "ARIA live regions": "Start with an empty live region, then allow time for it to be exposed to assistive technologies before updating its content." It puts at risk the C5 sentence "Error text and the result sit in regions that screen readers announce". Whether a screen reader speaks the result is UNVERIFIED: no screen reader is on this machine.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-38
+
+### E-132 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-42
+- Class: FRAGILITY. Same change as finding 2: a machine that runs a screen reader.
+- Where: `index.html` line 130 (`f.errorBox.textContent = showError ? r.error : "";` runs for all 3 fields on every `input` and `blur` event), with lines 34, 39, 44 (`role="alert"`) and lines 33, 38, 43 (`aria-describedby` to the same element).
+- Trigger: command 6. Type `abc` in the bill field: its message shows. Then type `18` in the tip field: `#bill-error` receives 3 mutation records, 1 per `input` event, though its text did not change. A screen reader may speak "Enter an amount above 0 in digits…" again on each key typed in another field, and `role="alert"` interrupts other speech. What a screen reader speaks is UNVERIFIED.
+- Violates: documented practice, MDN "ARIA: alert role": "the alert role must be used sparingly and only in situations where the user's immediate attention is required." W3C technique ARIA19 shows the pattern: the message is injected when the error arises.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 3
+- Lens: recipient experience
+- Same fault as: F-38
+
+### E-133 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-43
+- Class: FRAGILITY. The change that makes it fail: a RECIPIENT who uses a screen reader. I had no screen reader, so the speech itself is UNVERIFIED; the page behaviour below is observed.
+- Where: `skills/hinshitsu/example/index.html`, lines 130, 134–144 and 47.
+- Trigger: (a) Type `12,50` in the bill and leave the field. Type `1` then `8` in the tip. Each key press removes and re-inserts the text node in `#bill-error` (`role="alert"`), though its text does not change: `audit1.txt`, "mutation records on #bill-error": `["bill-error","childList",1,1,"bill-error","childList",1,1]`. A screen reader that speaks on node insertion repeats "Use a dot, not a comma" on each key. (b) `#result` (`role="status"`) is filled while it is `hidden` and is shown after (lines 137–144). Some screen readers do not speak content that was inserted while the region was hidden. (c) Each key press in a valid form empties and refills `#result`, so the whole result, 6 to 8 lines, is queued again on each key.
+- Violates: C5, "Error text and the result sit in regions that screen readers announce". The markup test in C5 passes; the risk is what is spoken.
+- Raised by: recipient-experience auditor, LAUNCH E-108, `audits/WU-1-recipient-experience-E-108.md`, finding 2
+- Lens: recipient experience
+- Same fault as: F-38
+
+### E-134 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-44
+- Class: STYLE.
+- Where: line 67.
+- Trigger: Read line 67. In this classic script every function declaration is already a property of `window` (12 names, listed in `checks.log`), so the line changes nothing.
+- Violates: No CRITERION. Scope: "behavior nobody asked for".
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 6
+- Lens: minimal viable sequence
+
+### E-135 · 2026-11-18T17:02:26Z · FINDING · orchestrator
+
+- ID: F-45
+- Class: STYLE.
+- Where: `index.html` line 67.
+- Trigger: read the file: nothing in it uses `window.splitBill`. In the browser, `typeof window.readAmount`, `window.money`, `window.update` and the 3 `MAX_` names are all defined without any such line, because every top-level `function` and `var` in this script is already a global. Line 67 changes nothing.
+- Violates: the role's dead-code check (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 3
+- Lens: minimal viable sequence
+- Same fault as: F-44
+
+### E-136 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-46
+- Class: STYLE.
+- Where: `index.html` line 67, `window.splitBill = splitBill;`.
+- Trigger: read the source: no other line reads `window.splitBill`. A function declared at the top level of a classic `<script>` is already a property of `window` (command 10 shows it in this Chrome).
+- Violates: no CRITERION and no written repository rule; common practice that each line has an effect or a stated reason. The file gives no reason for the line.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 7
+- Lens: minimal viable sequence
+- Same fault as: F-44
+
+### E-137 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-47
+- Class: DEFECT
+- Where: `AUDIT-LOG.md`, E-98, C4, second-to-last sentence
+- Trigger: type `18,5` as the tip (bill `10.00`, people `2`). Message: "Enter a whole number from 0 to 100, in digits only." It holds no word "dot". If "a comma" means a comma in any field, the page fails C4; if it means the bill, the page passes. The page's choice is the sound one: a dot in the tip is also refused.
+- Violates: the role scope's categories "undue generality" and "a rule that a third party cannot test".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 6
+- Lens: trust and controls
+
+### E-138 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-48
+- Class: STYLE (the CRITERION is open to 2 readings).
+- Where: lines 85-95 (`readWhole`); C4, sentence "The message for a comma says to use a dot."
+- Trigger: Type `1,0` as tip or as people. The message is "Enter a whole number from 0 to 100, in digits only." (or "from 1 to 100"). It does not say to use a dot (E4). For the bill field, `12,50` and `1,000.00` do get "Use a dot, not a comma. Example: 12.50".
+- Violates: C4, if "the message for a comma" covers all 3 fields. A dot is also wrong in these 2 fields, so the page's behavior is the sensible one.
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 4
+- Lens: trust and controls
+- Same fault as: F-47
+
+### E-139 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-49
+- Class: DEFECT
+- Where: `FRAMEWORK.md` line 32 (part 4, "File identity"); `CONNECTIONS.md` lines 16 and 36 (edge `index.html` → AUDITOR reports); `prompts/WU-1-*.md`, all 7 role scopes; the scope I received.
+- Trigger: Run `grep -n -i 'sha' skills/hinshitsu/example/run/prompts/WU-1-*.md`. It prints only the C8 line of each scope and line 9 of the language scope. No scope states a SHA-256 of `index.html`. The scope I received states none. `FRAMEWORK.md` line 32 says: "Each AUDITOR scope for WU-1 states the SHA-256 of `index.html`". The edge at `CONNECTIONS.md` line 36 is "Broken when the file's SHA-256 differs from the scope's"; with no SHA-256 in the scope, nobody can test that edge.
+- Violates: the contract in `FRAMEWORK.md` part 4 (File identity), decision D-7's companion control accepted at `AUDIT-LOG.md` line 408; the edge in `CONNECTIONS.md` line 36.
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 1
+- Lens: trust and controls
+
+### E-140 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-50
+- Class: DEFECT (rule 14.6: a false statement in a file of the RUN FOLDER other than the delivery report).
+- Where: `skills/hinshitsu/example/run/FRAMEWORK.md`, line 32: "Each AUDITOR scope for WU-1 states the SHA-256 of `index.html`". `AUDIT-LOG.md` line 408 records the same item as ACCEPTED.
+- Trigger: Read the scope under "Scope received" above. It names the file and the commit, and holds no SHA-256. I computed the hash myself: `11570cbe2cd97be8cb70a31f50aa15a63346cb9ad6f435e22f4fd0b69c3b8184`. It equals the hash in `AUDIT-LOG.md` line 1035 (E-102), so I audited the file that entry names.
+- Violates: Rule 14.6; `FRAMEWORK.md` part 4, "File identity".
+- Raised by: recipient-experience auditor, LAUNCH E-108, `audits/WU-1-recipient-experience-E-108.md`, finding 5
+- Lens: trust and controls
+- Same fault as: F-49
+
+### E-141 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-51
+- Class: FRAGILITY (the audit result holds for this copy only; it fails to carry over if the delivery report hashes or ships the other file).
+- Where: `skills/hinshitsu/example/run/review/index.html` (SHA-256 `68a527cc…d57e5`) against `skills/hinshitsu/example/index.html` (SHA-256 `11570cbe…b8184`).
+- Trigger: `cmp` the 2 files: `differ: byte 3336, line 74`.
+- Violates: C8 ("The report states the SHA-256 of `index.html` as audited"), if the report states any hash other than `68a527cccb35991429c8bbee059448a042af80b62eeb6c91a8ce146fc54d57e5` for this audit. C1 names `skills/hinshitsu/example/index.html`; I did not test that file.
+- Raised by: correctness auditor, LAUNCH E-104, `audits/WU-1-correctness-E-104.md`, finding 4
+- Lens: structural integrity
+
+### E-142 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-52
+- Class: FRAGILITY. The change: a value pasted from another app, or typed on a keyboard that is not a US-style one.
+- Where: line 71 and line 86 (`trim()`), line 73 (comma test), lines 74 and 89 (`\d`).
+- Trigger: (a) Paste `12.50` followed by a zero-width space (U+200B) into the bill field: the field looks like `12.50` and the message is "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50". (b) Full-width digits `１２.５０`, Arabic-Indic digits `١٢`: same message, which tells a person who typed digits to type digits. (c) Full-width comma `12，50`, Arabic comma `12،50`, Arabic decimal separator `12٫50`: the general message, not the comma message (E4). Every one of these gets a message and no result, so C4's listed inputs hold.
+- Violates: No CRITERION as written. Touches C4 ("a message in plain words").
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 5
+- Lens: structural integrity
+
+### E-143 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-53
+- Class: FRAGILITY. The change: a phone whose region uses a comma as the decimal mark. UNVERIFIED: I did not test on a phone, and I did not observe this. I report it from the documented behavior of phone keypads for `inputmode="decimal"`, not from a run.
+- Where: line 33 (`inputmode="decimal"`), line 73 (comma rejected).
+- Trigger: On such a phone, tap the bill field. If the keypad shows `,` and no `.`, a person cannot type `12.50`; `12,50` gets "Use a dot, not a comma."
+- Violates: No CRITERION: C5 requires `inputmode="decimal"` and reports the real phone UNVERIFIED. C4 requires the comma to be rejected. The 2 together can leave such a person with no way to enter cents.
+- Raised by: adversarial auditor, LAUNCH E-105, `audits/WU-1-adversarial-E-105.md`, finding 7
+- Lens: structural integrity
+
+### E-144 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-54
+- Class: STYLE.
+- Where: `index.html` line 164; line 30 (`novalidate`, `autocomplete="off"`, and `id="form"`, which only line 164 uses).
+- Trigger: type `5` in each field and press Enter in each: 0 `submit` events fire and the URL does not change. The form has 3 text fields and no submit button, so Chrome never submits it. No field carries `required`, `pattern`, `min`, `max` or a validating `type`, so `novalidate` switches nothing off. Each field already carries its own `autocomplete="off"` (C7).
+- Violates: the role's dead-code check (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 4
+- Lens: minimal viable sequence
+
+### E-145 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-55
+- Class: FRAGILITY. The change that breaks it: someone edits `MAX_BILL_CENTS`.
+- Where: `index.html` line 52 (`100000000`), line 77 (`whole.length > 7` and the text "1000000.00"), line 80 (the same text again).
+- Trigger: read lines 52, 77, 80 against lines 87 and 110-111. The tip and people messages are built from `min` and `max`; the bill message and the digit count are typed by hand. Set line 52 to `200000000` and a bill of `1500000` is accepted while `10000000` is refused with "Enter 1000000.00 or less." (by reading; I did not edit the file). The example text "Example: 12.50" is also typed twice (lines 73, 75).
+- Violates: the role's hardcoded-value and copy-paste-drift checks (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 5
+- Lens: minimal viable sequence
+
+### E-146 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-56
+- Class: STYLE.
+- Where: `index.html` line 19.
+- Trigger: no rule sets `display` on `#result`, so the browser's own rule for `hidden` already applies. I deleted the rule in memory in the open page (not in the file): the computed `display` of the hidden result stayed `none` (the 2 `result display` lines in the output of command 6).
+- Violates: the role's dead-code check (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 6
+- Lens: minimal viable sequence
+
+### E-147 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-57
+- Class: STYLE.
+- Where: `index.html` line 29.
+- Trigger: no CSS selector, script line, `aria-describedby`, `aria-labelledby` or `for` names `guide` (browser query returned 0; text search of the file finds the 1 occurrence).
+- Violates: the role's unused-name check (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 7
+- Lens: minimal viable sequence
+
+### E-148 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-58
+- Class: STYLE.
+- Where: `index.html` line 56: "The only code that computes a number shown in the result."
+- Trigger: read line 78: `readAmount` computes the cents shown on the "Bill:" line. Lines 98-99: `money` computes the digits of every amount shown.
+- Violates: the role's check that a name or note matches what the thing does (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 8
+- Lens: minimal viable sequence
+
+### E-149 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-59
+- Class: STYLE.
+- Where: `index.html` lines 109-111 and 123; line 109; line 61; lines 22, 140, 142.
+- Trigger: read the file. (a) `read` is the parser function on each field (lines 109-111) and also the object of parsed results in `update` (line 123), so lines 127-128 read `read[name] = f.read(...)`. (b) Line 109 wraps `readAmount` in a function that only calls it; `read: readAmount` is the same. (c) `extra` (line 61) holds the count of people who pay 1 more cent. (d) The class `sep` adds space above a line; it separates nothing by itself.
+- Violates: the role's naming check (rule 13.1, Forensic role).
+- Raised by: forensic-5s auditor, LAUNCH E-106, `audits/WU-1-forensic-5s-E-106.md`, finding 9
+- Lens: minimal viable sequence
+
+### E-150 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-60
+- Class: STYLE, on the reading that C4's "1 line of guidance" means 1 guidance paragraph (there is 1). If the ORCHESTRATOR reads it as 1 displayed line, this fails C4 and is a BLOCKER under (a).
+- Where: `index.html` line 29 (2 sentences, 71 characters) with line 11 (`main { max-width: 30rem; }`).
+- Trigger: command 6, "C5 widths": `guideLines` is 2 at 360, 768 and 1280 pixels (screenshot `w1280-result-2line.png`).
+- Violates: C4, "1 line of guidance", on the strict reading only.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 5
+- Lens: structural integrity
+
+### E-151 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-61
+- Class: STYLE.
+- Where: `index.html` line 16 (`border: 2px` on an invalid field, against `1px` on line 15) and line 17 (`min-height: 1.5rem` holds room for 1 line of error text).
+- Trigger: command 6, "C5 widths": the bill field is 45.19 pixels high without an error and 47.19 with one. At 360 pixels 2 of the messages wrap to 2 lines (screenshot `w360-error.png`), which moves the fields below by 1 more line while the person types.
+- Violates: documented practice, web.dev "Cumulative Layout Shift (CLS)": "Unexpected layout shifts can disrupt the user experience". Here the shift follows the person's own keystroke, so the cost is small.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 6
+- Lens: structural integrity
+
+### E-152 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-62
+- Class: STYLE.
+- Where: `index.html` lines 33, 38, 43.
+- Trigger: read the markup: no `required` and no `aria-required`. C4 treats an empty field as an error once left.
+- Violates: documented practice, MDN "aria-required" and WCAG 2.2 technique ARIA2: a field that must be filled is marked so that assistive technology states it before the error.
+- Raised by: best-practices auditor, LAUNCH E-107, `audits/WU-1-best-practices-E-107.md`, finding 8
+- Lens: structural integrity
+
+### E-153 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-63
+- Class: STYLE. C4 requires this behaviour, and the RECIPIENT still completes T1. A change needs a change to C4, which the USER owns.
+- Where: `skills/hinshitsu/example/index.html`, lines 74–75 and 152.
+- Trigger: Open the page. In the bill field type `1`, `2`, `.`. After the dot, red text appears: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50". Type `5`: the text goes. Every amount with cents does this. Screenshot `20-midtyping-12dot.png`; `audit1.txt`, "key-by-key states". With finding 2, a screen reader is told of an error (`role="alert"`) each time a person types a dot.
+- Violates: No CRITERION. C4 lists `10.` as an input that gets a message "after a person types in a field". I raise it under my role (rule 13.1) as what the RECIPIENT sees.
+- Raised by: recipient-experience auditor, LAUNCH E-108, `audits/WU-1-recipient-experience-E-108.md`, finding 3
+- Lens: recipient experience
+
+### E-154 · 2026-11-18T17:02:27Z · FINDING · orchestrator
+
+- ID: F-64
+- Class: DEFECT
+- Where: `FRAMEWORK.md` line 46 (part 6, row WU-1); `SESSION-STATE.md` lines 6, 8 and 10 (fields 4, 6 and 8).
+- Trigger: Read `FRAMEWORK.md` line 46: WU-1 status is "not started; the CRITERIA are frozen (E-98)". Run `git show --stat 1c8f220`: the commit adds `index.html`, 167 lines. E-102 records the built file, and E-103 launches the seeder on it. `SESSION-STATE.md` field 4 says WU-1 is "being built"; field 8 says the next action is "build WU-1 … then ledger rows, planted defect, swarm"; field 6 lists no `index.html`, no `review/index.html` and no `prompts/WU-1-*.md`. `python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run` prints "0 failure(s)" and exits 0 while these lines are out of date.
+- Violates: rule 14.6 (an out-of-date statement in a file of the RUN FOLDER); rule 8.1 as E-90 describes it (change the state files in the same commit as the entry that changes a fact).
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 2
+- Lens: trust and controls
+
+### E-155 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-65
+- Class: DEFECT
+- Where: `FRAMEWORK.md` line 50 (part 6); `AUDIT-LOG.md` E-101 (line 1025).
+- Trigger: `FRAMEWORK.md` line 50 says: "The TIER is measured again from `git diff --stat` when WU-1 is built." Run `grep -n '· TIER ·' AUDIT-LOG.md`: it prints E-3 and E-101 only. E-101 carries the time 16:24:31Z; commit 1c8f220, which adds the page, carries 16:25:42Z. E-101 gives the reason "about 190 lines", which is the estimate, not a measurement. `git show --stat 1c8f220` prints 167 insertions. No entry records a measurement after the build. The TIER itself does not change: 167 is above 100.
+- Violates: the commitment in `FRAMEWORK.md` part 6; rule 0.5 as E-101 cites it.
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 3
+- Lens: trust and controls
+
+### E-156 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-66
+- Class: DEFECT
+- Where: `run/review/index.html`; `FRAMEWORK.md` parts 5 (lines 36 to 40) and 7 (lines 54 to 56); `CONNECTIONS.md`, the whole diagram and table.
+- Trigger: Run `cmp skills/hinshitsu/example/index.html skills/hinshitsu/example/run/review/index.html`. It prints "differ: byte 3336, line 74": the copy holds `\d{0,2}` where the page holds `\d{1,2}`. In Chrome, with tip `18` and people `4`, the bill `10.` typed into the copy gives a result ("4 people pay 2.95 each") and no message; the page gives a message and no result. The RUN FOLDER therefore holds a second, different copy of the DELIVERABLE that the framework does not record: `FRAMEWORK.md` part 5 has no row for `review/` (it falls under "every other file … ORCHESTRATOR", while E-103 gives the copy to the seeder, a SUB-AGENT); part 7 lists no duplicate; `CONNECTIONS.md` has no node for the copy, the seeder, the seed report, the scopes in `prompts/`, `evidence/`, or the publishing step of D-8 (`grep -n -i 'review/\|seed\|prompts/\|evidence/\|Pages'` over both files prints only the D-8 row). E-102 says the copy was "identical to the file above at this entry"; no entry at this commit records the change (E-103 says the seed report is saved later).
+- Violates: rule 7.2 and rule 9.3 as `CONNECTIONS.md` line 3 cites them (each part and each edge is recorded); `FRAMEWORK.md` part 5 (ownership); rule 16.7 names the copy but the framework does not.
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 4
+- Lens: trust and controls
+
+### E-157 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-67
+- Class: DEFECT
+- Where: `AUDIT-LOG.md` E-92, line 958 (and E-84, line 882, which it repeats).
+- Trigger: E-92 says "`FRAMEWORK.md` part 5 no longer name[s] F-7". Run `grep -n '^## ' FRAMEWORK.md`: part 5 is "File ownership" (line 34); the WU-1 row is in part 6, "WORK UNITS" (line 42), at line 46. The same headings stood at commit b459e4a, before the fix. The rest of E-92 is true: `git grep -n 'F-7' b459e4a -- …/SESSION-STATE.md …/FRAMEWORK.md` prints 2 lines; the same command at 226b317 (the commit that holds E-88) and at d125232 prints none; my run of the record check exits 0.
+- Violates: rule 14.6 (a correction that is itself false, in 1 detail: the place).
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 5
+- Lens: trust and controls
+
+### E-158 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-68
+- Class: DEFECT
+- Where: `AUDIT-LOG.md` E-93, lines 963 to 967.
+- Trigger: Read E-93 against rule 14.6 and F-16 (E-75). F-16 is "the card offers 2 [choices]; 'change a CRITERION' is absent", violating rule 14.5. That is a missing choice in a card that was sent and answered. It is not "a false or out-of-date statement in a file of the RUN FOLDER", which is all that rule 14.6 covers. The line `Record fault: yes` is therefore false. The last AUDITOR to test F-16 reported "STILL REPRODUCES" (`audits/plan-reaudit-E-81.md` line 10). E-93 cites no re-audit report. Its evidence, `evidence/record-check-E-92.txt`, holds 2 runs of the record check and 1 `grep` for "F-7"; none of them tests a card. The 2 statements in the `Change` line are true: E-88 choice C reads "change one of the 8 page rules", and E-77 item 2 states what E-69 lacked.
+- Violates: rule 14.6 (scope of a record fault); rule 15.4 (`FIXED` needs the re-audit report that confirms it); the status table in `GLOSSARY.md` (a DEFECT clears by an AUDITOR exit or the USER's quoted overrule); `GLOSSARY.md`, ASSERTED (the cited EVIDENCE does not show what the claim says).
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 6
+- Lens: trust and controls
+
+### E-159 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-69
+- Class: DEFECT
+- Where: `AUDIT-LOG.md` E-94, lines 971 to 975.
+- Trigger: Read E-94 against rule 14.6 and F-19 (E-85). F-19 is that choice B of the card in E-79 offered the USER a way past an open BLOCKER, violating rule 14.4. That is a fault in what a card offered, not a false or out-of-date statement. The line `Record fault: yes` is therefore false. No AUDITOR re-ran the trigger after E-87; E-94 cites no re-audit report; its evidence file tests no card. The 2 statements in the `Change` line are true: E-87 item 1 withdraws choice B, and E-80 quotes the USER's reply as "A".
+- Violates: the same rules as finding 6.
+- Raised by: framework-drift auditor, LAUNCH E-109, `audits/WU-1-framework-drift-E-109.md`, finding 7
+- Lens: trust and controls
+
+### E-160 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-70
+- Class: DEFECT
+- Where: `index.html` line 29 (guide), line 37 (label), lines 138 and 140 (result)
+- Trigger: read the guide: "Type the bill, the tip and the number of people." A person who takes "the tip" as an amount and types `5` for a `50.00` bill gets "Tip: 5 percent", "Tip amount: 2.50", with no message. In the result, "Tip:" is a percent and "Tip amount:" is money: 1 name for 2 things.
+- Violates: the role scope's category "inconsistency (1 name for 2 things)"; C4's "plain words".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 3
+- Lens: recipient experience
+
+### E-161 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-71
+- Class: DEFECT
+- Where: `index.html` line 75
+- Trigger: type `10.` in the bill and press Tab. Message: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50". `10.` is above 0, in digits, and has at most 2 digits after the dot (it has 0), so it meets every word of the message and is still refused. The same message answers `.5`, which fails for a reason the message does not name (no digit before the dot).
+- Violates: C4, "a message in plain words"; the role scope's category "conflict between 2 statements" (the message and the rule in C4, "a dot followed by 1 or 2 digits").
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 4
+- Lens: recipient experience
+
+### E-162 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-72
+- Class: STYLE
+- Where: `index.html` lines 7, 27, 29, 32, 72, 137, 139, 141
+- Trigger: type `100.00`, `18`, `4`. The label reads "Bill total, tax included" (100.00) and the result reads "Total: 118.00". The same amount is "Bill total" in the label and the error, and "Bill:" in the result. "Number of people" in the label is "People:" in the result. The guide promises "The split"; no line in the result carries that word.
+- Violates: the role scope's category "inconsistency (1 thing with 2 names, 1 name for 2 things)". C5 fixes the label's words, so the fix is in the result.
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 5
+- Lens: recipient experience
+
+### E-163 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-73
+- Class: DEFECT
+- Where: E-98, C4, sentences 1 to 4
+- Trigger: reload, type `1` in the bill only. The page shows 1 filled field, 2 empty fields, no error text and no result. That is not "First open" (3 empty fields), not "Error" and not "Result".
+- Violates: the role scope's category "conflict between 2 statements" (the count "3" and the 3 definitions, which leave a case out).
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 7
+- Lens: recipient experience
+
+### E-164 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-74
+- Class: DEFECT
+- Where: E-98, C4, "after a person types in a field or leaves it, a value that fails the rules below shows a message" and "an empty field once left"
+- Trigger: reload, click the tip, type `1`, press Backspace; do not leave the field. The message "Enter the tip percent. Enter 0 for no tip." shows. The first sentence allows that; "once left" says the message waits until the person leaves. Also, "the rules below" do not say that an empty value fails; only the list does.
+- Violates: the role scope's category "conflict between 2 statements".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 8
+- Lens: recipient experience
+
+### E-165 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-75
+- Class: DEFECT
+- Where: E-98, C2, "the bill, tip percent and people as read"
+- Trigger: type `0100.5`, `007`, `02`. The page shows "Bill: 100.50", "Tip: 7 percent", "People: 2". If "as read" means "as the person typed them", the page fails C2; if it means "as the page parsed them", it passes.
+- Violates: the role scope's category "lexical ambiguity".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 9
+- Lens: recipient experience
+
+### E-166 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-76
+- Class: STYLE
+- Where: E-98, C2, first sentence
+- Trigger: reading. "whole-number" can modify "tip" alone or "tip … and … people". C4 settles it ("people not a whole number from 1 to 100"), so no result changes. The same sentence writes "1,000,000.00" with commas, the form C4 makes the page refuse.
+- Violates: the role scope's category "syntactic ambiguity (modifiers)".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 11
+- Lens: recipient experience
+
+### E-167 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-77
+- Class: STYLE
+- Where: E-98, C1, C3, C4, C5, C7
+- Trigger: reading, and the screenshots. - C4 "beside that field": each message sits below its field (`360-error.png`, `1280-error.png`). "Beside" also means "at the side of". - C4 "in plain words": no test names what plain is. - C5 "nothing is cut off": I measured width only; the criterion names no measure. - C5 "regions that screen readers announce": the test is "reading of the markup", and names no attribute. I found `role="alert"` on the 3 error paragraphs and `role="status"` with `aria-live="polite"` on the result. - C7 "storage call": not defined. I searched for `localStorage`, `sessionStorage`, `indexedDB`, `cookie` and `caches`. - C3 "every bill from 0.01 to 50.00": the step is not stated. I used 0.01. - C1 "its calculator works": the test gives it meaning; the words alone do not.
+- Violates: the role scope's categories "vagueness" and "a rule that a third party cannot test".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 12
+- Lens: recipient experience
+
+### E-168 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-78
+- Class: DEFECT
+- Where: E-98, C8
+- Trigger: reading. "in 5 minutes" can mean 5 minutes for each check or for all 3; a report whose 3 checks take 4 minutes each passes 1 reading and fails the other. "a reader" is a new name: the glossary has USER and RECIPIENT, and E-25's table says "the USER". "as audited" does not say which audit when the page changes after a first audit. The test names no clock.
+- Violates: the role scope's categories "syntactic ambiguity" and "inconsistency (1 thing with 2 names)".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 13
+- Lens: recipient experience
+
+### E-169 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-79
+- Class: STYLE
+- Where: `AUDIT-LOG.md`, E-25, "Translation" table (lines 250 to 255)
+- Trigger: reading E-25 beside E-98. - Row 2: "3 checks the USER can do … each naming what to open and what to see". C8 adds "what to do" and "in 5 minutes", and says "a reader". - Row 3 sends "messages and labels on the page in plain words" to C4 and C5. C4 covers messages; C5 has no plain-words test for labels. - Row 4 lists `T1` under the heading "Customer language", yet the entry says the ORCHESTRATOR wrote T1. - The page's result is "what each person pays" (E-25 row 4, C2), "payments" (E-25 row 4, C3), "shares" (G3) and "the split" (the page).
+- Violates: the role scope's category "inconsistency (1 thing with 2 names)".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 14
+- Lens: recipient experience
+
+### E-170 · 2026-11-18T17:02:28Z · FINDING · orchestrator
+
+- ID: F-80
+- Class: STYLE
+- Where: E-25 lines 230, 232, 235, 243, 250; E-98 line 1010
+- Trigger: reading against `GLOSSARY.md`. - `VOC` and `CORRECTION`, in capitals, are not defined; glossary line 3 says that an undefined term in capitals is a FINDING against the file that uses it. The glossary's own name is "Voice of the Customer statement". - "skill set" (line 235) for what the glossary calls "the skills". - "the card" (line 243) for DECISION CARD. - "Customer" (line 250) for a party the glossary calls USER or RECIPIENT. - E-98's Approval line calls the 8 CRITERIA "these 8 rules"; C4 uses "the rules below" for input formats; the glossary uses "rule" for a rule of the skills. 1 name, 3 things.
+- Violates: `GLOSSARY.md` line 3; the role scope's category "inconsistency".
+- Raised by: language auditor, LAUNCH E-110, `audits/WU-1-language-E-110.md`, finding 15
+- Lens: recipient experience
+
+### E-171 · 2026-11-18T17:03:03Z · CHECK · orchestrator
+
+- What: the planted defect of rule 16.7, round 1 of WU-1.
+- Seed: `audits/WU-1-seed-E-103.md`. The seeder changed line 74 of `review/index.html` so that the bill field accepts `10.` (C4), and named 2 roles that must find it: correctness auditor and adversarial tester.
+- Correctness auditor (E-104): found it. `audits/WU-1-correctness-E-104.md`, finding 1 (F-21).
+- Adversarial tester (E-105): found it. `audits/WU-1-adversarial-E-105.md`, finding 1 (F-22).
+- Result: no report of this round is void.
+- The other 5 AUDITORS examined `skills/hinshitsu/example/index.html`, which holds no planted defect.
+- Count: the 7 reports hold 60 findings, logged as F-21 to F-80 (E-111 to E-170). A `Same fault as` line marks a FINDING that restates an earlier one.
