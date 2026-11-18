@@ -1,0 +1,254 @@
+browser version: 156.0.8078.47
+
+== C1 request log after open (playwright): ["GET file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html"]
+== C1 request log after open (CDP Network.requestWillBeSent): ["file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html [Document]"]
+== C1 performance resource entries: []
+== first open state: {"bill":"","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+== first open: aria-invalid count: 0 ; focused element: BODY
+
+== C2 cases, typed key by key, Tab between fields
+["100.00","18","4"] -> {"bill":"100.00","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["0.30","15","1"] -> {"bill":"0.30","tip":"15","people":"1","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 0.30","Tip: 15 percent","People: 1","Tip amount: 0.05","Total: 0.35","1 person pays 0.35"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["10.10","15","1"] -> {"bill":"10.10","tip":"15","people":"1","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 10.10","Tip: 15 percent","People: 1","Tip amount: 1.52","Total: 11.62","1 person pays 11.62"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["12.25","18","1"] -> {"bill":"12.25","tip":"18","people":"1","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 12.25","Tip: 18 percent","People: 1","Tip amount: 2.21","Total: 14.46","1 person pays 14.46"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["10.00","0","3"] -> {"bill":"10.00","tip":"0","people":"3","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 10.00","Tip: 0 percent","People: 3","Tip amount: 0.00","Total: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["10.01","0","3"] -> {"bill":"10.01","tip":"0","people":"3","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 10.01","Tip: 0 percent","People: 3","Tip amount: 0.00","Total: 10.01","2 people pay 3.34 each","1 person pays 3.33","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["1000000.00","100","100"] -> {"bill":"1000000.00","tip":"100","people":"100","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 1000000.00","Tip: 100 percent","People: 100","Tip amount: 1000000.00","Total: 2000000.00","100 people pay 20000.00 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["0.01","0","100"] -> {"bill":"0.01","tip":"0","people":"100","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 0.01","Tip: 0 percent","People: 100","Tip amount: 0.00","Total: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["0.01","0","1"] -> {"bill":"0.01","tip":"0","people":"1","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 0.01","Tip: 0 percent","People: 1","Tip amount: 0.00","Total: 0.01","1 person pays 0.01"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["1000000.00","0","1"] -> {"bill":"1000000.00","tip":"0","people":"1","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 1000000.00","Tip: 0 percent","People: 1","Tip amount: 0.00","Total: 1000000.00","1 person pays 1000000.00"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["100","18","4"] -> {"bill":"100","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+[" 100.00 "," 18 "," 4 "] -> {"bill":" 100.00 ","tip":" 18 ","people":" 4 ","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["007.5","018","004"] -> {"bill":"007.5","tip":"018","people":"004","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 7.50","Tip: 18 percent","People: 4","Tip amount: 1.35","Total: 8.85","1 person pays 2.22","3 people pay 2.21 each","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+["0.99","100","99"] -> {"bill":"0.99","tip":"100","people":"99","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 0.99","Tip: 100 percent","People: 99","Tip amount: 0.99","Total: 1.98","99 people pay 0.02 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+requests so far (playwright, includes reloads): 15 ; distinct: ["GET file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html"]
+
+== key-by-key states for bill "12.50", tip "18", people "4"
+after key "1" {"bill":"1","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "2" {"bill":"12","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "." {"bill":"12.","tip":"","people":"","billErr":"Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50","tipErr":"","peopleErr":"","result":false}
+after key "5" {"bill":"12.5","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "0" {"bill":"12.50","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after Tab {"billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "1" {"bill":"12.50","tip":"1","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "8" {"bill":"12.50","tip":"18","people":"","billErr":"","tipErr":"","peopleErr":"","result":false}
+after Tab {"billErr":"","tipErr":"","peopleErr":"","result":false}
+after key "4" {"bill":"12.50","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","result":true}
+
+== recompute on change: append 0 to people (4 -> 40), then Backspace x2 (empty)
+{"bill":"12.50","tip":"18","people":"40","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 12.50","Tip: 18 percent","People: 40","Tip amount: 2.25","Total: 14.75","35 people pay 0.37 each","5 people pay 0.36 each","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+{"bill":"12.50","tip":"18","people":"","billErr":"","tipErr":"","peopleErr":"Enter the number of people.","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+retyped 4: {"bill":"12.50","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 12.50","Tip: 18 percent","People: 4","Tip amount: 2.25","Total: 14.75","3 people pay 3.69 each","1 person pays 3.68","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+after Enter key in people field: {"bill":"12.50","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 12.50","Tip: 18 percent","People: 4","Tip amount: 2.25","Total: 14.75","3 people pay 3.69 each","1 person pays 3.68","Your group decides who pays the extra cent."],"guide":"Type the bill, the tip and the number of people. The split shows below."} url: file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html
+
+== C4: tab through 3 empty fields
+{"bill":"","tip":"","people":"","billErr":"Enter the bill total.","tipErr":"Enter the tip percent. Enter 0 for no tip.","peopleErr":"Enter the number of people.","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+
+== C4 bill inputs (tip 18, people 4 valid)
+bill "abc" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12a" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12,50" -> err: "Use a dot, not a comma. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "1,000.00" -> err: "Use a dot, not a comma. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "1e3" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "10." -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill ".5" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "$12.50" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12.50$" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "€12" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "£5" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "-5" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "-0.01" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "0" -> err: "Enter an amount above 0." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "0.0" -> err: "Enter an amount above 0." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "0.00" -> err: "Enter an amount above 0." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "000" -> err: "Enter an amount above 0." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "1000000.01" -> err: "Enter 1000000.00 or less." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "1000001" -> err: "Enter 1000000.00 or less." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "10000000" -> err: "Enter 1000000.00 or less." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "99999999999999999999" -> err: "Enter 1000000.00 or less." | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":24,"invalid":"true"}
+bill "1.234" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12.505" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "0.001" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "1 000" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "1 2" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12..5" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "1.2.3" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "+5" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "１２" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12.5." -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "0x10" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "Infinity" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "NaN" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12.50 USD" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12'50" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "１２.５０" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "12．50" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+bill "٣" -> err: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | other errs: ["",""] | result shown: false | {"inputBottom":207,"errTop":211,"errH":48,"invalid":"true"}
+
+== C4 bill inputs that must be accepted
+bill "0.01" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1.5" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1.50" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1000000" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1000000.00" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "1000000.0" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "0001000000.00" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "  12.50  " -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+bill "\t12.50" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":205,"errTop":209,"errH":24,"invalid":null}
+
+== C4 tip inputs
+tip "abc" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "18.0" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "1e1" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "+4" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "4." -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "-1" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "101" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "100.0" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "1000" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "18%" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "1,8" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip ".5" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "18 %" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "1 8" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "１８" -> err: "Enter a whole number from 0 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip "" -> err: "Enter the tip percent. Enter 0 for no tip." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+tip " " -> err: "Enter the tip percent. Enter 0 for no tip." | other errs: ["",""] | result shown: false | {"inputBottom":324,"errTop":328,"errH":24,"invalid":"true"}
+-- tip accepted
+tip "0" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":322,"errTop":326,"errH":24,"invalid":null}
+tip "100" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":322,"errTop":326,"errH":24,"invalid":null}
+tip "00" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":322,"errTop":326,"errH":24,"invalid":null}
+tip "018" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":322,"errTop":326,"errH":24,"invalid":null}
+tip " 18 " -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":322,"errTop":326,"errH":24,"invalid":null}
+
+== C4 people inputs
+people "abc" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "0" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "00" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "101" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "18.0" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "1e1" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "+4" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "4." -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "-1" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "2.5" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "four" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "4 people" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "1,0" -> err: "Enter a whole number from 1 to 100, in digits only." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+people "" -> err: "Enter the number of people." | other errs: ["",""] | result shown: false | {"inputBottom":442,"errTop":446,"errH":24,"invalid":"true"}
+-- people accepted
+people "1" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":440,"errTop":444,"errH":24,"invalid":null}
+people "100" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":440,"errTop":444,"errH":24,"invalid":null}
+people "004" -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":440,"errTop":444,"errH":24,"invalid":null}
+people " 4 " -> err: "" | other errs: ["",""] | result shown: true | {"inputBottom":440,"errTop":444,"errH":24,"invalid":null}
+
+== C4 error shows while typing, before leaving the field
+{"bill":"x","tip":"","people":"","billErr":"Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50","tipErr":"","peopleErr":"","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+all 3 wrong: {"bill":"12,50","tip":"18.0","people":"0","billErr":"Use a dot, not a comma. Example: 12.50","tipErr":"Enter a whole number from 0 to 100, in digits only.","peopleErr":"Enter a whole number from 1 to 100, in digits only.","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+pasted (insertText) "1,000.00": {"bill":"1,000.00","tip":"","people":"","billErr":"Use a dot, not a comma. Example: 12.50","tipErr":"","peopleErr":"","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+
+== C7 fetch test (run in the page)
+fetch rejected: TypeError: Failed to fetch
+console messages: [
+ "error: Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+ "error: Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy."
+]
+other channels: {"img":"blocked/error","beacon":true,"xhr":"blocked/error","cookie":"","localStorageLen":0,"sessionStorageLen":0}
+CDP requests total list (distinct): ["file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html [Document]","https://example.com/x.png?1795019705987 [Image]","https://example.com/ [XHR]"]
+
+== C7 reload clears every field
+before reload: {"bill":"100.00","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+after F5: {"bill":"100.00","tip":"18","people":"4","billErr":"","tipErr":"","peopleErr":"","resultShown":true,"resultLines":["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+after typing 55.55 / 1x then Ctrl+Shift+R: {"bill":"100.0055.55","tip":"1x","people":"4","billErr":"Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50","tipErr":"Enter a whole number from 0 to 100, in digits only.","peopleErr":"","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+after typing 77, going to about:blank, Back: {"bill":"","tip":"","people":"","billErr":"","tipErr":"","peopleErr":"","resultShown":false,"resultLines":[],"guide":"Type the bill, the tip and the number of people. The split shows below."}
+
+== C5 widths
+width 360 first-open {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 360 errors {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 360 longest-error {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 360 result-max {"innerWidth":360,"clientWidth":345,"scrollWidth":345,"bodyScrollWidth":345,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 360 result {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 360 120-digit-bill {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 first-open {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 errors {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 longest-error {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 result-max {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 result {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 768 120-digit-bill {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 first-open {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 errors {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 longest-error {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 result-max {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 result {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+width 1280 120-digit-bill {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"scrollXAfterScrollTo1000":0,"outside":[]}
+
+== C5/C7 markup read from the live DOM
+{
+ "inputs": [
+  {
+   "id": "bill",
+   "type": "text",
+   "inputmode": "decimal",
+   "autocomplete": "off",
+   "label": "Bill total, tax included",
+   "labelVisible": true,
+   "describedby": "bill-error"
+  },
+  {
+   "id": "tip",
+   "type": "text",
+   "inputmode": "numeric",
+   "autocomplete": "off",
+   "label": "Tip percent",
+   "labelVisible": true,
+   "describedby": "tip-error"
+  },
+  {
+   "id": "people",
+   "type": "text",
+   "inputmode": "numeric",
+   "autocomplete": "off",
+   "label": "Number of people",
+   "labelVisible": true,
+   "describedby": "people-error"
+  }
+ ],
+ "errors": [
+  {
+   "id": "bill-error",
+   "role": "alert",
+   "ariaLive": null
+  },
+  {
+   "id": "tip-error",
+   "role": "alert",
+   "ariaLive": null
+  },
+  {
+   "id": "people-error",
+   "role": "alert",
+   "ariaLive": null
+  }
+ ],
+ "result": {
+  "role": "status",
+  "ariaLive": "polite",
+  "hidden": true
+ },
+ "csp": "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'\">",
+ "formAutocomplete": "off",
+ "lang": "en",
+ "title": "Split the bill",
+ "externalRefs": []
+}
+
+== live-region mutations: bill error showing, then type 1 key in tip
+mutation records on #bill-error (id,type,added,removed)...: ["bill-error","childList",1,1,"bill-error","childList",1,1]
+computed colours: {"err":"rgb(164, 0, 0)","bg":"rgb(255, 255, 255)","text":"rgb(26, 26, 26)","errFont":"16px"}
+AX tree (role, name): [["RootWebArea","Split the bill"],["main",""],["heading","Split the bill"],["paragraph",""],["form",""],["StaticText","Split the bill"],["StaticText","Type the bill, the tip and the number of people. The split shows below."],["LabelText",""],["textbox","Bill total, tax included","invalid=\"true\"","describedby=\"bill-error\""],["alert","","live=\"assertive\""],["LabelText",""],["textbox","Tip percent","invalid=\"false\"","describedby=\"tip-error\""],["alert","","live=\"assertive\""],["LabelText",""],["textbox","Number of people","invalid=\"false\"","describedby=\"people-error\""],["alert","","live=\"assertive\""],["StaticText","Bill total, tax included"],["StaticText","Use a dot, not a comma. Example: 12.50"],["StaticText","Tip percent"],["StaticText","Number of people"],["StaticText","12,50"],["StaticText","18"]]
+
+== C6 JavaScript off
+body innerText: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page.\n\nType the bill, the tip and the number of people. The split shows below.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"
+noscript text visible: false
+after filling fields with JS off, result visible: false
