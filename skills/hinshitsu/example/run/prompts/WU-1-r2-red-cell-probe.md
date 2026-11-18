@@ -7,7 +7,7 @@ You are the RED CELL in a hinshitsu run (section 6). You are the opposing force:
 ## Filled in by the ORCHESTRATOR
 
 - Activation: probe under rule 6.3(a) of `skills/hinshitsu-challenge/SKILL.md`: a `CRITERIA-CHANGE` entry, E-174, changed C2 to C8. Attack the PREMISES of that change and of decision D-9 (E-176). Keep the probe short: at most 5 attacks.
-- For a probe, the 1 trigger event: criteria-change request (E-174) — entry E-<n>
+- For a probe, the 1 trigger event: criteria-change request — entry E-174
 - Files to read: in `skills/hinshitsu/example/run/AUDIT-LOG.md`, the entries E-172 to E-177 and E-98; `skills/hinshitsu/example/index.html` (SHA-256 e866bfe5aee8c649d00f992abde6dd869e1fe1dc526b2a458f979e6a90d111d0).
 - Commit under review: the commit named in the first paragraph
 - Glossary: `skills/hinshitsu/GLOSSARY.md`
