@@ -1032,3 +1032,58 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8999 bytes, SHA-256 6cc55525c67f9d60d653b28b5005730c4baeeb74db839eb36b32e342f6187eda
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
 - The skill was read whole at the start of S10 (E-71). It was not read again at this STAGE; its hash is taken again and is equal (`FRICTION.md` item 27).
+
+### E-107 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: The BUILDER's first fix passed all 7 CRITERIA and its own 76 tests, and still made 2 lines pass that failed before (`A --x B --> C`) and failed a quoted label. The independent correctness auditor found both; the BUILDER had tested only the lines the CRITERIA name (E-32, E-33)
+- Cost: 1 repair round, 1 more SUB-AGENT run, 1 card
+- Proposed amendment: Rule 3.1 (conductor), add: "For a change to a test or a pattern, 1 CRITERION must state that no input that failed before the change passes after it, other than the inputs the other CRITERIA name, with the set of inputs to compare."
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-108 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: AGENT error: a card with a decision over 120 words was logged, then a correction claimed "under 120" before any count; it was 133 (E-20, E-21)
+- Cost: 2 `CORRECTION` entries; no wrong card was sent
+- Proposed amendment: Rule 23.4: present "at most 120 words"; new "at most 120 words, counted by a command whose output is saved under `evidence/` before the `CARD` entry is written".
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-109 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: AGENT error: 1 ledger cell read `PASS` against a branch on which the report raised 2 findings; a script matched the wrong text and the count it printed was not compared (E-65)
+- Cost: 1 `CORRECTION` entry
+- Proposed amendment: Rule 10.5, add: "After filling cells from a report, state in a `CHECK` entry the count of `FAIL` cells and the count of rows the report's findings name; the 2 must agree."
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-110 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: A `CORE` run plans 3 SUB-AGENT runs, and rule 16.5 needs a new one after every fix; the first audit that finds a fault always breaks the budget. After 2 rounds, 6 non-BLOCKER FINDINGS were open and no rule says when to stop (E-36, E-54)
+- Cost: 2 cards to the USER
+- Proposed amendment: Rule 0.5: present "plans 3 SUB-AGENT runs"; new "plans 4: the probe, the correctness auditor, 1 re-audit, the final AUDITOR". Rule 14.5: present "if any BLOCKER is still open"; new "if any BLOCKER, DEFECT or FRAGILITY is still open".
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-111 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: In a `CORE` run nobody may perform sections 11 and 12 (an AUDITOR is required and none is planned), and the rule gives `N/A`, which reads as "does not apply" where the truth is "not run" (E-68)
+- Cost: recipient-side and stability checks not proven
+- Proposed amendment: Rule 0.5, add: "In a `CORE` run the final AUDITOR also performs the first RECIPIENT task of the `VOC` entry (rule 11.2); the cells of roles that did not run read `UNVERIFIED — CORE`, not `N/A`."
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-112 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: AGENT error: the draft report cited 2 wrong entries for the skipped S5 and named the wrong late entry; the ORCHESTRATOR typed entry IDs from memory. Later it ran a record check before the entry the check supports (E-73, E-74, E-82)
+- Cost: the final audit ended `not passed`; 1 more SUB-AGENT run; 1 card
+- Proposed amendment: Rule 17.1, add: "Before the final AUDITOR starts, the ORCHESTRATOR opens each entry that the draft report cites and saves, under `evidence/`, a list of each citation with the first line of the cited entry." Rule 14.6(b), add: "run the command after the `RESOLUTION` entry is written, not before".
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-113 · 2026-11-18T20:54:19Z · LESSON · orchestrator
+
+- What happened: AGENT error: the ORCHESTRATOR typed a command into `evidence/baseline-93311ab.txt` in place of letting the command write the file, and filled 6 ledger cells `PASS` from a report that states no verdict for their rows (E-87, E-91)
+- Cost: 2 BLOCKERS at delivery
+- Proposed amendment: Rule 10.5, add: "A `PASS` cell cites the heading or line of the report that states the verdict for that row; a row the report does not name reads `UNVERIFIED`." Rule 17.3: present "the command itself writes the file"; new "the command itself writes the file, and the file is made by running a saved script whose text is line 1 to n of that file".
+- Not applied: the USER approves or rejects each amendment on a DECISION CARD (rule 20.3).
+
+### E-114 · 2026-11-18T20:54:19Z · STAGE · orchestrator
+
+- Stage: S12
+- Event: end
+- Artifacts: `DELIVERY-REPORT.md` (the heading `LESSONS`), 7 `LESSON` entries (E-107 to E-113)
