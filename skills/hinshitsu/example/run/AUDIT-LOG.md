@@ -3343,3 +3343,25 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Also tried: a branch named `gh-pages`; after 75 seconds `https://catcorner22.github.io/devin/skills/hinshitsu/example/index.html` returned 404 and `gh api repos/CatCorner22/devin/pages` returned 404. The branch was deleted.
 - Result: UNVERIFIED — the ORCHESTRATOR's access cannot turn on GitHub Pages. The page is not published. Use on a phone is UNVERIFIED. The delivery report tells the USER the 4 clicks that publish it.
 - Recipient-side verification therefore runs on what a RECIPIENT can obtain today: the file `skills/hinshitsu/example/index.html` downloaded from the repository on GitHub and opened in Chrome.
+
+### E-349 · 2026-11-18T18:25:29Z · LAUNCH · orchestrator
+
+- Role: AUDITOR for recipient-side verification and stability (sections 11, 12); a new SUB-AGENT
+- WORK UNIT: WU-1
+- Scope: `prompts/S8-recipient-side-stability.md`
+- Examines: `skills/hinshitsu/example/index.html`, SHA-256 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5, downloaded from GitHub as a RECIPIENT does
+- Commit under review: 6c94e4c
+- SUB-AGENT identifier: devin-0e03cd32bc6d47a3adb0df1e5bda10be (https://app.devin.ai/sessions/0e03cd32bc6d47a3adb0df1e5bda10be)
+- Report: `audits/S8-recipient-side-stability-E-349.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-350 · 2026-11-18T18:25:30Z · LAUNCH · orchestrator
+
+- Role: RED CELL, full attack before delivery with premortem (section 6); a new SUB-AGENT
+- WORK UNIT: WU-1 and the RUN FOLDER
+- Scope: `prompts/S9-red-cell-pre-delivery.md`
+- Commit under review: 6c94e4c
+- SUB-AGENT identifier: devin-bfe8098018b340c2aa0841918b20adb7 (https://app.devin.ai/sessions/bfe8098018b340c2aa0841918b20adb7)
+- Report: `audits/S9-red-cell-E-350.md`
+- Launched while STAGE S8 runs, to save time: the attack reads the record and the page, and does not depend on the report of E-349. The `STAGE` entries for S9 follow when S8 ends.
+- Written directly after the create call returned, because the runtime issues the identifier only then.
