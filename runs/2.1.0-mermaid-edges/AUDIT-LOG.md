@@ -471,3 +471,14 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Forward: `tests/test_check.py` — does not break: the fixture of `good_run()` writes its edge inside a `mermaid` fence, so the 7 existing edge tests read the same line. `main()` — does not break: it still receives a list of strings. A run's record check — does not break for the 4 `CONNECTIONS.md` files in the repository, each of which holds 1 fence (A-9); a file with no fence is read as before.
 - Backward: A-1, A-9, A-10, A-11 and D-2, D-3 — not violated. D-1 — amended by D-3 through the reversal in E-40. C1 to C7 (E-25) — not changed: no CRITERION is added, dropped or reworded, and no existing test is edited (rule 3.6).
 - Lateral: no other WORK UNIT exists — nothing to invalidate.
+
+### E-43 · 2026-11-18T20:02:18Z · TIER · orchestrator
+
+- WORK UNIT: WU-1, round 2, built at commit 5099f2a (repairs of F-1, F-2 and F-4 under D-3)
+- Change measured: `git diff --stat 93311ab -- . ':!runs'` prints `2 files changed, 66 insertions(+), 2 deletions(-)` [`evidence/builder-run-WU-1-round-2.txt`]. That is 2 files and 68 changed lines, inside the limits of 3 files and 100 lines.
+- Section-18 action in the change: no
+- TIER: CORE
+- Planned SUB-AGENT runs: 4 — raised from 3 by the USER's reply in E-37. Used: 2 (E-1, E-31).
+- The BUILDER's own run of the tests is in `evidence/builder-run-WU-1-round-2.txt`. It supports no `PASS` cell (rule 10.5).
+- A choice the BUILDER made, stated for the AUDITORS and the USER: the new test `test_text_outside_the_mermaid_block_is_not_read` fails against the script of commit 93311ab, because that script reads lines outside the block. The BUILDER first named it with the word `edge`; the test command of C6 (`-k edge`) then reported 5 failed tests against commit 93311ab, not the 4 that C6 names. The BUILDER renamed the new test so that the command of C6 selects the same failing tests as before. No test that a CRITERION names was changed (rule 3.6).
+- `COVERAGE-LEDGER.md` holds the rows of WU-1 as built at commit 5099f2a; `FRAMEWORK.md` part 6 gives WU-1 the status `in audit, round 2`.
