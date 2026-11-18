@@ -13,38 +13,38 @@
   .field { margin-top: 1rem; }
   label { display: block; font-weight: 600; }
   input { display: block; width: 100%; margin-top: 0.25rem; padding: 0.6rem; font: inherit; border: 1px solid #555; border-radius: 0.25rem; }
-  input[aria-invalid="true"] { border: 2px solid #a40000; }
+  input[aria-invalid="true"] { border-color: #a40000; box-shadow: inset 0 0 0 1px #a40000; }
   .error { min-height: 1.5rem; margin: 0.25rem 0 0; color: #a40000; overflow-wrap: anywhere; }
-  #result { margin-top: 1rem; padding: 1rem; border: 1px solid #555; border-radius: 0.25rem; overflow-wrap: anywhere; }
-  #result[hidden] { display: none; }
+  #result { overflow-wrap: anywhere; }
+  #result .box { margin-top: 1rem; padding: 1rem; border: 1px solid #555; border-radius: 0.25rem; }
   #result p { margin: 0; }
   #result .pay { font-size: 1.25rem; font-weight: 600; }
-  #result .sep { margin-top: 0.5rem; }
+  #result .gap-above { margin-top: 0.5rem; }
 </style>
 </head>
 <body>
 <main>
   <h1>Split the bill</h1>
   <noscript><p>This calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page.</p></noscript>
-  <p id="guide">Type the bill, the tip and the number of people. The split shows below.</p>
-  <form id="form" autocomplete="off" novalidate>
+  <p id="guide" hidden>Type the bill total, the tip percent and the number of people.</p>
+  <div id="fields" hidden>
     <div class="field">
       <label for="bill">Bill total, tax included</label>
-      <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-describedby="bill-error">
+      <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
       <p class="error" id="bill-error" role="alert"></p>
     </div>
     <div class="field">
       <label for="tip">Tip percent</label>
-      <input id="tip" type="text" inputmode="numeric" autocomplete="off" aria-describedby="tip-error">
+      <input id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
       <p class="error" id="tip-error" role="alert"></p>
     </div>
     <div class="field">
       <label for="people">Number of people</label>
-      <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-describedby="people-error">
+      <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
       <p class="error" id="people-error" role="alert"></p>
     </div>
-  </form>
-  <div id="result" role="status" aria-live="polite" hidden></div>
+  </div>
+  <div id="result" role="status" aria-live="polite"></div>
 </main>
 <script>
 "use strict";
@@ -53,37 +53,49 @@ var MAX_BILL_CENTS = 100000000;
 var MAX_TIP_PERCENT = 100;
 var MAX_PEOPLE = 100;
 
-/* The only code that computes a number shown in the result. Whole numbers in, whole numbers out. */
+/* The only code that computes the tip, the total and the payments. Whole numbers in, whole numbers out. */
 function splitBill(billCents, tipPercent, people) {
   var tipCents = Math.floor((billCents * tipPercent + 50) / 100);
   var totalCents = billCents + tipCents;
   var base = Math.floor(totalCents / people);
-  var extra = totalCents % people;
+  var payOneMore = totalCents % people;
   var shares = [];
-  if (extra > 0) { shares.push({ count: extra, cents: base + 1 }); }
-  shares.push({ count: people - extra, cents: base });
+  if (payOneMore > 0) { shares.push({ count: payOneMore, cents: base + 1 }); }
+  shares.push({ count: people - payOneMore, cents: base });
   return { tipCents: tipCents, totalCents: totalCents, shares: shares };
 }
+/* The contract in FRAMEWORK.md, part 4, names window.splitBill; the checks of C3 compare the page with it. */
 window.splitBill = splitBill;
 
-/* Text to cents, from the digits. Returns { cents } or { error }. */
-function readAmount(text) {
-  var s = text.trim();
+/* Full-width and Arabic-Indic digits and decimal marks become their plain forms. Spaces and invisible characters at the ends go. */
+function plain(text) {
+  return text.normalize("NFKC")
+    .replace(/[\u0660-\u0669]/g, function (c) { return String(c.charCodeAt(0) - 0x0660); })
+    .replace(/[\u06F0-\u06F9]/g, function (c) { return String(c.charCodeAt(0) - 0x06F0); })
+    .replace(/\u066B/g, ",")
+    .replace(/^[\s\u200B-\u200D\u2060\uFEFF]+|[\s\u200B-\u200D\u2060\uFEFF]+$/g, "");
+}
+
+/* Text to cents, from the digits. The decimal mark is a dot or a comma. Returns { cents }, { error } or,
+   while the person is still typing an amount that ends in a decimal mark, { waiting }. */
+function readAmount(text, typing) {
+  var s = plain(text);
   if (s === "") { return { error: "Enter the bill total." }; }
-  if (s.indexOf(",") !== -1) { return { error: "Use a dot, not a comma. Example: 12.50" }; }
-  var m = /^(\d+)(?:\.(\d{1,2}))?$/.exec(s);
-  if (!m) { return { error: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" }; }
+  var m = /^(\d+)(?:[.,](\d{1,2}))?$/.exec(s);
+  if (!m && typing && /^\d+[.,]$/.test(s)) { return { waiting: true }; }
+  if (!m) { return { error: "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" }; }
   var whole = m[1].replace(/^0+(?=\d)/, "");
-  if (whole.length > 7) { return { error: "Enter 1000000.00 or less." }; }
+  var tooMuch = "Enter " + money(MAX_BILL_CENTS) + " or less.";
+  if (whole.length > String(MAX_BILL_CENTS / 100).length) { return { error: tooMuch }; }
   var cents = parseInt(whole, 10) * 100 + parseInt(((m[2] || "") + "00").slice(0, 2), 10);
   if (cents === 0) { return { error: "Enter an amount above 0." }; }
-  if (cents > MAX_BILL_CENTS) { return { error: "Enter 1000000.00 or less." }; }
+  if (cents > MAX_BILL_CENTS) { return { error: tooMuch }; }
   return { cents: cents };
 }
 
 /* Text to a whole number from min to max. Returns { value } or { error }. */
 function readWhole(text, min, max, emptyMessage) {
-  var s = text.trim();
+  var s = plain(text);
   var message = "Enter a whole number from " + min + " to " + max + ", in digits only.";
   if (s === "") { return { error: emptyMessage }; }
   if (!/^\d+$/.test(s)) { return { error: message }; }
@@ -106,42 +118,56 @@ function payLine(share) {
 }
 
 var fields = {
-  bill: { read: function (t) { return readAmount(t); } },
+  bill: { read: function (t) { return readAmount(t, document.activeElement === fields.bill.input); } },
   tip: { read: function (t) { return readWhole(t, 0, MAX_TIP_PERCENT, "Enter the tip percent. Enter 0 for no tip."); } },
   people: { read: function (t) { return readWhole(t, 1, MAX_PEOPLE, "Enter the number of people."); } }
 };
 var resultBox = document.getElementById("result");
+var shownResult = "";
 
-function addLine(text, className) {
-  var p = document.createElement("p");
-  p.textContent = text;
-  if (className) { p.className = className; }
-  resultBox.appendChild(p);
+/* Writes the result only when its lines change, so that a screen reader is not told the same thing twice. */
+function showResult(lines) {
+  var key = lines.map(function (line) { return line.text; }).join("\n");
+  if (key === shownResult) { return; }
+  shownResult = key;
+  resultBox.textContent = "";
+  if (lines.length === 0) { return; }
+  var box = document.createElement("div");
+  box.className = "box";
+  lines.forEach(function (line) {
+    var p = document.createElement("p");
+    p.textContent = line.text;
+    if (line.className) { p.className = line.className; }
+    box.appendChild(p);
+  });
+  resultBox.appendChild(box);
 }
 
 function update() {
-  var read = {};
+  var parsed = {};
   var allValid = true;
   Object.keys(fields).forEach(function (name) {
     var f = fields[name];
     var r = f.read(f.input.value);
-    read[name] = r;
+    parsed[name] = r;
     var showError = Boolean(r.error) && f.touched;
-    f.errorBox.textContent = showError ? r.error : "";
+    var text = showError ? r.error : "";
+    if (f.errorBox.textContent !== text) { f.errorBox.textContent = text; }
     if (showError) { f.input.setAttribute("aria-invalid", "true"); } else { f.input.removeAttribute("aria-invalid"); }
-    if (r.error) { allValid = false; }
+    if (r.error || r.waiting) { allValid = false; }
   });
-  resultBox.textContent = "";
-  if (!allValid) { resultBox.hidden = true; return; }
-  var out = splitBill(read.bill.cents, read.tip.value, read.people.value);
-  addLine("Bill: " + money(read.bill.cents));
-  addLine("Tip: " + read.tip.value + " percent");
-  addLine("People: " + read.people.value);
-  addLine("Tip amount: " + money(out.tipCents), "sep");
-  addLine("Total: " + money(out.totalCents));
-  out.shares.forEach(function (share, i) { addLine(payLine(share), i === 0 ? "pay sep" : "pay"); });
-  if (out.shares.length === 2) { addLine("Your group decides who pays the extra cent."); }
-  resultBox.hidden = false;
+  if (!allValid) { showResult([]); return; }
+  var out = splitBill(parsed.bill.cents, parsed.tip.value, parsed.people.value);
+  var lines = [
+    { text: "Bill total: " + money(parsed.bill.cents) },
+    { text: "Tip percent: " + parsed.tip.value },
+    { text: "Number of people: " + parsed.people.value },
+    { text: "Tip amount: " + money(out.tipCents), className: "gap-above" },
+    { text: "Total with tip: " + money(out.totalCents) }
+  ];
+  out.shares.forEach(function (share, i) { lines.push({ text: payLine(share), className: i === 0 ? "pay gap-above" : "pay" }); });
+  if (out.shares.length === 2) { lines.push({ text: "Your group decides who pays the higher amount." }); }
+  showResult(lines);
 }
 
 Object.keys(fields).forEach(function (name) {
@@ -161,7 +187,9 @@ window.addEventListener("pageshow", function () {
   });
   update();
 });
-document.getElementById("form").addEventListener("submit", function (event) { event.preventDefault(); });
+/* The guidance and the fields show only when this script runs. */
+document.getElementById("guide").hidden = false;
+document.getElementById("fields").hidden = false;
 </script>
 </body>
 </html>

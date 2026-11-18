@@ -1846,3 +1846,21 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Reverses: the dot-only rule for the bill (D-4 as approved in E-64; C4 of E-98, "The message for a comma says to use a dot").
 - New decision: D-9 (E-176); C4 of E-175.
 - Justification: the USER chose it in E-173 (card E-172, question 2, choice A), on F-42.
+
+### E-178 · 2026-11-18T17:07:16Z · CHECK · orchestrator
+
+- What: the BUILDER's change to WU-1 after audit round 1, and the BUILDER's own run of it. It supports no `PASS` cell (rule 10.5) and closes no FINDING (rule 15.4).
+- File: `skills/hinshitsu/example/index.html`, 195 lines (`wc -l`), SHA-256 e866bfe5aee8c649d00f992abde6dd869e1fe1dc526b2a458f979e6a90d111d0 (`sha256sum`). `review/index.html` is identical to it again.
+- Changed, with the FINDINGS each change answers: the guidance and the fields carry `hidden` in the markup and the script shows them (F-23 group); the sentence under 2 payment lines reads "Your group decides who pays the higher amount." (F-26 group); an error paragraph and the result are written only when their text changes, and the result region stays in the page (F-34 group); a comment states who uses `window.splitBill` (F-37 group); a dot or a comma is the decimal mark (D-9, F-42); `plain` handles full-width and Arabic-Indic characters and invisible characters (F-41); no message while a person types `12.` (F-56); the bill limit is written 1 time (the forensic auditor's finding 5); result labels match the field labels, and the bill's message matches its rule (the language auditor's findings 3 to 5); `aria-required`, no layout shift on an error, 1 sentence of guidance, names (STYLE findings).
+- Not changed: `window.splitBill` stays, because the contract in `FRAMEWORK.md` part 4 names it.
+- BUILDER's run: `evidence/builder-smoke-E-178.txt` (commands, environment and output).
+
+### E-179 · 2026-11-18T17:07:16Z · TIER · orchestrator
+
+- TIER: FULL (unchanged)
+- Measured: `git show --stat 1c8f220` prints "1 file changed, 167 insertions(+)" for `skills/hinshitsu/example/index.html`. 167 is above the 100-line limit of `CORE` (rule 0.5). E-101 gave an estimate of about 190 lines before the build; this entry gives the count (F-65).
+
+### E-180 · 2026-11-18T17:07:16Z · CORRECTION · orchestrator
+
+- Corrects: E-84 and E-92. Both name `FRAMEWORK.md` part 5 as the place that no longer names F-7. The row is in part 6, "WORK UNITS" (F-67).
+- Corrects: E-93 and E-94. Each holds the line `Record fault: yes` and the result `FIXED`. F-16 and F-19 are faults in DECISION CARDS that were sent, not false statements in a file of the RUN FOLDER, so rule 14.6 does not apply to them, and no AUDITOR's report confirmed either fix (F-68, F-69). F-16 and F-19 are DEFECTS that wait for an AUDITOR's report: the framework-drift auditor of audit round 2 is asked to test the corrections in E-87 and E-88 (the card of E-88 offers the choice that F-16 found missing and drops the choice that F-19 found unlawful).

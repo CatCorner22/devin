@@ -28,15 +28,18 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 ## 4. Contracts between parts
 
 - **`window.splitBill(billCents, tipPercent, people)`** — pure; reachable from the browser console. Inputs: `billCents` a whole number from 1 to 100,000,000; `tipPercent` a whole number from 0 to 100; `people` a whole number from 1 to 100. Output: `{ tipCents, totalCents, shares }`; `shares` is a list of 1 or 2 groups `{ count, cents }`, larger payment first. `tipCents = floor((billCents × tipPercent + 50) / 100)`. `totalCents = billCents + tipCents`. Base payment `floor(totalCents / people)`; `totalCents mod people` people pay 1 cent more.
-- **The page's fields call `splitBill` and no other code computes a number shown in the result.**
+- **The page's fields call `splitBill` and no other code computes the tip amount, the total with tip or a payment.** `readAmount` turns the bill's text into cents and `money` writes cents as text.
+- **The sentence under 2 payment lines.** When the result holds 2 payment lines, it ends with "Your group decides who pays the higher amount." (C2 of E-175).
+- **Decimal mark.** A dot or a comma (D-9). `plain` turns full-width and Arabic-Indic digits and decimal marks into their plain forms before any check.
 - **Text to cents.** The page converts the bill's text to cents from its digits, with no decimal arithmetic.
-- **File identity.** Each AUDITOR scope for WU-1 states the SHA-256 of `index.html`; the delivery report states the SHA-256 as audited.
+- **File identity.** Each AUDITOR scope for WU-1 from audit round 2 on states the SHA-256 of the file it names; the 7 scopes of round 1 did not (F-27 group: F-63, F-64). The delivery report states the SHA-256 at the last audit round.
 
 ## 5. File ownership
 
 | Path | Built by | Audited by |
 |---|---|---|
 | `skills/hinshitsu/example/index.html` | BUILDER (the orchestrator session) | the 8 AUDITOR roles, each a child Devin session |
+| `skills/hinshitsu/example/run/review/index.html` | the seeder of each audit round (rule 16.7), from a copy the ORCHESTRATOR makes | the AUDITORS that the seed report names; never shipped; made identical to `index.html` again before each round |
 | `skills/hinshitsu/example/run/audits/`, `memos/` | the SUB-AGENT that wrote each report; saved whole by the ORCHESTRATOR | final AUDITOR |
 | every other file in the RUN FOLDER | ORCHESTRATOR | final AUDITOR |
 
@@ -44,14 +47,15 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; fixes not yet made |
+| WU-1 | `index.html`, the whole page | built at commit 1c8f220 (E-102); audit round 1 reported (E-171); F-21 to F-80 raised; the page changed to the CRITERIA of E-175 (E-178); audit round 2 not yet run |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 
-Estimate of size, by part: function and conversion 40 lines; validation and states 60; markup 40; style 50; total about 190 lines, which is above the 100-line limit of TIER CORE. The TIER is measured again from `git diff --stat` when WU-1 is built.
+Estimate of size, by part: function and conversion 40 lines; validation and states 60; markup 40; style 50; total about 190 lines, which is above the 100-line limit of TIER CORE. The TIER was measured again after the build (E-179): `git show --stat 1c8f220` prints 167 insertions, above the 100-line limit, so the TIER stays `FULL`.
 
 ## 7. Existing implementations checked
 
 | Searched for | Where | Command | Result |
 |---|---|---|---|
 | an existing bill-splitting page or split function | this repository | `grep -ril "split" --include=*.html --include=*.js .` | no file found at S2. The repository held 0 `.html` and 0 `.js` files (`git ls-files '*.html' '*.js'` printed nothing), so the search shows only that no such file existed. |
+| a second copy of the page | the RUN FOLDER | `cmp skills/hinshitsu/example/index.html skills/hinshitsu/example/run/review/index.html` | `review/index.html` is a deliberate copy for the planted defect of rule 16.7. It differs from the page only between the seeder's change and the end of that audit round. |
