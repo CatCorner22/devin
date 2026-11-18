@@ -167,3 +167,76 @@ Completes E-009 with the custody data it lacked. Commit under review by all 5: `
 | Red cell, plan time | https://app.devin.ai/sessions/f6e329e282254fb69cd897a4668abc9a | `audits/redcell-plan.md` | fa50456c0e709b4f |
 
 Each report is the file the session attached, downloaded and copied byte for byte; each is alone in its own commit. A reader opens the session link and compares the attachment with the file. Red-cell verdict, word for word: "PLAN SURVIVES WITH CHANGES".
+
+### E-012 · 2026-11-18T15:07Z · RECONCILIATION · orchestrator
+
+Every point of the 4 lens memos and the plan-time red-cell report, with the result. Sources: `memos/lens-*.md` (RX, MVS, SI, TC) and `audits/redcell-plan.md` (RC, demand numbers).
+
+| Point | Result | Change |
+|---|---|---|
+| RX insist, RX-1, RX-9: decision card for every user decision; plain words; sample replies | ACCEPTED | Decision-card rule in `hinshitsu-baby-bird-plan`; "What you will be asked" page in README |
+| RX-2, MVS-5, SI-4, TC-4, RC-3, RC-12: silence is not approval | ACCEPTED | E-010; criteria stay `PROPOSED` until a quoted approval; freeze follows reconciliation |
+| RX-3, MVS-4, SI-1, SI insist: every status has a named exit; BLOCKER has 3 exits; loops have a maximum | ACCEPTED | Status table in the glossary; 2 fix rounds per work unit, then a decision card |
+| RX-4, RC-4: report too long; user's 5-minute check | ACCEPTED | Summary of at most 200 words; 3 checks with no terminal open the report; ledger, maps and log stay files |
+| RX-5, TC-6, RC U4: checker exit 0 proves form only | ACCEPTED | Checker prints that statement; `TESTING.md` for a third party |
+| RX-6, RC-9, RC U5: cold start and install evidence | ACCEPTED | New C12; an adapter with no saved smoke run opens with `UNVERIFIED — never run on this surface` |
+| RX-7, MVS run-order table, RC-8: section order is not run order; precedence | ACCEPTED | Run-sequence table at the top of the conductor; sections 1 and 17 control |
+| RX-8, MVS insist, RC-7, RC U7: scale by rule, not waiver | ACCEPTED, subject to the user's answer | Tiers in section 0 with numeric thresholds; the agent never lowers a tier; skipped roles are UNVERIFIED |
+| RX-10, MVS-10: ledger rows by deliverable type; function and branch rows only for roles that read code | ACCEPTED | Rule in section 10; other roles' cells on those rows are `N/A` by rule |
+| RX cut: 5-word claim ban | ACCEPTED | Replaced by: no statement that the deliverable meets DONE before the DONE checklist passes |
+| RX cut, MVS cut: per-finding lens answer | ACCEPTED | Lens tag kept; 1 lens memo per work unit by a non-builder |
+| MVS-2, MVS-3: tests built after the unit they test; proof comes 4th of 5 | ACCEPTED | Build order: scripts, skills, templates, Devin adapter, example, other adapters, README |
+| MVS-6, MVS-7, SI-2, TC-3, RC-1, RC-2, RC U1: log times and integrity | ACCEPTED | E-010; each entry committed before its action; checker reads git history |
+| MVS-8, RC-6, RC U3, RC F3: size and survival after compaction | ACCEPTED | New C13: each `SKILL.md` at most 18 KiB and 500 lines, description at most 1,024 characters; re-read rule. The split of message 5 replaces the red cell's `sections/NN.md` files |
+| MVS-9: work units break their own definition | ACCEPTED | A work unit is 1 skill, 1 script or 1 template group; redefined in D-011 |
+| MVS cut: generate `MINDMAP.md` from the log | REJECTED | Brief section 9 requires a maintained map; a generator adds a second script to trust. The checker compares node counts |
+| MVS cut: defer 5 adapters | ACCEPTED | Devin adapter before the example; the rest after |
+| SI-3: build record cannot pass its own checker | ACCEPTED | Checker accepts `CORRECTION` entries; the build record follows the new format from E-010 on |
+| SI-5: no single current text of a criterion | ACCEPTED | Each `CRITERIA-CHANGE` restates the full current text; E-013 does so |
+| SI-6, TC-1, TC-2, TC insist, RC-1, RC U2: custody of evidence | ACCEPTED | `LAUNCH` entry before each sub-agent; report saved whole with the platform identifier; 1 commit per report |
+| SI-7: no end state after UNVERIFIED | ACCEPTED | `DELIVERED — NOT DONE` becomes a defined status |
+| SI-8: `CONNECTIONS.md` disagrees with itself | ACCEPTED | Rewritten for the 6-skill layout under D-011 |
+| SI-9, SI-10: ID formats and parseable formats | ACCEPTED | 1 format per kind, stated in section 9; the orchestrator assigns finding IDs |
+| TC-5: who owns a finding's class | ACCEPTED | The auditor sets it; a second auditor may raise or withdraw; the orchestrator never lowers it |
+| TC-7: re-running auditors until one is soft | ACCEPTED | Every launch is logged; no report is discarded; the harsher result controls |
+| TC-8, RC-5, RC-11, RC U8: seeded defect and red-cell quality judged by the party under test | ACCEPTED | A non-builder sub-agent plants the defect each round; the final auditor judges the red cell's attack; an all-STYLE round triggers a probe |
+| TC-9: ledger author and escape hatches | ACCEPTED | Each cell cites a report with a LAUNCH ID; the final auditor samples `N/A` reasons |
+| TC-10: secrets | ACCEPTED | Redaction rule; checker scans for secret patterns |
+| RC-5 condition 4: scope is template text plus file names and criteria only | ACCEPTED | Role prompts in `templates/roles/`; exact scope saved |
+| RC-5 condition 5: live test call in the CAPABILITY entry | ACCEPTED | Already rule 0.2; kept |
+| RC-9: rename `chatgpt.md` to `codex.md` | REJECTED | The brief names the files; each adapter's first line names the product it targets |
+| RC-10, Probe 2: unsupported surface; reading A or B of message 4 | SENT TO THE USER | Decision 2 in the message of 15:04Z; default A |
+| RC U9, RX-5: role count | ACCEPTED | 8: the brief's 7 plus the red cell |
+
+### E-013 · 2026-11-18T15:07Z · CRITERIA-CHANGE · orchestrator
+
+Requests: message 5 "Wait, let's divide these up into separate skills."; message 6 "I defer to you, but the most important thing would be to keep together anything that would be a synergy"; message 7 "please keep baby bird in the plan name so I remember.  Please now build each skill fully and run the same tests and red teams over it once you finish" (`BRIEF.md`). Reason: the user's instruction, and E-012.
+
+**D-011 (supersedes D-001's single file and D-003's section 23 placement in 1 file).** 6 skills. Section numbers stay as the brief gives them and identify rules across all 6.
+
+| Skill | Sections | Kept together because |
+|---|---|---|
+| `hinshitsu` | 0, 1, 21, 22 | the gate, the roles and the run order govern the other 5 |
+| `hinshitsu-baby-bird-plan` | 2, 3, 4, 23 | the gap hunt feeds the criteria the user approves |
+| `hinshitsu-challenge` | 5, 6 | lenses and red cell attack 1 plan and share 1 reconciliation |
+| `hinshitsu-record` | 7, 8, 9, 10, 18 | log, maps, ledger and session state cite each other |
+| `hinshitsu-audit` | 11, 12, 13, 14, 15, 16 | find, stop, fix, re-audit is 1 loop |
+| `hinshitsu-delivery` | 17, 19, 20 | the evidence rule polices the delivery report |
+
+**Current criteria, full text. All `PROPOSED`: the user has approved none in quoted words. Messages 5 to 7 direct the split and the tests; they do not approve this list.**
+
+- C1. The repository holds: `README.md`; `skills/<name>/SKILL.md` for each of the 6 skills in D-011; `skills/hinshitsu/GLOSSARY.md`; `skills/hinshitsu/EXAMPLE.md`; `templates/MINDMAP.md`, `CONNECTIONS.md`, `AUDIT-LOG.md`, `COVERAGE-LEDGER.md`; and `adapters/claude-code.md`, `cursor.md`, `devin.md`, `chatgpt.md`, `gemini.md`, `kimi.md`, `muse.md`. Test: `scripts/lint.py`.
+- C2. Each `SKILL.md` has YAML frontmatter with `name` equal to its folder name and a `description` that lists its triggers. Read in the order of D-011, the 6 files hold sections 0 to 23, each exactly once, each covering every element the brief lists for it (section 23 as in E-005; sections 0 and 21 as changed by E-006 and E-012). Test: `scripts/lint.py` for form; the correctness auditor for content, against `BRIEF.md`.
+- C3. `GLOSSARY.md` defines each capitalized term exactly once, including the 13 the brief names; no skill uses an undefined capitalized term. Test: `scripts/lint.py`.
+- C4. None of the 12 banned words appears in the skills, glossary, templates, adapters, README or example artifacts, outside a quotation of the ban list or of a source. Obligations use "must"; discretion uses "may". Test: `scripts/lint.py`; the language auditor.
+- C5. A third party can test every rule: each rule names an actor, an action and an artifact or observable result. Test: the language auditor; `TESTING.md`.
+- C6. Each adapter references the canonical skills, copies no rule, carries a capability table with a dated source link per claim, and opens with `UNVERIFIED — never run on this surface` unless a saved smoke run exists. Test: `scripts/lint.py`; the best-practices auditor opens each link.
+- C7. `EXAMPLE.md` shows a real single-page frontend run through the full pipeline with real command output, real browser runs and saved sub-agent reports with platform identifiers. Test: `scripts/hinshitsu_check.py` on the example run folder; the final auditor.
+- C8. This build produces its own audit log, mind map, connections graph and coverage ledger, audited by sessions other than the builder. Test: `scripts/hinshitsu_check.py` on `build-record/`; the final auditor.
+- C9. `precog-verify` and `precog-personas` are unchanged. Test: `git status` and `git log` in the precog checkout.
+- C10. All work is on `main` in `CatCorner22/devin`. Test: `git ls-remote`.
+- C11. Baby Bird: rules (a) to (h) of E-005 are in section 23, and the gap list runs before the criteria are sent to the user. Test: the correctness auditor.
+- C12. Cold start: a sub-agent that receives only the skills, the glossary and a 1-line task writes a CAPABILITY entry and a gap list before any other output. Test: saved transcript in the example folder.
+- C13. Each `SKILL.md` is at most 18 KiB and 500 lines; each `description` is at most 1,024 characters. Test: `scripts/lint.py`.
+
+Work units from here: WU-1 `scripts/lint.py`; WU-2 `scripts/hinshitsu_check.py`; WU-3 glossary and 6 skills; WU-4 templates and role prompts; WU-5 Devin adapter; WU-6 example; WU-7 the other 6 adapters; WU-8 README, `TESTING.md`, `CHANGELOG.md`. The user's message 7 sets the audit point: 1 full swarm, 4 lenses and a red cell over the finished set, then re-audit after fixes.
