@@ -128,3 +128,9 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 | G12 | Other Mermaid link forms that the request does not name: open links (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way arrows (`<-->`), several links on 1 line (`A --> B --> C`, `A & B --> C`), invisible links (`~~~`), links with an ID (`A e1@--> B`) | Leave them out of this fix and list them in the delivery report as forms the checker does not test | The USER named 3 forms; each further form changes which existing files fail, which is the USER's call | none if left out; if included, about 60 more lines and a larger audit | USER | Asked |
 | G13 | Labelled thick and dotted links (`==>|text|`, `== text ==>`, `-.->|text|`, `-. text .->`): the request does not say they must keep passing | Make them pass, with tests (C5) | A fix that fails every thick or dotted link, labelled or not, would trade 1 wrong verdict for another | about 10 lines | AGENT | Assumed |
 | G14 | Changelog and version: the request does not say whether to add a `CHANGELOG.md` line or raise the version | Add none | `CHANGELOG.md` line 3 says it records amendments of a skill; this change amends no skill | none | AGENT | Assumed |
+
+### E-11 · 2026-11-18T19:34:48Z · STAGE · orchestrator
+
+- Stage: S3
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (E-9 `VOC`, E-10 `GAP`)
