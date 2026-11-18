@@ -1,0 +1,65 @@
+$ git rev-parse --short HEAD
+fe82be2
+exit: 0
+$ git diff --stat 93311ab -- . ':!runs'
+ scripts/hinshitsu_check.py | 17 +++++++++++++++--
+ tests/test_check.py        | 25 +++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 2 deletions(-)
+exit: 0
+$ python3 -m unittest discover -s tests -k edge -v
+test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) ... ok
+test_edge_with_label_between_dashes_passes (test_check.Check.test_edge_with_label_between_dashes_passes) ... ok
+test_empty_ledger_cell_fails_at_delivery (test_check.Check.test_empty_ledger_cell_fails_at_delivery) ... ok
+test_labeled_thick_and_dotted_edges_pass (test_check.Check.test_labeled_thick_and_dotted_edges_pass) ... ok
+test_ledger_with_no_row_fails (test_check.Check.test_ledger_with_no_row_fails) ... ok
+test_totals_table_is_not_a_ledger_row (test_check.Check.test_totals_table_is_not_a_ledger_row) ... ok
+test_unlabeled_dotted_edge_fails (test_check.Check.test_unlabeled_dotted_edge_fails) ... ok
+test_unlabeled_edge_fails (test_check.Check.test_unlabeled_edge_fails) ... ok
+test_unlabeled_thick_edge_fails (test_check.Check.test_unlabeled_thick_edge_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.044s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit: 0
+$ python3 -m unittest discover -s tests
+.............................................hinshitsu check: test the form of a run's record.
+
+Usage: hinshitsu_check.py [--stage plan|unit|delivery] <run-folder>
+       hinshitsu_check.py --record <run-folder>   (state files against the log, rule 14.6)
+Exit 0 when every check for the stage passes, 1 when any fails, 2 on a usage error.
+Standard library only. Same folder in, same verdict out.
+
+This script tests the shape of the record: that entries, citations, cells and
+files exist and agree with each other. It does not prove that any check ran or
+that any report is true (rule 17.7).
+...............................
+----------------------------------------------------------------------
+Ran 76 tests in 1.244s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+FAIL MINDMAP.md:1: calls F-1 closed; the log holds no closing entry (rule 14.6)
+hinshitsu_check (record): 1 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+exit: 0
+$ python3 scripts/lint.py
+lint: 0 failure(s). This script tests form; it does not prove that any rule is sound.
+exit: 0

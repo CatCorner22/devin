@@ -331,3 +331,13 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Forward: `tests/test_check.py` — does not break: the 2 existing tests assert only `no label` and a pass on `A -->|reads| B` (A-5). `main()` — does not break: it still receives a list of strings. A run's record check — does not break for links written `-->|label|` (A-4); a record that holds an unlabeled `==>` or `-.->` link, or a link labelled between the dashes, gets the other verdict, which is the change the USER asked for.
 - Backward: A-1, A-2, A-3, A-4, A-6, A-7 and D-1, D-2 — not violated. Rule 9.3 — not violated: the test still fails an edge with no label.
 - Lateral: no other WORK UNIT exists — nothing to invalidate.
+
+### E-30 · 2026-11-18T19:45:28Z · TIER · orchestrator
+
+- WORK UNIT: WU-1, built at commit fe82be2
+- Change measured: `git diff --stat 93311ab -- . ':!runs'` prints `scripts/hinshitsu_check.py | 17 +++++++++++++++--`, `tests/test_check.py | 25 +++++++++++++++++++++++++`, `2 files changed, 40 insertions(+), 2 deletions(-)` [`evidence/builder-run-WU-1.txt`]. That is 2 files and 42 changed lines, inside the limits of 3 files and 100 lines. The RUN FOLDER is not counted (see `FRICTION.md` item 6).
+- Section-18 action in the change: no
+- TIER: CORE
+- Planned SUB-AGENT runs: 3
+- The BUILDER's own run of the tests is in `evidence/builder-run-WU-1.txt`. It supports no `PASS` cell (rule 10.5).
+- `COVERAGE-LEDGER.md` now holds the rows of WU-1 (rule 10.1), and `FRAMEWORK.md` part 6 gives WU-1 the status `in audit`.

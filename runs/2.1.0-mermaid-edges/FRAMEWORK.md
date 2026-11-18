@@ -44,7 +44,7 @@ See `AUDIT-LOG.md` entry E-25 (`CRITERIA`, `FROZEN`: C1 to C7, the same text as 
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | building | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
+| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | in audit | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 
