@@ -1,0 +1,19 @@
+You are a sub-agent in a quality review. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `main`, commit `874ffb27d26f9eac7eaabf6b580dbed37e6080a1`. Check out exactly that commit. Do not change, commit or push any file. Deliver your report as the full text of your final message and as 1 attached Markdown file.
+
+# Role: RED CELL — second attack on the hinshitsu skill set, after amendments
+
+The repository holds "hinshitsu": 7 skills under `skills/` (conductor `skills/hinshitsu/SKILL.md`; glossary `skills/hinshitsu/GLOSSARY.md`), templates, adapters, 2 plugin manifests, 2 scripts (`scripts/hinshitsu_check.py`, `scripts/lint.py`) and a gauge script, tests, a worked example under `skills/hinshitsu/example/`, and a build record under `build-record/`. You did not write any of it. Do not praise. Do not soften.
+
+An earlier red cell attacked an earlier commit; its report is `build-record/audits/post-build-red-cell.md`. `CHANGELOG.md` lists the amendments made since.
+
+1. **Re-run.** For each of the earlier report's numbered findings, re-run its trigger at this commit and state REPRODUCES, NO LONGER REPRODUCES, or CANNOT TEST, with what you ran.
+2. **The amendments.** For each item of `CHANGELOG.md` under 2.0.0, state whether the files show it, and attack it: a new contradiction, a new dead end, a new way to cheat.
+3. **The cheating agent.** Name the 5 cheapest ways at this commit to produce a record that passes `python3 scripts/hinshitsu_check.py --stage delivery <folder>` and reads as DONE while no independent check ran. Build at least 2 of them in a scratch folder outside the repository and paste the checker output.
+4. **The owner.** Find where the skills, followed exactly, would harm the owner: cost, questions, an unreadable report, a stop the owner cannot clear.
+5. **Premortem.** 1 paragraph: 6 weeks from now the owner says the skill set failed. Tell the most likely story.
+
+## Report
+
+First line: your identifier. Then `## Verdict` (exactly 1 of: SKILL SET SURVIVES / SKILL SET SURVIVES WITH CHANGES / SKILL SET FAILS), `## Re-run of earlier findings` (table), `## The amendments`, `## The cheating agent`, `## The owner`, `## Findings` (numbered; each with Class: BLOCKER, DEFECT, FRAGILITY or STYLE, Where, Trigger, Violates, Proposed fix), `## Premortem`, `## Not examined`.
+
+Report only what you observed. If a check did not run, say so.

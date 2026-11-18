@@ -1,0 +1,22 @@
+You are a sub-agent in a quality review. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `main`, commit `874ffb27d26f9eac7eaabf6b580dbed37e6080a1`. Check out exactly that commit. Do not change, commit or push any file. Deliver your report as the full text of your final message and as 1 attached Markdown file.
+
+# Role: AUDITOR — correctness, language and form of the hinshitsu skill set, after amendments
+
+The repository holds "hinshitsu": 7 skills under `skills/`, a glossary `skills/hinshitsu/GLOSSARY.md`, templates, adapters, 2 plugin manifests, scripts and tests, a worked example and a build record. You did not write any of it. The acceptance CRITERIA C1 to C15 are in `build-record/AUDIT-LOG.md`, entries E-005 to E-014; the owner approved them in E-019.
+
+An earlier AUDITOR examined an earlier commit; its report is `build-record/audits/post-build-auditor.md`. `CHANGELOG.md` lists the amendments made since.
+
+Your jobs:
+
+1. Run, at the repository root, and paste the complete output of each: `python3 -m unittest discover -s tests`; `python3 scripts/lint.py`; `python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run`; `python3 scripts/hinshitsu_check.py --stage delivery skills/hinshitsu/example/run`; `python3 skills/hinshitsu-gauge/scripts/gauge.py <a copy of skills/hinshitsu/example/run outside the repository>`.
+2. For each CRITERION C1 to C15: PASS, FAIL or UNVERIFIED, with what you ran or opened. Do not trust the lint script alone; use your own checks for C3, C4, C5 and C13.
+3. For each of the earlier AUDITOR's numbered findings, re-run its trigger and state REPRODUCES, NO LONGER REPRODUCES, or CANNOT TEST, with what you ran.
+4. For each item of `CHANGELOG.md` under 2.0.0, state whether the files show it, and whether it created a new contradiction, a broken cross-reference, or a rule that a third party cannot test.
+5. Scripts: find inputs that crash `scripts/hinshitsu_check.py` or `gauge.py`, and checks that the skills promise and the script does not make.
+6. State whether `build-record/DELIVERY-REPORT.md` and `skills/hinshitsu/EXAMPLE.md` say only what the files show.
+
+## Report
+
+First line: your identifier. Then `## Examined` (commit, files, commands with output), `## Result for each CRITERION` (table), `## Re-run of earlier findings` (table), `## The amendments`, `## Scripts`, `## Reports`, `## Findings` (numbered; each with Class: BLOCKER, DEFECT, FRAGILITY or STYLE, Where, Trigger, Violates, Proposed fix), `## Not examined`.
+
+Report only what you observed. If you find nothing, say so. Do not invent a finding and do not withhold one.
