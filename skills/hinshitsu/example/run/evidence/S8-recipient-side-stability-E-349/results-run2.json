@@ -1,0 +1,678 @@
+{
+ "open": {
+  "requests": [
+   "file:///home/ubuntu/audit/fresh/index.html"
+  ],
+  "state": {
+   "vals": [
+    "",
+    "",
+    ""
+   ],
+   "errs": [
+    "",
+    "",
+    ""
+   ],
+   "invalid": [
+    null,
+    null,
+    null
+   ],
+   "result": [],
+   "guide": "Type the bill total, the tip percent and the number of people."
+  }
+ },
+ "a": {
+  "vals": [
+   "100.00",
+   "18",
+   "4"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 100.00",
+   "Tip percent: 18",
+   "Number of people: 4",
+   "Tip amount: 18.00",
+   "Total with tip: 118.00",
+   "4 people pay 29.50 each"
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "b": {
+  "vals": [
+   "10.00",
+   "0",
+   "3"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 10.00",
+   "Tip percent: 0",
+   "Number of people: 3",
+   "Tip amount: 0.00",
+   "Total with tip: 10.00",
+   "1 person pays 3.34",
+   "2 people pay 3.33 each",
+   "Your group decides who pays the higher amount."
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "c_wrong": {
+  "vals": [
+   "$100",
+   "18.5",
+   "0"
+  ],
+  "errs": [
+   "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+   "Type a whole number from 0 to 100, in digits only.",
+   "Type a whole number from 1 to 100, in digits only."
+  ],
+  "invalid": [
+   "true",
+   "true",
+   "true"
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "c_fixed": {
+  "vals": [
+   "100",
+   "18",
+   "4"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 100.00",
+   "Tip percent: 18",
+   "Number of people: 4",
+   "Tip amount: 18.00",
+   "Total with tip: 118.00",
+   "4 people pay 29.50 each"
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "d": {
+  "vals": [
+   "12,50",
+   "18",
+   "2"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 12.50",
+   "Tip percent: 18",
+   "Number of people: 2",
+   "Tip amount: 2.25",
+   "Total with tip: 14.75",
+   "1 person pays 7.38",
+   "1 person pays 7.37",
+   "Your group decides who pays the higher amount."
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "e": {
+  "vals": [
+   "12.5",
+   "18",
+   "2"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 12.50",
+   "Tip percent: 18",
+   "Number of people: 2",
+   "Tip amount: 2.25",
+   "Total with tip: 14.75",
+   "1 person pays 7.38",
+   "1 person pays 7.37",
+   "Your group decides who pays the higher amount."
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "reload_before": {
+  "vals": [
+   "100.00",
+   "18",
+   ""
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "reload_after": {
+  "vals": [
+   "",
+   "",
+   ""
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "reload_after_error": {
+  "vals": [
+   "",
+   "",
+   ""
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "empty_untouched": {
+  "vals": [
+   "",
+   "",
+   ""
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "empty_tabbed": {
+  "vals": [
+   "",
+   "",
+   ""
+  ],
+  "errs": [
+   "Type the bill total.",
+   "Type the tip percent. Type 0 for no tip.",
+   "Type the number of people."
+  ],
+  "invalid": [
+   "true",
+   "true",
+   "true"
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "min": {
+  "vals": [
+   "0.01",
+   "0",
+   "1"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 0.01",
+   "Tip percent: 0",
+   "Number of people: 1",
+   "Tip amount: 0.00",
+   "Total with tip: 0.01",
+   "1 person pays 0.01"
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "max": {
+  "vals": [
+   "1000000.00",
+   "100",
+   "100"
+  ],
+  "errs": [
+   "",
+   "",
+   ""
+  ],
+  "invalid": [
+   null,
+   null,
+   null
+  ],
+  "result": [
+   "Bill total: 1000000.00",
+   "Tip percent: 100",
+   "Number of people: 100",
+   "Tip amount: 1000000.00",
+   "Total with tip: 2000000.00",
+   "100 people pay 20000.00 each"
+  ],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "over_max": {
+  "vals": [
+   "1000000.01",
+   "101",
+   "101"
+  ],
+  "errs": [
+   "Type 1000000.00 or less.",
+   "Type a whole number from 0 to 100, in digits only.",
+   "Type a whole number from 1 to 100, in digits only."
+  ],
+  "invalid": [
+   "true",
+   "true",
+   "true"
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "under_min": {
+  "vals": [
+   "0.00",
+   "-1",
+   "0"
+  ],
+  "errs": [
+   "Type an amount above 0.",
+   "Type a whole number from 0 to 100, in digits only.",
+   "Type a whole number from 1 to 100, in digits only."
+  ],
+  "invalid": [
+   "true",
+   "true",
+   "true"
+  ],
+  "result": [],
+  "guide": "Type the bill total, the tip percent and the number of people."
+ },
+ "invalid": [
+  {
+   "typed": [
+    "abc",
+    "abc",
+    "abc"
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type a whole number from 0 to 100, in digits only.",
+    "Type a whole number from 1 to 100, in digits only."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    "1,000.00",
+    "18.0",
+    "4."
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type a whole number from 0 to 100, in digits only.",
+    "Type a whole number from 1 to 100, in digits only."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    "1e3",
+    "1e1",
+    "+4"
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type a whole number from 0 to 100, in digits only.",
+    "Type a whole number from 1 to 100, in digits only."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    ".5",
+    "18,5",
+    "2.5"
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type a whole number from 0 to 100, in digits only.",
+    "Type a whole number from 1 to 100, in digits only."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    "-5",
+    "-1",
+    "-2"
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type a whole number from 0 to 100, in digits only.",
+    "Type a whole number from 1 to 100, in digits only."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    "12.345",
+    " ",
+    " "
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type the tip percent. Type 0 for no tip.",
+    "Type the number of people."
+   ],
+   "result": []
+  },
+  {
+   "typed": [
+    "10.",
+    "",
+    ""
+   ],
+   "errs": [
+    "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.",
+    "Type the tip percent. Type 0 for no tip.",
+    "Type the number of people."
+   ],
+   "result": []
+  }
+ ],
+ "widths": {
+  "360": {
+   "first": {
+    "innerWidth": 360,
+    "docScrollWidth": 360,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "result": {
+    "innerWidth": 360,
+    "docScrollWidth": 360,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "resultText": [
+    "Bill total: 1000000.00",
+    "Tip percent: 100",
+    "Number of people: 3",
+    "Tip amount: 1000000.00",
+    "Total with tip: 2000000.00",
+    "2 people pay 666666.67 each",
+    "1 person pays 666666.66",
+    "Your group decides who pays the higher amount."
+   ],
+   "error": {
+    "innerWidth": 360,
+    "docScrollWidth": 360,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   }
+  },
+  "768": {
+   "first": {
+    "innerWidth": 768,
+    "docScrollWidth": 768,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "result": {
+    "innerWidth": 768,
+    "docScrollWidth": 768,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "resultText": [
+    "Bill total: 1000000.00",
+    "Tip percent: 100",
+    "Number of people: 3",
+    "Tip amount: 1000000.00",
+    "Total with tip: 2000000.00",
+    "2 people pay 666666.67 each",
+    "1 person pays 666666.66",
+    "Your group decides who pays the higher amount."
+   ],
+   "error": {
+    "innerWidth": 768,
+    "docScrollWidth": 768,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   }
+  },
+  "1280": {
+   "first": {
+    "innerWidth": 1280,
+    "docScrollWidth": 1280,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "result": {
+    "innerWidth": 1280,
+    "docScrollWidth": 1280,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   },
+   "resultText": [
+    "Bill total: 1000000.00",
+    "Tip percent: 100",
+    "Number of people: 3",
+    "Tip amount: 1000000.00",
+    "Total with tip: 2000000.00",
+    "2 people pay 666666.67 each",
+    "1 person pays 666666.66",
+    "Your group decides who pays the higher amount."
+   ],
+   "error": {
+    "innerWidth": 1280,
+    "docScrollWidth": 1280,
+    "sideways": false,
+    "wide": [],
+    "cut": []
+   }
+  }
+ },
+ "paste_spaces": {
+  "pastedLength": 67,
+  "valueLength": 67,
+  "whileFocused": {
+   "errs": [
+    "",
+    "Type the tip percent. Type 0 for no tip.",
+    ""
+   ],
+   "result": []
+  },
+  "after": {
+   "errs": [
+    "",
+    "",
+    ""
+   ],
+   "result": [
+    "Bill total: 1234.56",
+    "Tip percent: 18",
+    "Number of people: 4",
+    "Tip amount: 222.22",
+    "Total with tip: 1456.78",
+    "2 people pay 364.20 each",
+    "2 people pay 364.19 each",
+    "Your group decides who pays the higher amount."
+   ]
+  },
+  "layout": {
+   "innerWidth": 1280,
+   "docScrollWidth": 1280,
+   "sideways": false,
+   "wide": [],
+   "cut": []
+  }
+ },
+ "paste_digits": {
+  "pastedLength": 70,
+  "valueLength": 70,
+  "whileFocused": {
+   "errs": [
+    "Type 1000000.00 or less.",
+    "Type the tip percent. Type 0 for no tip.",
+    ""
+   ],
+   "result": []
+  },
+  "after": {
+   "errs": [
+    "Type 1000000.00 or less.",
+    "",
+    ""
+   ],
+   "result": []
+  },
+  "layout": {
+   "innerWidth": 1280,
+   "docScrollWidth": 1280,
+   "sideways": false,
+   "wide": [],
+   "cut": []
+  }
+ },
+ "paste_spaces_only": {
+  "pastedLength": 70,
+  "valueLength": 70,
+  "whileFocused": {
+   "errs": [
+    "Type the bill total.",
+    "Type the tip percent. Type 0 for no tip.",
+    ""
+   ],
+   "result": []
+  },
+  "after": {
+   "errs": [
+    "Type the bill total.",
+    "",
+    ""
+   ],
+   "result": []
+  },
+  "layout": {
+   "innerWidth": 1280,
+   "docScrollWidth": 1280,
+   "sideways": false,
+   "wide": [],
+   "cut": []
+  }
+ },
+ "paste_digits_360": {
+  "pastedLength": 70,
+  "valueLength": 70,
+  "whileFocused": {
+   "errs": [
+    "Type 1000000.00 or less.",
+    "Type the tip percent. Type 0 for no tip.",
+    ""
+   ],
+   "result": []
+  },
+  "after": {
+   "errs": [
+    "Type 1000000.00 or less.",
+    "",
+    ""
+   ],
+   "result": []
+  },
+  "layout": {
+   "innerWidth": 360,
+   "docScrollWidth": 360,
+   "sideways": false,
+   "wide": [],
+   "cut": []
+  }
+ },
+ "pageErrors": []
+}
