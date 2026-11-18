@@ -1,0 +1,64 @@
+$ git log origin/main --format=%H\ %s --grep="^example run: S8 and S9 scopes"
+6c94e4c10c9ce7b3c0b45072105b0c2355ec98ef example run: S8 and S9 scopes; GitHub Pages check (E-348)
+$ sha256 of index.html and run/review/index.html at each commit
+beef7f6 index.html d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6
+beef7f6 review/index.html a615ada402bc8ebfc5884b0eb6b1e62a12d3335b92d4be6790b6c91846a5af45
+fa57558 index.html d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6
+fa57558 review/index.html a615ada402bc8ebfc5884b0eb6b1e62a12d3335b92d4be6790b6c91846a5af45
+e317f94 index.html d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6
+e317f94 review/index.html a615ada402bc8ebfc5884b0eb6b1e62a12d3335b92d4be6790b6c91846a5af45
+8829fcd index.html d5e4f980b2fcf0f7a883101d5d648ca48c264f246514aeb3816b671a0b6587b6
+8829fcd review/index.html a615ada402bc8ebfc5884b0eb6b1e62a12d3335b92d4be6790b6c91846a5af45
+3a0eae2 index.html 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5
+3a0eae2 review/index.html 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5
+6c94e4c index.html 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5
+6c94e4c review/index.html 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5
+$ diff <(git show fa57558:skills/hinshitsu/example/run/review/index.html) skills/hinshitsu/example/index.html
+33c33
+<       <input maxlength="64" id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
+---
+>       <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
+38c38
+<       <input maxlength="64" id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
+---
+>       <input id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
+43c43
+<       <input maxlength="64" id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
+---
+>       <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
+107c107
+<   var cents = parseInt(whole, 10) * 100 + parseInt(m[2] || "0", 10);
+---
+>   var cents = parseInt(whole, 10) * 100 + parseInt(((m[2] || "") + "00").slice(0, 2), 10);
+$ diff <(git show fa57558:skills/hinshitsu/example/index.html) skills/hinshitsu/example/index.html
+33c33
+<       <input maxlength="64" id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
+---
+>       <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-required="true" aria-describedby="bill-error">
+38c38
+<       <input maxlength="64" id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
+---
+>       <input id="tip" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tip-error">
+43c43
+<       <input maxlength="64" id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
+---
+>       <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="people-error">
+$ find . -iname "EXAMPLE*" -not -path "./.git/*"
+./skills/hinshitsu/example
+$ grep -n "spent a lot of time\|stop looping" run/AUDIT-LOG.md | cut -c1-120
+2784:- State: UNVERIFIED by an AUDITOR. F-143 and F-144 stay open; the delivery report says so. No further audit round r
+3330:- 3 audit rounds ran; each seeded defect was found by both required roles (E-267). Open FINDINGS stay open and go t
+$ grep -n "· ANSWER ·" run/AUDIT-LOG.md | tail -2
+929:### E-89 · 2026-11-18T16:21:44Z · ANSWER · orchestrator
+1789:### E-173 · 2026-11-18T17:05:03Z · ANSWER · orchestrator
+$ curl -sI raw URL | grep -i content
+HTTP/2 200 
+content-security-policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+content-type: text/plain; charset=utf-8
+x-content-type-options: nosniff
+$ curl pages URL status
+404
+$ grep -n "window.splitBill" run/FRAMEWORK.md
+34:- **Names on `window`.** The script is 1 function; `window.splitBill` is the 1 name it adds. No part of the page and no check of this run calls `window.splitBill`; it exists for a person at the con
+$ git status --porcelain | wc -l
+0

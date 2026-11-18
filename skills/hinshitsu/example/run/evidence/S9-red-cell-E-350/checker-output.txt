@@ -1,0 +1,8 @@
+FAIL DELIVERY-REPORT.md: file is missing (rules 7.1, 8.1, 9.1, 10.1, 19.1, 24.1)
+FAIL AUDIT-LOG.md: stage S8 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: stage S9 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: stage S10 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: stage S11 has no end or skipped entry (rule 0.7)
+hinshitsu_check (delivery): 5 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit code: 1

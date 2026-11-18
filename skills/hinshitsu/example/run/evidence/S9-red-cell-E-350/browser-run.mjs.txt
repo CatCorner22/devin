@@ -1,0 +1,53 @@
+import fs from 'fs';
+const P='file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html';
+const out=[];const log=(...a)=>{const s=a.map(x=>typeof x==='string'?x:JSON.stringify(x)).join(' ');out.push(s);console.log(s)};
+async function tab(url){const t=await (await fetch('http://localhost:29229/json/new?about:blank',{method:'PUT'})).json();
+ const ws=new WebSocket(t.webSocketDebuggerUrl);await new Promise(r=>ws.onopen=r);let id=0;const pend=new Map();const ev=[];
+ ws.onmessage=m=>{const d=JSON.parse(m.data);if(d.id){pend.get(d.id)(d);pend.delete(d.id)}else ev.push(d)};
+ const send=(method,params={})=>new Promise(r=>{const i=++id;pend.set(i,r);ws.send(JSON.stringify({id:i,method,params}))});
+ const ev_=async(e)=>{const r=await send('Runtime.evaluate',{expression:e,returnByValue:true,awaitPromise:true});return r.result.exceptionDetails?('EXC '+JSON.stringify(r.result.exceptionDetails.exception?.description)):r.result.result.value};
+ await send('Page.enable');await send('Network.enable');
+ const nav=async(u)=>{ev.length=0;await send('Page.navigate',{url:u});await new Promise(r=>setTimeout(r,700))};
+ const shot=async(f)=>{const r=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(f,Buffer.from(r.result.data,'base64'))};
+ return {send,ev:ev_,nav,shot,events:ev,close:()=>fetch('http://localhost:29229/json/close/'+t.id)};}
+const t=await tab();
+const type=async(id,text)=>{await t.ev(`document.getElementById('${id}').focus();document.getElementById('${id}').select()`);if(text==='')await t.send('Input.dispatchKeyEvent',{type:'keyDown',key:'Delete',code:'Delete',windowsVirtualKeyCode:46});else await t.send('Input.insertText',{text})};
+const state=()=>t.ev(`JSON.stringify({res:document.getElementById('result').innerText,err:['bill','tip','people'].map(i=>document.getElementById(i+'-error').textContent)})`);
+const run=async(b,ti,p)=>{await type('bill',b);await type('tip',ti);await type('people',p);await t.ev(`document.activeElement.blur()`);return JSON.parse(await state())};
+await t.nav(P);
+log('T0 browser',await t.ev('navigator.userAgent'));
+log('T1 requests on load:',t.events.filter(e=>e.method==='Network.requestWillBeSent').map(e=>e.params.request.url));
+log('T1 first open',await state(), 'guide:',await t.ev(`document.getElementById('guide').innerText`));
+for(const c of [['100.00','18','4'],['0.30','15','1'],['10.10','15','1'],['12.25','18','1'],['0100.5','007','02'],['10.00','0','3'],['1000000.00','100','100'],['0.01','0','100'],['12.5','18','4'],['12,5','18','4']]) log('T2',c,await run(...c));
+await run('100.00','18','4');await t.shot('01-result-100-18-4.png');
+log('T3 long paste 60sp+1234.56',await run(' '.repeat(60)+'1234.56','18','1'));
+log('T3 62 zeros+12345',await run('0'.repeat(62)+'12345','18','1'));
+log('T3 12.50+59sp+USD',await run('12.50'+' '.repeat(59)+'USD','18','1'));
+for(const b of ['5\u00B2','12\u2075\u2070','\u2460\u2461','\u{1D7CF}\u{1D7D0}','12\u202450','\u3251','\u0967\u0968','\u06F1\u06F2','\u0661\u0662\u066B\u0665\u0660','1,000','1.000,00','18.5']) log('T4 bill',JSON.stringify(b),await run(b,'18','4'));
+log('T4 tip 1²',await run('100.00','1\u00B2','4'));log('T4 people ④',await run('100.00','18','\u2463'));
+log('T4b tip 12.5',await run('100.00','12.5','4'));log('T4b tip 17,5',await run('100.00','17,5','4'));log('T4b people 101',await run('100.00','18','101'));
+await run('100.00','12.5','4');await t.shot('02-tip-12.5-refused.png');
+// T5 mutations in result while focusing through fields
+await run('100.00','18','4');
+log('T5 mutations in #result and errors while focusing each field, no value change:',await t.ev(`(async()=>{let n=0;const o=new MutationObserver(m=>n+=m.length);for(const i of ['result','bill-error','tip-error','people-error'])o.observe(document.getElementById(i),{childList:true,subtree:true,characterData:true});for(const i of ['bill','tip','people','bill'])document.getElementById(i).focus();document.activeElement.blur();await new Promise(r=>setTimeout(r,50));return n})()`));
+// T6 perf
+for(const [name,expr] of [['1+1e6 spaces+x in tip','"1"+" ".repeat(1e6)+"x"'],['1e6 zeros + x in tip','"0".repeat(1e6)+"x"'],['1e6 digits "1" in bill (bill field)','"1".repeat(1e6)'],['1e6 U+200B then 5','"\\u200B".repeat(1e6)+"5"'],['5e6 spaces','" ".repeat(5e6)']]) {
+ const fld=name.includes('bill')?'bill':'tip';
+ log('T6',name,await t.ev(`(()=>{const f=document.getElementById('${fld}');f.value=${expr};const t0=performance.now();f.dispatchEvent(new Event('input',{bubbles:true}));const ms=performance.now()-t0;const r={ms:Math.round(ms*10)/10,err:document.getElementById('${fld}-error').textContent.slice(0,60)};f.value='';f.dispatchEvent(new Event('input',{bubbles:true}));return JSON.stringify(r)})()`));}
+// T7 widths
+for(const w of [360,768,1280]){await t.send('Emulation.setDeviceMetricsOverride',{width:w,height:800,deviceScaleFactor:1,mobile:false});await run('1000000.00','100','7');await type('tip','abc');await t.ev('document.activeElement.blur()');
+ log('T7 width',w,await t.ev(`JSON.stringify({sw:document.documentElement.scrollWidth,iw:innerWidth,wider:[...document.querySelectorAll('*')].filter(e=>e.getBoundingClientRect().right>innerWidth+0.5).length})`));await t.shot(`03-width-${w}.png`);}
+// T8 CSP fetch, storage words, reload clears
+log('T8 fetch',await t.ev(`fetch('https://example.com').then(()=>'NOT BLOCKED',e=>'blocked: '+e.message)`));
+await run('12.50','18','3');await t.send('Page.reload');await new Promise(r=>setTimeout(r,700));log('T8 after reload',await t.ev(`JSON.stringify(['bill','tip','people'].map(i=>document.getElementById(i).value))`),await state());
+// T9 JS off
+await t.send('Emulation.setScriptExecutionDisabled',{value:true});await t.send('Page.reload');await new Promise(r=>setTimeout(r,700));await t.shot('04-js-off.png');
+const dom=await t.send('DOM.getDocument',{depth:-1});
+await t.send('Emulation.setScriptExecutionDisabled',{value:false});
+// T10 raw github at phone width
+await t.send('Emulation.setDeviceMetricsOverride',{width:360,height:740,deviceScaleFactor:2,mobile:true});
+await t.nav('https://raw.githubusercontent.com/CatCorner22/devin/main/skills/hinshitsu/example/index.html');await new Promise(r=>setTimeout(r,1500));
+log('T10 raw URL: contentType',await t.ev('document.contentType'),'inputs',await t.ev('document.querySelectorAll("input").length'),'text starts',await t.ev('document.body.innerText.slice(0,60)'));await t.shot('05-raw-github-phone-width.png');
+await t.nav('https://catcorner22.github.io/devin/skills/hinshitsu/example/index.html');await new Promise(r=>setTimeout(r,1000));
+log('T10 pages URL: title',await t.ev('document.title'),'inputs',await t.ev('document.querySelectorAll("input").length'));await t.shot('06-github-pages-404.png');
+await t.close();fs.writeFileSync('browser-run.txt',out.join('\n')+'\n');process.exit(0);

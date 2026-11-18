@@ -1,0 +1,49 @@
+T0 browser Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36; Devin/1.0; +devin.ai
+T1 requests on load: ["file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html"]
+T1 first open {"res":"","err":["","",""]} guide: Type the bill total, the tip percent and the number of people.
+T2 ["100.00","18","4"] {"res":"Bill total: 100.00\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 18.00\n\nTotal with tip: 118.00\n\n4 people pay 29.50 each","err":["","",""]}
+T2 ["0.30","15","1"] {"res":"Bill total: 0.30\n\nTip percent: 15\n\nNumber of people: 1\n\nTip amount: 0.05\n\nTotal with tip: 0.35\n\n1 person pays 0.35","err":["","",""]}
+T2 ["10.10","15","1"] {"res":"Bill total: 10.10\n\nTip percent: 15\n\nNumber of people: 1\n\nTip amount: 1.52\n\nTotal with tip: 11.62\n\n1 person pays 11.62","err":["","",""]}
+T2 ["12.25","18","1"] {"res":"Bill total: 12.25\n\nTip percent: 18\n\nNumber of people: 1\n\nTip amount: 2.21\n\nTotal with tip: 14.46\n\n1 person pays 14.46","err":["","",""]}
+T2 ["0100.5","007","02"] {"res":"Bill total: 100.50\n\nTip percent: 7\n\nNumber of people: 2\n\nTip amount: 7.04\n\nTotal with tip: 107.54\n\n2 people pay 53.77 each","err":["","",""]}
+T2 ["10.00","0","3"] {"res":"Bill total: 10.00\n\nTip percent: 0\n\nNumber of people: 3\n\nTip amount: 0.00\n\nTotal with tip: 10.00\n\n1 person pays 3.34\n\n2 people pay 3.33 each\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T2 ["1000000.00","100","100"] {"res":"Bill total: 1000000.00\n\nTip percent: 100\n\nNumber of people: 100\n\nTip amount: 1000000.00\n\nTotal with tip: 2000000.00\n\n100 people pay 20000.00 each","err":["","",""]}
+T2 ["0.01","0","100"] {"res":"Bill total: 0.01\n\nTip percent: 0\n\nNumber of people: 100\n\nTip amount: 0.00\n\nTotal with tip: 0.01\n\n1 person pays 0.01\n\n99 people pay 0.00 each\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T2 ["12.5","18","4"] {"res":"Bill total: 12.50\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 2.25\n\nTotal with tip: 14.75\n\n3 people pay 3.69 each\n\n1 person pays 3.68\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T2 ["12,5","18","4"] {"res":"Bill total: 12.50\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 2.25\n\nTotal with tip: 14.75\n\n3 people pay 3.69 each\n\n1 person pays 3.68\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T3 long paste 60sp+1234.56 {"res":"Bill total: 1234.56\n\nTip percent: 18\n\nNumber of people: 1\n\nTip amount: 222.22\n\nTotal with tip: 1456.78\n\n1 person pays 1456.78","err":["","",""]}
+T3 62 zeros+12345 {"res":"Bill total: 12345.00\n\nTip percent: 18\n\nNumber of people: 1\n\nTip amount: 2222.10\n\nTotal with tip: 14567.10\n\n1 person pays 14567.10","err":["","",""]}
+T3 12.50+59sp+USD {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "5²" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "12⁵⁰" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "①②" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "𝟏𝟐" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "12․50" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "㉑" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "१२" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "۱۲" {"res":"Bill total: 12.00\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 2.16\n\nTotal with tip: 14.16\n\n4 people pay 3.54 each","err":["","",""]}
+T4 bill "١٢٫٥٠" {"res":"Bill total: 12.50\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 2.25\n\nTotal with tip: 14.75\n\n3 people pay 3.69 each\n\n1 person pays 3.68\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T4 bill "1,000" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "1.000,00" {"res":"","err":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+T4 bill "18.5" {"res":"Bill total: 18.50\n\nTip percent: 18\n\nNumber of people: 4\n\nTip amount: 3.33\n\nTotal with tip: 21.83\n\n3 people pay 5.46 each\n\n1 person pays 5.45\n\nYour group decides who pays the higher amount.","err":["","",""]}
+T4 tip 1² {"res":"","err":["","Type a whole number from 0 to 100, in digits only.",""]}
+T4 people ④ {"res":"","err":["","","Type a whole number from 1 to 100, in digits only."]}
+T4b tip 12.5 {"res":"","err":["","Type a whole number from 0 to 100, in digits only.",""]}
+T4b tip 17,5 {"res":"","err":["","Type a whole number from 0 to 100, in digits only.",""]}
+T4b people 101 {"res":"","err":["","","Type a whole number from 1 to 100, in digits only."]}
+T5 mutations in #result and errors while focusing each field, no value change: 0
+T6 1+1e6 spaces+x in tip {"ms":22.3,"err":"Type a whole number from 0 to 100, in digits only."}
+T6 1e6 zeros + x in tip {"ms":21,"err":"Type a whole number from 0 to 100, in digits only."}
+T6 1e6 digits "1" in bill (bill field) {"ms":19.4,"err":"Type 1000000.00 or less."}
+T6 1e6 U+200B then 5 {"ms":53.6,"err":""}
+T6 5e6 spaces {"ms":94.9,"err":"Type the tip percent. Type 0 for no tip."}
+T7 width 360 {"sw":360,"iw":360,"wider":0}
+T7 width 768 {"sw":768,"iw":768,"wider":0}
+T7 width 1280 {"sw":1280,"iw":1280,"wider":0}
+T8 fetch blocked: Failed to fetch
+T8 after reload ["","",""] {"res":"","err":["","",""]}
+T10 raw URL: contentType text/plain inputs 0 text starts <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8
+T10 pages URL: title Site not found · GitHub Pages inputs 0
