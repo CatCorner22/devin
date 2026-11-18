@@ -18,11 +18,11 @@ The checker script tests the shape of the record; it does not prove that any che
 
 **What you got.** A change to the checker script and 10 new tests, on the branch `devin/hinshitsu-run-2.1.0` [`evidence/new-tests-count.txt`]. A thick or dotted arrow with no text on it now fails, and an arrow with its text written between the dashes now passes [E-42; `audits/WU-1-r2-correctness-E-44.md`].
 
-**What was proven.** A separate session, which did not write the fix, ran each test that the 7 acceptance statements name; each gave the required result [`audits/WU-1-r2-correctness-E-44.md`]. It also confirmed that 2 faults found in my first version no longer occur [E-50, E-51].
+**What was proven.** A separate session, which did not write the fix, ran each test that the 7 acceptance statements name; each gave the required result [`audits/WU-1-r2-correctness-E-44.md`]. It confirmed that 2 faults in my first version no longer occur [E-50, E-51].
 
 **What was not proven.** That my record of the run is true: the final check ended `not passed`, with 4 faults in my paperwork; 3 are corrected and none is confirmed by a new session [`audits/final-audit-E-72.md`; E-79]. Nobody used the checker as a later user would, ran the 4 stability checks, or ran Mermaid itself [E-68]. My 2 guesses about users have no proof [E-13]. 8 known limits remain, accepted by you [E-38, E-55, E-83].
 
-**What you need to decide next.** (1) Approve or reject the 6 proposed changes to the skills; if you do nothing, no skill changes. (2) Nothing else: you directed that the run ends if the second final check does not pass [E-83].
+**What you need to decide next.** (1) Approve or reject the 6 proposed changes to the skills; if you do nothing, no skill changes. (2) Nothing else: you directed that the run ends if the second final check fails [E-83].
 
 You may stop reading here.
 
