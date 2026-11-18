@@ -161,3 +161,9 @@ Sent to: each LENS and the RED CELL, in the scopes of S5; the USER, on the card 
 - Stage: S4
 - Event: end
 - Artifacts: `AUDIT-LOG.md` (the `ASSUMPTION`, `DECISION` and `CRITERIA` entries above)
+
+### E-18 · 2026-11-18T15:25:27Z · STAGE · orchestrator
+
+- Stage: S5
+- Event: start
+- Skill read: `skills/hinshitsu-challenge/SKILL.md`, 8539 bytes, SHA-256 462b904131901066378fbc70fc1a7644cde9c8f5d4c722b6a9468dd6f925bf22
