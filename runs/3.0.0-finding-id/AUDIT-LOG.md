@@ -138,3 +138,27 @@ Each gap: recommended answer; reason; cost; who decides.
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
 - Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-13 · 2026-11-18T21:25:32Z · ASSUMPTION · orchestrator
+
+PREMISES for the decision D-1 (how the gauge tests a FINDING ID). Each was checked by a command; output in `evidence/premises.txt` and `evidence/existing-implementations.txt`.
+
+- A-1: at the starting commit the gauge shows a FINDING with the ID `F-1.` or `blocker one` and the class BLOCKER in the STOPPED line and counts 0 unread entries. Decision resting on it: D-1. EVIDENCE: `evidence/premises.txt`. If false: there is no fault to fix and the run stops with a card.
+- A-2: the checker refuses both IDs with the message "is not F-<n> (rule 9.5)", testing the first word of the ID field against `F-\d+` with a full match (`scripts/hinshitsu_check.py` lines 85 and 299 to 306). Decision: D-1. EVIDENCE: `evidence/premises.txt`, `evidence/existing-implementations.txt`. If false: C3 names the wrong test.
+- A-3: `gauge.py` imports nothing from `scripts/` and is shipped inside the skill folder. Decision: D-1. EVIDENCE: `evidence/existing-implementations.txt`. If false: the gauge could import the checker's pattern in place of a copy.
+- A-4: the full test suite passes at the starting commit. Decision: D-1. EVIDENCE: `evidence/premises.txt`. If false: C4 cannot tell an old failure from a new one.
+
+Who received the list (rule 4.3): this is a `CORE` run; no LENS and no RED CELL saw the list. No PREMISE concerns the USER's goal, money, data or RECIPIENTS beyond VA1 and VA2 of E-9, which go on the card.
+
+### E-14 · 2026-11-18T21:25:33Z · CRITERIA · orchestrator
+
+- Status: PROPOSED
+
+A "refused ID" below means: the FINDING entry has no `- ID:` line, or the line is empty, or the first word of the ID field does not fully match `F-<digits>`. This is the test of `scripts/hinshitsu_check.py` lines 299 to 306.
+
+- C1: `gauge.py` counts each FINDING entry with a refused ID, whatever its class, as 1 entry it could not read. Test: `python3 -m unittest tests.test_gauge -v` — tests in which a log with the IDs `F-1.` and `blocker one` (and 1 with no ID line) gives `unread` equal to the number of such entries, and the text gauge prints "<n> entries could not be read".
+- C2: a FINDING entry with a refused ID does not appear in the `STOPPED — blocker open` line of the text gauge nor in `GAUGE.svg`, and a log whose only BLOCKERS have refused IDs prints no STOPPED line. Test: `python3 -m unittest tests.test_gauge -v` — tests that run the script on such a log and read both outputs.
+- C3: the gauge and the checker agree: for each ID field in a list that holds at least `F-1`, `F-12`, `F-3 (local 2)`, `F-1.`, `blocker one`, `f-1`, `F-`, `F-1a` and ` F-2`, the gauge lists the BLOCKER when, and only when, `hinshitsu_check.FINDING_ID` fully matches the first word. Test: `python3 -m unittest tests.test_gauge -v` — 1 test that imports both modules and compares them on the list.
+- C4: nothing else changes: a BLOCKER with an ID of the form `F-<n>` is shown and is cleared by its RESOLUTION as before; every test that passed at commit a3717b1 passes; `gauge.py` imports only the standard library. Test: `python3 -m unittest discover -s tests` exits 0 and `python3 scripts/hinshitsu_lint.py` prints 0 failures; `git diff a3717b1 -- tests/test_gauge.py` removes or changes no existing test line.
+- C5: `tests/test_gauge.py` holds the new tests named in C1 to C3, and each of them fails when run against `gauge.py` of commit a3717b1. Test: the correctness auditor checks out `gauge.py` of a3717b1 beside the new tests and saves the failing output under `evidence/`.
+- C6: the change is on the branch `devin/hinshitsu-run-3.0.0` only; `main` on GitHub stays at a3717b1 and no pull request exists. Test: `git ls-remote origin main` and `gh pr list --head devin/hinshitsu-run-3.0.0 --state all`.
