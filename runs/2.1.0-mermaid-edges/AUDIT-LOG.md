@@ -164,3 +164,11 @@ Sent to: the USER, on the card that follows the `CRITERIA` entry (A-6 and A-7, w
 - Rests on: A-1, A-2, A-3, A-4, A-6, A-7
 - Reason: it gives the verdicts the USER asked for on the 3 named forms, keeps the 2 existing verdicts, and stays inside the standard library.
 - Alternatives rejected: (1) add `==>` and `-.->` to the old pattern and nothing else — `A -- reads --> B` still fails; (2) a Mermaid parser from a package — `TESTING.md` says Python 3 only (O3); (3) test every link form and every link on a line — G12 is the USER's call and is on the card; this decision changes if the USER answers `approve, all forms`.
+
+### E-15 · 2026-11-18T19:36:36Z · DECISION · orchestrator
+
+- ID: D-2
+- Decision: The failure message names the arrow as written: `CONNECTIONS.md: edge <from> <arrow> <to> has no label (rule 9.3)`.
+- Rests on: A-5
+- Reason: G9 — the reader finds the line by the arrow typed. The words `has no label` stay, so the existing test holds.
+- Alternatives rejected: keep `-->` in every message — it shows an arrow the file does not hold.
