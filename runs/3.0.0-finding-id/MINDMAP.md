@@ -44,8 +44,11 @@ Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
 - F-2 `gauge.py` lines 88 to 89 (`fid not in blockers`, `blockers.append(fid)`), against `hinshitsu_check.py` line 302 (`fid = fid.split()[0]`). (DEFECT, OVERRULED by E-37)
 - F-3 `gauge.py` line 31 and lines 84 to 85; `tests/test_gauge.py` lines 83 to 92; `scripts/hinshitsu_check.py` lines 85 and 299 to 306. (FRAGILITY, FIXED by E-42)
 - F-4 `gauge.py` line 137. (STYLE, OVERRULED by E-38)
-- F-5 `skills/hinshitsu-gauge/SKILL.md`, section 24, item 2 and item 3. The commit does not change this file. (BLOCKER, open)
+- F-5 `skills/hinshitsu-gauge/SKILL.md`, section 24, item 2 and item 3. The commit does not change this file. (BLOCKER, FIXED by E-56)
 - F-6 `skills/hinshitsu-gauge/scripts/gauge.py`, `svg_gauge`, lines 153 to 210: no line prints `st["unread"]`. Line 137 prints it in the text gauge only. (DEFECT, OVERRULED by E-51)
 - F-7 `scripts/hinshitsu_check.py` line 310 (the only call of `finding_id`) and lines 540 to 541 (`check_record` applies the same test by hand); `tests/test_gauge.py` line 90; `tests/test_check.py` line 467. (FRAGILITY, OVERRULED by E-52)
 - F-8 `skills/hinshitsu-gauge/scripts/gauge.py` line 137. (STYLE, OVERRULED by E-47)
+- F-9 `skills/hinshitsu-gauge/SKILL.md`, section 24, item 3 (line 16): "shows `STOPPED — blocker open` with the count of open BLOCKERS and the first 4 FINDING IDs". `skills/hinshitsu-gauge/scripts/gauge.py`, lines 88 and 89. (BLOCKER, open)
+- F-10 `tests/test_gauge.py`, lines 156 to 159 (`test_svg_is_well_formed_and_escapes`), with `gauge.py` lines 85 to 87 and 144 to 145. (FRAGILITY, open)
+- F-11 `skills/hinshitsu-gauge/scripts/gauge.py`, line 137. (STYLE, OVERRULED by E-60)
 <!-- from the log: end -->

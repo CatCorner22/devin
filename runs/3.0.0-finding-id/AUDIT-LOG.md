@@ -575,3 +575,80 @@ Change: fix of F-5. `skills/hinshitsu-gauge/SKILL.md`, rule 24.2 and rule 24.3, 
 - Commit under review: 1ce96d3806ca886d4749660e07e94074c4cb87c7
 - SUB-AGENT identifier: c3ed7b8eb9e24df1a073282ebb7e2b1f https://app.devin.ai/sessions/c3ed7b8eb9e24df1a073282ebb7e2b1f
 - Report: `audits/WU-1-r3-correctness_E-55.md`
+
+### E-56 · 2026-11-18T22:00:10Z · RESOLUTION · orchestrator
+
+- Finding: F-5
+- Result: FIXED
+- Change: commit 1ce96d3806ca886d4749660e07e94074c4cb87c7 (`skills/hinshitsu-gauge/SKILL.md`, rules 24.2 and 24.3, 1 sentence each)
+- Re-audit: `audits/WU-1-r3-correctness_E-55.md`, heading "The FINDING to re-run (probe P1)": "It does not reproduce on 1ce96d3." (a new SUB-AGENT, LAUNCH E-55, that did not raise F-5)
+
+### E-57 · 2026-11-18T22:00:10Z · FINDING · auditor: correctness
+
+- ID: F-9
+- Class: BLOCKER (d) (the AUDITOR's words: "BLOCKER, under part (d) of the glossary. The behavior is the same at a3717b1 and no CRITERION C1 to C6 fails; the class comes only from the false statement in the changed line 16. If the ORCHESTRATOR reads "FINDING IDs" in item 3 as "ID fields", this is a DEFECT.")
+- Where: `skills/hinshitsu-gauge/SKILL.md`, section 24, item 3 (line 16): "shows `STOPPED — blocker open` with the count of open BLOCKERS and the first 4 FINDING IDs". `skills/hinshitsu-gauge/scripts/gauge.py`, lines 88 and 89.
+- Trigger: probe P2. Write a log with 2 `FINDING` entries of class BLOCKER, with `- ID: F-7` and `- ID: F-7 (local 2)`. Run `python3 skills/hinshitsu-gauge/scripts/gauge.py <folder>`. The text gauge and `GAUGE.svg` show `STOPPED — blocker open: 2: F-7, F-7 (local 2)`. Items 2 and 3 now define the ID as the first word; by that definition the log holds 1 FINDING ID, `F-7`; the gauge counts 2 and prints a text that is not an ID.
+- Violates: glossary, BLOCKER part (d); rule 24.3 as written.
+- Raised by: correctness auditor, LAUNCH E-55, `audits/WU-1-r3-correctness_E-55.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: yes (rule 14.1). The ORCHESTRATOR does not lower the class (rule 15.3). The same behavior as F-2, which the first AUDITOR classed DEFECT and the USER overruled (E-37); the sentence the class rests on was written by the fix of F-5. This is the end of the second fix-and-re-audit round on WU-1 (rule 14.5).
+
+### E-58 · 2026-11-18T22:00:10Z · FINDING · auditor: correctness
+
+- ID: F-10
+- Class: FRAGILITY
+- Where: `tests/test_gauge.py`, lines 156 to 159 (`test_svg_is_well_formed_and_escapes`), with `gauge.py` lines 85 to 87 and 144 to 145.
+- Trigger: the test logs `- ID: F-1<&>`. At 1ce96d3 that ID is refused, so no text from the log reaches the SVG and the test passes whether `esc` works or not. Replace the body of `esc` with `return s` and run `python3 -m unittest tests.test_gauge`: 25 tests pass. The same change at a3717b1 makes this test fail.
+- Violates: C4 ("nothing else changes"): the test line is unchanged, but the protection it gave is gone.
+- Raised by: correctness auditor, LAUNCH E-55, `audits/WU-1-r3-correctness_E-55.md`, finding 2
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-59 · 2026-11-18T22:00:10Z · FINDING · auditor: correctness
+
+- ID: F-11
+- Class: STYLE
+- Where: `skills/hinshitsu-gauge/scripts/gauge.py`, line 137.
+- Trigger: probe P1. The text gauge prints `3 entries could not be read (rule 9.4, rule 0.7); the gauge leaves them out.` None of the 3 entries breaks rule 9.4 or rule 0.7.
+- Violates: no CRITERION.
+- Raised by: correctness auditor, LAUNCH E-55, `audits/WU-1-r3-correctness_E-55.md`, finding 3
+- Lens: recipient experience
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-60 · 2026-11-18T22:00:11Z · OVERRULE · orchestrator
+
+- Finding: F-11 (STYLE)
+- Result: OVERRULED
+- By: ORCHESTRATOR (rule 15.5)
+- Reason: the same line and fault as F-4 (E-38) and F-8 (E-47). The delivery report lists it.
+
+### E-61 · 2026-11-18T22:00:11Z · CARD · orchestrator
+
+Working assumption while the card is open (not the USER's decision): Decision 1 end; Decision 2 set aside. No work that depends on the answers starts before the reply. The text sent, word for word:
+
+> DECISION CARD 4 — hinshitsu run 3.0.0-finding-id (2 decisions; please answer both)
+> 
+> A new separate session re-checked the F-5 fix. C1 to C6 each passed again and F-5 is confirmed fixed. It raised 3 faults. 1 is a new blocker (a fault that stops the run, which nobody may set aside). 2 rounds of fix and re-check are now used on this change, so I may not start a third without your word.
+> 
+> Decision 1 (fault F-9, blocker)
+> (a) Question: The sentence I corrected now speaks of "FINDING IDs", yet the gauge still lists `F-7` and `F-7 (local 2)` as 2 blockers (the old behavior you set aside as F-2), so the third checker calls that sentence false; how does the run go on?
+> (b) Recommended: end, because each round so far has raised 1 more fault of this kind.
+> (c) "End": the run finishes as "delivered, not finished", F-9 listed open; the 1 run left is the final check. "Change": the acceptance tests C3 and C4 change so the gauge shows the first word of the ID only; 1 more run (6). "Round": I reword that 1 sentence again and you lift "do not repair a rule" for it; 1 more run (6).
+> (d) Reply with: "Decision 1: end", "Decision 1: change" or "Decision 1: round".
+> 
+> Decision 2 (fault F-10)
+> (a) Question: An old test of the picture's escaping of `<` and `&` uses the ID `F-1<&>`, which my change now refuses, so that test no longer tests escaping; do I add 1 test or do you set it aside?
+> (b) Recommended: set aside when Decision 1 is "end"; fix otherwise.
+> (c) "Set aside": no change; a later break of the escaping would pass the tests; I propose the test at the end of the run. "Fix": 1 new test; possible only with "change" or "round", whose extra run re-checks it too.
+> (d) Reply with: "Decision 2: set aside" or "Decision 2: fix".
+> 
+> What I did without a decision from you
+> - F-11 (form only, the same as F-4 and F-8): set aside.
+> 
+> Runs of separate sessions: 4 of 5 used (capability test, correctness check, 2 re-checks). Left: 1, the final check.
+> 
+> Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
+> hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
+> STOPPED — blocker open: 1: F-9
+> — end of card —
