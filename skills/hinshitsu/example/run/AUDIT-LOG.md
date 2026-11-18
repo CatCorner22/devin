@@ -466,3 +466,13 @@ Memos: RX = `memos/lens-recipient-experience-E-19.md`; MVS = `memos/lens-minimal
 - C8. The delivery report opens with 3 checks that a reader can do in 5 minutes in a browser, with no terminal: each names what to open, what to do, and what to see. The report states the SHA-256 of `index.html` as audited. Test: an AUDITOR who did not build the page follows the 3 checks as written. Covers V1, V2.
 - Not covered by a CRITERION: G10 (license), which is the USER's open decision for the whole repository and changes no line of the page.
 - Approval: pending
+
+### E-40 · 2026-11-18T15:36:37Z · LAUNCH · orchestrator
+
+- Role: re-audit of BLOCKER findings F-1 to F-7 (a new SUB-AGENT that did not raise them; rule 14.3)
+- WORK UNIT: plan
+- Scope: `prompts/plan-reaudit-blockers.md`
+- Commit under review: 79ad621
+- SUB-AGENT identifier: devin-51ff85626c5946bca66b734a37342da5 (https://app.devin.ai/sessions/51ff85626c5946bca66b734a37342da5)
+- Report: `audits/plan-reaudit-E-40.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
