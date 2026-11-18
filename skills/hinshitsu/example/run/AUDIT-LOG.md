@@ -714,3 +714,29 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-db44a9c343204446943dd3b8c0b97246 (https://app.devin.ai/sessions/db44a9c343204446943dd3b8c0b97246)
 - Report: `audits/plan-reaudit-E-65.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-66 · 2026-11-18T15:58:27Z · RESOLUTION · orchestrator
+
+- Finding: F-13
+- Result: FIXED
+- Change: `SESSION-STATE.md` field 6 at commit cf37bd2
+- Re-audit: `audits/plan-reaudit-E-65.md` (LAUNCH E-65), row F-13: NO LONGER REPRODUCES
+
+### E-67 · 2026-11-18T15:58:27Z · FINDING · orchestrator
+
+- ID: F-14
+- Class: DEFECT
+- Where: `prompts/plan-reaudit-round3.md` line 1, at commit cf37bd2
+- Trigger: compare the saved scope at commit cf37bd2 with the scope the SUB-AGENT received: the saved file names commit `5d77f0711fd7fc41aa01c41c755d4f0e130f3a67`; the scope sent names `cf37bd26ca7590450ff4abb0a07b5a367fb55531`
+- Violates: rule 1.5
+- Raised by: third re-audit, LAUNCH E-65, `audits/plan-reaudit-E-65.md`, finding N-1
+- Lens: trust and controls
+- Cause: the ORCHESTRATOR changed the commit named in the scope after making the commit under review, then sent the changed scope. The file at commit 75fd0ba and later equals the scope sent.
+
+### E-68 · 2026-11-18T15:58:27Z · DECISION · orchestrator
+
+- ID: D-8
+- Decision: supersedes D-6. 1 self-contained HTML file with inline style and script and a policy tag that blocks every network request. The page is published with GitHub Pages after it passes its audits. D-4 stands and is no longer a working assumption: the USER approved the CRITERIA and the grouped lines for the leftover cent.
+- Rests on: A-3, A-6
+- Reason: the USER's answer in E-64 ("3.  A.").
+- Alternatives rejected: no hosting (the USER chose hosting).

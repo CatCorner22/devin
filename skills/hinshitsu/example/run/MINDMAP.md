@@ -6,10 +6,14 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
   - Task chosen: a page that splits a restaurant bill, tip added (T1)
     - WU-1 `index.html`, the whole page (not started)
     - C1 1 file, works from disk
-      - D-6 1 file, policy tag, not hosted (D-3 superseded)
+      - D-8 1 file, policy tag, published with GitHub Pages after its audits
+        - D-6 superseded
+          - D-3 superseded
     - C2 tip, total and payments shown; half a cent rounds up
-      - D-4 even split, whole-number tip (D-1 superseded)
-      - D-5 `splitBill`, half-up rounding, digits to cents (D-2 superseded); also serves C3 and C4
+      - D-4 even split, whole-number tip
+        - D-1 superseded
+      - D-5 `splitBill`, half-up rounding, digits to cents
+        - D-2 superseded
       - F-3 tip rounding had no rule (BLOCKER, FIXED)
     - C3 payments sum to the total; tested through the page's own fields
       - F-5 the test ran a function, not the page (BLOCKER, FIXED)
@@ -19,18 +23,19 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
       - F-10 no text rule for a whole number (DEFECT, FIXED)
     - C5 3 widths, labels, announced regions, keypad hints
     - C6 sentence when JavaScript is off
-    - C7 stores nothing, sends nothing; policy tag (decision listed under C1)
+    - C7 stores nothing, sends nothing; policy tag
       - F-2 no answer to how a phone gets the page (BLOCKER, FIXED)
   - C8 3 browser-only checks; SHA-256 of the page
     - D-7 the report opens with 3 checks
     - F-1 the request was called the USER's words (BLOCKER, FIXED)
   - Record
-    - F-6 A-3 and A-4 were checkable and left unchecked (BLOCKER, FIXED)
-    - F-7 state files were behind the log (BLOCKER, open after 2 rounds; third fix made, not re-audited)
-    - F-8 A-8 cited EVIDENCE it did not have (DEFECT, FIXED)
+    - F-6 2 PREMISES were checkable and left unchecked (BLOCKER, FIXED)
+    - F-7 state files were behind the log (BLOCKER, open after 3 rounds; fourth fix made, not re-audited)
+    - F-8 a PREMISE cited EVIDENCE it did not have (DEFECT, FIXED)
     - F-9 2 evidence files held no command (DEFECT, FIXED)
     - F-12 gaps called answered with no answer (DEFECT, FIXED)
-    - F-13 the session state left out 2 evidence files (DEFECT, fix made, not re-audited)
+    - F-13 the session state left out 2 evidence files (DEFECT, FIXED)
+    - F-14 a saved scope differed from the scope sent (DEFECT, open)
 
 ```mermaid
 graph TD
@@ -43,8 +48,8 @@ graph TD
   T1 --> C5[C5 widths, labels, keypad]
   T1 --> C6[C6 no-JavaScript sentence]
   T1 --> C7[C7 stores and sends nothing]
-  C1 --> D6[D-6 one file, policy tag, not hosted]
-  C7 --> D6
+  C1 --> D8[D-8 one file, policy tag, published after audits]
+  C7 --> D8
   C2 --> D4[D-4 even split, whole-number tip]
   C2 --> D5[D-5 splitBill, half-up, digits to cents]
   C3 --> D5
@@ -67,5 +72,7 @@ graph TD
   T1 --> WU1[WU-1 index.html]
   D4 --> D1[D-1 superseded]
   D5 --> D2[D-2 superseded]
+  D8 --> D6[D-6 superseded]
   D6 --> D3[D-3 superseded]
+  REC --> F14[F-14 DEFECT]
 ```

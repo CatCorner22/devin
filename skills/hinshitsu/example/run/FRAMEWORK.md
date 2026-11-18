@@ -4,7 +4,7 @@ Form: section 7. Superseded lines stay, marked.
 
 ## 1. CRITERIA
 
-By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
+By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`; approved by the USER in E-64; not yet frozen. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
 
 ## 2. Architecture decisions
 
@@ -13,9 +13,10 @@ By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`. ~~E-16 (C1 to 
 | D-1 | even split; tip on the bill entered | E-13 | superseded by D-4 |
 | D-2 | whole cents; remainder to the first shares | E-14 | superseded by D-5 |
 | D-3 | 1 self-contained HTML file | E-15 | superseded by D-6 |
-| D-4 | even split; whole-number tip percent on the amount typed, tax included (working assumption until the USER answers) | E-35 | in force |
+| D-4 | even split; whole-number tip percent on the amount typed, tax included | E-35 | in force; approved by the USER in E-64 |
 | D-5 | 1 pure function `window.splitBill`; half a cent of tip rounds up; text converted to cents from its digits | E-36 | in force |
-| D-6 | 1 self-contained HTML file with a policy tag that blocks network requests; not hosted (working assumption until the USER answers) | E-37 | in force |
+| D-6 | 1 self-contained HTML file with a policy tag that blocks network requests; not hosted | E-37 | superseded by D-8 |
+| D-8 | 1 self-contained HTML file with a policy tag that blocks network requests; published with GitHub Pages after it passes its audits | E-68 | in force |
 | D-7 | the delivery report opens with 3 browser-only checks and the SHA-256 of `index.html` | E-38 | in force |
 
 ## 3. Naming conventions
@@ -42,7 +43,7 @@ By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`. ~~E-16 (C1 to 
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | not started; waits for the USER's approval of the CRITERIA |
+| WU-1 | `index.html`, the whole page | not started; the USER approved the CRITERIA in E-64; waits for F-7 to close and for the freeze |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 
