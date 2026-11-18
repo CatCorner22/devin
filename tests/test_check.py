@@ -230,6 +230,31 @@ class Check(unittest.TestCase):
             with self.subTest(line=line):
                 self.assertFalse(any("no label" in x for x in hcheck.check(edge_run(line), "plan")))
 
+    def test_earlier_link_is_not_the_label_of_a_later_arrow(self):
+        for line in ("A --x B --> C", "A --o B --> C", "A -- reads --- B --> C"):
+            with self.subTest(line=line):
+                self.assertIn("CONNECTIONS.md: edge A --> C has no label (rule 9.3)", hcheck.check(edge_run(line), "plan"))
+
+    def test_quoted_label_between_the_halves_passes(self):
+        for line in ('A -- "reads" --> B', 'A == "reads" ==> B', 'C -. "reads" .-> D'):
+            with self.subTest(line=line):
+                self.assertFalse(any("no label" in x for x in hcheck.check(edge_run(line), "plan")))
+
+    def test_text_outside_the_mermaid_block_is_not_read(self):
+        d = good_run()
+        edit(d, "CONNECTIONS.md", "```\n", "```\nnote: see A ==> B for detail\nA --> B\n")
+        self.assertFalse(any("no label" in x for x in hcheck.check(d, "plan")))
+
+    def test_unlabeled_edge_in_a_file_with_no_mermaid_block_fails(self):
+        d = good_run()
+        (d / "CONNECTIONS.md").write_text("graph LR\n  A --> B\n", encoding="utf-8")
+        self.assertFails(d, "no label", "plan")
+
+    def test_bare_dot_arrow_is_not_an_edge(self):
+        for line in ("A .-> B", "A ..-> B"):
+            with self.subTest(line=line):
+                self.assertFalse(any("no label" in x for x in hcheck.check(edge_run(line), "plan")))
+
     def test_edge_forms_set_the_exit_code(self):
         for line, code in (("A ==> B", 1), ("C -.-> D", 1), ("A -- reads --> B", 0)):
             with self.subTest(line=line):

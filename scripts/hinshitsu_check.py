@@ -26,15 +26,14 @@ BANNED_RE = re.compile(
     r"(?<![A-Za-z])(should|shall|appropriate|reasonable|proper|adequate|ensure|try to|as needed|"
     r"if possible|generally|typically)(?![A-Za-z])", re.I)
 # The first arrow link on a line that starts with a node name: arrow (-->), thick arrow (==>) or
-# dotted arrow (-.->), of any length, with no |label| after it.
+# dotted arrow (-.->), of any length, with no |label| after it. Later links on the line are not tested.
 EDGE_RE = re.compile(r"^\s*(\w+)([^\n|]*?)(--+>|==+>|-?\.+->)(?!\|)\s*(\w+)", re.M)
+MERMAID_RE = re.compile(r"^\s*```mermaid[^\n]*\n(.*?)(?:^\s*```|\Z)", re.M | re.S)
 NODE_TEXT_RE = re.compile(r'"[^"\n]*"|\[[^\]\n]*\]|\([^)\n]*\)|\{[^}\n]*\}')
-# A label written between the 2 halves of a link: -- text -->, == text ==>, -. text .->
-LABEL_OPEN_RE = {
-    "-": re.compile(r"(?<![-=.])--(?![-=.>])\s*\S"),
-    "=": re.compile(r"(?<![-=.])==(?![-=.>])\s*\S"),
-    ".": re.compile(r"(?<![-=.])-\.(?![-=.>])\s*\S"),
-}
+# A label written between the 2 halves of a link (-- text -->, == text ==>, -. text .->): the opener,
+# which is not a cross or circle end (--x, --o), then text that holds no other link.
+LABEL_OPEN_RE = {kind: re.compile(r"(?<![-=.])%s(?![-=.>]|[xo]\s)(?=\s*\S)(?:(?!--|==|-\.).)*$" % opener)
+                 for kind, opener in (("-", "--"), ("=", "=="), (".", r"-\."))}
 STAGE_FILES = {
     "plan": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md"],
     "unit": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
@@ -294,10 +293,12 @@ def check(folder, stage):
     p = folder / "CONNECTIONS.md"
     if p.is_file():
         text = p.read_text(encoding="utf-8")
-        for m in EDGE_RE.finditer(text):
+        blocks = MERMAID_RE.findall(text)  # with no mermaid block, every line is read
+        for m in EDGE_RE.finditer("\n".join(blocks) if blocks else text):
             src, before, arrow, dst = m.groups()
             kind = "=" if "=" in arrow else "." if "." in arrow else "-"
-            if not LABEL_OPEN_RE[kind].search(NODE_TEXT_RE.sub("", before)):
+            labeled = LABEL_OPEN_RE[kind].search(NODE_TEXT_RE.sub("_", before))
+            if not labeled and not arrow.startswith("."):  # a bare .-> closes a label; alone it is no link
                 err("CONNECTIONS.md: edge %s %s %s has no label (rule 9.3)" % (src, arrow, dst))
 
     if stage == "plan":
