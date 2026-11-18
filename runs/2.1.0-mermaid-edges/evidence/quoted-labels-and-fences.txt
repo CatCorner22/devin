@@ -1,0 +1,10 @@
+$ (file: mermaid-js/mermaid develop, packages/mermaid/src/docs/syntax/flowchart.md, the copy fetched for evidence/mermaid-flowchart-links.txt) grep -n -- '-- "\|== "\|-\. "' /tmp/flowchart.md | head -20
+1147:  in the hat`") -- "edge label" --> b{{"`The **dog** in the hog`"}}
+1151:  in the hat`") -- "`Bold **edge label**`" --> d("The dog in the hog")
+exit: 0
+$ grep -c '^\s*```mermaid' skills/hinshitsu/example/run/CONNECTIONS.md build-record/CONNECTIONS.md runs/2.1.0-mermaid-edges/CONNECTIONS.md templates/CONNECTIONS.md
+skills/hinshitsu/example/run/CONNECTIONS.md:1
+build-record/CONNECTIONS.md:1
+runs/2.1.0-mermaid-edges/CONNECTIONS.md:1
+templates/CONNECTIONS.md:1
+exit: 0

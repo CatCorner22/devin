@@ -17,6 +17,7 @@ See `AUDIT-LOG.md` entry E-25 (`CRITERIA`, `FROZEN`: C1 to C7, the same text as 
 | — | none yet (superseded 2026-11-18 → D-1) | — |
 | D-1 | Test the first arrow link on each line that starts with a node name; arrow, thick arrow and dotted arrow; a label is `|text|` after the link or text between the 2 halves of the link | E-14 |
 | D-2 | The failure message names the arrow as written | E-15 |
+| D-3 | Amends D-1 (reversal E-40): edges are read only inside the `mermaid` fence, with every line read where no fence exists; a stricter test for a label between the halves of a link; a placeholder for quoted text; a bare `.->` is no link | E-41 |
 
 ## 3. Naming conventions
 
@@ -44,7 +45,7 @@ See `AUDIT-LOG.md` entry E-25 (`CRITERIA`, `FROZEN`: C1 to C7, the same text as 
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | in audit | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
+| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | building (repairs of F-1, F-2, F-4 after the audit of commit fe82be2) | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 

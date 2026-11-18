@@ -427,3 +427,40 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Word count taken before this entry: decision 1 holds 119 words and decision 2 holds 119 words [`evidence/card-2-word-count.txt`]. The same text is in `evidence/card-2-as-sent.md`.
 - Runs used: 2 `LAUNCH` entries (E-1, E-31) of 3 planned (E-4, E-30).
 - Working assumption while the card is open (rule 23.5): `raise to 5` and `leave it`. No fix and no SUB-AGENT starts before the `ANSWER` entry.
+
+### E-37 · 2026-11-18T20:00:02Z · ANSWER · orchestrator
+
+- Card: E-36 (`evidence/card-2-as-sent.md`)
+- The USER's reply, word for word: "Decision 1: raise to 4. Decision 2: leave it." (Wednesday, 2026-11-18 14:58 EST, which is 19:58 UTC)
+- Effect: decision 1 — the run may use 4 SUB-AGENT runs, not the 5 the ORCHESTRATOR recommended: 1 re-audit and the final AUDITOR remain, with no spare. If the re-audit finds a fault, the ORCHESTRATOR sends a new card before any further run. Decision 2 — the USER accepts that the checker tests only the first link on a line; this is the USER's overrule of F-3 (next entry).
+
+### E-38 · 2026-11-18T20:00:02Z · OVERRULE · orchestrator
+
+- Finding: F-3 (DEFECT; never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "Decision 1: raise to 4. Decision 2: leave it." (E-37; decision 2 of the card in E-36 asked: "Do you accept that the checker tests only the first arrow on a line, so `A -- reads --> B --> C` passes although the arrow into `C` has no label?")
+- Reason: the USER chose `3 forms only` (E-22), which left several links on 1 line outside this fix. The code comment and the delivery report state the limit.
+
+### E-39 · 2026-11-18T20:00:02Z · ASSUMPTION · orchestrator
+
+| ID | PREMISE | Decision that rests on it | EVIDENCE | If false |
+|---|---|---|---|---|
+| A-9 | Each `CONNECTIONS.md` in the repository, and the template, writes its graph inside 1 fence that opens with 3 backticks and the word `mermaid` | D-3 | `evidence/quoted-labels-and-fences.txt` (1 fence in each of the 4 files) | a graph outside such a fence is read only when the file holds no such fence at all |
+| A-10 | Mermaid accepts a label in quotation marks between the 2 halves of a link (`-- "edge label" -->`) | D-3 | `evidence/quoted-labels-and-fences.txt` (lines 1147 and 1151 of the Mermaid flowchart document) | the repair of F-2 passes a line that Mermaid rejects; no edge with a label is failed |
+| A-11 | In Mermaid, `--x` and `--o` followed by a space are the cross end and the circle end of a link, not the start of a label | D-3 | `evidence/mermaid-flowchart-links.txt` ("Circle edge example", "Cross edge example") | a label that starts with the single letter `x` or `o` fails as no label |
+
+Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL saw the list (rule 4.3). None of the 3 concerns the USER's goal, money or data; the reversal that D-3 holds was sent to the USER on the card of E-36 ("Fault 4").
+
+### E-40 · 2026-11-18T20:00:02Z · REVERSAL · orchestrator
+
+- Reverses: D-1 (E-14) in part, and the `Assumed` answer to G2 (E-10) in part. D-1 tested "each line that starts with a node name" anywhere in the file, and G2 kept "today's scope: scan the whole file".
+- Reason and EVIDENCE that changed: F-4 (E-35; `audits/WU-1-correctness-E-31.md`, finding 4) shows that the 2 new arrow shapes make prose lines outside the graph fail. F-1 (E-32) and F-2 (E-33) show that D-1's test for a label between the halves of a link is wrong on 2 kinds of line.
+- The USER was told of this reversal on the card of E-36 and did not reverse it in E-37; the USER may still do so.
+
+### E-41 · 2026-11-18T20:00:02Z · DECISION · orchestrator
+
+- ID: D-3
+- Decision: Amend D-1 in 4 ways. (1) Read edges only inside the `mermaid` fences of `CONNECTIONS.md`; where the file holds no such fence, read every line, as commit 93311ab does. (2) Text before the arrow counts as a label only when it opens the same kind of link (`--`, `==`, `-.`), is not a cross or circle end (`--x`, `--o` followed by a space), and no other link (`--`, `==`, `-.`) lies between it and the arrow. (3) Replace each quoted or bracketed span before the arrow with a placeholder letter, not with nothing, so a quoted label still counts as text. (4) A bare `.->` or `..->` with no `-.` label before it is not a link and gives no failure. The first link on a line is still the only one tested (F-3, overruled by the USER in E-38); a code comment says so.
+- Rests on: A-1, A-9, A-10, A-11
+- Reason: (1) and (4) repair F-4; (2) repairs F-1; (3) repairs F-2. Each follows the fix the correctness auditor proposed.
+- Alternatives rejected: (a) read edges only inside the fence with no fallback — a file whose graph has no fence would lose the test that commit 93311ab gives it; (b) test every link on a line — the USER answered `leave it` (E-37); (c) delete quoted text and special-case labels — the placeholder is 1 change and keeps node text out of the label test.
