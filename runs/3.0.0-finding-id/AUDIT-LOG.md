@@ -67,3 +67,61 @@ Append-only (rule 9.6). Written by `scripts/hinshitsu_log.py`.
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
 - Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-9 · 2026-11-18T21:25:06Z · VOC · orchestrator
+
+**RECIPIENTS (rule 2.2).**
+- R1: the owner of the repository `CatCorner22/devin`, for whom the USER acts. Reads the branch `devin/hinshitsu-run-3.0.0` on GitHub and this run's record, to learn whether the 7 skills work as written (source: the USER's first message, 2026-11-18).
+- R2: an AGENT that runs hinshitsu. Runs `python3 skills/hinshitsu-gauge/scripts/gauge.py <RUN FOLDER>` in a shell after each STAGE entry and shows the text to its USER (source: `skills/hinshitsu/SKILL.md` rule 0.8).
+- R3: a maintainer of the repository. Runs `python3 -m unittest discover -s tests` in a shell (source: `TESTING.md`).
+
+**Verbatim needs (rule 2.3).** All from the USER's first message, 2026-11-18.
+- V1: "Make `skills/hinshitsu-gauge/scripts/gauge.py` count such an entry among the entries it could not read"
+- V2: "and leave it out of the STOPPED line"
+- V3: "with tests"
+- V4: "A FINDING whose ID is not of the form F-<n>, such as `F-1.` or `blocker one`"
+- V5: "The checker refuses such an ID."
+- V6: "Work on a new branch `devin/hinshitsu-run-3.0.0`. Push that branch. Do not push to `main` and do not open a pull request."
+
+**Observed-workflow needs (rule 2.4).** Looked in `git log -- skills/hinshitsu-gauge/scripts/gauge.py tests/test_gauge.py`, in `runs/2.1.0-mermaid-edges/`, and in `TESTING.md`.
+- O1: each earlier change to the gauge came with unit tests in `tests/test_gauge.py` in the same commit (commits b2d124b "…6 tests", a6c9dbe, 2b27a47).
+- O2: the gauge and the checker are made to agree on how an ID is read (commit a6c9dbe: "open FINDING IDs matched whole").
+- O3: an entry the gauge cannot read is counted, not dropped in silence (commit b2d124b: "unreadable entries are counted").
+- O4: `gauge.py` stays on the standard library and reads only `AUDIT-LOG.md` (its docstring).
+No stated opinion disagrees with past behavior.
+
+**Translation (rule 2.5).**
+
+| Customer language | Technical requirement | CRITERION |
+|---|---|---|
+| V1 "count such an entry among the entries it could not read" | `read_state` adds 1 to `unread` for a FINDING entry whose ID the checker refuses; the text gauge prints the count | C1 |
+| V2 "leave it out of the STOPPED line" | such an entry adds nothing to `blockers`; neither the text gauge nor `GAUGE.svg` shows it | C2 |
+| V3 "with tests" | new tests in `tests/test_gauge.py` for the 2 IDs the USER named | C5 |
+| V4 "not of the form F-<n>, such as `F-1.` or `blocker one`" | the test of the ID is the checker's: the first word of the ID field fully matches `F-\d+` | C1, C2 |
+| V5 "The checker refuses such an ID." | the gauge and the checker give the same answer for the same ID field | C3 |
+| V6 branch, no push to `main`, no pull request | commits only on `devin/hinshitsu-run-3.0.0` | C6 |
+| O1 tests with each gauge change | same as V3 | C5 |
+| O2 gauge and checker agree | same as V5 | C3 |
+| O3 unreadable entries are counted | same as V1 | C1 |
+| O4 standard library, 1 input file | the change adds no import outside the standard library and reads no other file; all earlier tests pass | C4 |
+
+**VOC-ASSUMED (rule 2.6).**
+- VA1: R1 wants a FINDING entry with a class other than BLOCKER and a refused ID counted as unread too. Guess: yes, since the USER's sentence says "A FINDING", not "a BLOCKER". A wrong guess changes C1; it goes on the card.
+- VA2: R1 wants a FINDING entry with no ID line counted as unread too (the checker refuses it under another message, "has no ID"). Guess: yes. A wrong guess changes C1; it goes on the card.
+
+### E-10 · 2026-11-18T21:25:06Z · GAP · orchestrator
+
+Each gap: recommended answer; reason; cost; who decides.
+
+1. What happens on error — G1: a FINDING entry with no ID line, or an empty one, is today dropped in silence and not counted. Recommended: count it as unread. Reason: the checker refuses it, and the USER asked that the gauge count what the checker refuses. Cost: 1 condition and 1 test. Decides: USER (product behavior). On the card.
+2. Empty, huge and invalid input — G2: a FINDING with a refused ID and a class other than BLOCKER. Recommended: count it as unread. Reason: the USER wrote "A FINDING". Cost: none beyond G1. Decides: USER. On the card. G3: an ID field with words after the ID (`F-3 (local 2)`), which the checker accepts by its first word. Recommended: the gauge accepts it as it does today. Reason: agreement with the checker. Cost: 1 test. Decides: AGENT — Assumed.
+3. Small screens and other devices — no gap: the output is terminal text and an SVG whose layout this change does not touch.
+4. Who may use it and who must not — no gap: a local script with no access control, unchanged.
+5. Secrets and private data — no gap: the script reads `AUDIT-LOG.md` only and the change adds no input.
+6. Backup and undo — no gap: `git revert` of the commits on the branch undoes the change; `main` is not moved.
+7. Cost to run — no gap: 1 regular-expression match per FINDING entry.
+8. Upkeep and who maintains it — G4: the form `F-\d+` will exist in 2 files (`scripts/hinshitsu_check.py:85` and `gauge.py`). Recommended: keep a copy in `gauge.py` and add a test that both agree. Reason: `gauge.py` is shipped inside the skill folder and imports nothing from `scripts/`. Cost: 1 test. Decides: AGENT — Assumed.
+9. What the RECIPIENT sees when it breaks — G5: the unread line states a count only, not which entry. Recommended: leave it; the USER asked for the count. Cost: none. Decides: AGENT — Assumed.
+10. Licenses and legal terms — no gap: no new dependency.
+11. How the RECIPIENT gets it and opens it — no gap: the branch `devin/hinshitsu-run-3.0.0`, as the USER named it.
+12. Other — G6: a RESOLUTION that names a refused ID. Recommended: no change. Reason: outside the USER's words. Cost: none. Decides: AGENT — Assumed.
