@@ -131,3 +131,15 @@ Load-bearing assumptions, written before the decisions that rest on them. Social
 | D-008 | This build's own artifacts live in `build-record/`. | C8; keeps them apart from the skill. | Mix them into `templates/` |
 | D-009 | Work on branch `devin/hinshitsu-build`; auditors read that branch; fast-forward `main` to it after the gate passes. | Auditors need a pushed revision; `main` receives only audited work. | Commit to `main` first |
 | D-010 | Stable IDs: C (criterion), A (assumption), D (decision), G (gap), F (finding), E (log entry), WU (work unit). An ID is assigned once and never reused. | Rule taken from the user's `living-reference` skill: "IDs are assigned once and never reused or renumbered". | Renumber on edit |
+
+### E-009 · 2026-11-18T14:56Z · SWARM · orchestrator
+
+Plan-time lens memos and red-cell attack requested from 5 child Devin sessions. Each prompt is saved word for word under `build-record/prompts/`. Each child reads only `build-record/` on branch `devin/hinshitsu-build` at commit 24751e2.
+
+| Role | Session | Prompt |
+|---|---|---|
+| Lens: recipient experience | a8f933fc8a154265a5dee635fa701add | `prompts/lens-recipient-experience.txt` |
+| Lens: minimal viable sequence | 636a2143dcd649f4a5cfb2abcc81b36d | `prompts/lens-minimal-viable-sequence.txt` |
+| Lens: structural integrity | 0a254c9f2ac3448a82480a7a57da431d | `prompts/lens-structural-integrity.txt` |
+| Lens: trust and controls | a97b2610d2eb461a9b7db7efe18bbcfc | `prompts/lens-trust-controls.txt` |
+| Red cell (plan time; includes probes on E-005 and E-006) | f6e329e282254fb69cd897a4668abc9a | `prompts/redcell-plan.txt` |

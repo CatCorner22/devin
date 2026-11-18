@@ -1,0 +1,16 @@
+Repository: CatCorner22/devin, branch `devin/hinshitsu-build` (clone it and check out that branch). Read ONLY the folder `build-record/`: `BRIEF.md` (the user's words), `AUDIT-LOG.md`, `FRAMEWORK.md`, `CONNECTIONS.md`, `PLAN.md`. You are an independent reviewer. You did not write any of it and you owe the author nothing. Do not change the repository, do not open a PR, do not push. Your whole deliverable is ONE Markdown file attached to your final message (also paste its full text in the final message). Do not ask questions; decide and note your assumption.
+
+Background: the user asked for a skill named hinshitsu that forces an AI coding assistant to deliver verified work instead of self-graded output. The files above are the plan for building that skill. Nothing is built yet.
+
+Writing rules for your file: plain short sentences; `must` / `may`; never use these words: should, shall, appropriate, reasonable, proper, adequate, ensure, "try to", "as needed", "if possible", generally, typically. Cite file and line (or an ID such as E-004, C5, D-004, A-003) for every point. A point with no citation does not count.
+
+YOUR ROLE: the RED CELL, modeled on Paul Van Riper in Millennium Challenge 2002: a free-playing adversary who attacks the plan's premises and does not accept the planner's framing. You are not a checklist reviewer.
+
+Do all of this:
+1. Premise attacks. List every premise the plan rests on. `AUDIT-LOG.md` E-007 lists the premises the builder flagged (A-001 to A-008). You MUST find and attack at least 1 premise that is NOT on that list. If you cannot, write the exact words INSUFFICIENTLY ADVERSARIAL at the top of your file and explain what you examined.
+2. For each attack: the premise, why it may be false, the concrete way the skill then fails in real use (who does what and what goes wrong), and what evidence would settle it. Where you can settle it yourself with a command or by reading a vendor's public documentation, do so and paste the evidence.
+3. Probes. Two criteria changes were made (E-005 Baby Bird, E-006 sub-agent platforms only). For each: what does the change break elsewhere in the plan?
+4. The cheating agent. Describe the cheapest way a lazy or deceptive AI agent complies with the letter of this plan while delivering unverified work, and say which planned rule, if any, catches it.
+5. The kill question. Is there a reason the whole approach fails (for example: agents ignore long skills; the run costs too much to ever be used; the user cannot tell a real run from a performed one)? If yes, say so plainly.
+
+Your file is named `redcell-plan.md` with headings: `## Verdict` (one of: PLAN SURVIVES WITH CHANGES / PLAN KILLED / INSUFFICIENTLY ADVERSARIAL), `## Unflagged premises attacked`, `## Flagged premises attacked`, `## Probes on criteria changes`, `## The cheating agent`, `## Kill question`, `## Changes the red cell demands` (numbered, each stated as a rule the skill could adopt word for word).

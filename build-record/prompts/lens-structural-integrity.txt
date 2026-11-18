@@ -1,0 +1,16 @@
+Repository: CatCorner22/devin, branch `devin/hinshitsu-build` (clone it and check out that branch). Read ONLY the folder `build-record/`: `BRIEF.md` (the user's words), `AUDIT-LOG.md`, `FRAMEWORK.md`, `CONNECTIONS.md`, `PLAN.md`. You are an independent reviewer. You did not write any of it and you owe the author nothing. Do not change the repository, do not open a PR, do not push. Your whole deliverable is ONE Markdown file attached to your final message (also paste its full text in the final message). Do not ask questions; decide and note your assumption.
+
+Background: the user asked for a skill named hinshitsu that forces an AI coding assistant to deliver verified work instead of self-graded output. The files above are the plan for building that skill. Nothing is built yet.
+
+Writing rules for your file: plain short sentences; `must` / `may`; never use these words: should, shall, appropriate, reasonable, proper, adequate, ensure, "try to", "as needed", "if possible", generally, typically. Cite file and line (or an ID such as E-004, C5, D-004, A-003) for every point. A point with no citation does not count.
+
+YOUR ROLE: the STRUCTURAL INTEGRITY lens. Write a challenge memo against the plan from this one lens only.
+
+Your question: Do the parts fit? Look for: terms used in 2 senses, rules that contradict each other or the brief, artifacts with 2 sources of truth, IDs that can collide, a contract in FRAMEWORK.md section 4 or an edge in CONNECTIONS.md that is missing or wrong, states with no exit (for example a BLOCKER nobody can clear), formats a script cannot parse.
+
+Your file is named `lens-structural-integrity.md` and has exactly these headings:
+1. `## What breaks` — numbered points, worst first, at most 10. Each: what breaks, for whom, the citation, and how a reader reproduces the problem.
+2. `## What to cut` — parts of the plan that do not earn their cost under this lens.
+3. `## What to add` — what is missing under this lens.
+4. `## The 1 change this lens insists on` — one change, stated as a rule the skill could adopt word for word.
+5. `## Checked and found sound` — what you examined and found no problem with (so the reader knows your coverage).
