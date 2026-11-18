@@ -77,6 +77,59 @@ class Lint(unittest.TestCase):
         (d / "adapters/perplexity.md").write_text("x", encoding="utf-8")
         self.assertFails(d, "fails the swarm test")
 
+    # --- round-3 code review, bugs 32 to 36 ---
+
+    def test_inflected_banned_words_fail(self):
+        for words in ("It ensures that no number is passed.", "The agent shouldn't pass a number.",
+                      "The script is properly called."):
+            d = copy_repo()
+            edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.", words)
+            self.assertFails(d, "banned word")
+
+    def test_banned_word_inside_a_code_span_passes(self):
+        d = copy_repo()
+        before = len(hlint.lint(d))
+        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.",
+             "Do not pass the script a number; `ensure_dir()` is a name, not a word.")
+        self.assertEqual(len(hlint.lint(d)), before)
+
+    def test_banned_word_line_number_after_a_code_block(self):
+        d = copy_repo()
+        (d / "TESTING.md").write_text("# t\n```\na\nb\n```\nIt should work.\n", encoding="utf-8")
+        self.assertFails(d, "TESTING.md:6: banned word")
+
+    def test_missing_template_or_script_fails(self):
+        for rel in ("templates/DELIVERY-REPORT.md", "templates/roles/red-cell.md", "scripts/hinshitsu_check.py",
+                    "skills/hinshitsu-gauge/scripts/gauge.py"):
+            d = copy_repo()
+            (d / rel).unlink()
+            self.assertFails(d, "%s: required file is missing" % rel)
+
+    def test_manifest_that_is_not_an_object_fails_without_a_traceback(self):
+        d = copy_repo()
+        (d / "plugin.json").write_text("[]", encoding="utf-8")
+        self.assertFails(d, "plugin.json: the manifest is not a JSON object")
+
+    def test_skill_with_windows_line_ends_is_read(self):
+        d = copy_repo()
+        p = d / "skills/hinshitsu-gauge/SKILL.md"
+        p.write_bytes(p.read_bytes().replace(b"\n", b"\r\n"))
+        self.assertFalse(any("frontmatter" in x for x in hlint.lint(d)))
+
+    def test_file_that_is_not_utf8_gives_a_verdict_not_a_traceback(self):
+        d = copy_repo()
+        (d / "README.md").write_bytes(b"\xff\xfe bad")
+        self.assertEqual(hlint.main(["lint.py", str(d)]), 1)
+
+    def test_folder_that_does_not_exist_is_a_usage_error(self):
+        self.assertEqual(hlint.main(["lint.py", "/no/such/folder"]), 2)
+
+    def test_undefined_phrase_built_from_skipped_words_fails(self):
+        d = copy_repo()
+        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.",
+             "Do not pass the script a number. The RECORD PLAN decides.")
+        self.assertFails(d, "capitalized term")
+
     def test_repository_passes(self):
         self.assertEqual(hlint.lint(ROOT), [])
 

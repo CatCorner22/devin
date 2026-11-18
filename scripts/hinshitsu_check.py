@@ -14,6 +14,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hinshitsu_text import BANNED_RE, strip_quotes  # noqa: E402
+
 TYPES = set("""CAPABILITY TIER STAGE VOC GAP ASSUMPTION CRITERIA CRITERIA-CHANGE CARD ANSWER
 RECONCILIATION DECISION TRACE LAUNCH FINDING RESOLUTION OVERRULE PROBE CHECK COMPACTION REVERSAL
 ABANDONED ROLLBACK WAIVER CORRECTION DELIVERY LESSON""".split())
@@ -22,9 +25,6 @@ CLASSES = ("BLOCKER", "DEFECT", "FRAGILITY", "STYLE")
 REPORT_HEADINGS = ["Check it yourself in 5 minutes", "Summary", "Status", "Voice of the Customer",
                    "Gaps filled", "Lens reconciliation", "Red-cell verdict", "Swarm verdict",
                    "Coverage ledger", "Maps", "Audit log", "LESSONS"]
-BANNED_RE = re.compile(
-    r"(?<![A-Za-z])(should|shall|appropriate|reasonable|proper|adequate|ensure|try to|as needed|"
-    r"if possible|generally|typically)(?![A-Za-z])", re.I)
 STAGE_FILES = {
     "plan": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md"],
     "unit": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
@@ -127,14 +127,6 @@ def first_launch_over_budget(entries):
             if used > budget:
                 return e["n"], used, budget
     return None
-
-
-def strip_quotes(text):
-    # A code block is replaced by its line ends, so that each later line keeps its number.
-    text = re.sub(r"```.*?```", lambda m: "\n" * m.group(0).count("\n"), text, flags=re.S)
-    text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
-    text = re.sub(r'"[^"\n]*"', " ", text)
-    return re.sub(r"“[^”\n]*”", " ", text)
 
 
 def check(folder, stage):
@@ -345,11 +337,13 @@ def check(folder, stage):
                  "COVERAGE-LEDGER.md", "DELIVERY-REPORT.md"):
         p = folder / name
         if p.is_file():
-            for i, line in enumerate(strip_quotes(p.read_text(encoding="utf-8")).splitlines(), 1):
-                m = BANNED_RE.search(line)
-                if m:
+            text = p.read_text(encoding="utf-8")
+            # Code spans may name a file or a function; a placeholder inside one is still a placeholder.
+            for i, (line, with_code) in enumerate(zip(strip_quotes(text).splitlines(),
+                                                      strip_quotes(text, code_spans=False).splitlines()), 1):
+                for m in BANNED_RE.finditer(line):
                     err("%s:%d: banned word %r (banned-word rule of the conductor)" % (name, i, m.group(1)))
-                if "<…>" in line or re.search(r"<[a-z][^<>|]*\|[^<>]*>", line):
+                if "<…>" in with_code or re.search(r"<[a-z][^<>|]*\|[^<>]*>", with_code):
                     err("%s:%d: template placeholder left in place" % (name, i))
 
     # --- connections (rule 9.3) ---

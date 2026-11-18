@@ -2,13 +2,16 @@
 """hinshitsu lint: check the form of the skills, glossary, templates and adapters.
 
 Usage: lint.py [repo-root]
-Exit 0 when every check passes, 1 when any fails. Standard library only.
+Exit 0 when every check passes, 1 when any fails, 2 on a usage error. Standard library only.
 This script tests form. It does not prove that any rule is sound.
 """
 import json
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hinshitsu_text import BANNED_RE, strip_quotes  # noqa: E402
 
 SKILLS = {
     "hinshitsu": [0, 1, 21, 22],
@@ -23,15 +26,18 @@ REQUIRED_FILES = [
     "README.md", "plugin.json", ".claude-plugin/plugin.json",
     "skills/hinshitsu/GLOSSARY.md", "skills/hinshitsu/EXAMPLE.md",
     "templates/MINDMAP.md", "templates/CONNECTIONS.md",
-    "templates/AUDIT-LOG.md", "templates/COVERAGE-LEDGER.md",
+    "templates/AUDIT-LOG.md", "templates/COVERAGE-LEDGER.md", "templates/DELIVERY-REPORT.md",
+    "templates/FRAMEWORK.md", "templates/SESSION-STATE.md",
+    "scripts/hinshitsu_check.py", "scripts/hinshitsu_text.py", "scripts/lint.py",
+    "skills/hinshitsu-gauge/scripts/gauge.py",
     "adapters/claude-code.md", "adapters/cursor.md", "adapters/devin.md",
     "adapters/chatgpt.md", "adapters/gemini.md", "adapters/kimi.md", "adapters/muse.md",
 ]
-BANNED = ["should", "shall", "appropriate", "appropriately", "reasonable", "reasonably",
-          "proper", "properly", "adequate", "adequately", "ensure", "ensures", "ensured",
-          "ensuring", "try to", "tries to", "tried to", "trying to", "as needed",
-          "if possible", "generally", "typically"]
-BANNED_RE = re.compile(r"(?<![A-Za-z])(%s)(?![A-Za-z])" % "|".join(re.escape(b) for b in BANNED), re.I)
+REQUIRED_FILES += ["templates/roles/%s.md" % role for role in (
+    "auditor-adversarial", "auditor-best-practices", "auditor-correctness", "auditor-forensic-5s",
+    "auditor-framework-drift", "auditor-language", "auditor-recipient-experience", "final-auditor",
+    "lens-minimal-viable-sequence", "lens-recipient-experience", "lens-structural-integrity",
+    "lens-trust-controls", "red-cell", "referee", "seeder")]
 REQUIRED_TERMS = ["DELIVERABLE", "RECIPIENT", "DONE", "BLOCKER", "DEFECT", "FRAGILITY", "STYLE",
                   "VERIFIED", "ASSERTED", "UNVERIFIED", "DEGRADED", "VOC-ASSUMED",
                   "INSUFFICIENTLY ADVERSARIAL"]
@@ -39,11 +45,14 @@ REQUIRED_TERMS = ["DELIVERABLE", "RECIPIENT", "DONE", "BLOCKER", "DEFECT", "FRAG
 NOT_TERMS = set("""CAPABILITY TIER STAGE VOC GAP ASSUMPTION CRITERIA CRITERIA-CHANGE CARD ANSWER
 RECONCILIATION DECISION TRACE LAUNCH FINDING RESOLUTION OVERRULE PROBE CHECK COMPACTION REVERSAL
 ABANDONED ROLLBACK WAIVER CORRECTION DELIVERY LESSON LESSONS PASS FAIL FIXED WITHDRAWN OVERRULED
-PROPOSED FROZEN CORE FULL SWARM ACCEPTED REJECTED REDACTED PLAN SURVIVES WITH CHANGES KILLED
-NO RECORD NOT TODO FIXME SKILL GLOSSARY MINDMAP CONNECTIONS AUDIT-LOG COVERAGE-LEDGER FRAMEWORK
+PROPOSED FROZEN CORE FULL SWARM ACCEPTED REJECTED REDACTED
+TODO FIXME SKILL GLOSSARY MINDMAP CONNECTIONS AUDIT-LOG COVERAGE-LEDGER FRAMEWORK
 SESSION-STATE DELIVERY-REPORT GAUGE EXAMPLE README TESTING CHANGELOG LICENSE AGENTS CLAUDE GEMINI
 YAML JSON SVG URL UTC SHA-256 SHA CLI IDE API SDK MCP MIT USNG ID IDS OK N/A STOPPED COR FOR BP
 ADV RX DRIFT LANG RED RSV STAB DELIVERED ASSUMED TYPE AI VA""".split())
+# Literal values of more than 1 word. Each is matched whole, so that its words alone define nothing.
+LITERAL_PHRASES = ("PLAN SURVIVES WITH CHANGES", "PLAN SURVIVES", "PLAN KILLED", "NO RECORD",
+                   "DELIVERED — NOT DONE", "NOT DONE")
 CAP_RE = re.compile(r"(?<![A-Za-z`/_.-])([A-Z][A-Z]+(?:[ -][A-Z][A-Z]+)*)(?![A-Za-z_/.-])")
 
 
@@ -54,15 +63,6 @@ def singulars(word):
         if word.endswith(end):
             out.add(word[: -len(end)] + rep)
     return out
-
-
-def strip_quotes(text):
-    """Remove quoted passages, code spans and blockquotes, which may hold banned words."""
-    text = re.sub(r"```.*?```", " ", text, flags=re.S)
-    text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
-    text = re.sub(r'"[^"\n]*"', " ", text)
-    text = re.sub(r"“[^”\n]*”", " ", text)
-    return text
 
 
 def frontmatter(text):
@@ -113,7 +113,7 @@ def lint(root):
             err(rel, "required file is missing (C1)")
             continue
         raw = p.read_bytes()
-        text = raw.decode("utf-8")
+        text = raw.decode("utf-8").replace("\r\n", "\n")
         fm = frontmatter(text)
         if fm is None:
             err(rel, "no YAML frontmatter (C2)")
@@ -134,7 +134,8 @@ def lint(root):
             err(rel, "sections %s; expected %s in that order (C2)" % (found, sections))
         seen_sections += found
         for num in found:
-            body = re.search(r"^## %d\. .*?\n(.*?)(?=^## |\Z)" % num, text, re.M | re.S).group(1)
+            section = re.search(r"^## %d\. .*?\n(.*?)(?=^## |\Z)" % num, text, re.M | re.S)
+            body = section.group(1) if section else ""
             rules = [int(n) for n in re.findall(r"^(\d+)\. ", body, re.M)]
             if rules != list(range(1, len(rules) + 1)) or not rules:
                 err(rel, "section %d: rule numbers %s are not 1..n (C5)" % (num, rules))
@@ -153,8 +154,9 @@ def lint(root):
             for m in BANNED_RE.finditer(line):
                 err("%s:%d" % (rel, i), "banned word %r (C4)" % m.group(1))
         if rel.startswith(("skills/", "templates/", "adapters/")) and "example/" not in rel:
-            plain = re.sub(r"`[^`\n]*`", " ", body)
-            plain = re.sub(r"^---\n.*?\n---\n", " ", plain, flags=re.S)
+            plain = re.sub(r"^---\n.*?\n---\n", lambda m: "\n" * m.group(0).count("\n"), body, flags=re.S)
+            for phrase in LITERAL_PHRASES:
+                plain = plain.replace(phrase, " ")
             for i, line in enumerate(plain.splitlines(), 1):
                 if line.startswith("#"):
                     continue
@@ -183,6 +185,9 @@ def lint(root):
         if p.is_file():
             try:
                 data = json.loads(p.read_text(encoding="utf-8"))
+                if not isinstance(data, dict):
+                    err(rel, "the manifest is not a JSON object (C15)")
+                    continue
                 if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", str(data.get("name", ""))):
                     err(rel, "name is missing or not kebab-case (C15)")
                 allowed = {"$schema", "name", "version", "description", "author", "homepage",
@@ -197,11 +202,19 @@ def lint(root):
 
 
 def main(argv):
-    root = argv[1] if len(argv) > 1 else Path(__file__).resolve().parent.parent
-    errors = lint(root)
+    root = Path(argv[1]) if len(argv) > 1 else Path(__file__).resolve().parent.parent
+    if not root.is_dir():
+        print(__doc__.strip(), file=sys.stderr)
+        return 2
+    try:
+        errors = lint(root)
+    except (ValueError, UnicodeDecodeError, OSError) as exc:  # a verdict, not a traceback
+        errors = ["the files cannot be read: %s: %s" % (type(exc).__name__, exc)]
     for e in errors:
         print("FAIL " + e)
     print("lint: %d failure(s). This script tests form; it does not prove that any rule is sound." % len(errors))
+    if errors:
+        print("C<n> names a CRITERION and E-<n> an entry of build-record/AUDIT-LOG.md.")
     return 1 if errors else 0
 
 

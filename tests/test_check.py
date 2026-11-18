@@ -530,6 +530,25 @@ class Check(unittest.TestCase):
         edit(d, "AUDIT-LOG.md", "- Mode: SWARM", "- Mode: SWARM\n\n### Notes\n\nA note.")
         self.assertEqual(hcheck.check(d, "delivery"), [])
 
+    # --- round-3 code review, bug 11 ---
+
+    def test_inflected_banned_words_fail(self):
+        d = good_run()
+        edit(d, "FRAMEWORK.md", "CRITERIA:", "It ensures the page works properly. It shouldn't fail. CRITERIA:")
+        errors = hcheck.check(d, "plan")
+        for word in ("ensures", "properly", "shouldn't"):
+            self.assertTrue(any("banned word %r" % word in x for x in errors), (word, errors))
+
+    def test_banned_word_inside_a_code_span_passes(self):
+        d = good_run()
+        edit(d, "FRAMEWORK.md", "CRITERIA:", "The BUILDER calls `ensure_dir()` in `lib/proper-case.js`. CRITERIA:")
+        self.assertEqual(hcheck.check(d, "plan"), [])
+
+    def test_placeholder_inside_a_code_span_still_fails(self):
+        d = good_run()
+        edit(d, "FRAMEWORK.md", "CRITERIA:", "Path: `<…>`. CRITERIA:")
+        self.assertFails(d, "template placeholder", "plan")
+
     def test_missing_final_audit_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")
