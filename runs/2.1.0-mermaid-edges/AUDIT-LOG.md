@@ -598,3 +598,51 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Word count taken before this entry: the decision holds 114 words [`evidence/card-3-word-count.txt`]. The same text is in `evidence/card-3-as-sent.md`.
 - Runs used: 3 `LAUNCH` entries (E-1, E-31, E-44) of the 4 the USER allowed (E-37).
 - Working assumption while the card is open (rule 23.5): `accept`. No repair, no SUB-AGENT run and no `OVERRULE` entry before the `ANSWER` entry.
+
+### E-55 · 2026-11-18T20:17:18Z · ANSWER · orchestrator
+
+- Card: E-54 (`evidence/card-3-as-sent.md`)
+- The USER's reply, word for word: "accept" (Wednesday, 2026-11-18 15:17 EST, which is 20:17 UTC)
+- Effect: the USER accepts F-4, F-5, F-6, F-7, F-8 and F-9 as known limits; this is the USER's overrule of each (the 6 entries that follow). No further repair round runs. The 1 SUB-AGENT run left (the fourth, E-37) goes to the final AUDITOR.
+
+### E-56 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-4 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-57 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-5 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-58 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-6 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-59 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-7 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-60 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-8 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-61 · 2026-11-18T20:17:18Z · OVERRULE · orchestrator
+
+- Finding: F-9 (never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
