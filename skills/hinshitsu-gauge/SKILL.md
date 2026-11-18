@@ -7,7 +7,7 @@ description: The progress gauge of hinshitsu - a speedometer picture that shows 
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets the 12 STAGES and requires the `STAGE` entries (rule 0.7). An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has.
 
-This skill holds section 24. It serves every STAGE. Used alone, it needs only an `AUDIT-LOG.md` with `STAGE` entries.
+This skill holds section 24. It serves every STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Used without a conductor run, it needs only an `AUDIT-LOG.md` with `STAGE` entries.
 
 ## 24. Gauge
 

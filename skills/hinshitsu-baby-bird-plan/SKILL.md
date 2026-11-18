@@ -7,7 +7,7 @@ description: Baby Bird planning for hinshitsu - a baby bird does not know what i
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number.
 
-This skill holds sections 2, 3, 4 and 23. It serves STAGES S3, S4 and S6, and rules 23.4 to 23.6 apply in every STAGE. Used alone, without the conductor, it still writes each entry below to `AUDIT-LOG.md` in the RUN FOLDER (default `hinshitsu/`).
+This skill holds sections 2, 3, 4 and 23. It serves STAGES S3, S4 and S6, and rules 23.4 to 23.6 apply in every STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Used without a conductor run, without the conductor, it still writes each entry below to `AUDIT-LOG.md` in the RUN FOLDER (default `hinshitsu/`).
 
 **Order in time.** S3: rule 2.1 to 2.7, then 23.1 to 23.3. S4: section 4, then rules 3.1 and 3.2. S5 belongs to `hinshitsu-challenge`. S6: rules 3.3 to 3.5 with 23.4 and 23.10.
 

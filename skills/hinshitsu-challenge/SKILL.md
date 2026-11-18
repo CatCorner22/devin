@@ -7,7 +7,7 @@ description: The challenge skill of hinshitsu - independent sub-agents attack a 
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles, custody of reports (rules 1.5 to 1.8) and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number.
 
-This skill holds sections 5 and 6. It serves STAGE S5 (plan-time challenge), each WORK UNIT of S7 (1 LENS memo and any probe), and S9 (pre-delivery attack). Used alone, it needs a plan, the CRITERIA and the assumptions in files, and it writes to `memos/` and `audits/` in the RUN FOLDER.
+This skill holds sections 5 and 6. It serves STAGE S5 (plan-time challenge), each WORK UNIT of S7 (1 LENS memo and any probe), and S9 (pre-delivery attack). Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Used without a conductor run, it needs a plan, the CRITERIA and the assumptions in files, and it writes to `memos/` and `audits/` in the RUN FOLDER.
 
 Every LENS and every RED CELL is a SUB-AGENT started under rules 1.5 to 1.7: a `LAUNCH` entry first, a scope saved under `prompts/`, the report saved whole with the runtime's identifier on its first line. The scope is the role text in `templates/roles/` plus file names and the CRITERIA word for word. No LENS and no RED CELL receives the BUILDER's conversation. A `CORE` run skips S5 and S9 and reports every role in this skill UNVERIFIED (rule 0.5).
 

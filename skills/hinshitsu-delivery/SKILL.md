@@ -7,7 +7,7 @@ description: The delivery skill of hinshitsu - nothing is reported as finished o
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles, custody of reports (rules 1.5 to 1.8) and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number. Section 17, with section 1, controls over every other section.
 
-This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (section 19) and S12 (section 20); rules 17.1 to 17.3 and 17.6 apply to every message in every STAGE. Used alone, it needs the CRITERIA and the EVIDENCE in files, and it writes `DELIVERY-REPORT.md` and `audits/final-audit-<LAUNCH ID>.md` in the RUN FOLDER.
+This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (section 19) and S12 (section 20); rules 17.1 to 17.3 and 17.6 apply to every message in every STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Used without a conductor run, it needs the CRITERIA and the EVIDENCE in files, and it writes `DELIVERY-REPORT.md` and `audits/final-audit-<LAUNCH ID>.md` in the RUN FOLDER.
 
 ## 17. Anti-pretend enforcement
 

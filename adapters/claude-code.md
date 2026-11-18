@@ -2,7 +2,7 @@ UNVERIFIED — never run on this surface
 
 # hinshitsu adapter — Claude Code
 
-This file maps tool names. It adds no rule and removes none (rule 0.9). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
+This file maps tool names. It adds no rule and removes none (rule 0.10). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
 
 **Surface this adapter targets:** Claude Code (CLI, IDE extensions, SDK).
 
@@ -34,5 +34,5 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 ## Install
 
 - Plugin: this repository holds `.claude-plugin/plugin.json` with the skills under `skills/` (https://code.claude.com/docs/en/plugins, read 2026-11-18). Add the repository as a plugin source and install `hinshitsu`.
-- Skills alone: copy the 7 folders under `skills/` into `.claude/skills/` of the project, or into `~/.claude/skills/`.
+- Install the whole repository. The 7 skill folders need `scripts/`, `templates/` and `skills/hinshitsu/GLOSSARY.md`; a copy of the skill folders alone is not a supported install.
 - After a long session Claude Code keeps only the start of each skill; the conductor's re-read rule covers this.

@@ -2,7 +2,7 @@ UNVERIFIED — never run on this surface
 
 # hinshitsu adapter — Cursor
 
-This file maps tool names. It adds no rule and removes none (rule 0.9). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
+This file maps tool names. It adds no rule and removes none (rule 0.10). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
 
 **Surface this adapter targets:** the Cursor editor, the Cursor CLI and Cursor Cloud Agents.
 
@@ -16,7 +16,7 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 |---|---|---|
 | 1 scope written by the orchestrator | The main agent delegates a task to a subagent; custom subagents live in `.cursor/agents/*.md`. | https://cursor.com/docs/subagents |
 | 2 no builder conversation | A subagent starts with a clean context, without the prior history. | same page |
-| 3 report returns whole | The subagent returns its result to the parent; background subagents since version 2.5. | same page ; https://cursor.com/help/ai-features/multi-agent |
+| 3 report returns whole | The subagent returns its result to the parent. Background subagents: UNVERIFIED — the cited page does not state the version. | same page |
 | 4 identifier | UNVERIFIED — test in the run under rule 0.2. | — |
 | 5 live test call | UNVERIFIED — never run on this surface. | — |
 

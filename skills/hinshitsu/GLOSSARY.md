@@ -14,7 +14,7 @@ Each term below has 1 meaning everywhere in the 7 hinshitsu skills, the template
 
 **BUILDER** — the AGENT instance that creates or changes a part of the DELIVERABLE. For that part it stays the BUILDER until the run ends.
 
-**AUDITOR** — a SUB-AGENT that examines a WORK UNIT in 1 of the 8 roles in section 13 and that did not build any part of it. An AUDITOR reads and runs; it does not change the DELIVERABLE.
+**AUDITOR** — a SUB-AGENT that examines a WORK UNIT in 1 of the 8 roles in section 13, or that re-audits under rule 14.3, or that performs the final audit of rule 17.4, and that did not build any part of it. An AUDITOR reads and runs; it does not change the DELIVERABLE.
 
 **RED CELL** — the AUDITOR role that attacks premises under section 6.
 
@@ -30,7 +30,7 @@ Each term below has 1 meaning everywhere in the 7 hinshitsu skills, the template
 
 **WORK UNIT** — the set of changes the BUILDER completes before an audit: at most 1 component of the DELIVERABLE (1 page, 1 module, 1 script, 1 document), declared with an ID in `FRAMEWORK.md` before work on it starts.
 
-**STAGE** — 1 of the 12 steps of a run that rule 0.7 lists, `S1` to `S12`.
+**STAGE** — 1 of the 12 steps of a run that the Run sequence table of the conductor lists, `S1` to `S12`.
 
 **TIER** — the size of a run under rule 0.5: `CORE` or `FULL`.
 

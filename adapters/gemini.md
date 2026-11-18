@@ -2,7 +2,7 @@ UNVERIFIED — never run on this surface
 
 # hinshitsu adapter — Gemini CLI
 
-This file maps tool names. It adds no rule and removes none (rule 0.9). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
+This file maps tool names. It adds no rule and removes none (rule 0.10). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
 
 **Surface this adapter targets:** Gemini CLI.
 

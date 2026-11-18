@@ -2,7 +2,7 @@ UNVERIFIED — never run on this surface
 
 # hinshitsu adapter — ChatGPT and Codex
 
-This file maps tool names. It adds no rule and removes none (rule 0.9). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
+This file maps tool names. It adds no rule and removes none (rule 0.10). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
 
 **Surface this adapter targets:** Codex (app, CLI, IDE extension) and ChatGPT Work.
 
@@ -34,5 +34,5 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 ## Install
 
 - Plugin: ChatGPT and Codex install a plugin from a root `plugin.json` with a `skills/` folder; this repository has both (https://developers.openai.com/codex/plugins/build.md, read 2026-11-18).
-- Skills alone: each folder under `skills/` holds a `SKILL.md` with `name` and `description`, the form Codex reads (https://developers.openai.com/codex/skills.md, read 2026-11-18).
+- Install the whole repository. The 7 skill folders need `scripts/`, `templates/` and `skills/hinshitsu/GLOSSARY.md`; a copy of the skill folders alone is not a supported install.
 - `AGENTS.md`: add 1 line: "Before any task that produces something a person will receive, read `skills/hinshitsu/SKILL.md` and follow it. Use subagents for every auditor, lens and red-cell role." The second sentence is the explicit request that the vendor's page describes.
