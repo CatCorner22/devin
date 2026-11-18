@@ -1,0 +1,44 @@
++ grep -n 'FINDING_ID\|F-\\d' scripts/hinshitsu_check.py scripts/hinshitsu_log.py scripts/hinshitsu_text.py scripts/lint.py skills/hinshitsu-gauge/scripts/gauge.py
+scripts/hinshitsu_check.py:85:FINDING_ID = re.compile(r"F-\d+")
+scripts/hinshitsu_check.py:304:        if not FINDING_ID.fullmatch(fid):
+scripts/hinshitsu_check.py:424:                    fm = re.search(r"F-\d+", rest)
+scripts/hinshitsu_check.py:530:            if fid and FINDING_ID.fullmatch(fid[0]):
+scripts/hinshitsu_check.py:551:            for fid in re.findall(r"\bF-\d+\b", line):
+scripts/hinshitsu_check.py:559:                if len(set(re.findall(r"\bF-\d+\b", line))) > 1:
++ grep -n 'import\|^def ' skills/hinshitsu-gauge/scripts/gauge.py
+8:import math
+9:import re
+10:import sys
+11:from pathlib import Path
+33:def entries(text):
+49:def field(body, name):
+55:def read_state(text):
+111:def blocker_list(blockers, shown=4):
+116:def text_gauge(st):
+141:def esc(s):
+145:def polar(cx, cy, r, deg):
+150:def svg_gauge(st):
+210:def main(argv):
++ grep -n 'unread\|could not be read' skills/hinshitsu-gauge/scripts/gauge.py tests/test_gauge.py
+skills/hinshitsu-gauge/scripts/gauge.py:60:    unread = 0
+skills/hinshitsu-gauge/scripts/gauge.py:63:            unread += 1
+skills/hinshitsu-gauge/scripts/gauge.py:68:                unread += 1
+skills/hinshitsu-gauge/scripts/gauge.py:107:        "unread": unread,
+skills/hinshitsu-gauge/scripts/gauge.py:133:    if st["unread"]:
+skills/hinshitsu-gauge/scripts/gauge.py:134:        lines.append("%d entries could not be read (rule 9.4, rule 0.7); the gauge leaves them out." % st["unread"])
+tests/test_gauge.py:93:        self.assertIn("3 entries could not be read", r.stdout)
++ grep -rn gauge '--include=*.py' scripts tests
++ grep -v '^tests/test_gauge.py'
+scripts/lint.py:23:    "hinshitsu-gauge": [24],
+scripts/lint.py:32:    "skills/hinshitsu-gauge/scripts/gauge.py",
+tests/test_lint.py:33:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.", "The agent should not pass a number.")
+tests/test_lint.py:39:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.",
+tests/test_lint.py:50:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "\n2. **What it reads.**", "\n9. **What it reads.**")
+tests/test_lint.py:55:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "description: ", "description: " + "x" * 1024)
+tests/test_lint.py:60:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "name: hinshitsu-gauge", "name: gauge")
+tests/test_lint.py:65:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.", "The OVERSEER passes no number.")
+tests/test_lint.py:86:            edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.", words)
+tests/test_lint.py:92:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.",
+tests/test_lint.py:103:                    "skills/hinshitsu-gauge/scripts/gauge.py"):
+tests/test_lint.py:115:        p = d / "skills/hinshitsu-gauge/SKILL.md"
+tests/test_lint.py:129:        edit(d, "skills/hinshitsu-gauge/SKILL.md", "Do not pass the script a number.",
