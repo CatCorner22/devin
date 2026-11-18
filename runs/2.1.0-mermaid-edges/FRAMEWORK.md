@@ -4,13 +4,17 @@ Form required by section 7 (`skills/hinshitsu-record/SKILL.md`). A superseded li
 
 ## 1. CRITERIA
 
-No `CRITERIA` entry exists yet (S2). The `CRITERIA` entry in `AUDIT-LOG.md` and each later `CRITERIA-CHANGE` entry control.
+No `CRITERIA` entry exists yet (S2). (superseded 2026-11-18 → E-16)
+
+See `AUDIT-LOG.md` entry E-16 (`CRITERIA`, `PROPOSED`: C1 to C7) and each later `CRITERIA` or `CRITERIA-CHANGE` entry. Those entries control.
 
 ## 2. Architecture decisions
 
 | ID | Decision | Log entry |
 |---|---|---|
-| — | none yet | — |
+| — | none yet (superseded 2026-11-18 → D-1) | — |
+| D-1 | Test the first arrow link on each line that starts with a node name; arrow, thick arrow and dotted arrow; a label is `|text|` after the link or text between the 2 halves of the link | E-14 |
+| D-2 | The failure message names the arrow as written | E-15 |
 
 ## 3. Naming conventions
 

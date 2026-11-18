@@ -186,3 +186,8 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - C7. Compared with commit 93311ab, the branch `devin/hinshitsu-run-2.1.0` changes, outside `runs/`, only `scripts/hinshitsu_check.py` and `tests/test_check.py`; it adds no `import` line; and `python3 scripts/lint.py` exits 0. Test: `git diff --stat 93311ab -- . ':!runs'` lists those 2 files only; `git diff 93311ab -- scripts tests | grep -E '^\+\s*(import|from) '` prints nothing; `python3 scripts/lint.py` exits 0.
 - Status: PROPOSED
 - Approval: `approval: pending`
+
+### E-17 · 2026-11-18T19:37:27Z · CHECK · orchestrator
+
+- What: `FRAMEWORK.md` (parts 1 and 2), `MINDMAP.md` and `SESSION-STATE.md` now state C1 to C7 (E-16), D-1 (E-14) and D-2 (E-15).
+- Late: rule 8.1 requires this change in the same commit as each of those entries. The 3 entries were committed first (commits 90c9505, a5f2d77, d2473df); the files change in the commit of this entry. This is an error of the ORCHESTRATOR.
