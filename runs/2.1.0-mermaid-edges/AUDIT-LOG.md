@@ -324,3 +324,10 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 
 - What: before WU-1 (rule 7.3). WU-1 rests on these parts of `FRAMEWORK.md`: part 1 (C1 to C7, E-25); part 2 (D-1, D-2); part 3 (test names, the form of a failure string, the spelling "unlabeled"); part 4 (the contract of `check()` with the tests, and of `main()` with its callers); part 5 (the ORCHESTRATOR is the BUILDER of both files); part 7 (no second implementation).
 - `FRAMEWORK.md` part 6 now gives WU-1 the status `building`.
+
+### E-29 · 2026-11-18T19:43:47Z · TRACE · builder
+
+- Change: the connections block of `check()` at `scripts/hinshitsu_check.py:283-288` (D-1, D-2), and new tests in the class `Check` of `tests/test_check.py`.
+- Forward: `tests/test_check.py` — does not break: the 2 existing tests assert only `no label` and a pass on `A -->|reads| B` (A-5). `main()` — does not break: it still receives a list of strings. A run's record check — does not break for links written `-->|label|` (A-4); a record that holds an unlabeled `==>` or `-.->` link, or a link labelled between the dashes, gets the other verdict, which is the change the USER asked for.
+- Backward: A-1, A-2, A-3, A-4, A-6, A-7 and D-1, D-2 — not violated. Rule 9.3 — not violated: the test still fails an edge with no label.
+- Lateral: no other WORK UNIT exists — nothing to invalidate.
