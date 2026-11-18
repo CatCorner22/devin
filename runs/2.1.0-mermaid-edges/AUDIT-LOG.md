@@ -48,3 +48,10 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 - Stage: S1
 - Event: end
 - Artifacts: `AUDIT-LOG.md` (E-1 to E-4), `prompts/capability-probe.md`, `evidence/capability-probe.md`, `evidence/capability-commands.txt`, `FRICTION.md`
+
+### E-6 · 2026-11-18T19:32:16Z · STAGE · orchestrator
+
+- Stage: S2
+- Event: start
+- Skill read: `skills/hinshitsu-record/SKILL.md`, 11107 bytes, SHA-256 2f904de21e74a14c68b7aedbb5ef848c071633455356c42e85a0c9eacc013338
+- Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
