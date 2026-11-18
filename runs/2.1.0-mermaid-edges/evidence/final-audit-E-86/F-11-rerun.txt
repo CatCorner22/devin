@@ -1,0 +1,43 @@
+$ grep -n -i late AUDIT-LOG.md
+37:- Written late: S1 started before E-1. Rule 0.1 fixes E-1 as the `LAUNCH` entry and E-2 as the `CAPABILITY` entry, so this entry could not come first (see `FRICTION.md`).
+76:2. An AI coding agent that follows the hinshitsu skills in a later run, as ORCHESTRATOR or final AUDITOR: runs `python3 scripts/hinshitsu_check.py --stage plan|unit|delivery <run folder>` in a term
+154:| A-6 | A later run writes at most 1 link on a line (VA2) | D-1 | not verified | the second link on a line stays untested, as today |
+155:| A-7 | A later run writes a labelled thick or dotted link in 1 of the 4 forms of A-1 (VA1) | D-1 | not verified | a labelled link in another form fails as unlabeled |
+193:- Late: rule 8.1 requires this change in the same commit as each of those entries. The 3 entries were committed first (commits 90c9505, a5f2d77, d2473df); the files change in the commit of this en
+203:(c) `approve`: I build the fix, and 2 independent sessions test it against exactly these statements; you give up changing them later without a new request. `change`: you get your wording; it costs
+332:- Backward: A-1, A-2, A-3, A-4, A-6, A-7 and D-1, D-2 — not violated. Rule 9.3 — not violated: the test still fails an edge with no label.
+333:- Lateral: no other WORK UNIT exists — nothing to invalidate.
+360:- Violates: rule 9.3 as the script enforces it (an edge with no label must fail). C4 names 2 verdicts only, so C4 holds; this is a verdict of 93311ab that the change reverses.
+371:- Violates: rule 9.3 as the script enforces it (a labeled edge must not be reported as having no label). No CRITERION names a quoted label. Whether a quoted label lies inside "3 forms only" (E-22)
+382:- Violates: rule 9.3 as the script enforces it.
+393:- Violates: no CRITERION. Behavior nobody asked for: C2 and C5 name `-.->` and `-. reads .->` only.
+448:| A-9 | Each `CONNECTIONS.md` in the repository, and the template, writes its graph inside 1 fence that opens with 3 backticks and the word `mermaid` | D-3 | `evidence/quoted-labels-and-fences.txt
+472:- Backward: A-1, A-9, A-10, A-11 and D-2, D-3 — not violated. D-1 — amended by D-3 through the reversal in E-40. C1 to C7 (E-25) — not changed: no CRITERION is added, dropped or reworded, an
+473:- Lateral: no other WORK UNIT exists — nothing to invalidate.
+500:- Trigger: fixture lines `A == reads ==> B --> C` and `A -. reads .-> B --> C`. In each, the edge into `C` has no label. The script of 93311ab returns `CONNECTIONS.md: edge A --> C has no label (r
+501:- Violates: rule 9.3 as the script enforces it (an edge with no label passes); C4 in spirit only: C4 names 2 lines and 2 folders, and those pass.
+512:- Violates: rule 9.3 as the script enforces it; C2's purpose (an unlabeled dotted arrow fails). C2's own line passes.
+523:- Violates: rule 9.3 as the script enforces it. No CRITERION names these lines.
+534:- Violates: rule 9.3 as the script enforces it. No CRITERION asks for the block limit; the BUILDER added it to answer F-4, and `test_text_outside_the_mermaid_block_is_not_read` fixes it in place.
+545:- Violates: nothing; C4 compares `FAIL` lines on 2 folders only, and they are the same.
+719:- Late: the SUB-AGENT started before this entry was written, since the entry holds the identifier that the start returns. The head of the branch moves by this commit while the SUB-AGENT clones.
+728:- Violates: rule 17.4 (b): a cited entry does not show what the claim says. A mismatch in (a) to (e).
+739:- Trigger: open E-5; it holds no late mark. `grep -n -i late AUDIT-LOG.md` gives E-3, E-17 and E-72.
+740:- Violates: rule 17.4 (b); the report must list the record's corrections truly.
+752:- Violates: rule 17.4 (e) (a run opened by identifier differs from its saved report) and rule 19.2 (a check the USER can do must show what the report says it shows). The saved file's source (the a
+762:- Where: 9 files under `evidence/WU-1-r2-correctness-E-44/` (`F-1.txt`, `F-2.txt`, `F-4.txt`, `criteria-lines.txt`, `hunt-1-later-link.txt` to `hunt-5-lengths.txt`), line 1 of each
+764:- Violates: rule 17.4 (c) and the glossary's EVIDENCE: the saved command is not the command that produced the saved output. The results themselves reproduce.
+775:- Violates: the rule that `SESSION-STATE.md` states the present state of the run. Outside checks (a) to (e); it does not change the last line.
+786:- Violates: the form of a command-output file (command, complete output, exit code).
+793:- What: F-13. The 9 files `F-1.txt`, `F-2.txt`, `F-4.txt`, `criteria-lines.txt` and `hunt-1-later-link.txt` to `hunt-5-lengths.txt` under `evidence/WU-1-r2-correctness-E-44/` stay as the AUDITOR a
+794:- What: F-10, F-11, F-12. `DELIVERY-REPORT.md` now cites E-23 and E-26 for the skipped S5, names E-3, E-17 and E-72 as the late entries, and words check 2 as the final AUDITOR proposes. No SUB-AGE
+819:- F-11: my draft report named the wrong entry as written late. Corrected.
+851:- What was wrong: E-80 closes F-14 as a record fault under rule 14.6. Rule 14.6 covers a DEFECT; the final AUDITOR classed F-14 a FRAGILITY (E-77), and the ORCHESTRATOR must not change that class 
+exit: 0
+$ grep -n "^### E-\(3\|5\|17\|72\) " AUDIT-LOG.md
+31:### E-3 · 2026-11-18T19:31:47Z · STAGE · orchestrator
+46:### E-5 · 2026-11-18T19:32:07Z · STAGE · orchestrator
+190:### E-17 · 2026-11-18T19:37:27Z · CHECK · orchestrator
+711:### E-72 · 2026-11-18T20:21:36Z · LAUNCH · orchestrator
+$ sed -n 66p DELIVERY-REPORT.md
+E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings), E-82 (a record check was run before the entry it supports, and the map still called F-14 open) [E-20, E-21, E-65, E-82]. F-14, 2 lines of the state file out of date, was corrected and closed as a record fault [E-77, E-80]; that closure was itself wrong in form, since rule 14.6 covers a DEFECT and the final AUDITOR classed F-14 a FRAGILITY [E-85]. 3 entries are marked late: E-3, E-17 and E-72 [E-3, E-17, E-72].

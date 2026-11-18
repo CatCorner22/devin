@@ -1,0 +1,101 @@
+## criteria lines, every stage (new script)
+'A ==> B' plan (1, ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)'])
+'A ==> B' unit (1, ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)'])
+'A ==> B' delivery (1, ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)'])
+'C -.-> D' plan (1, ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)'])
+'C -.-> D' unit (1, ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)'])
+'C -.-> D' delivery (1, ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)'])
+'A -- reads --> B' plan (0, [])
+'A -- reads --> B' unit (0, [])
+'A -- reads --> B' delivery (0, [])
+'A --> B' plan (1, ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'])
+'A --> B' unit (1, ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'])
+'A --> B' delivery (1, ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'])
+'A -->|reads| B' plan (0, [])
+'A -->|reads| B' unit (0, [])
+'A -->|reads| B' delivery (0, [])
+'A ==>|reads| B' plan (0, [])
+'A ==>|reads| B' unit (0, [])
+'A ==>|reads| B' delivery (0, [])
+'A == reads ==> B' plan (0, [])
+'A == reads ==> B' unit (0, [])
+'A == reads ==> B' delivery (0, [])
+'C -.->|reads| D' plan (0, [])
+'C -.->|reads| D' unit (0, [])
+'C -.->|reads| D' delivery (0, [])
+'C -. reads .-> D' plan (0, [])
+'C -. reads .-> D' unit (0, [])
+'C -. reads .-> D' delivery (0, [])
+## probes: old vs new at stage plan
+'A-->B'                            old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A==>B'                            old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'C-.->D'                           old=0 [] | new=1 ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)']   <-- DIFFERS
+'A ---> B'                         old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A ---> B has no label (rule 9.3)']   <-- DIFFERS
+'A ===> B'                         old=0 [] | new=1 ['CONNECTIONS.md: edge A ===> B has no label (rule 9.3)']   <-- DIFFERS
+'C -..-> D'                        old=0 [] | new=1 ['CONNECTIONS.md: edge C -..-> D has no label (rule 9.3)']   <-- DIFFERS
+'A --reads--> B'                   old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A ==reads==> B'                   old=0 [] | new=0 []
+'C -.reads.-> D'                   old=0 [] | new=0 []
+'A -- "reads" --> B'               old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A == "reads" ==> B'               old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'C -. "reads" .-> D'               old=0 [] | new=1 ['CONNECTIONS.md: edge C .-> D has no label (rule 9.3)']   <-- DIFFERS
+'A -- (reads) --> B'               old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- [1] --> B'                   old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- {x} --> B'                   old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- reads "x" --> B'             old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A[a -- b] --> B'                  old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A["a -- b"] --> B'                old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A(a == b) ==> B'                  old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A[one] -- reads --> B[two]'       old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A --x B --> C'                    old=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A --o B --> C'                    old=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A --- B --> C'                    old=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)']
+'A -- reads --- B --> C'           old=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A --> B --> C'                    old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- reads --> B --> C'           old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A -->|reads| B --> C'             old=0 [] | new=0 []
+'A --> B -- reads --> C'           old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A ==> B == reads ==> C'           old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A -- reads ==> B'                 old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A == reads --> B'                 old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- reads -.-> B'                old=0 [] | new=1 ['CONNECTIONS.md: edge A -.-> B has no label (rule 9.3)']   <-- DIFFERS
+'A -. reads --> B'                 old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -- --> B'                       old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A --  --> B'                      old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A --> |reads| B'                  old=0 [] | new=0 []
+'A ==> |reads| B'                  old=0 [] | new=0 []
+'A -->|reads|B'                    old=0 [] | new=0 []
+'A <--> B'                         old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A <==> B'                         old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A <-.-> B'                        old=0 [] | new=1 ['CONNECTIONS.md: edge A -.-> B has no label (rule 9.3)']   <-- DIFFERS
+'A x--x B'                         old=0 [] | new=0 []
+'A & B --> C'                      old=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)']
+'A --> B & C'                      old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'my-node --> B'                    old=1 ['CONNECTIONS.md: edge my --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge my --> B has no label (rule 9.3)']
+'my-node -- reads --> B'           old=1 ['CONNECTIONS.md: edge my --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A.->B'                            old=0 [] | new=1 ['CONNECTIONS.md: edge A .-> B has no label (rule 9.3)']   <-- DIFFERS
+'A .-> B'                          old=0 [] | new=1 ['CONNECTIONS.md: edge A .-> B has no label (rule 9.3)']   <-- DIFFERS
+'A ..-> B'                         old=0 [] | new=1 ['CONNECTIONS.md: edge A ..-> B has no label (rule 9.3)']   <-- DIFFERS
+'A -. .-> B'                       old=0 [] | new=1 ['CONNECTIONS.md: edge A .-> B has no label (rule 9.3)']   <-- DIFFERS
+'%% A ==> B'                       old=0 [] | new=0 []
+'note: see A ==> B for detail'     old=0 [] | new=1 ['CONNECTIONS.md: edge note ==> B has no label (rule 9.3)']   <-- DIFFERS
+'Text with a.b...-> c'             old=0 [] | new=1 ['CONNECTIONS.md: edge Text ...-> c has no label (rule 9.3)']   <-- DIFFERS
+'A ~~~ B'                          old=0 [] | new=0 []
+'A --> B;'                         old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A-- reads -->B'                   old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A -- reads -->|also| B'           old=0 [] | new=0 []
+'A --\treads --> B'                old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A -- - --> B'                     old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A -- > --> B'                     old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A -- reads -- more --> B'         old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=0 []   <-- DIFFERS
+'A --- reads --> B'                old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -.- B'                          old=0 [] | new=0 []
+'A === B'                          old=0 [] | new=0 []
+'A ==> B\n  C -.-> D\n  E --> F'   old=1 ['CONNECTIONS.md: edge E --> F has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)', 'CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)', 'CONNECTIONS.md: edge E --> F has no label (rule 9.3)']   <-- DIFFERS
+'A -- reads --> B\n  C ==> D'      old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge C ==> D has no label (rule 9.3)']   <-- DIFFERS
+'subgraph one\n  A ==> B\n  end'   old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A:::cls ==> B'                    old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+'A@{ shape: rect } --> B'          old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A e1@--> B'                       old=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] | new=1 ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A e1@==> B'                       old=0 [] | new=1 ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)']   <-- DIFFERS
+exit: 0

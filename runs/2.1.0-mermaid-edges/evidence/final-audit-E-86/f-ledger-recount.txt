@@ -1,0 +1,35 @@
+FAIL cell line 25 COR : F-5, and F-4, F-6, F-7, F-8, F-9 — overruled by the USER (E-55)
+FAIL cell line 32 COR : F-5, and F-4, F-6, F-7, F-8 — overruled by the USER (E-55)
+FAIL cell line 51 COR : F-8 — overruled by the USER (E-55)
+FAIL cell line 52 COR : F-4 — overruled by the USER (E-55)
+FAIL cell line 54 COR : F-5 — overruled by the USER (E-55)
+FAIL cell line 58 COR : F-6, and F-7 — overruled by the USER (E-55)
+FAIL cell line 59 COR : F-5 — overruled by the USER (E-55)
+rows: 38 cells: 380
+counts: {'PASS': 31, 'N/A': 342, 'FAIL': 7}
+N/A reasons and PASS citations:
+   31 x PASS cites `audits/WU-1-r2-correctness-E-44.md`
+   110 x — CORE
+   232 x — covered at file row
+N/A cells other than "covered at file row", by section and column:
+   ('Branches', 'ADV') 17
+   ('CRITERIA', 'ADV') 7
+   ('CRITERIA', 'BP') 7
+   ('CRITERIA', 'DRIFT') 7
+   ('CRITERIA', 'FOR') 7
+   ('CRITERIA', 'LANG') 7
+   ('CRITERIA', 'RED') 7
+   ('CRITERIA', 'RSV') 7
+   ('CRITERIA', 'RX') 7
+   ('CRITERIA', 'STAB') 7
+   ('Files', 'ADV') 2
+   ('Files', 'BP') 2
+   ('Files', 'DRIFT') 2
+   ('Files', 'FOR') 2
+   ('Files', 'LANG') 2
+   ('Files', 'RED') 2
+   ('Files', 'RSV') 2
+   ('Files', 'RX') 2
+   ('Files', 'STAB') 2
+   ('Functions', 'ADV') 12
+Totals line: ['| 31 | 7 | 342 | 0 | 0 |']

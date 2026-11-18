@@ -1,0 +1,15 @@
+test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.012s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit: 0

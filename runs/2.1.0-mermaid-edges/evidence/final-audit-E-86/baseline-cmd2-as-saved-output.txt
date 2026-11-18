@@ -1,0 +1,5 @@
+/home/ubuntu/audit-r2/out/baseline-cmd2-as-saved.sh: line 1: mermaidngraph: command not found
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+TypeError: not all arguments converted during string formatting
+exit: 1
