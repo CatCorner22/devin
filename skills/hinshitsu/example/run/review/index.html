@@ -71,7 +71,7 @@ function readAmount(text) {
   var s = text.trim();
   if (s === "") { return { error: "Enter the bill total." }; }
   if (s.indexOf(",") !== -1) { return { error: "Use a dot, not a comma. Example: 12.50" }; }
-  var m = /^(\d+)(?:\.(\d{1,2}))?$/.exec(s);
+  var m = /^(\d+)(?:\.(\d{0,2}))?$/.exec(s);
   if (!m) { return { error: "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" }; }
   var whole = m[1].replace(/^0+(?=\d)/, "");
   if (whole.length > 7) { return { error: "Enter 1000000.00 or less." }; }
