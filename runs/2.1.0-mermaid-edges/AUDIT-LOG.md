@@ -35,3 +35,10 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 - Skill read: `skills/hinshitsu/SKILL.md`, 15005 bytes, SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51 [`evidence/capability-commands.txt`]
 - Written late: S1 started before E-1. Rule 0.1 fixes E-1 as the `LAUNCH` entry and E-2 as the `CAPABILITY` entry, so this entry could not come first (see `FRICTION.md`).
+
+### E-4 · 2026-11-18T19:32:07Z · TIER · orchestrator
+
+- Change measured: planned change is 2 files, `scripts/hinshitsu_check.py` (the unlabelled-edge test, 1 block near line 288) and `tests/test_check.py` (new tests), estimated at 60 changed lines or fewer. `git diff --stat 93311ab -- . ':!runs'` prints nothing: no change is built yet. The count is taken again from `git diff --stat` before the WORK UNIT's audit (see `FRICTION.md` items 5 and 6).
+- Section-18 action in the change: no — the run pushes only the new branch `devin/hinshitsu-run-2.1.0`, which is not a default or shared branch
+- TIER: CORE
+- Planned SUB-AGENT runs: 3
