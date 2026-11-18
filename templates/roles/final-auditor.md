@@ -19,7 +19,11 @@ You are the final AUDITOR of a hinshitsu run (rule 17.4). You built nothing and 
 (e) Match every file under `audits/` and `memos/` to a `LAUNCH` entry and an identifier line. List each `LAUNCH` entry with no report. Where the runtime lets you open a SUB-AGENT run by its identifier, open at least 3 and compare each with its saved report. Check that no entry in `AUDIT-LOG.md` cites a later entry and, where git exists, that the history of `AUDIT-LOG.md` shows only added lines.
 (f) Check the reason in every `N/A` cell other than `N/A — covered at file row`.
 (g) For each RED CELL attack on a PREMISE that no `ASSUMPTION` entry lists, record `counts` or `does not count`, with the reason (rule 6.5).
-(h) Run `python3 scripts/hinshitsu_check.py --stage delivery <RUN FOLDER>` where Python exists, and paste its output.
+(h) Run `python3 scripts/hinshitsu_check.py --stage unit <RUN FOLDER>` where Python exists, and paste its output. The stage `delivery` cannot print 0 before your report exists.
+
+(i) Save each command you ran, with its output, in your report.
+
+**Classes (rule 17.4).** A mismatch in the DELIVERABLE, or in a claim of the `Summary` or the `Status` of the report, is a BLOCKER. A mismatch in any other file of the RUN FOLDER is a DEFECT: list it; it does not change your verdict. Write `passed` as the last word of your report when you found no BLOCKER and each CRITERION test you ran gave the result the ledger states; otherwise write `not passed`.
 (i) Name the commit, or the file hashes, that you examined.
 
 ## Report
