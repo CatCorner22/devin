@@ -1,0 +1,6 @@
+FAIL AUDIT-LOG.md: stage S10 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: stage S11 has no end or skipped entry (rule 0.7)
+FAIL audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)
+hinshitsu_check (delivery): 3 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit 1

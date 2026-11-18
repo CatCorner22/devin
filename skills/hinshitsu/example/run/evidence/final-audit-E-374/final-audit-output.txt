@@ -1,0 +1,96 @@
+browser 156.0.8078.47
+C1 requests: ["file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html"] count 1
+C4 first open {"vals":["","",""],"guideVisible":true,"guide":"Type the bill total, the tip percent and the number of people.","bodyText":"Split the bill\n\nType the bill total, the tip percent and the number of people.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"} {"res":[],"resText":"","err":["","",""],"val":["","",""]}
+C4 incomplete (bill typed, others untouched) {"res":[],"resText":"","err":["","",""],"val":["12.50","",""]}
+C2 ok ["100.00","18","4"] ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"] ["","",""]
+C2 ok ["0.30","15","1"] ["Bill total: 0.30","Tip percent: 15","Number of people: 1","Tip amount: 0.05","Total with tip: 0.35","1 person pays 0.35"] ["","",""]
+C2 ok ["10.10","15","1"] ["Bill total: 10.10","Tip percent: 15","Number of people: 1","Tip amount: 1.52","Total with tip: 11.62","1 person pays 11.62"] ["","",""]
+C2 ok ["12.25","18","1"] ["Bill total: 12.25","Tip percent: 18","Number of people: 1","Tip amount: 2.21","Total with tip: 14.46","1 person pays 14.46"] ["","",""]
+C2 ok ["0100.5","007","02"] ["Bill total: 100.50","Tip percent: 7","Number of people: 2","Tip amount: 7.04","Total with tip: 107.54","2 people pay 53.77 each"] ["","",""]
+C2 ok ["10.00","0","3"] ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."] ["","",""]
+C2 all ok: true
+C3 set 1 (0.01..50.00 x tips 0,15,18,20 x 1 person): cases 20000 wrong 0
+C3 set 2 (0.01..5.00 x 1..12 people x tip 18): cases 6000 wrong 0
+C3 spot ["10.00","0","3"] ok ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."]
+C3 spot ["1000000.00","100","100"] ok ["Bill total: 1000000.00","Tip percent: 100","Number of people: 100","Tip amount: 1000000.00","Total with tip: 2000000.00","100 people pay 20000.00 each"]
+C3 spot ["0.01","0","100"] ok ["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."]
+C3 total cases 26003 wrong 0 seconds 166.5 []
+C4 bad bill "abc" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "12a" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "1,000.00" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "1.000,00" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "1e3" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill ".5" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "$12" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "12€" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "-5" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "0" message+no result "Type an amount above 0." res 0
+C4 bad bill "0.00" message+no result "Type an amount above 0." res 0
+C4 bad bill "1000000.01" message+no result "Type 1000000.00 or less." res 0
+C4 bad bill "1000001" message+no result "Type 1000000.00 or less." res 0
+C4 bad bill "12.345" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "1,234" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "  " message+no result "Type the bill total." res 0
+C4 bad bill "١٢.٥٠x" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "+5" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad bill "1 000" message+no result "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0
+C4 bad tip "18.0" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "18,5" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "1e1" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "+4" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "4." message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "101" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "-1" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "abc" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "1.5" message+no result "Type a whole number from 0 to 100, in digits only." res 0
+C4 bad tip "" message+no result "Type the tip percent. Type 0 for no tip." res 0
+C4 bad people "18.0" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "18,5" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "1e1" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "+4" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "4." message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "101" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "0" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "-1" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "abc" message+no result "Type a whole number from 1 to 100, in digits only." res 0
+C4 bad people "" message+no result "Type the number of people." res 0
+C4 good ["12.50","18","4"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["12,50","18","4"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["  12.50 ","18 "," 4"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["１２．５０","１８","４"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["١٢٫٥٠","١٨","٤"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["​12.50​","18","4"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["12.5","18","4"] result same as 12.50/18/4 ["Bill total: 12.50","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 good ["12","18","4"] result same as 12.50/18/4 ["Bill total: 12.00","Tip percent: 18","Number of people: 4"] ["","",""]
+C4 "12." focused: ["","",""] res 0 ok
+C4 "12." after leaving: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." res 0 ok
+C4 "12." cursor returned: "" res 0
+C4 recompute after typing 5: ["Bill total: 12.50","Tip percent: 18","Number of people: 4","Tip amount: 2.25","Total with tip: 14.75","3 people pay 3.69 each","1 person pays 3.68","Your group decides who pays the higher amount."]
+C4 emptied after typing (still focused): "Type the bill total." res 0
+C4 empty bill left by Tab: ["Type the bill total.","",""]
+C4 failures: [] waiting ok true true recompute true emptied true left true
+C5 width 360 first-open {"W":360,"inner":360,"scrollW":360,"bodyScrollW":360,"over":[]} scrollX after scrollTo(500): 0
+C5 width 360 error {"W":360,"inner":360,"scrollW":360,"bodyScrollW":360,"over":[]} scrollX after scrollTo(500): 0
+C5 width 360 result {"W":360,"inner":360,"scrollW":360,"bodyScrollW":360,"over":[]} scrollX after scrollTo(500): 0
+C5 width 768 first-open {"W":768,"inner":768,"scrollW":768,"bodyScrollW":768,"over":[]} scrollX after scrollTo(500): 0
+C5 width 768 error {"W":768,"inner":768,"scrollW":768,"bodyScrollW":768,"over":[]} scrollX after scrollTo(500): 0
+C5 width 768 result {"W":768,"inner":768,"scrollW":768,"bodyScrollW":768,"over":[]} scrollX after scrollTo(500): 0
+C5 width 1280 first-open {"W":1280,"inner":1280,"scrollW":1280,"bodyScrollW":1280,"over":[]} scrollX after scrollTo(500): 0
+C5 width 1280 error {"W":1280,"inner":1280,"scrollW":1280,"bodyScrollW":1280,"over":[]} scrollX after scrollTo(500): 0
+C5 width 1280 result {"W":1280,"inner":1280,"scrollW":1280,"bodyScrollW":1280,"over":[]} scrollX after scrollTo(500): 0
+C5 markup {"labels":[{"for":"bill","text":"Bill total, tax included","visible":true},{"for":"tip","text":"Tip percent","visible":true},{"for":"people","text":"Number of people","visible":true}],"errRoles":["alert","alert","alert"],"resultRole":"status","inputmode":["decimal","numeric","numeric"],"autocomplete":["off","off","off"]}
+C5 changes in #bill-error and #result while typing in tip and people (bill error showing): 0
+C5 changes in 3 error paragraphs and #result while typing more letters in bill (same messages): 0
+C5 changes after delete+retype of 4 in people (1 clear + 1 rewrite expected, text did change) then a trailing space in bill: 4
+C5 changes with a result showing while typing a trailing space in bill and a leading 0 in tip (text unchanged): 0
+C7 fetch: blocked: TypeError: Failed to fetch console errors: ["Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.","Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy."]
+C7 source holds localStorage : false
+C7 source holds sessionStorage : false
+C7 source holds indexedDB : false
+C7 source holds document.cookie : false
+C7 source holds caches : false
+C7 CSP tag exact: true
+C7 reload: before ["100.00","18","4"] after ["","",""] result lines after 0
+C1 total requests over whole run to non-file URLs: ["file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html"]
+C6 JS off body text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." {"guide":false,"fields":false,"inputs":0}
+page errors: ["Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.","Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy."]

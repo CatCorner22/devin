@@ -1,0 +1,18 @@
+first open: true ["","",""]
+100.00 / 18 / 4 => {"hidden":false,"text":"Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each","e":["","",""]}
+0.30 / 15 / 1 => {"hidden":false,"text":"Bill total: 0.30 | Tip percent: 15 | Number of people: 1 | Tip amount: 0.05 | Total with tip: 0.35 | 1 person pays 0.35","e":["","",""]}
+10.10 / 15 / 1 => {"hidden":false,"text":"Bill total: 10.10 | Tip percent: 15 | Number of people: 1 | Tip amount: 1.52 | Total with tip: 11.62 | 1 person pays 11.62","e":["","",""]}
+12.25 / 18 / 1 => {"hidden":false,"text":"Bill total: 12.25 | Tip percent: 18 | Number of people: 1 | Tip amount: 2.21 | Total with tip: 14.46 | 1 person pays 14.46","e":["","",""]}
+10.00 / 0 / 3 => {"hidden":false,"text":"Bill total: 10.00 | Tip percent: 0 | Number of people: 3 | Tip amount: 0.00 | Total with tip: 10.00 | 1 person pays 3.34 | 2 people pay 3.33 each | Your group decides who pays the higher amount.","e":["","",""]}
+1000000.00 / 100 / 100 => {"hidden":false,"text":"Bill total: 1000000.00 | Tip percent: 100 | Number of people: 100 | Tip amount: 1000000.00 | Total with tip: 2000000.00 | 100 people pay 20000.00 each","e":["","",""]}
+0.01 / 0 / 100 => {"hidden":false,"text":"Bill total: 0.01 | Tip percent: 0 | Number of people: 100 | Tip amount: 0.00 | Total with tip: 0.01 | 1 person pays 0.01 | 99 people pay 0.00 each | Your group decides who pays the higher amount.","e":["","",""]}
+12,50 / 18 / 4 => {"hidden":false,"text":"Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount.","e":["","",""]}
+10. / 18.0 / +4 => {"hidden":true,"text":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","Type a whole number from 0 to 100, in digits only.","Type a whole number from 1 to 100, in digits only."]}
+1000000.01 / 101 / 0 => {"hidden":true,"text":"","e":["Type 1000000.00 or less.","Type a whole number from 0 to 100, in digits only.","Type a whole number from 1 to 100, in digits only."]}
+ 5.5  /  0  /  2  => {"hidden":false,"text":"Bill total: 5.50 | Tip percent: 0 | Number of people: 2 | Tip amount: 0.00 | Total with tip: 5.50 | 2 people pay 2.75 each","e":["","",""]}
+requests: 1 errors: []
+fetch: blocked: Failed to fetch
+after reload bill= ""
+360 scrollWidth 360
+768 scrollWidth 768
+1280 scrollWidth 1280

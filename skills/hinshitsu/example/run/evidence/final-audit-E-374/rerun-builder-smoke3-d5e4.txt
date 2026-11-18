@@ -1,0 +1,29 @@
+["5U+B2","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+2075U+2070","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+2460U+2461","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+1D7CFU+1D7D0","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+202450","18","4"] => {"r":"","e":"Type the amount in digits only /  / "}
+["100.00","1U+B2","U+2463"] => {"r":"","e":" / Type a whole number from 0 to  / Type a whole number from 1 to "}
+["U+3251","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+200E12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["12.50U+200F","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+61C12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+AD12.50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+206612.50U+2069","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+202A12.50U+202C","U+200E18","4U+200F"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | ","e":" /  / "}
+["U+A012.50U+FEFF","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["12U+200B.50","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["U+FF11U+FF12U+FF0EU+FF15U+FF10","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+661U+662U+66BU+665","U+665","U+662"] => {"r":"Bill total: 12.50 | Tip percent: 5 | Number of people: 2 | T","e":" /  / "}
+["U+6F1U+6F2","0","1"] => {"r":"Bill total: 12.00 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["U+967U+968","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["12U+FF0C50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | T","e":" /  / "}
+["1000000.00","100","100"] => {"r":"Bill total: 1000000.00 | Tip percent: 100 | Number of people","e":" /  / "}
+["1000000.01","0","1"] => {"r":"","e":"Type 1000000.00 or less. /  / "}
+["1,000","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+["$12","0","1"] => {"r":"","e":"Type the amount in digits only /  / "}
+12. focused: {"r":"","e":" /  / "}
+12. left: {"r":"","e":"Type the amount in digits only /  / "}
+12. back in field: {"r":"","e":" /  / "}
+100000 spaces ms: 10 maxlength: 64
+globals: [ 'splitBill', 'fields' ] errors: []

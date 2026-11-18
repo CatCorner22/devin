@@ -1,0 +1,21 @@
+["12,50","18","3"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 3 | Tip amount: 2.25 | Total with tip: 14.75 | 2 people pay 4.92 each | 1 person pays 4.91 | Your group decides who pays the higher amount.","e":["","",""]}
+["12.5","18","3"] => {"r":"Bill total: 12.50 | Tip percent: 18 | Number of people: 3 | Tip amount: 2.25 | Total with tip: 14.75 | 2 people pay 4.92 each | 1 person pays 4.91 | Your group decides who pays the higher amount.","e":["","",""]}
+["1,000.00","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["1.000,00","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["1,000","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["10.","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["10,","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+[".5","0","1"] => {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+["１２．５０","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["١٢٫٥","٥","٢"] => {"r":"Bill total: 12.50 | Tip percent: 5 | Number of people: 2 | Tip amount: 0.63 | Total with tip: 13.13 | 1 person pays 6.57 | 1 person pays 6.56 | Your group decides who pays the higher amount.","e":["","",""]}
+["12.50​","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["12，50","0","1"] => {"r":"Bill total: 12.50 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 12.50 | 1 person pays 12.50","e":["","",""]}
+["0100.5","007","02"] => {"r":"Bill total: 100.50 | Tip percent: 7 | Number of people: 2 | Tip amount: 7.04 | Total with tip: 107.54 | 2 people pay 53.77 each","e":["","",""]}
+["5","18,5","2"] => {"r":"","e":["","Type a whole number from 0 to 100, in digits only.",""]}
+["5","0",""] => {"r":"","e":["","","Type the number of people."]}
+typing 12. focused: {"r":"","e":["","",""]}
+typing 12.5: {"r":"","e":["","",""]}
+12. after leaving: {"r":"","e":["Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","",""]}
+changes while typing in tip with a bill error: 1
+changes while moving focus with a result: 0
+JS off visible text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." visible inputs: 0

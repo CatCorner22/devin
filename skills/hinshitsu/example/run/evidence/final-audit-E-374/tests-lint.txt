@@ -1,0 +1,5 @@
+Ran 55 tests in 1.088s
+OK
+exit 0
+lint: 0 failure(s). This script tests form; it does not prove that any rule is sound.
+lint exit 0
