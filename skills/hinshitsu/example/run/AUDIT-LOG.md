@@ -665,3 +665,34 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Violates: rule 8.1
 - Raised by: second re-audit, LAUNCH E-56, `audits/plan-reaudit-E-56.md`, finding N-1
 - Lens: trust and controls
+
+### E-63 · 2026-11-18T15:51:18Z · CARD · orchestrator
+
+- Sent to: the USER, in the session chat
+- Why now: F-7 (a BLOCKER) is open after 2 fix-and-re-audit rounds, so rule 14.5 requires question 1. Questions 2 to 4 are the questions of S6, sent in the same card so that the USER answers 1 time.
+- Working assumptions while the card is open: 1A, 2A, 3B, 4A. No re-audit, freeze, build or publishing happens before an ANSWER entry.
+- Card, word for word:
+
+> **1. One more check round?** Independent sessions raised 13 faults in my plan for the example page; 12 are fixed and confirmed. One is still open after the 2 rounds the skill allows: my summary files lagged behind the log. I have fixed it again, but nobody independent has confirmed that.
+> Recommended: A, because the fix is small and 1 more session settles it.
+> - A: 1 more independent session checks it. You get a clean record; it costs about 5 minutes.
+> - B: stop the example here. You get it marked "delivered, not done", with the fault listed open.
+> Reply "1A" or "1B".
+> 
+> **2. Approve the rules for the example page?** I invented the task (you asked only for "a real small deliverable"): a page that splits a restaurant bill evenly, with one tip box (whole percent, 0 to 100), amounts typed with a dot, and no network use.
+> Recommended: A, because it is the smallest page that shows every stage running.
+> - A: I build to these 8 rules. You give up item-by-item splitting and comma decimals.
+> - B: tell me what to change. You get the page you want; it adds a review round.
+> Reply "2A" or "2B: <change>".
+> 
+> **3. Publish the page at a public link?** GitHub shows a file's code, not the working page, so a phone cannot open it from the repository.
+> Recommended: A, because without a link you cannot try the page yourself without downloading it.
+> - A: I turn on GitHub Pages (free hosting by GitHub). You get a link that opens on any phone; the page becomes public.
+> - B: no link. Nothing is published; the page opens only from a downloaded copy, and phone use is reported as not checked.
+> Reply "3A" or "3B".
+> 
+> **4. Who pays the leftover cent?** 10.00 split 3 ways leaves 1 cent.
+> Recommended: A, because the total then matches the bill exactly.
+> - A: the page says "1 person pays 3.34; 2 people pay 3.33 each". The group picks who. Nobody overpays.
+> - B: everyone pays 3.34. Simpler to read; the group overpays by 2 cents.
+> Reply "4A" or "4B".
