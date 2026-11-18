@@ -278,3 +278,8 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Card: E-18, as corrected by E-21 (`evidence/card-as-sent.md`)
 - The USER's reply, word for word: "Decision 1: approve. Decision 2: 3 forms only." (Wednesday, 2026-11-18 14:42 EST, which is 19:42 UTC)
 - Effect: decision 1 — the USER approves C1 to C7 as written in E-16. Decision 2 — G12 is answered `3 forms only`: open links, circle and cross ends, 2-way arrows and several links on 1 line stay outside this fix, and the delivery report lists them. D-1 stands as written.
+
+### E-23 · 2026-11-18T19:43:09Z · STAGE · orchestrator
+
+- Stage: S5
+- Event: skipped — `CORE` run (rule 0.5, E-4): no LENS and no RED CELL runs at plan time
