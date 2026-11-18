@@ -3651,3 +3651,30 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Stage: S11
 - Event: start
 - Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8750 bytes, SHA-256 857371b0d618ea4416d0e4ee1e85d79b0f418855c2ea3afe1eb2d39efea79f10
+
+### E-384 · 2026-11-18T18:58:40Z · DELIVERY · orchestrator
+
+- Status line: `DELIVERED — NOT DONE`
+- Channel: the Devin session chat, as an attached file, with a link to `index.html` on branch `main`
+- Report: `DELIVERY-REPORT.md`
+- Note: this entry is written before the message is sent, because the ORCHESTRATOR cannot write to the log after its last message. If the message is not sent, this entry is false.
+
+### E-385 · 2026-11-18T18:58:40Z · STAGE · orchestrator
+
+- Stage: S11
+- Event: end
+- Artifacts: `DELIVERY-REPORT.md`, `evidence/checker-delivery-final.txt`
+- The language auditor did not audit the report (rule 19.14): UNVERIFIED. The final AUDITOR read the draft of commit 39da118, not this text.
+
+### E-386 · 2026-11-18T18:58:40Z · STAGE · orchestrator
+
+- Stage: S12
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8855 bytes, SHA-256 90ba2a0977b34407ee9718b9fe00e2e75327f6f85a68edc2d3487ca42be2c4bd
+
+### E-387 · 2026-11-18T18:58:40Z · STAGE · orchestrator
+
+- Stage: S12
+- Event: end
+- Artifacts: `DELIVERY-REPORT.md`
+- 6 `LESSON` entries, E-366 to E-371, each a proposed amendment. None is applied to the example run. The USER approves or rejects each.
