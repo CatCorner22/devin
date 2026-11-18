@@ -41,3 +41,9 @@ Append-only (rule 9.6). Written by `scripts/hinshitsu_log.py`.
 - Section-18 action in the change: no — the run pushes only the new branch `devin/hinshitsu-run-3.0.0`, which is not a default or shared branch
 - TIER: CORE
 - Planned SUB-AGENT runs: 4
+
+### E-5 · 2026-11-18T21:23:21Z · STAGE · orchestrator
+
+- Stage: S1
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (E-1 to E-4), `prompts/capability-probe.md`, `evidence/capability-probe.md`, `evidence/capability-commands.txt`, `FRICTION.md`
