@@ -1004,3 +1004,11 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Event: end
 - Artifacts: `audits/final-audit-E-72.md` (last line `not passed`), `audits/final-audit-E-86.md` (last line `not passed`), `prompts/final-auditor.md`, `prompts/final-auditor-r2.md`, `evidence/final-audit-E-72/`, `evidence/final-audit-E-86/`
 - The audit of the audit did not pass. The STAGE ends by the USER's direction in E-83.
+
+### E-103 · 2026-11-18T20:54:18Z · STAGE · orchestrator
+
+- Stage: S11
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8999 bytes, SHA-256 6cc55525c67f9d60d653b28b5005730c4baeeb74db839eb36b32e342f6187eda
+- Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- The skill was read whole at the start of S10 (E-71). It was not read again at this STAGE; its hash is taken again and is equal (`FRICTION.md` item 27).
