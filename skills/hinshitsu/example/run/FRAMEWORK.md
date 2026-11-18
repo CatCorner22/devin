@@ -43,7 +43,7 @@ By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`; approved by th
 
 | ID | What | Status |
 |---|---|---|
-| WU-1 | `index.html`, the whole page | not started; the USER approved the CRITERIA in E-64; waits for F-7 to close and for the freeze |
+| WU-1 | `index.html`, the whole page | not started; the USER approved the CRITERIA in E-64; waits until no BLOCKER is open and the CRITERIA are frozen |
 
 Build order inside WU-1: (1) `splitBill` and the text-to-cents step; (2) form, the 3 states and validation; (3) layout at the 3 widths; (4) the no-JavaScript sentence and the policy tag.
 

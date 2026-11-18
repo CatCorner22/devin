@@ -36,9 +36,12 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
     - F-12 gaps called answered with no answer (DEFECT, FIXED)
     - F-13 the session state left out 2 evidence files (DEFECT, FIXED)
     - F-14 a saved scope differed from the scope sent (DEFECT, FIXED)
-    - F-15 an entry named a commit that does not exist (BLOCKER, corrected, not re-audited)
+    - F-15 an entry named a commit that does not exist (BLOCKER, FIXED)
     - F-16 a card lacked 1 of 3 required choices (DEFECT, open)
-    - F-17 a reversal had no entry of that type (DEFECT, entry written, not re-audited)
+    - F-17 a reversal had no entry of that type (DEFECT, FIXED)
+    - F-18 2 files named a closed FINDING as open (BLOCKER, open)
+    - F-19 a card offered an exit the rules do not allow (DEFECT, open)
+    - F-20 a card ran over 120 words (STYLE, open)
 
 ```mermaid
 graph TD
@@ -81,4 +84,7 @@ graph TD
   REC --> F15[F-15 BLOCKER]
   REC --> F16[F-16 DEFECT]
   REC --> F17[F-17 DEFECT]
+  REC --> F18[F-18 BLOCKER]
+  REC --> F19[F-19 DEFECT]
+  REC --> F20[F-20 STYLE]
 ```

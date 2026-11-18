@@ -860,3 +860,68 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-3808cc32ae7749f391d4d332b711042a (https://app.devin.ai/sessions/3808cc32ae7749f391d4d332b711042a)
 - Report: `audits/plan-reaudit-E-81.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-82 · 2026-11-18T16:18:03Z · RESOLUTION · orchestrator
+
+- Finding: F-15
+- Result: FIXED
+- Change: the entries E-77 and E-78
+- Re-audit: `audits/plan-reaudit-E-81.md` (LAUNCH E-81), row F-15: NO LONGER REPRODUCES
+
+### E-83 · 2026-11-18T16:18:03Z · RESOLUTION · orchestrator
+
+- Finding: F-17
+- Result: FIXED
+- Change: the entries E-77 and E-78
+- Re-audit: `audits/plan-reaudit-E-81.md` (LAUNCH E-81), row F-17: NO LONGER REPRODUCES
+
+### E-84 · 2026-11-18T16:18:03Z · FINDING · orchestrator
+
+- ID: F-18
+- Class: BLOCKER
+- Where: `SESSION-STATE.md` field 2; `FRAMEWORK.md` part 5, row WU-1
+- Trigger: `grep -n 'F-7' SESSION-STATE.md FRAMEWORK.md` prints "the freeze waits for F-7 to close" and "waits for F-7 to close and for the freeze"; E-72 closed F-7
+- Violates: BLOCKER (d), a false statement in an artifact; rule 8.1
+- Raised by: fifth re-audit, LAUNCH E-81, `audits/plan-reaudit-E-81.md`, finding N-1
+- Lens: trust and controls
+
+### E-85 · 2026-11-18T16:18:04Z · FINDING · orchestrator
+
+- ID: F-19
+- Class: DEFECT
+- Where: E-79, choice B
+- Trigger: read choice B against rule 14.4: it offers the USER a way to let an open BLOCKER stop halting the run without a re-audit
+- Violates: rule 14.4
+- Raised by: fifth re-audit, LAUNCH E-81, `audits/plan-reaudit-E-81.md`, finding N-2
+- Lens: trust and controls
+
+### E-86 · 2026-11-18T16:18:04Z · FINDING · orchestrator
+
+- ID: F-20
+- Class: STYLE
+- Where: E-79, the card
+- Trigger: `sed -n 839,843p AUDIT-LOG.md | sed 's/^> //; s/^- //' | wc -w` prints 142
+- Violates: rule 23.4
+- Raised by: fifth re-audit, LAUNCH E-81, `audits/plan-reaudit-E-81.md`, finding N-3
+- Lens: trust and controls
+
+### E-87 · 2026-11-18T16:18:04Z · CORRECTION · orchestrator
+
+- Corrects: E-79, and adds to E-77 item 2.
+- 1. Choice B of the card in E-79 was not a change to a CRITERION and is withdrawn. The USER did not choose it (E-80).
+- 2. F-16 stays open: no card has yet offered the USER a change to a CRITERION. The next card offers it.
+
+### E-88 · 2026-11-18T16:18:18Z · CARD · orchestrator
+
+- Sent to: the USER, in the session chat
+- Why now: F-18 (a BLOCKER) is open and 5 fix-and-re-audit rounds have run on this WORK UNIT (rule 14.5). Choice C offers the change to a CRITERION that F-16 found missing. Choice A is a proposed amendment to the skills, which only the USER may approve (section 20).
+- No working assumption. No re-audit, freeze, build or change to a skill happens before an ANSWER entry.
+- Card, word for word:
+
+> **The checking is not converging. Amend the skill?** 5 rounds closed 16 faults, all in my bookkeeping, none in the product. Each fix adds log entries; a fresh checker then finds a stale line, and one stops the run now. The cause is my draft: any wrong line in a record file stops all work.
+> Recommended: A.
+> - A: amend the skill. A wrong record line must be corrected in the log, and a script checks the files against the log. Only a wrong line in the product or final report stops work. You get the page today.
+> - B: 1 more round, same rules. May repeat.
+> - C: change one of the 8 page rules. Say which.
+> - D: stop the example, marked "delivered, not done".
+> Reply "A", "B", "C" or "D".
