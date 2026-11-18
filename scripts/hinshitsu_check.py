@@ -159,6 +159,7 @@ def check(folder, stage):
         scope = re.search(r"`(prompts/[^`]+)`", field(b, "Scope") or "")
         report = re.search(r"`((?:audits|memos|evidence)/[^`]+)`", field(b, "Report") or "")
         ident = field(b, "SUB-AGENT identifier")
+        ident = ident.split()[0] if ident else ident  # the identifier is the first word; a link may follow
         if not scope or not (folder / scope.group(1)).is_file():
             err("AUDIT-LOG.md: E-%d LAUNCH scope file is missing (rule 1.5)" % e["n"])
         if not ident or ident.startswith("<"):
