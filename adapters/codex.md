@@ -1,12 +1,12 @@
 UNVERIFIED — never run on this surface
 
-# hinshitsu adapter — ChatGPT and Codex
+# hinshitsu adapter — Codex and ChatGPT Work
 
 This file maps tool names. It adds no rule and removes none (rule 0.10). The rules are in `skills/hinshitsu/SKILL.md` (the conductor) and the 6 skills it names; the terms are in `skills/hinshitsu/GLOSSARY.md`.
 
 **Surface this adapter targets:** Codex (app, CLI, IDE extension) and ChatGPT Work.
 
-**Not for:** ordinary ChatGPT chat with no Work or Codex agent: OpenAI documents no sub-agents there, so the gate of rule 0.3 stops the run.
+**Not for:** ordinary ChatGPT chat with no Work or Codex agent: OpenAI documents no sub-agents there, so the gate of rule 0.3 stops the run. Ordinary ChatGPT has its own single-assistant skill, `chat/chatgpt/hinshitsu-chatgpt/`.
 
 ## Capabilities, with sources
 

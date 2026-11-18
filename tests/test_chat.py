@@ -177,6 +177,13 @@ class Package(unittest.TestCase):
             for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip"):
                 self.assertEqual((Path(a) / name).read_bytes(), (Path(b) / name).read_bytes(), name)
 
+    def test_the_committed_dist_folder_is_current(self):
+        with tempfile.TemporaryDirectory() as d:
+            subprocess.run([sys.executable, str(ROOT / "scripts/package.py"), d], capture_output=True, text=True)
+            for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip"):
+                self.assertEqual((ROOT / "dist" / name).read_bytes(), (Path(d) / name).read_bytes(),
+                                 "run `python3 scripts/package.py dist`: %s is out of date" % name)
+
 
 if __name__ == "__main__":
     unittest.main()

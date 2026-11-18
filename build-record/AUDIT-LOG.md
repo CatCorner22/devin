@@ -397,3 +397,12 @@ Proof run under version 3.0.0, announced to the USER before its start. 1 fresh s
 - The USER, 2026-11-18 18:08 EST: "For the stop unless thresholds or guidelines: I would add \"unstable or improperly formatted code\" that is risky for the future." Recorded as BLOCKER (f) in the glossary, in 4 testable parts, and sent to the USER in those words.
 - Version 3.1.0 is listed in `CHANGELOG.md`. `python3 -m unittest discover -s tests` prints "Ran 165 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
 - ASSERTED: no independent session has reviewed version 3.1.0, and no run has been made under it.
+
+### E-032 · 2026-11-18T23:12Z · DECISION · orchestrator
+
+App-specific files, after the code double-check the USER asked for (E-025 to E-031):
+
+- `chat/claude/hinshitsu-claude/` and `chat/chatgpt/hinshitsu-chatgpt/`: 2 single-assistant skills, each with `scripts/report_check.py`; `chat/chatgpt/PASTE-IN.md` for an account with no Skills page. Their best status is `DELIVERED — SELF-CHECKED`; each report states that no independent checker reviewed the work.
+- `adapters/chatgpt.md` is renamed `adapters/codex.md` (Codex and ChatGPT Work). `INSTALL.md` gives the steps for 9 surfaces. `scripts/package.py` writes `dist/hinshitsu-claude.zip`, `dist/hinshitsu-chatgpt.zip` and `dist/hinshitsu-plugin.zip`.
+- `python3 -m unittest discover -s tests` prints "Ran 187 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
+- UNVERIFIED: no file of this entry was uploaded to or run on Claude, ChatGPT, Claude Code, Codex, Cursor, Gemini CLI, Muse Code CLI or Kimi Code CLI; this session has no account on them.

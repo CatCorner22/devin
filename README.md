@@ -50,14 +50,25 @@ hinshitsu runs only where the main agent can start a sub-agent, write that sub-a
 | Devin | [`adapters/devin.md`](adapters/devin.md) | yes: the worked example ran here |
 | Claude Code | [`adapters/claude-code.md`](adapters/claude-code.md) | no |
 | Cursor | [`adapters/cursor.md`](adapters/cursor.md) | no |
-| Codex and ChatGPT Work | [`adapters/chatgpt.md`](adapters/chatgpt.md) | no |
+| Codex and ChatGPT Work | [`adapters/codex.md`](adapters/codex.md) | no |
 | Gemini CLI | [`adapters/gemini.md`](adapters/gemini.md) | no |
 | Kimi Code CLI | [`adapters/kimi.md`](adapters/kimi.md) | no |
 | Muse Code CLI | [`adapters/muse.md`](adapters/muse.md) | no |
 
 An adapter that was never run on its surface says so in its first line. Each adapter gives the install steps for its surface and a dated link to the vendor's page for each capability it states.
 
-**Not supported:** ordinary ChatGPT chat, the Gemini app, kimi.com chat and the Meta AI app, which do not let the main agent scope a sub-agent. Perplexity has no adapter: its Computer product starts sub-agents itself, and its documentation shows no way for the main agent to write each one's scope.
+### Ordinary chat: 2 single-assistant skills
+
+Ordinary Claude chat and ordinary ChatGPT cannot start a sub-agent, so the 7 skills do not run there. Each has its own skill, which keeps the gap hunt (baby bird), the requirements the user approves before work starts, evidence for every claim, and a report that states what was checked. It never reports an independent check: its best status is `DELIVERED — SELF-CHECKED`.
+
+| Surface | Skill | Upload | Tested in this repository |
+|---|---|---|---|
+| Claude chat (claude.ai and the apps) | [`chat/claude/hinshitsu-claude/`](chat/claude/hinshitsu-claude/SKILL.md) | [`dist/hinshitsu-claude.zip`](dist/hinshitsu-claude.zip) | no |
+| ChatGPT (chatgpt.com and the apps) | [`chat/chatgpt/hinshitsu-chatgpt/`](chat/chatgpt/hinshitsu-chatgpt/SKILL.md); without Skills, [`chat/chatgpt/PASTE-IN.md`](chat/chatgpt/PASTE-IN.md) | [`dist/hinshitsu-chatgpt.zip`](dist/hinshitsu-chatgpt.zip) | no |
+
+[`INSTALL.md`](INSTALL.md) gives the steps for each of the 9 surfaces. `python3 scripts/package.py dist` writes the zip files.
+
+**Not supported:** the Gemini app, kimi.com chat and the Meta AI app, which do not let the main agent scope a sub-agent and for which no single-assistant skill is written. Perplexity has no adapter: its Computer product starts sub-agents itself, and its documentation shows no way for the main agent to write each one's scope.
 
 ## Install
 
