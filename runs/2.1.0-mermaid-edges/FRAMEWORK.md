@@ -6,7 +6,9 @@ Form required by section 7 (`skills/hinshitsu-record/SKILL.md`). A superseded li
 
 No `CRITERIA` entry exists yet (S2). (superseded 2026-11-18 → E-16)
 
-See `AUDIT-LOG.md` entry E-16 (`CRITERIA`, `PROPOSED`: C1 to C7) and each later `CRITERIA` or `CRITERIA-CHANGE` entry. Those entries control.
+See `AUDIT-LOG.md` entry E-16 (`CRITERIA`, `PROPOSED`: C1 to C7) and each later `CRITERIA` or `CRITERIA-CHANGE` entry. Those entries control. (superseded 2026-11-18 → E-25)
+
+See `AUDIT-LOG.md` entry E-25 (`CRITERIA`, `FROZEN`: C1 to C7, the same text as E-16) and each later `CRITERIA-CHANGE` entry. Those entries control.
 
 ## 2. Architecture decisions
 
