@@ -2609,3 +2609,15 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Corrects E-178: "no layout shift on an error" is true for a message of 1 line only. A message of 2 or more lines moves the fields below it.
 - Corrects E-176: the line on cost is false. `1,000` gets the bill's general format message; the page has no message for decimal places. After the change of E-250 that message names thousands separators.
 - Report names: from round 2 on a report file is `audits/<WU>-r<round>-<role>-E-<n>.md`. `FRAMEWORK.md` part 3 now says so.
+
+### E-252 · 2026-11-18T17:47:22Z · LAUNCH · orchestrator
+
+- Role: seeder (rule 16.7), audit round 3; not the BUILDER; a new SUB-AGENT
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-r3-seeder.md`
+- Commit under review: 0882a0f
+- SUB-AGENT identifier: devin-157eabdcba17427e822ddeaa2311cee0 (https://app.devin.ai/sessions/157eabdcba17427e822ddeaa2311cee0)
+- Report: `audits/WU-1-r3-seed-E-252.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+- The report is saved in the RUN FOLDER only after both AUDITORS of round 3 have started.
+- Round 3 runs 2 roles only, the correctness auditor and the adversarial tester, because the changes of E-250 answer faults in the page's code. The other 5 roles are not run again; the delivery report names what that leaves open.
