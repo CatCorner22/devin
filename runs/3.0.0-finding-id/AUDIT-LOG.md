@@ -373,3 +373,47 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 > Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
 > hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
 > — end of card —
+
+### E-35 · 2026-11-18T21:39:39Z · ANSWER · orchestrator
+
+The USER's message, word for word, sent 2026-11-18 16:39 EST (21:39 UTC), message `event-01a1f0999264781a8d8794e8f6eb14a0`, in answer to the card of E-34:
+
+> Decision 1: set aside. Decision 2: set aside.
+
+- Effect: decision 1 — the USER overrules F-1; the rule text of 24.2 and 24.3 goes to S12 as a proposed amendment. Decision 2 — the USER overrules F-2. The CRITERIA of E-21 stay as they are. Planned SUB-AGENT runs stay 4.
+
+### E-36 · 2026-11-18T21:39:39Z · OVERRULE · orchestrator
+
+- Finding: F-1 (DEFECT; never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "Decision 1: set aside." (E-35; decision 1 of the card in E-34)
+- Reason: the fix edits a rule file and adds a 4th file; the USER set it aside. The delivery report lists it and S12 proposes the rule text.
+
+### E-37 · 2026-11-18T21:39:39Z · OVERRULE · orchestrator
+
+- Finding: F-2 (DEFECT; never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "Decision 2: set aside." (E-35; decision 2 of the card in E-34)
+- Reason: behavior of a3717b1 that the USER's request did not name; C4 keeps it. The delivery report lists it.
+
+### E-38 · 2026-11-18T21:39:39Z · OVERRULE · orchestrator
+
+- Finding: F-4 (STYLE)
+- Result: OVERRULED
+- By: ORCHESTRATOR (rule 15.5)
+- Reason: line 137 of `gauge.py` is unchanged by this task; C1 fixes the words "<n> entries could not be read" and C4 says nothing else changes. The card of E-34 told the USER. The delivery report lists it.
+
+### E-39 · 2026-11-18T21:39:40Z · TRACE · orchestrator
+
+Change: fix of F-3. `scripts/hinshitsu_check.py`: lines 299 to 306 move into 1 function `finding_id(body)` that returns the accepted ID or `None`; the 2 error messages stay word for word. `tests/test_gauge.py`: the C3 test compares the gauge with that function.
+
+- forward: `hinshitsu_check.py` FINDING test → the checker's verdicts (unchanged: same 2 messages, same order; `tests/test_check.py` runs them); checker ID test → `gauge.py read_state` (edge of `CONNECTIONS.md`; `gauge.py` is not changed, the test now binds the 2). Nothing breaks.
+- backward: D-1 (E-25: the pattern is copied into `gauge.py`, which imports nothing outside its skill folder) holds: only the test imports the checker. C3 (E-21) names `hinshitsu_check.FINDING_ID` and the first word; the function applies exactly that. C4: no existing test line changes; the changed line of `tests/test_gauge.py` was added in this run.
+- lateral: WU-1 is the only WORK UNIT; the change is part of it and is re-audited under rule 16.5. Files 3, within CORE.
+
+### E-40 · 2026-11-18T21:40:53Z · TIER · orchestrator
+
+- Change measured: `git diff --stat a3717b1 894fd4fe3580bfeb9a0d9e66396444287d73bf0f -- . ':!runs'` prints:  scripts/hinshitsu_check.py : 21 +++++++----; skills/hinshitsu-gauge/scripts/gauge.py : 11 +++---; tests/test_gauge.py : 64 +++++++++; 3 files changed, 86 insertions(+), 10 deletions(-);
+- Section-18 action in the change: no
+- TIER: CORE
+- Planned SUB-AGENT runs: 4

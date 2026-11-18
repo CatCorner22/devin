@@ -21,6 +21,7 @@ Rows of WU-1, added before its audit (rule 10.1). The rows cover the change of W
 |---|---|---|---|---|---|---|---|---|---|---|
 | `skills/hinshitsu-gauge/scripts/gauge.py` | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
 | `tests/test_gauge.py` | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
+| `scripts/hinshitsu_check.py` (lines 85 to 94 and 306 to 317, the fix of the third FINDING) | UNVERIFIED — not audited | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE | N/A — CORE |
 
 ## Functions
 
@@ -33,6 +34,7 @@ Rows of WU-1, added before its audit (rule 10.1). The rows cover the change of W
 | `tests/test_gauge.py` `ReadState.test_gauge_and_checker_agree_on_the_finding_id` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 | `tests/test_gauge.py` `Output.test_refused_finding_ids_are_counted_and_not_shown_as_stopped` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 | `tests/test_gauge.py` `Output.test_stopped_line_lists_only_the_blocker_with_a_good_id` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
+| `scripts/hinshitsu_check.py` `finding_id` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 
 ## Branches
 
@@ -43,6 +45,9 @@ Rows of WU-1, added before its audit (rule 10.1). The rows cover the change of W
 | `skills/hinshitsu-gauge/scripts/gauge.py:85` the same condition false: the entry is read | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 | `skills/hinshitsu-gauge/scripts/gauge.py:88` `if` class starts with BLOCKER and the ID is not listed yet: append | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 | `skills/hinshitsu-gauge/scripts/gauge.py:88` the same condition false: nothing is added | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
+| `scripts/hinshitsu_check.py:94` `finding_id` returns the first word when it fully matches, else `None` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
+| `scripts/hinshitsu_check.py:311` `if not fid`: 1 of the 2 messages, and `continue` | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
+| `scripts/hinshitsu_check.py:311` the same condition false: the entry is read | UNVERIFIED — not audited | N/A — covered at file row | N/A — covered at file row | N/A — CORE | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row | N/A — covered at file row |
 
 ## Totals
 
