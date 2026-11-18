@@ -850,3 +850,13 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Corrects: E-80
 - What was wrong: E-80 closes F-14 as a record fault under rule 14.6. Rule 14.6 covers a DEFECT; the final AUDITOR classed F-14 a FRAGILITY (E-77), and the ORCHESTRATOR must not change that class (rule 15.3). The ORCHESTRATOR did not read the class against the rule before it wrote E-80. `python3 scripts/hinshitsu_check.py --stage delivery` reports it: "E-80 closes FRAGILITY F-14 as a record fault; rule 14.6 covers a DEFECT only". The log is append-only, so that line stays in every later run of the command.
 - What is true: the change that E-80 names was made (`SESSION-STATE.md`). Its closure of F-14 rests on no rule. F-14 is in the scope of the second final AUDITOR (`prompts/final-auditor-r2.md`) to re-run; a `RESOLUTION` entry that cites that report follows if the report says the trigger no longer gives its result.
+
+### E-86 · 2026-11-18T20:36:56Z · LAUNCH · orchestrator
+
+- Role: final AUDITOR (rule 17.4), second run: re-audit after the corrections to the report and the record (rules 14.3 and 16.5). This SUB-AGENT built nothing, audited nothing in the run, and did not raise F-10 to F-14.
+- WORK UNIT: the whole run
+- Scope: `prompts/final-auditor-r2.md`
+- Commit under review: ae00d74 (the head of the branch when the SUB-AGENT started; the DELIVERABLE in it is that of commit 5099f2a)
+- SUB-AGENT identifier: a694304af49f4d7698d17b6c0e04bf1d https://app.devin.ai/sessions/a694304af49f4d7698d17b6c0e04bf1d
+- Report: `audits/final-audit-E-86.md`
+- Late: the SUB-AGENT started before this entry was written, since the entry holds the identifier that the start returns. The head of the branch moves by this commit while the SUB-AGENT clones.
