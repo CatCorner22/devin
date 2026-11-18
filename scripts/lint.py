@@ -28,7 +28,7 @@ REQUIRED_FILES = [
     "templates/MINDMAP.md", "templates/CONNECTIONS.md",
     "templates/AUDIT-LOG.md", "templates/COVERAGE-LEDGER.md", "templates/DELIVERY-REPORT.md",
     "templates/FRAMEWORK.md", "templates/SESSION-STATE.md",
-    "scripts/hinshitsu_check.py", "scripts/hinshitsu_text.py", "scripts/lint.py",
+    "scripts/hinshitsu_check.py", "scripts/hinshitsu_log.py", "scripts/hinshitsu_text.py", "scripts/lint.py",
     "skills/hinshitsu-gauge/scripts/gauge.py",
     "adapters/claude-code.md", "adapters/cursor.md", "adapters/devin.md",
     "adapters/chatgpt.md", "adapters/gemini.md", "adapters/kimi.md", "adapters/muse.md",

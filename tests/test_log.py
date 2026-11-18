@@ -139,5 +139,60 @@ class CommandLine(unittest.TestCase):
         self.assertEqual(self.run_cli("add").returncode, 2)
 
 
+class State(unittest.TestCase):
+    """`state` rebuilds, from the log, the parts of the state files that rule 14.6 tests."""
+
+    def started_run(self):
+        d = run_folder()
+        hlog.add_entry(d, "CRITERIA", fields={"Status": "PROPOSED"}, text="- C1. It works. Test: run it.")
+        hlog.add_entry(d, "STAGE", fields={"Stage": "S7", "Event": "start"})
+        hlog.add_entry(d, "FINDING", fields=dict(FINDING, Title="The page shows a wrong total"))
+        hlog.add_entry(d, "FINDING", fields=dict(FINDING, ID="F-2", Class="BLOCKER"))
+        hlog.add_entry(d, "RESOLUTION", fields={"Finding": "F-1", "Result": "FIXED"})
+        return d
+
+    def test_rebuilt_files_agree_with_the_log(self):
+        d = self.started_run()
+        hlog.write_state(d)
+        self.assertEqual(hcheck_record(d), [])
+        state = (d / "SESSION-STATE.md").read_text(encoding="utf-8")
+        self.assertIn("E-1", state)
+        self.assertIn("S7", state)
+        self.assertIn("F-2 (BLOCKER)", state)
+        self.assertNotIn("F-1", state.split("Open FINDINGS")[1].split("\n")[0])
+        mind = (d / "MINDMAP.md").read_text(encoding="utf-8")
+        self.assertIn("- F-1 The page shows a wrong total (DEFECT, FIXED by E-5)", mind)
+        self.assertIn("- F-2 a.py:1 (BLOCKER, open)", mind)
+
+    def test_words_outside_the_rebuilt_part_are_kept(self):
+        d = self.started_run()
+        hlog.write_state(d)
+        p = d / "SESSION-STATE.md"
+        p.write_text(p.read_text(encoding="utf-8") + "\nObjective: the USER's words.\n", encoding="utf-8")
+        hlog.add_entry(d, "RESOLUTION", fields={"Finding": "F-2", "Result": "WITHDRAWN"})
+        hlog.write_state(d)
+        text = p.read_text(encoding="utf-8")
+        self.assertIn("Objective: the USER's words.", text)
+        self.assertIn("Open FINDINGS: none", text)
+        self.assertEqual(hcheck_record(d), [])
+
+    def test_same_log_gives_the_same_bytes(self):
+        d = self.started_run()
+        hlog.write_state(d)
+        first = [(d / n).read_bytes() for n in ("SESSION-STATE.md", "MINDMAP.md")]
+        hlog.write_state(d)
+        self.assertEqual(first, [(d / n).read_bytes() for n in ("SESSION-STATE.md", "MINDMAP.md")])
+
+    def test_state_command_exits_0_and_names_the_files(self):
+        d = self.started_run()
+        r = subprocess.run([sys.executable, str(SCRIPT), "state", str(d)], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("SESSION-STATE.md", r.stdout)
+
+
+def hcheck_record(d):
+    return hlog.check_record(d)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -3,8 +3,10 @@
 
 Usage: hinshitsu_log.py add <run-folder> <TYPE> [--role ROLE] [--set "Name=value"]... [--text TEXT | --text -]
        (--text - reads the text from standard input)
-Prints the number of the new entry, as E-<n>. Exit 0 when the entry is written, 1 when it is refused,
-2 on a usage error. Standard library only.
+       hinshitsu_log.py state <run-folder>
+`add` prints the number of the new entry, as E-<n>. `state` rebuilds, from the log, the part of
+SESSION-STATE.md, FRAMEWORK.md and MINDMAP.md that rule 14.6 tests, and leaves every other line as it is.
+Exit 0 when the work is done, 1 when it is refused, 2 on a usage error. Standard library only.
 
 The script numbers the entry, takes the time from the clock, and refuses an entry that the rules forbid:
 an unknown type, a missing field, a FINDING ID out of order, a closing entry for a FINDING that is not open,
@@ -17,7 +19,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hinshitsu_check import CLASSES, TYPES, field, parse_log  # noqa: E402
+from hinshitsu_check import CLASSES, TYPES, check_record, field, parse_log  # noqa: E402
 
 REQUIRED_FIELDS = {
     "STAGE": ("Stage", "Event"),
@@ -121,8 +123,77 @@ def add_entry(folder, kind, fields=None, text="", role="orchestrator", now=None)
     return number
 
 
+START, END = "<!-- from the log: start -->", "<!-- from the log: end -->"
+
+
+def replace_block(path, lines):
+    """Write the lines between the 2 marks of the file, and keep every line outside them."""
+    block = "\n".join([START, "Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks."] + lines + [END])
+    old = path.read_text(encoding="utf-8") if path.is_file() else ""
+    if START in old and END in old:
+        new = old[:old.index(START)] + block + old[old.index(END) + len(END):]
+    else:
+        new = (old.rstrip("\n") + "\n\n" if old.strip() else "") + block + "\n"
+    path.write_text(new, encoding="utf-8")
+
+
+def write_state(folder):
+    """Rebuild from the log what rule 14.6 tests: the newest CRITERIA entry, the STAGE that runs, and
+    the state of each FINDING. Return the names of the files written."""
+    folder = Path(folder)
+    entries = read_entries(folder)
+    criteria = [e for e in entries if e["type"] == "CRITERIA"]
+    running = None
+    for e in entries:
+        if e["type"] == "STAGE":
+            sid = (field(e["body"], "Stage") or "").split()[0:1]
+            event = (field(e["body"], "Event") or "").split()[0:1]
+            if sid and event and event[0] in ("start", "end", "skipped"):
+                running = sid[0] if event[0] == "start" else None
+    states = finding_states(entries)
+    open_ids = ["%s (%s)" % (fid, "".join(st["class"])) for fid, st in states.items() if st["closed_by"] is None]
+    newest = "none"
+    if criteria:
+        status = field(criteria[-1]["body"], "Status") or field(criteria[-1]["body"], "State") or "no status"
+        newest = "E-%d (%s)" % (criteria[-1]["n"], status.split()[0])
+    summary = ["- Newest CRITERIA entry: %s" % newest,
+               "- STAGE now running: %s" % (running or "none"),
+               "- Open FINDINGS: %s" % (", ".join(open_ids) or "none")]
+    written = []
+    for name in ("SESSION-STATE.md", "FRAMEWORK.md"):
+        if name == "SESSION-STATE.md" or (folder / name).is_file():
+            replace_block(folder / name, summary if name == "SESSION-STATE.md" else summary[:1])
+            written.append(name)
+    listed = []
+    for e in entries:
+        if e["type"] == "FINDING":
+            fid = (field(e["body"], "ID") or "").split()[0:1]
+            if not fid or fid[0] not in states:
+                continue
+            state = states[fid[0]]
+            closing = next((x for x in entries if x["n"] == state["closed_by"]), None)
+            how = "open"
+            if closing is not None:
+                result = (field(closing["body"], "Result") or "overruled").split()[0]
+                how = "%s by E-%d" % (result, closing["n"])
+            title = field(e["body"], "Title") or field(e["body"], "Where") or ""
+            title = re.sub(r"\b[EF]-\d+\b", "", title).strip()  # 1 ID on a line, so that the line names 1 FINDING
+            listed.append("- %s %s (%s, %s)" % (fid[0], title, "".join(state["class"]), how))
+    replace_block(folder / "MINDMAP.md", listed or ["- no FINDING is logged"])
+    written.append("MINDMAP.md")
+    return written
+
+
 def main(argv):
     args = argv[1:]
+    if len(args) == 2 and args[0] == "state" and (Path(args[1]) / "AUDIT-LOG.md").is_file():
+        written = write_state(args[1])
+        failures = check_record(args[1])
+        for failure in failures:
+            print("FAIL " + failure)
+        print("hinshitsu_log: rebuilt %s from the log; %d failure(s) of the record check remain."
+              % (", ".join(written), len(failures)))
+        return 1 if failures else 0
     if len(args) < 3 or args[0] != "add":
         print(__doc__.strip(), file=sys.stderr)
         return 2
