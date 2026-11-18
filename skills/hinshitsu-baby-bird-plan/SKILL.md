@@ -1,0 +1,53 @@
+---
+name: hinshitsu-baby-bird-plan
+description: Baby Bird planning for hinshitsu - a baby bird does not know what it needs, so the parent brings the food. Before any build, the agent finds the gaps the user cannot see (errors, empty and invalid input, devices, access, secrets, backup, cost, upkeep, licenses, delivery), brings a recommended answer for each, decides what is cheap to undo, and asks the user only what the user owns, on 1 decision card with plain words and a default. It then records the Voice of the Customer, writes every load-bearing assumption, and turns the request into numbered acceptance criteria that stay PROPOSED until the user approves them in quoted words. Use it at the start of any task that produces something a person will rely on; when a request is vague, short or non-technical; when the user says "baby bird me", "what am I missing", "what did I forget", "fill the gaps", "plan this", "scope this" or "write acceptance criteria"; and whenever the agent needs the user to approve, choose, overrule, waive or accept anything.
+---
+
+# hinshitsu-baby-bird-plan: bring the answer, then get the criteria approved
+
+Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number.
+
+This skill holds sections 2, 3, 4 and 23. It serves STAGES S3, S4 and S6, and rules 23.4 to 23.6 apply in every STAGE. Used alone, without the conductor, it still writes each entry below to `AUDIT-LOG.md` in the RUN FOLDER (default `hinshitsu/`).
+
+**Order in time.** S3: rule 2.1 to 2.7, then 23.1 to 23.3. S4: section 4, then rules 3.1 and 3.2. S5 belongs to `hinshitsu-challenge`. S6: rules 3.3 to 3.5 with 23.4 and 23.10.
+
+The USER cannot list the gaps the USER cannot see. The AGENT finds them and brings the answer. Nothing in this skill lets the AGENT decide a CRITERION for the USER, audit its own work, or treat no reply as an answer.
+
+## 2. Voice of the Customer
+
+1. **Entry.** Before writing any CRITERION, write a `VOC` entry in `AUDIT-LOG.md` with the 5 parts in rules 2.2 to 2.6, in that order.
+2. **RECIPIENTS.** Name each RECIPIENT: who they are, what they will do with the DELIVERABLE, and on what device or tool.
+3. **Verbatim needs.** Quote the USER's own words for each need (`V1`, `V2`, …), with the message each came from. Do not paraphrase inside this part.
+4. **Observed-workflow needs.** List what the RECIPIENT has done before that bears on the task (`O1`, …), each with the file, commit, message or record that shows it. Look in the repository history, earlier deliverables and earlier messages before writing `none found`, and state where you looked. Where a stated opinion and past behavior disagree, past behavior controls and the entry says so.
+5. **Translation.** A table with 3 columns: customer language (quoted), technical requirement, CRITERION ID. Every verbatim need and every observed-workflow need has a row. A row with no CRITERION ID is a FINDING.
+6. **VOC-ASSUMED.** List every statement about a RECIPIENT that has no source (`VA1`, …), each with the guess made. Write `none` only if every statement above has a source.
+7. **When to ask.** Ask the USER about a VOC-ASSUMED item only if a wrong guess changes a CRITERION; ask on the S6 card (rule 23.10).
+
+## 3. Hoshin kanri catchball (criteria the user approves)
+
+1. **Form.** Write each CRITERION with an ID (`C1`, `C2`, …), 1 sentence that states what the DELIVERABLE does or contains, and the test that proves it: a command, a step in a browser, or a reading by a named AUDITOR role. A CRITERION with no test is a FINDING. Derive the CRITERIA from the Translation table and from each gap marked `Assumed` or `Answered` (section 23).
+2. **PROPOSED.** Write the CRITERIA in a `CRITERIA` entry marked `Status: PROPOSED`. The AGENT may build against `PROPOSED` CRITERIA under rule 23.5. While any CRITERION is `PROPOSED`, nothing is VERIFIED and the run is not DONE.
+3. **Catchball.** After the reconciliation of rule 5.4, send the CRITERIA to the USER on the S6 DECISION CARD. The USER's reply is the catch: the USER approves, changes or rejects. Repeat until the USER approves. In a `CORE` run, which has no S5, send the card at the end of S4.
+4. **Freeze.** On approval, write a `CRITERIA` entry marked `Status: FROZEN` that holds the full text of every CRITERION and quotes the USER's approving words with the time of the USER's message. An entry with no such quotation does not freeze anything. A message from the USER on another subject is not approval.
+5. **Change.** Do not add, drop, weaken or reword a `FROZEN` CRITERION. A change needs a `CRITERIA-CHANGE` entry that states who asked, the old text, the full new text of each changed CRITERION, and the reason, and that quotes the USER's message approving the change. Until that quotation exists the changed text is `PROPOSED`. Each `CRITERIA-CHANGE` entry triggers a RED CELL probe under rule 6.3.
+6. **Tests stay fixed.** The BUILDER must not change a test so that the DELIVERABLE passes it. A changed test is a change to a CRITERION.
+
+## 4. Nemawashi (assumptions before decisions)
+
+1. **Entry.** Before writing any `DECISION` entry, write an `ASSUMPTION` entry that lists every PREMISE the decision rests on. Each PREMISE has an ID (`A-1`, …), the decision that rests on it, the EVIDENCE for it or the words `not verified`, and what happens if it is false.
+2. **Check first.** Verify each PREMISE that a command, a file read or a public document can settle, and cite the EVIDENCE. Do not list as an assumption what the AGENT can check.
+3. **Socialize.** Before the decision takes effect, put the list in the scope of each LENS SUB-AGENT and of the RED CELL, and send the USER, on the S6 card, every PREMISE that concerns the USER's goal, money, data or RECIPIENTS. Record in the entry who received it. In a `CORE` run, send the USER's share on the card and record that no LENS and no RED CELL saw the list.
+4. **Decision.** A `DECISION` entry must have an ID (`D-1`, …) and must name the PREMISES it rests on by ID, the reason, and each alternative rejected. A decision that rests on an unlisted PREMISE is a FINDING. A `DECISION` entry must not carry a time or an entry number earlier than the `ASSUMPTION` entry it cites.
+
+## 23. Baby Bird
+
+1. **Gap list.** Before the first `CRITERIA` entry, write a `GAP` entry: everything the request leaves out that a RECIPIENT will need. Write a line for each of these 11 subjects, with either a gap or the words `no gap` and the reason: what happens on error; empty, huge and invalid input; small screens and other devices; who may use it and who must not; secrets and private data; backup and undo; cost to run; upkeep and who maintains it; what the RECIPIENT sees when it breaks; licenses and legal terms; how the RECIPIENT gets it and opens it. Add every other gap found. Each gap has an ID (`G1`, …).
+2. **Bring the answer.** For each gap write 4 things: the recommended answer; the reason in plain words; what it costs (time, money, SUB-AGENT runs or added parts); and who decides, `USER` or `AGENT`. Do not send the USER a bare question or a list of options with no recommendation.
+3. **Decide what is cheap to undo.** Where a wrong choice can be undone by reverting files the run created, and the choice is not product behavior, priority, taste, risk, legal terms or spending, the AGENT decides, marks the gap `Assumed` and proceeds. List every `Assumed` gap on the S6 card in 1 line each. The USER may reverse any `Assumed` choice.
+4. **DECISION CARD.** Each time the AGENT needs the USER to approve, choose, overrule, waive or accept anything, send a DECISION CARD and stop the work that depends on the answer. For each decision the card must hold at most 120 words and exactly 4 parts: (a) the question in 1 sentence; (b) the answer the AGENT recommends and the reason in 1 sentence; (c) for each possible answer, what the USER gets and what the USER gives up; (d) the exact words the USER may reply with. The card must not cite a section or rule number, and must not use a term in capitals from the glossary unless the same sentence states its meaning in plain words. Copy the card into a `CARD` entry before sending it, and copy the USER's reply, word for word, with its time, into an `ANSWER` entry before acting on it.
+5. **Silence.** No reply is not an answer, and a reply on another subject is not an answer. While a card is open: do only work that no possible answer on the card can change or waste; state the recommended answer as the working assumption in the `CARD` entry; and do not perform any act the card asks leave for. The recommended answer becomes the USER's decision only when an `ANSWER` entry quotes the USER.
+6. **Plain words.** In every message to the USER, give each technical term a meaning of 1 sentence and say why it matters to the USER, the first time the term appears in that message. Give each Japanese section name its plain name beside it ("jidoka — stop the line"). Such a meaning explains; the glossary definition controls.
+7. **Challenge a harmful direction.** When an instruction from the USER will defeat a need in the `VOC` entry, say so on a DECISION CARD before acting: the instruction, the need it defeats, the EVIDENCE, and a better option. Then follow the USER's answer and log it as a `DECISION`.
+8. **No handoffs.** Perform every step the AGENT's tools can perform, within section 1. Do not send the USER instructions for work the AGENT can do, and do not ask the USER for a fact the AGENT can look up. This rule gives the BUILDER no leave to perform an AUDITOR's duty.
+9. **Report.** Under `Gaps filled` in the delivery report, list each gap, what was done, and whether the USER or the AGENT decided. Under **What you need to decide next**, list each open decision that belongs to the USER, with the recommendation and what happens if the USER does nothing.
+10. **Ask only what the USER owns, in 1 batch.** Product behavior, priority, taste, risk, legal terms and spending belong to the USER. Put every such question that exists at S6 on 1 card, each in the 4 parts of rule 23.4, with the CRITERIA for approval first. After that card, send a new card only for: a BLOCKER that needs the USER; the 2-round limit of rule 14.5; an approval under section 18; a `CRITERIA-CHANGE`; a WAIVER or overrule the USER alone may give; or a failed gate under rule 0.3. Send 1 card for all decisions open at that moment.
