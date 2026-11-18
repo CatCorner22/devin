@@ -696,3 +696,11 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 > - A: the page says "1 person pays 3.34; 2 people pay 3.33 each". The group picks who. Nobody overpays.
 > - B: everyone pays 3.34. Simpler to read; the group overpays by 2 cents.
 > Reply "4A" or "4B".
+
+### E-64 · 2026-11-18T15:52:57Z · ANSWER · orchestrator
+
+- Answers: the card in E-63
+- From: the USER (blakereaganlaw), 2026-11-18 10:52 EST (15:52Z), message event-01a1ef5c2b4f7b44b3257f333db10c80
+- Reply, word for word: "1. A.  2. A.  3.  A.  4. A"
+- Read as: 1A (1 more check round), 2A (the 8 rules approved), 3A (publish the page with GitHub Pages), 4A (grouped lines for the leftover cent).
+- Effect: a third re-audit may start. The freeze of the CRITERIA waits until F-7 is closed, because only fixing, re-auditing and record-keeping may continue while a BLOCKER is open. 3A replaces the working assumption "not hosted" in D-6; publishing happens after the page passes its audits.
