@@ -32,7 +32,7 @@ By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the
 - **The sentence under 2 payment lines.** When the result holds 2 payment lines, it ends with "Your group decides who pays the higher amount." (C2 of E-175).
 - **Decimal mark.** A dot or a comma (D-9). `plain` turns full-width and Arabic-Indic digits and decimal marks into their plain forms before any check.
 - **Text to cents.** The page converts the bill's text to cents from its digits, with no decimal arithmetic.
-- **File identity.** Each AUDITOR scope for WU-1 from audit round 2 on states the SHA-256 of the file it names; the 7 scopes of round 1 did not (F-27 group: F-63, F-64). The delivery report states the SHA-256 at the last audit round.
+- **File identity.** Each AUDITOR scope for WU-1 from audit round 2 on states the SHA-256 of the file it names; the 7 scopes of round 1 did not (F-49, F-50). The delivery report states the SHA-256 at the last audit round.
 
 ## 5. File ownership
 

@@ -1864,3 +1864,17 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 
 - Corrects: E-84 and E-92. Both name `FRAMEWORK.md` part 5 as the place that no longer names F-7. The row is in part 6, "WORK UNITS" (F-67).
 - Corrects: E-93 and E-94. Each holds the line `Record fault: yes` and the result `FIXED`. F-16 and F-19 are faults in DECISION CARDS that were sent, not false statements in a file of the RUN FOLDER, so rule 14.6 does not apply to them, and no AUDITOR's report confirmed either fix (F-68, F-69). F-16 and F-19 are DEFECTS that wait for an AUDITOR's report: the framework-drift auditor of audit round 2 is asked to test the corrections in E-87 and E-88 (the card of E-88 offers the choice that F-16 found missing and drops the choice that F-19 found unlawful).
+
+### E-181 · 2026-11-18T17:07:46Z · CORRECTION · orchestrator
+
+- Corrects: FINDING IDs in E-172, E-174, E-176, E-177 and E-178, which the ORCHESTRATOR wrote from memory against rule 8.1. The IDs below are copied from the `ID`, `Raised by` and `Same fault as` lines of E-111 to E-170.
+- The sentence under 2 payment lines: F-30 to F-37 (written as "F-26 to F-33" and "F-26 group").
+- JavaScript off: F-23 to F-29 (written as "F-23 to F-25 and F-62").
+- The comma message in C4: F-47 and F-48 (written as "F-39 and F-40").
+- Characters that are not ASCII: F-52 (written as "F-41"). The phone number pad with no dot key: F-53 (written as "F-42", in E-172, E-174, E-176, E-177 and E-178).
+- An error while a person is still typing: F-63 (written as "F-56").
+- Live regions: F-38 to F-43 (written as "F-34 to F-38" and "F-34 group").
+- `window.splitBill`: F-44 to F-46 (written as "F-37 group").
+- Wording of the CRITERIA that reads 2 ways: F-36 and F-70 to F-78 (written as "F-71 to F-80" and "F-71 to F-78"). F-79 and F-80 concern E-25 and the glossary, not the CRITERIA.
+- Scopes without a SHA-256: F-49 and F-50.
+- Unchanged and correct: F-65, F-67, F-68, F-69 in E-179 and E-180.
