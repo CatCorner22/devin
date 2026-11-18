@@ -53,3 +53,111 @@ Append-only. Form: rules 9.4 to 9.8.
 - Stage: S3
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10655 bytes, SHA-256 0017aa800bb70df079ca9f0271d3a1bcbef3b2a15d86de5cdd49dfba5e2f0a65
+
+### E-8 · 2026-11-18T15:25:06Z · VOC · orchestrator
+
+**RECIPIENTS**
+1. The USER (blakereaganlaw), who asked for the page and who states that he does not follow every technical point.
+2. Friends at a restaurant table, each on a phone, 1 of whom holds the bill. VOC-ASSUMED: see VA1.
+
+**Verbatim needs**
+- V1. "Make me a page where friends can split a restaurant bill, tip included." (the example's request, set by the orchestrator as the small task the USER's brief asks for: "a real small deliverable (e.g., a single-page frontend)", USER message of 2026-11-18 09:47 EST)
+
+**Observed-workflow needs**
+- O1. The USER works without a terminal and reads results in a browser: "3 checks you can do in 5 minutes with no terminal" was accepted as the form of proof (assistant message and USER replies of 2026-11-18, recorded in `build-record/BRIEF.md`). Looked in: `build-record/BRIEF.md`, the repository history. No earlier bill-splitting work exists.
+
+**Translation**
+
+| Customer language | Technical requirement | CRITERION |
+|---|---|---|
+| "a page" | 1 HTML file that opens in a browser with no install, no server and no network | C1 |
+| "friends can split a restaurant bill" | bill amount and number of people in; each person's share out; shares sum to the total, to the cent | C2, C3 |
+| "tip included" | a tip percentage is added to the bill before the split; tip and total are shown | C2 |
+| (O1) reads results in a browser, no terminal | usable on a phone 360 pixels wide; errors shown in plain words on the page | C4, C5 |
+
+**VOC-ASSUMED**
+- VA1. No friend of the USER was asked. Guess: the friends use phones at the table, split evenly, and pay in a currency with 2 decimal places.
+
+### E-9 · 2026-11-18T15:25:06Z · GAP · orchestrator
+
+| ID | Gap | Recommended answer | Reason in plain words | Cost | Who decides | Status |
+|---|---|---|---|---|---|---|
+| G1 | Errors: letters, a negative bill, 0 people | Show a plain message beside the field; show no shares until fixed | A wrong number at the table costs real money | 15 lines | AGENT | Assumed |
+| G2 | Empty data: the page when first opened | Fields empty, shares hidden, 1 line saying what to enter | A blank result reads as broken | 3 lines | AGENT | Assumed |
+| G3 | Huge and odd input: a bill of 1,000,000, 100 people, a 0.01 bill for 3 | Accept a bill up to 1,000,000 and 1 to 100 people; work in whole cents so shares always sum to the total; the first shares carry the extra cent | Dividing 10.00 by 3 leaves 1 cent over; someone has to pay it | 10 lines | AGENT | Assumed |
+| G4 | Devices | Works at 360, 768 and 1280 pixels wide; number keypad on phones | Friends use phones at the table | 10 lines of style | AGENT | Assumed |
+| G5 | Access: keyboard and screen-reader users | Every field has a label; errors and results are announced | 1 friend in the group may need it | 6 attributes | AGENT | Assumed |
+| G6 | Secrets and privacy | No account, no network call, nothing stored | A bill is private; storing nothing means nothing to leak | none | AGENT | Assumed |
+| G7 | Backup and undo | None needed: nothing is stored; a reload clears the page | — | none | AGENT | Assumed |
+| G8 | Cost and upkeep | No dependency, no build step, no hosting fee; 1 file | Nothing to update or pay for later | none | AGENT | Assumed |
+| G9 | Failure display: JavaScript turned off | A sentence on the page says the calculator needs JavaScript | Without it the page would sit silent | 1 line | AGENT | Assumed |
+| G10 | License | The repository's license, which is an open decision of the USER on the build's own card | The page ships inside the repository | none | USER | Asked on the build's card of 2026-11-18 |
+| G11 | Delivery and opening | Delivered as `skills/hinshitsu/example/index.html`; opens by double-click | No server to run | none | AGENT | Assumed |
+| G12 | Tip percentage choice and uneven splits | Tip: buttons for 15, 18 and 20 percent plus a free field from 0 to 100, default 18. Split: even only | Even split with a common tip covers the request; item-by-item splitting is a larger product | Tip buttons: 10 lines. Uneven split: left out | USER | Asked on the card at S6 |
+| G13 | Currency | No currency symbol; 2 decimal places | The page then works for dollars, euros and pounds; it is wrong for yen, which has no cents | none | USER | Asked on the card at S6 |
+
+### E-10 · 2026-11-18T15:25:06Z · STAGE · orchestrator
+
+- Stage: S3
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (the `VOC` and `GAP` entries above)
+
+### E-11 · 2026-11-18T15:25:06Z · STAGE · orchestrator
+
+- Stage: S4
+- Event: start
+- Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10655 bytes, SHA-256 0017aa800bb70df079ca9f0271d3a1bcbef3b2a15d86de5cdd49dfba5e2f0a65
+
+### E-12 · 2026-11-18T15:25:07Z · ASSUMPTION · orchestrator
+
+| ID | PREMISE | Decision that rests on it | EVIDENCE | If false |
+|---|---|---|---|---|
+| A-1 | The friends split evenly | D-1 | not verified (VA1) | The page gives a share nobody agrees to pay; an item-by-item mode is needed |
+| A-2 | The currency has 2 decimal places | D-2 | not verified (VA1) | Shares show cents that do not exist |
+| A-3 | A double-clicked local HTML file runs its script in the RECIPIENT's browser | D-3 | not verified at S4; tested at S8 | The page shows fields that do nothing |
+| A-4 | Whole-cent arithmetic avoids every rounding error for bills up to 1,000,000 | D-2 | not verified at S4; tested by the correctness auditor and the adversarial tester | Shares do not sum to the total |
+| A-5 | Tipping is on the bill amount entered, not on a pre-tax amount | D-1 | not verified (VA1) | The tip is higher than the RECIPIENT intends |
+
+Sent to: each LENS and the RED CELL, in the scopes of S5; the USER, on the card at S6.
+
+### E-13 · 2026-11-18T15:25:07Z · DECISION · orchestrator
+
+- ID: D-1
+- Decision: even split; tip is a percentage of the bill entered.
+- Rests on: A-1, A-5
+- Reason: it is the request as worded.
+- Alternatives rejected: item-by-item split (a larger product; put to the USER as G12).
+
+### E-14 · 2026-11-18T15:25:07Z · DECISION · orchestrator
+
+- ID: D-2
+- Decision: convert every amount to whole cents, compute in integers, give the remainder cents to the first shares.
+- Rests on: A-2, A-4
+- Reason: binary fractions cannot hold 0.1 exactly; integers can hold cents.
+- Alternatives rejected: rounding each share to 2 places (shares can fail to sum to the total).
+
+### E-15 · 2026-11-18T15:25:07Z · DECISION · orchestrator
+
+- ID: D-3
+- Decision: 1 self-contained HTML file with inline style and script; no dependency, no network.
+- Rests on: A-3
+- Reason: G6, G8 and G11.
+- Alternatives rejected: a framework and a build step (cost and upkeep with no gain for 1 form).
+
+### E-16 · 2026-11-18T15:25:07Z · CRITERIA · orchestrator
+
+- Status: PROPOSED
+- C1. `skills/hinshitsu/example/index.html` is 1 file that loads no other file and makes no network request, and its calculator works when the file is opened from disk in Chrome. Test: open the file by its `file://` path; the browser's network log shows 1 request.
+- C2. Given a bill from 0.01 to 1,000,000.00, a tip from 0 to 100 percent and 1 to 100 people, the page shows the tip amount, the total, and each person's share. Test: bill 100.00, tip 18, people 4 gives tip 18.00, total 118.00, 4 shares of 29.50.
+- C3. The shares always sum to the total, to the cent; shares differ by at most 0.01, larger shares first. Test: bill 10.00, tip 0, people 3 gives 3.34, 3.33, 3.33; an AUDITOR runs the page's split function for every bill from 0.01 to 50.00 with 1 to 12 people and tips 0, 15, 18 and 20.
+- C4. For an empty field, letters, a negative or 0 bill, a bill above 1,000,000, a bill with more than 2 decimal places, a tip outside 0 to 100, or people outside 1 to 100 or not a whole number, the page shows a message in plain words beside that field and shows no shares. Test: each input, in the browser.
+- C5. At widths of 360, 768 and 1280 pixels nothing is cut off and nothing scrolls sideways; every field has a label; error text and results sit in a region that screen readers announce. Test: screenshots at the 3 widths; reading of the markup.
+- C6. With JavaScript off, the page shows a sentence saying that the calculator needs JavaScript. Test: load with JavaScript disabled.
+- C7. The page stores nothing and sends nothing. Test: reading of the source for storage and network calls; a reload clears every field.
+- Approval: pending
+
+### E-17 · 2026-11-18T15:25:07Z · STAGE · orchestrator
+
+- Stage: S4
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (the `ASSUMPTION`, `DECISION` and `CRITERIA` entries above)
