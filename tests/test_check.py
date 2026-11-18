@@ -95,6 +95,18 @@ def good_run():
     return d
 
 
+def next_entry_number(d):
+    return len(re.findall(r"^### E-\d+ ", (d / "AUDIT-LOG.md").read_text(encoding="utf-8"), re.M)) + 1
+
+
+def append_entry(d, kind, body, role="orchestrator"):
+    """Append 1 entry to the log of a fixture and return its number."""
+    n = next_entry_number(d)
+    with (d / "AUDIT-LOG.md").open("a", encoding="utf-8") as f:
+        f.write("\n### E-%d · 2026-01-01T00:00Z · %s · %s\n\n%s\n" % (n, kind, role, body))
+    return n
+
+
 def edit(d, name, old, new):
     p = d / name
     text = p.read_text(encoding="utf-8")
@@ -332,6 +344,66 @@ class Check(unittest.TestCase):
         (d / "DELIVERY-REPORT.md").write_text(report, encoding="utf-8")
         sync_state(d)
         self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    # --- the DONE gate (round-3 code review, bugs 1 to 4) ---
+
+    def final_audit(self, d):
+        return [p for p in (d / "audits").iterdir() if p.name.startswith("final-audit-")][0]
+
+    def test_done_with_final_audit_that_only_holds_the_word_passed_fails(self):
+        d = good_run()
+        self.final_audit(d).write_text("run-fin\nVerdict: failed. 0 of 12 checks passed", encoding="utf-8")
+        self.assertFails(d, "does not read passed")
+
+    def test_done_with_final_audit_verdict_forms_that_pass(self):
+        for last in ("passed", "Commit abc; SHA-256 123 — passed", "Verdict: `passed`."):
+            d = good_run()
+            self.final_audit(d).write_text("run-fin\n" + last, encoding="utf-8")
+            self.assertEqual(hcheck.check(d, "delivery"), [], last)
+
+    def test_done_with_criterion_row_that_holds_fail_fails(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "`PASS` `audits/WU-1-correctness-E-19.md`", "FAIL F-1")
+        self.assertFails(d, "holds FAIL or holds no PASS")
+
+    def test_done_with_criterion_row_that_holds_no_pass_fails(self):
+        d = good_run()
+        p = d / "COVERAGE-LEDGER.md"
+        p.write_text(p.read_text(encoding="utf-8").replace("`PASS` `audits/WU-1-correctness-E-19.md`", "N/A — not run"),
+                     encoding="utf-8")
+        self.assertFails(d, "holds FAIL or holds no PASS")
+
+    def second_final_audit(self, d, first_last_line, second_last_line):
+        """Add a later final audit; the earlier report is kept, as rule 1.7 requires."""
+        self.final_audit(d).write_text("run-fin\n" + first_last_line, encoding="utf-8")
+        n = next_entry_number(d)
+        append_entry(d, "LAUNCH", "- Role: final auditor\n- Scope: `prompts/WU-1-correctness.md`\n"
+                     "- Commit under review: no git\n- SUB-AGENT identifier: run-fin2\n"
+                     "- Report: `audits/final-audit-E-%d.md`" % n)
+        (d / ("audits/final-audit-E-%d.md" % n)).write_text("run-fin2\n" + second_last_line, encoding="utf-8")
+
+    def test_done_after_a_second_final_audit_passes(self):
+        d = good_run()
+        append_entry(d, "ANSWER", '- USER — "1 more run"\n- Planned SUB-AGENT runs: 4')
+        self.second_final_audit(d, "not passed", "passed")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_done_when_the_newest_final_audit_did_not_pass_fails(self):
+        d = good_run()
+        append_entry(d, "ANSWER", '- USER — "1 more run"\n- Planned SUB-AGENT runs: 4')
+        self.second_final_audit(d, "passed", "not passed")
+        self.assertFails(d, "does not read passed")
+
+    def test_launch_past_the_budget_with_no_answer_after_the_last_planned_launch_fails(self):
+        d = good_run()  # 3 runs planned, 3 used; an ANSWER entry exists nowhere after them
+        self.second_final_audit(d, "not passed", "passed")
+        self.assertFails(d, "exceed the 3 planned")
+
+    def test_an_answer_before_the_budget_was_reached_does_not_raise_it(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "· VOC ·", "· ANSWER ·")  # an early ANSWER, as every run has for its criteria
+        edit(d, "AUDIT-LOG.md", "Planned SUB-AGENT runs: 3", "Planned SUB-AGENT runs: 1")
+        self.assertFails(d, "exceed the 1 planned")
 
     def test_missing_final_audit_fails(self):
         d = good_run()

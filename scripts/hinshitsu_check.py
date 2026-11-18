@@ -65,6 +65,46 @@ def criteria_ids_of(crit):
     return set(re.findall(r"^[-*\d.\s`]*\**`?(C\d+)\b", crit[-1]["body"], re.M))
 
 
+PASSED_LINE = re.compile(r"(?:^|[—:;-])\s*`?passed`?\.?$")
+PLANNED_RUNS = re.compile(r"Planned SUB-AGENT runs:\s*(\d+)")
+
+
+def last_line(path):
+    lines = path.read_text(encoding="utf-8").strip().splitlines()
+    return lines[-1].strip() if lines else ""
+
+
+def planned_runs(entries):
+    """The budget of rule 0.9 as the first TIER entry states it, or None."""
+    for e in entries:
+        if e["type"] == "TIER":
+            m = PLANNED_RUNS.search(e["body"])
+            return int(m.group(1)) if m else None
+    return None
+
+
+def first_launch_over_budget(entries):
+    """Return (entry number, ordinal, budget) of the first LAUNCH past the budget, or None.
+
+    The budget is the number in the first TIER entry. An ANSWER entry that states a new number raises it
+    from that entry on; an ANSWER written before the budget was reached does not.
+    """
+    budget = planned_runs(entries)
+    if budget is None:
+        return None
+    used = 0
+    for e in entries:
+        if e["type"] == "ANSWER" and used >= budget:
+            m = PLANNED_RUNS.search(e["body"])
+            if m:
+                budget = max(budget, int(m.group(1)))
+        elif e["type"] == "LAUNCH":
+            used += 1
+            if used > budget:
+                return e["n"], used, budget
+    return None
+
+
 def strip_quotes(text):
     text = re.sub(r"```.*?```", " ", text, flags=re.S)
     text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
@@ -176,7 +216,7 @@ def check(folder, stage):
             err("AUDIT-LOG.md: CRITERIA are not FROZEN; no WORK UNIT may be reported VERIFIED (rule 3.3)")
 
     # --- custody (rules 1.5 to 1.7) ---
-    cited_reports = set()
+    cited_reports = []  # in LAUNCH order, so that the newest final audit is the last
     degraded_reports = []
     for e in by_type.get("LAUNCH", []):
         b = e["body"]
@@ -193,7 +233,7 @@ def check(folder, stage):
         if not report or not (folder / report.group(1)).is_file():
             err("AUDIT-LOG.md: E-%d LAUNCH has no saved report (rule 1.7)" % e["n"])
             continue
-        cited_reports.add(report.group(1))
+        cited_reports.append(report.group(1))
         lines = (folder / report.group(1)).read_text(encoding="utf-8").splitlines()
         first = lines[0] if lines else ""
         # Devin prints a session identifier with or without its "devin-" prefix.
@@ -374,6 +414,10 @@ def check(folder, stage):
             err("DELIVERY-REPORT.md: Status DONE with a DEGRADED report, %s (rule 21.6)" % degraded_reports[0])
         if is_done and open_ids:
             err("DELIVERY-REPORT.md: Status DONE with open FINDINGS %s (DONE, parts 2 and 3)" % ", ".join(open_ids))
+        for l in ledger_text.splitlines():
+            if is_done and re.match(r"\|[\s`*]*C\d+", l) and (re.search(r"\bFAIL\b", l) or not re.search(r"\bPASS\b", l)):
+                err("DELIVERY-REPORT.md: Status DONE, and CRITERION row %s holds FAIL or holds no PASS (DONE, part 1)"
+                    % l.split("|")[1].strip())
         if is_done and unverified_criteria:
             err("DELIVERY-REPORT.md: Status DONE with %d UNVERIFIED CRITERION rows (rule 22.4)" % len(unverified_criteria))
         if is_done and any((field(c["body"], "Mode") or "").startswith("DEGRADED") for c in by_type.get("CAPABILITY", [])):
@@ -402,17 +446,18 @@ def check(folder, stage):
         for msg in check_record(folder):
             err(msg)
         final = [r for r in cited_reports if r.startswith("audits/final-audit-")]
-        if is_done:
-            for r in final:
-                tail = (folder / r).read_text(encoding="utf-8").strip().splitlines()[-1:] or [""]
-                if "not passed" in tail[0] or "passed" not in tail[0]:
-                    err("%s: Status DONE, and the last line of the final audit does not read passed (DONE, part 6)" % r)
-            planned = [int(m) for t in by_type.get("TIER", []) for m in re.findall(r"Planned SUB-AGENT runs:\s*(\d+)", t["body"])]
-            if not planned:
-                err("AUDIT-LOG.md: Status DONE, and no TIER entry states Planned SUB-AGENT runs (rule 0.9)")
-            elif len(by_type.get("LAUNCH", [])) > planned[0] and not by_type.get("ANSWER"):
-                err("AUDIT-LOG.md: %d LAUNCH entries exceed the %d planned, with no ANSWER entry (rule 0.9)"
-                    % (len(by_type.get("LAUNCH", [])), planned[0]))
+        # Rule 17.4: the final audit runs again after a change, and rule 1.7 keeps the earlier report,
+        # so only the newest final audit decides.
+        if is_done and final and not PASSED_LINE.search(last_line(folder / final[-1])):
+            err("%s: Status DONE, and the last line of the newest final audit does not read passed (DONE, part 6)"
+                % final[-1])
+        planned = planned_runs(entries)
+        if is_done and planned is None:
+            err("AUDIT-LOG.md: Status DONE, and no TIER entry states Planned SUB-AGENT runs (rule 0.9)")
+        over = first_launch_over_budget(entries)
+        if over:
+            err("AUDIT-LOG.md: E-%d is LAUNCH %d; LAUNCH entries exceed the %d planned, and no ANSWER entry after "
+                "the last planned LAUNCH raises the number (rule 0.9)" % over)
         if not final:
             err("audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)")
     return errors
