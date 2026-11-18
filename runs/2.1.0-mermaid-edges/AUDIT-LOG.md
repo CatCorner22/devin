@@ -68,3 +68,44 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-9 · 2026-11-18T19:34:48Z · VOC · orchestrator
+
+**RECIPIENTS**
+1. The owner of the repository `CatCorner22/devin`, for whom the USER acts: reads the change on the branch `devin/hinshitsu-run-2.1.0` on GitHub, and runs `python3 -m unittest discover -s tests` in a terminal (the USER's first message; `TESTING.md`).
+2. An AI coding agent that follows the hinshitsu skills in a later run, as ORCHESTRATOR or final AUDITOR: runs `python3 scripts/hinshitsu_check.py --stage plan|unit|delivery <run folder>` in a terminal on a RUN FOLDER that holds a `CONNECTIONS.md` (rules 14.6 and 17.4; `TESTING.md`).
+
+**Verbatim needs** (all from the USER's first message of this session, received 2026-11-18 14:25 EST)
+- V1. "`A ==> B` and `C -.-> D` pass with no label"
+- V2. "`A -- reads --> B` fails though it has a label"
+- V3. "Fix it in `scripts/hinshitsu_check.py`"
+- V4. "with tests"
+- V5. "Work on a new branch `devin/hinshitsu-run-2.1.0`. Push that branch. Do not push to `main` and do not open a pull request."
+
+**Observed-workflow needs** (looked in: `git log --oneline --all -- scripts/hinshitsu_check.py`, `tests/test_check.py`, `TESTING.md`, `build-record/audits/`, `CHANGELOG.md`)
+- O1. Each earlier checker fix came with `unittest` tests in `tests/test_check.py`, built from `good_run()` and `edit()` (commits 9b3e707 "7 tests", f57b3f1 "8 tests"; `tests/test_check.py:98-112`).
+- O2. The fault was reported as 2 command-line reproductions, T9 and T10, run through the script's command line (`build-record/audits/post-build-auditor.md:145-146`).
+- O3. The scripts need Python 3 only, with no installed package (`TESTING.md` line 3).
+- O4. The checker today fails `A --> B` and passes `A -->|reads| B`, and 2 tests rest on that (`tests/test_check.py:85`, `tests/test_check.py:208-211`).
+- O5. The 2 records kept in the repository, `skills/hinshitsu/example/run/CONNECTIONS.md` and `build-record/CONNECTIONS.md`, write every edge as `-->|label|`.
+- O6. `CHANGELOG.md` line 3 says it holds 1 entry for each amendment of a skill; no earlier checker-only fix is the subject of its own heading.
+
+**Translation**
+
+| Customer language | Technical requirement | CRITERION |
+|---|---|---|
+| "`A ==> B` and `C -.-> D` pass with no label" | a thick link and a dotted link with no label each give a `no label` failure | C1, C2 |
+| "`A -- reads --> B` fails though it has a label" | a link whose label is written between the dashes gives no `no label` failure | C3 |
+| "Fix it in `scripts/hinshitsu_check.py`" | the change to the checker is in that 1 file | C7 |
+| "with tests" | new `unittest` tests in `tests/test_check.py`, 1 or more for each form; the suite passes | C6 |
+| "Work on a new branch … Do not push to `main` and do not open a pull request." | the commits are on `devin/hinshitsu-run-2.1.0` only | C7 |
+| O1 tests built from `good_run()` and `edit()` | the new tests use the same helpers and class | C6 |
+| O2 reproductions through the command line | the 3 forms give the right exit code through `main()` | C1, C2, C3 |
+| O3 Python 3 only | no new import outside the standard library | C7 |
+| O4 `A --> B` fails, `A -->|reads| B` passes | both verdicts stay | C4 |
+| O5 existing records use `-->|label|` | the checker's failures on the 2 existing records do not change | C4 |
+| O6 `CHANGELOG.md` is for skill amendments | no `CHANGELOG.md` line and no version change | C7 |
+
+**VOC-ASSUMED**
+- VA1. RECIPIENT 2 writes labelled thick and dotted links in the forms `==>|text|`, `== text ==>`, `-.->|text|` and `-. text .->` — guess: a fix that fails `A ==> B` must pass these 4 labelled forms (C5). No record shows any run that used them.
+- VA2. RECIPIENT 2 writes at most 1 link on a line — guess: the checker keeps testing the first link on each line, as it does today (G2, G12).
