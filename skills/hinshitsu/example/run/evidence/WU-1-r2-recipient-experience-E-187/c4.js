@@ -1,0 +1,47 @@
+const { connect, URL, SHOTS, state } = require('./lib');
+const esc = (s) => s.replace(/[^\x20-\x7e]/g, c => 'U+' + c.codePointAt(0).toString(16).toUpperCase().padStart(4, '0') + ' ').trim();
+(async () => {
+  const b = await connect(); const ctx = await b.newContext({ viewport: { width: 1280, height: 800 } });
+  const page = await ctx.newPage(); await page.goto(URL);
+  const valid = { bill: '20.00', tip: '10', people: '2' };
+  const idx = { bill: 0, tip: 1, people: 2 };
+  let shot = 0; const MSG = {};
+  console.log('Each line: verdict | field and typed value | message/result while the cursor is in the field | message/result after leaving the field | bill, tip, people shown in the result. M1, M2 ... are the messages listed at the end.');
+  const run = async (field, value, want, note) => {   // want: 'msg' (message, no result) or 'ok' (result) or 'wait'
+    await page.reload();
+    for (const f of Object.keys(valid)) if (f !== field) { await page.click('#' + f); await page.keyboard.type(valid[f]); }
+    await page.click('#' + field);
+    if (value !== '') await page.keyboard.type(value);
+    const a = await state(page);
+    await page.keyboard.press('Tab'); if (field === 'people') await page.click('h1');
+    const z = await state(page);
+    const i = idx[field];
+    const d = (s) => (s.errors[i] ? 'MESSAGE' : 'no message') + ' / ' + (s.lines.length ? 'RESULT' : 'no result');
+    let verdict;
+    if (want === 'msg') verdict = (z.errors[i] && !z.lines.length && (value === '' || (a.errors[i] && !a.lines.length))) ? 'as C4' : 'NOT AS C4';
+    if (want === 'ok') verdict = (!z.errors[i] && z.lines.length && !a.errors[i] && a.lines.length) ? 'as C4' : 'NOT AS C4';
+    if (want === 'wait') verdict = (!a.errors[i] && !a.lines.length && z.errors[i] && !z.lines.length) ? 'as C4' : 'NOT AS C4';
+    const mk = (t) => { if (!t) return '-'; if (!(t in MSG)) MSG[t] = 'M' + (Object.keys(MSG).length + 1); return MSG[t]; };
+    const dd = (s) => (s.errors[i] ? mk(s.errors[i]) : 'none') + '/' + (s.lines.length ? 'RESULT' : 'none');
+    console.log(`${verdict} | ${field} "${esc(value)}"${note && note !== 'shot' ? ' (' + note + ')' : ''} | in field ${dd(a)} | left ${dd(z)}${z.lines.length ? ' | ' + z.lines.slice(0, 3).map(l => l.split(': ')[1]).join(', ') : ''}`);
+    if (verdict !== 'as C4' || /shot/.test(note || '')) await page.screenshot({ path: SHOTS + `c4-${++shot}-${field}.png`, fullPage: true });
+  };
+  console.log('--- must get a message and no result');
+  for (const v of ['', 'abc', '12a', '1,000.00', '1.000,00', '1e3', '10.', '10,', '.5', ',5', '$12', '12$', '€12', '£12.50', '12 €', '-5', '-0.01', '0', '0.00', '0,0', '000', '1000000.01', '1000001', '99999999999999999999', '1.234', '12,345', '0.001', '1 000', '1 2', '12..5', '1.2.3', '+12', '12%', '0x10', 'Infinity', 'NaN', '١٢٣abc']) await run('bill', v, v === '10.' || v === '10,' ? 'wait' : 'msg', v === 'abc' ? 'shot' : '');
+  for (const v of ['', '101', '-1', '18.0', '18,5', '1e1', '+4', '4.', 'abc', '18%', '1 8', '100.0', '1000', '0.5', '00101', '99999999999999999999']) await run('tip', v, 'msg', v === '18.0' ? 'shot' : '');
+  for (const v of ['', '0', '00', '101', '-1', '18.0', '18,5', '1e1', '+4', '4.', 'abc', '2.0', '1.5', 'two', '1000']) await run('people', v, 'msg', v === '0' ? 'shot' : '');
+  console.log('--- must give a result');
+  for (const v of ['12.50', '12,50', '12.5', '12', '0.01', '1000000.00', '1000000', '0012.50', ' 12.50 ', '\t12.50', '\u00a012.50\u00a0', '\u200b12.50\u200b', '\ufeff12.50', '\u206012.50\u200d', '１２．５０', '１２，５０', '١٢.٥٠', '١٢٫٥٠', '۱۲.۵۰', '۱۲٫۵۰', ' １２．５ ']) await run('bill', v, 'ok', v === '١٢٫٥٠' ? 'shot' : '');
+  for (const v of ['0', '100', '18', '007', ' 18 ', '１８', '١٨', '۱۸', '\u200b18\u200b']) await run('tip', v, 'ok');
+  for (const v of ['1', '100', '02', ' 4 ', '４', '٤', '۴', '\u200b4\ufeff']) await run('people', v, 'ok');
+  console.log('--- invisible characters at either end beyond the 5 the script names (C4: "Spaces and invisible characters at either end are ignored")');
+  for (const [v, n] of [['12.50\u200e', 'LEFT-TO-RIGHT MARK after'], ['\u200f12.50', 'RIGHT-TO-LEFT MARK before'], ['\u202a12.50\u202c', 'LRE ... PDF'], ['\u202b١٢٫٥٠\u202c', 'RLE ... PDF, Arabic-Indic'], ['\u206612.50\u2069', 'LRI ... PDI'], ['\u061c12.50', 'ARABIC LETTER MARK before'], ['12.50\u00ad', 'SOFT HYPHEN after'], ['\u180e12.50', 'MONGOLIAN VOWEL SEPARATOR before'], ['12.50\u2063', 'INVISIBLE SEPARATOR after'], ['12.50\u2061', 'FUNCTION APPLICATION after'], ['\u034f12.50', 'COMBINING GRAPHEME JOINER before'], ['12.50\ufe0f', 'VARIATION SELECTOR-16 after'], ['12.50\u115f', 'HANGUL CHOSEONG FILLER after'], ['12.50\u3164', 'HANGUL FILLER after'], ['12.50\u2800', 'BRAILLE BLANK after']]) await run('bill', v, 'ok', n);
+  for (const [v, n] of [['18\u200e', 'LRM after'], ['\u200f١٨', 'RLM before Arabic-Indic']]) await run('tip', v, 'ok', n);
+  for (const [v, n] of [['4\u200e', 'LRM after'], ['\u200f٤\u200f', 'RLM both ends, Arabic-Indic']]) await run('people', v, 'ok', n);
+  console.log('--- characters that are neither full-width nor Arabic-Indic (C4 lists only those 2 kinds as counting as the plain form)');
+  for (const [v, n] of [['²', 'SUPERSCRIPT TWO'], ['①', 'CIRCLED DIGIT ONE'], ['⑳', 'CIRCLED NUMBER TWENTY'], ['𝟏𝟐', 'MATHEMATICAL BOLD DIGITS'], ['12․50', 'ONE DOT LEADER as mark'], ['12﹒50', 'SMALL FULL STOP as mark'], ['12﹐50', 'SMALL COMMA as mark'], ['⒈5', 'DIGIT ONE FULL STOP'], ['㊿', 'CIRCLED NUMBER FIFTY'], ['१२', 'DEVANAGARI digits'], ['１２。５０', 'IDEOGRAPHIC FULL STOP as mark'], ['12،50', 'ARABIC COMMA as mark'], ['١٬٠٠٠', 'ARABIC THOUSANDS SEPARATOR'], ['１，０００．００', 'full-width thousands'], ['₁₂', 'SUBSCRIPT digits'], ['㍙', 'SQUARE 1 O CLOCK'], ['１ｅ３', 'full-width 1e3'], ['＄１２', 'full-width dollar'], ['－５', 'full-width minus'], ['＋４', 'full-width plus']]) await run('bill', v, 'msg', n);
+  for (const [v, n] of [['²', 'SUPERSCRIPT TWO'], ['①⑧', 'CIRCLED DIGITS'], ['⑱', 'CIRCLED NUMBER EIGHTEEN'], ['＋４', 'full-width plus'], ['４．', 'full-width 4.'], ['１８．０', 'full-width 18.0'], ['١٨٫٥', 'Arabic 18,5']]) await run('tip', v, 'msg', n);
+  for (const [v, n] of [['④', 'CIRCLED DIGIT FOUR'], ['⁴', 'SUPERSCRIPT FOUR'], ['⑩', 'CIRCLED NUMBER TEN']]) await run('people', v, 'msg', n);
+  console.log('--- messages'); for (const [t, k] of Object.entries(MSG)) console.log(k + ' = "' + t + '"');
+  await ctx.close(); await b.close();
+})();

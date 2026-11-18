@@ -1,0 +1,18 @@
+sweep A tip 0, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 15, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 18, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 20, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 1 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 2 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 3 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 4 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 5 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 6 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 7 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 8 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 9 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 10 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 11 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 12 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+key-by-key sample: 136 cases
+TOTAL cases 26136; mismatches against auditor's code 0; sum/spread/order invariant failures 0; seconds 1027

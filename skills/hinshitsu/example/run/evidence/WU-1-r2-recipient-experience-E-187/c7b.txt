@@ -1,0 +1,4 @@
+after synthetic F5 key: marker same document (a marker that survives means the key did not reload the page; the check is void)
+after Page.reload (normal reload): marker undefined values ["","",""] errors ["","",""] result [] navigation type reload
+after Page.reload ignoring cache (hard reload): values ["","",""] errors ["","",""] result []
+after location.reload(): values ["","",""] errors ["","",""] result []

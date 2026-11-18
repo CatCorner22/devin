@@ -1,0 +1,169 @@
+Each line: verdict | field and typed value | message/result while the cursor is in the field | message/result after leaving the field | bill, tip, people shown in the result. M1, M2 ... are the messages listed at the end.
+--- must get a message and no result
+as C4 | bill "" | in field none/none | left M1/none
+as C4 | bill "abc" | in field M2/none | left M2/none
+as C4 | bill "12a" | in field M2/none | left M2/none
+as C4 | bill "1,000.00" | in field M2/none | left M2/none
+as C4 | bill "1.000,00" | in field M2/none | left M2/none
+as C4 | bill "1e3" | in field M2/none | left M2/none
+as C4 | bill "10." | in field none/none | left M2/none
+as C4 | bill "10," | in field none/none | left M2/none
+as C4 | bill ".5" | in field M2/none | left M2/none
+as C4 | bill ",5" | in field M2/none | left M2/none
+as C4 | bill "$12" | in field M2/none | left M2/none
+as C4 | bill "12$" | in field M2/none | left M2/none
+as C4 | bill "U+20AC 12" | in field M2/none | left M2/none
+as C4 | bill "U+00A3 12.50" | in field M2/none | left M2/none
+as C4 | bill "12 U+20AC" | in field M2/none | left M2/none
+as C4 | bill "-5" | in field M2/none | left M2/none
+as C4 | bill "-0.01" | in field M2/none | left M2/none
+as C4 | bill "0" | in field M3/none | left M3/none
+as C4 | bill "0.00" | in field M3/none | left M3/none
+as C4 | bill "0,0" | in field M3/none | left M3/none
+as C4 | bill "000" | in field M3/none | left M3/none
+as C4 | bill "1000000.01" | in field M4/none | left M4/none
+as C4 | bill "1000001" | in field M4/none | left M4/none
+as C4 | bill "99999999999999999999" | in field M4/none | left M4/none
+as C4 | bill "1.234" | in field M2/none | left M2/none
+as C4 | bill "12,345" | in field M2/none | left M2/none
+as C4 | bill "0.001" | in field M2/none | left M2/none
+as C4 | bill "1 000" | in field M2/none | left M2/none
+as C4 | bill "1 2" | in field M2/none | left M2/none
+as C4 | bill "12..5" | in field M2/none | left M2/none
+as C4 | bill "1.2.3" | in field M2/none | left M2/none
+as C4 | bill "+12" | in field M2/none | left M2/none
+as C4 | bill "12%" | in field M2/none | left M2/none
+as C4 | bill "0x10" | in field M2/none | left M2/none
+as C4 | bill "Infinity" | in field M2/none | left M2/none
+as C4 | bill "NaN" | in field M2/none | left M2/none
+as C4 | bill "U+0661 U+0662 U+0663 abc" | in field M2/none | left M2/none
+as C4 | tip "" | in field none/none | left M5/none
+as C4 | tip "101" | in field M6/none | left M6/none
+as C4 | tip "-1" | in field M6/none | left M6/none
+as C4 | tip "18.0" | in field M6/none | left M6/none
+as C4 | tip "18,5" | in field M6/none | left M6/none
+as C4 | tip "1e1" | in field M6/none | left M6/none
+as C4 | tip "+4" | in field M6/none | left M6/none
+as C4 | tip "4." | in field M6/none | left M6/none
+as C4 | tip "abc" | in field M6/none | left M6/none
+as C4 | tip "18%" | in field M6/none | left M6/none
+as C4 | tip "1 8" | in field M6/none | left M6/none
+as C4 | tip "100.0" | in field M6/none | left M6/none
+as C4 | tip "1000" | in field M6/none | left M6/none
+as C4 | tip "0.5" | in field M6/none | left M6/none
+as C4 | tip "00101" | in field M6/none | left M6/none
+as C4 | tip "99999999999999999999" | in field M6/none | left M6/none
+as C4 | people "" | in field none/none | left M7/none
+as C4 | people "0" | in field M8/none | left M8/none
+as C4 | people "00" | in field M8/none | left M8/none
+as C4 | people "101" | in field M8/none | left M8/none
+as C4 | people "-1" | in field M8/none | left M8/none
+as C4 | people "18.0" | in field M8/none | left M8/none
+as C4 | people "18,5" | in field M8/none | left M8/none
+as C4 | people "1e1" | in field M8/none | left M8/none
+as C4 | people "+4" | in field M8/none | left M8/none
+as C4 | people "4." | in field M8/none | left M8/none
+as C4 | people "abc" | in field M8/none | left M8/none
+as C4 | people "2.0" | in field M8/none | left M8/none
+as C4 | people "1.5" | in field M8/none | left M8/none
+as C4 | people "two" | in field M8/none | left M8/none
+as C4 | people "1000" | in field M8/none | left M8/none
+--- must give a result
+as C4 | bill "12.50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "12,50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "12.5" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "12" | in field none/RESULT | left none/RESULT | 12.00, 10, 2
+as C4 | bill "0.01" | in field none/RESULT | left none/RESULT | 0.01, 10, 2
+as C4 | bill "1000000.00" | in field none/RESULT | left none/RESULT | 1000000.00, 10, 2
+as C4 | bill "1000000" | in field none/RESULT | left none/RESULT | 1000000.00, 10, 2
+as C4 | bill "0012.50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "12.50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+0009 12.50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+00A0 12.50U+00A0" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+200B 12.50U+200B" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+FEFF 12.50" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+2060 12.50U+200D" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+FF11 U+FF12 U+FF0E U+FF15 U+FF10" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+FF11 U+FF12 U+FF0C U+FF15 U+FF10" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+0661 U+0662 .U+0665 U+0660" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+0661 U+0662 U+066B U+0665 U+0660" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+06F1 U+06F2 .U+06F5 U+06F0" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+06F1 U+06F2 U+066B U+06F5 U+06F0" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | bill "U+FF11 U+FF12 U+FF0E U+FF15" | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+as C4 | tip "0" | in field none/RESULT | left none/RESULT | 20.00, 0, 2
+as C4 | tip "100" | in field none/RESULT | left none/RESULT | 20.00, 100, 2
+as C4 | tip "18" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "007" | in field none/RESULT | left none/RESULT | 20.00, 7, 2
+as C4 | tip "18" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "U+FF11 U+FF18" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "U+0661 U+0668" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "U+06F1 U+06F8" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "U+200B 18U+200B" | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | people "1" | in field none/RESULT | left none/RESULT | 20.00, 10, 1
+as C4 | people "100" | in field none/RESULT | left none/RESULT | 20.00, 10, 100
+as C4 | people "02" | in field none/RESULT | left none/RESULT | 20.00, 10, 2
+as C4 | people "4" | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+as C4 | people "U+FF14" | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+as C4 | people "U+0664" | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+as C4 | people "U+06F4" | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+as C4 | people "U+200B 4U+FEFF" | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+--- invisible characters at either end beyond the 5 the script names (C4: "Spaces and invisible characters at either end are ignored")
+NOT AS C4 | bill "12.50U+200E" (LEFT-TO-RIGHT MARK after) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+200F 12.50" (RIGHT-TO-LEFT MARK before) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+202A 12.50U+202C" (LRE ... PDF) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+202B U+0661 U+0662 U+066B U+0665 U+0660 U+202C" (RLE ... PDF, Arabic-Indic) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+2066 12.50U+2069" (LRI ... PDI) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+061C 12.50" (ARABIC LETTER MARK before) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+00AD" (SOFT HYPHEN after) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+180E 12.50" (MONGOLIAN VOWEL SEPARATOR before) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+2063" (INVISIBLE SEPARATOR after) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+2061" (FUNCTION APPLICATION after) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+034F 12.50" (COMBINING GRAPHEME JOINER before) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+FE0F" (VARIATION SELECTOR-16 after) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+115F" (HANGUL CHOSEONG FILLER after) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+3164" (HANGUL FILLER after) | in field M2/none | left M2/none
+NOT AS C4 | bill "12.50U+2800" (BRAILLE BLANK after) | in field M2/none | left M2/none
+NOT AS C4 | tip "18U+200E" (LRM after) | in field M6/none | left M6/none
+NOT AS C4 | tip "U+200F U+0661 U+0668" (RLM before Arabic-Indic) | in field M6/none | left M6/none
+NOT AS C4 | people "4U+200E" (LRM after) | in field M8/none | left M8/none
+NOT AS C4 | people "U+200F U+0664 U+200F" (RLM both ends, Arabic-Indic) | in field M8/none | left M8/none
+--- characters that are neither full-width nor Arabic-Indic (C4 lists only those 2 kinds as counting as the plain form)
+NOT AS C4 | bill "U+00B2" (SUPERSCRIPT TWO) | in field none/RESULT | left none/RESULT | 2.00, 10, 2
+NOT AS C4 | bill "U+2460" (CIRCLED DIGIT ONE) | in field none/RESULT | left none/RESULT | 1.00, 10, 2
+NOT AS C4 | bill "U+2473" (CIRCLED NUMBER TWENTY) | in field none/RESULT | left none/RESULT | 20.00, 10, 2
+NOT AS C4 | bill "U+D835 U+DFCF U+D835 U+DFD0" (MATHEMATICAL BOLD DIGITS) | in field none/RESULT | left none/RESULT | 12.00, 10, 2
+NOT AS C4 | bill "12U+2024 50" (ONE DOT LEADER as mark) | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+NOT AS C4 | bill "12U+FE52 50" (SMALL FULL STOP as mark) | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+NOT AS C4 | bill "12U+FE50 50" (SMALL COMMA as mark) | in field none/RESULT | left none/RESULT | 12.50, 10, 2
+NOT AS C4 | bill "U+2488 5" (DIGIT ONE FULL STOP) | in field none/RESULT | left none/RESULT | 1.50, 10, 2
+NOT AS C4 | bill "U+32BF" (CIRCLED NUMBER FIFTY) | in field none/RESULT | left none/RESULT | 50.00, 10, 2
+as C4 | bill "U+0967 U+0968" (DEVANAGARI digits) | in field M2/none | left M2/none
+as C4 | bill "U+FF11 U+FF12 U+3002 U+FF15 U+FF10" (IDEOGRAPHIC FULL STOP as mark) | in field M2/none | left M2/none
+as C4 | bill "12U+060C 50" (ARABIC COMMA as mark) | in field M2/none | left M2/none
+as C4 | bill "U+0661 U+066C U+0660 U+0660 U+0660" (ARABIC THOUSANDS SEPARATOR) | in field M2/none | left M2/none
+as C4 | bill "U+FF11 U+FF0C U+FF10 U+FF10 U+FF10 U+FF0E U+FF10 U+FF10" (full-width thousands) | in field M2/none | left M2/none
+NOT AS C4 | bill "U+2081 U+2082" (SUBSCRIPT digits) | in field none/RESULT | left none/RESULT | 12.00, 10, 2
+as C4 | bill "U+3359" (SQUARE 1 O CLOCK) | in field M2/none | left M2/none
+as C4 | bill "U+FF11 U+FF45 U+FF13" (full-width 1e3) | in field M2/none | left M2/none
+as C4 | bill "U+FF04 U+FF11 U+FF12" (full-width dollar) | in field M2/none | left M2/none
+as C4 | bill "U+FF0D U+FF15" (full-width minus) | in field M2/none | left M2/none
+as C4 | bill "U+FF0B U+FF14" (full-width plus) | in field M2/none | left M2/none
+NOT AS C4 | tip "U+00B2" (SUPERSCRIPT TWO) | in field none/RESULT | left none/RESULT | 20.00, 2, 2
+NOT AS C4 | tip "U+2460 U+2467" (CIRCLED DIGITS) | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+NOT AS C4 | tip "U+2471" (CIRCLED NUMBER EIGHTEEN) | in field none/RESULT | left none/RESULT | 20.00, 18, 2
+as C4 | tip "U+FF0B U+FF14" (full-width plus) | in field M6/none | left M6/none
+as C4 | tip "U+FF14 U+FF0E" (full-width 4.) | in field M6/none | left M6/none
+as C4 | tip "U+FF11 U+FF18 U+FF0E U+FF10" (full-width 18.0) | in field M6/none | left M6/none
+as C4 | tip "U+0661 U+0668 U+066B U+0665" (Arabic 18,5) | in field M6/none | left M6/none
+NOT AS C4 | people "U+2463" (CIRCLED DIGIT FOUR) | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+NOT AS C4 | people "U+2074" (SUPERSCRIPT FOUR) | in field none/RESULT | left none/RESULT | 20.00, 10, 4
+NOT AS C4 | people "U+2469" (CIRCLED NUMBER TEN) | in field none/RESULT | left none/RESULT | 20.00, 10, 10
+--- messages
+M1 = "Enter the bill total."
+M2 = "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+M3 = "Enter an amount above 0."
+M4 = "Enter 1000000.00 or less."
+M5 = "Enter the tip percent. Enter 0 for no tip."
+M6 = "Enter a whole number from 0 to 100, in digits only."
+M7 = "Enter the number of people."
+M8 = "Enter a whole number from 1 to 100, in digits only."

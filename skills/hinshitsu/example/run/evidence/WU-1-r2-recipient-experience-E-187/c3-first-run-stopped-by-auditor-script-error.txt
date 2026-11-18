@@ -1,0 +1,16 @@
+sweep A tip 0, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 15, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 18, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep A tip 20, 1 person, bills 0.01..50.00: 5000 cases; running mismatches 0, invariant failures 0
+sweep B tip 18, 1 people, bills 0.01..5.00: 500 cases; running mismatches 0, invariant failures 0
+/home/ubuntu/audit/c3.js:10
+    const pays = lines.slice(5).filter(l => /pay/.test(l)).map(l => { const m = /^(\d+) (?:person pays|people pay) (\d+)\.(\d\d)/.exec(l); return [BigInt(m[1]), BigInt(m[2]) * 100n + BigInt(m[3])]; });
+                                                                                                                                                           ^
+
+TypeError: Cannot read properties of null (reading '1')
+    at /home/ubuntu/audit/c3.js:10:156
+    at Array.map (<anonymous>)
+    at check (/home/ubuntu/audit/c3.js:10:60)
+    at async /home/ubuntu/audit/c3.js:25:101
+
+Node.js v22.23.5
