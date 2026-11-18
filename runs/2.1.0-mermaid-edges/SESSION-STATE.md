@@ -1,6 +1,6 @@
 # SESSION-STATE — Mermaid edge forms in the CONNECTIONS.md label check
 
-Last rewritten: 2026-11-18T19:43:40Z — log entry E-25
+Last rewritten: 2026-11-18T19:43:22Z — log entry E-25
 
 1. **Objective:** "The checker's test for unlabelled edges in CONNECTIONS.md misses 2 of Mermaid's arrow forms and misreads a third. `A ==> B` and `C -.-> D` pass with no label, and `A -- reads --> B` fails though it has a label. Fix it in `scripts/hinshitsu_check.py`, with tests."
 2. **CRITERIA:** C1 to C7 `FROZEN` (E-25), not yet audited

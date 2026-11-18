@@ -311,3 +311,11 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Event: end
 - Artifacts: `AUDIT-LOG.md` (E-22 `ANSWER`, E-25 `CRITERIA`, `FROZEN`), `FRAMEWORK.md` (part 1)
 - No `RECONCILIATION` entry: this `CORE` run has no LENS memo and no RED CELL demand to reconcile (E-23).
+
+### E-27 · 2026-11-18T19:43:34Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: start
+- Skill read: `skills/hinshitsu-audit/SKILL.md`, 14089 bytes, SHA-256 1f5483a9c216a6790bc2314a0efdc21858908b962973e1dace4668b5d2f32549
+- Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- Also in the commit of this entry: `SESSION-STATE.md` line 3 gave 19:43:40Z as the time of E-25; the ORCHESTRATOR typed that time and did not copy it from a command. The line now holds the time of E-25, 19:43:22Z.
