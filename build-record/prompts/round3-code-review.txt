@@ -1,0 +1,21 @@
+You are a sub-agent in a quality review. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `main`, commit `93311abb80ff4154617ee0962be10fa375d59982`. Check out exactly that commit. Do not change, commit or push any file in the repository; work on copies in a scratch folder. Deliver your report as the full text of your final message and as 1 attached Markdown file.
+
+# Role: CODE REVIEWER — line-by-line review of the scripts
+
+The repository holds "hinshitsu", a set of 7 skills for AI coding agents. 3 scripts enforce parts of it: `scripts/hinshitsu_check.py` (tests the form of a run's record), `scripts/lint.py` (tests the form of the skills), `skills/hinshitsu-gauge/scripts/gauge.py` (draws a progress gauge from the log). Tests are under `tests/`. The rules the scripts cite are in `skills/*/SKILL.md` and `skills/hinshitsu/GLOSSARY.md`. You did not write any of it. The owner will rely on these scripts; the owner cannot read code.
+
+Your jobs:
+
+1. Read every line of the 3 scripts. For each function state in 1 line what it does, and list each bug you find: wrong logic, a regex that matches too much or too little, an unhandled input, a message that cites the wrong rule, dead code.
+2. For every check in `hinshitsu_check.py`, name the rule it cites, open that rule, and state whether the check tests what the rule says: MATCH, WEAKER (give an input the rule forbids and the check passes), STRONGER (give an input the rule allows and the check fails), or WRONG RULE.
+3. List each rule of the skills that says a script tests it and that no script tests.
+4. Prove each bug: build the smallest input in a scratch folder, run the script, paste the command and the complete output.
+5. Tests: run `python3 -m unittest discover -s tests` and paste the output. List checks in the scripts that no test covers. Mutation check: for at least 10 checks in `hinshitsu_check.py`, disable the check in a scratch copy, run the tests, and report whether any test fails.
+6. Run the 3 scripts on `skills/hinshitsu/example/run` (a copy for the gauge) and on `templates/` copied to a scratch folder; paste the outputs.
+7. State, in plain words for an owner who cannot read code, what a result of "0 failures" from `hinshitsu_check.py --stage delivery` does and does not tell the owner.
+
+## Report
+
+First line: your identifier. Then `## Verdict` (exactly 1 of: SCRIPTS SOUND / SCRIPTS SOUND WITH FIXES / SCRIPTS UNSOUND), `## Examined`, `## Bugs` (numbered; each with Class: BLOCKER, DEFECT, FRAGILITY or STYLE, File and line, Trigger with command and output, Proposed fix as a code change), `## Checks against their rules` (table), `## Rules no script tests`, `## Test coverage and mutation check` (table), `## What "0 failures" means`, `## Not examined`.
+
+Report only what you observed. If a check did not run, say so. Do not invent a bug and do not withhold one.

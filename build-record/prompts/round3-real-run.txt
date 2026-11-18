@@ -1,0 +1,17 @@
+You are a fresh agent. Repository: CatCorner22/devin (public, on GitHub), branch `main`, commit `93311abb80ff4154617ee0962be10fa375d59982`. This repository holds "hinshitsu", version 2.1.0: 7 skills that tell an AI coding agent how to deliver checked work. Read `skills/hinshitsu/SKILL.md` (the conductor) and follow it, and the skills it calls, exactly, for the task below. This is the first run made under version 2.1.0; its purpose is to learn whether the skills work as written on a small real task.
+
+# The task (the USER's words)
+
+"The checker's test for unlabelled edges in CONNECTIONS.md misses 2 of Mermaid's arrow forms and misreads a third. `A ==> B` and `C -.-> D` pass with no label, and `A -- reads --> B` fails though it has a label. Fix it in `scripts/hinshitsu_check.py`, with tests."
+
+# Conditions of this run
+
+- The USER of this run is the session that started you, acting for the owner of the repository. Send every DECISION CARD and every message for the USER as a message in this session and wait for the reply. Quote the replies as the USER's messages.
+- RUN FOLDER: `runs/2.1.0-mermaid-edges/` at the root of the repository.
+- Work on a new branch `devin/hinshitsu-run-2.1.0`. Push that branch. Do not push to `main` and do not open a pull request.
+- You may start child Devin sessions as SUB-AGENTS. If your runtime cannot start one, follow rule 0.3 and say so.
+- Follow the skills as written even where a rule seems costly or unclear. Do not repair a rule. When a rule cannot be followed, or 2 rules conflict, or a rule is unclear, do what the text most plainly says, and write the place in `runs/2.1.0-mermaid-edges/FRICTION.md`: the rule number, what you could not do or did not know, and what you did.
+
+# When the run ends
+
+Send, as your final message and as 1 attached Markdown file: line 1, your identifier; the `Status` line of your delivery report; the branch and commit; the number of SUB-AGENT runs planned and used, with each identifier; the complete text of `FRICTION.md`; and, in 1 paragraph, whether following the skills changed the outcome of this task compared with fixing the bug directly, with the EVIDENCE for your answer (each fault that a SUB-AGENT found and you had missed, by file and line).
