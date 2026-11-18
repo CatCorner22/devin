@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" width="860" height="420" role="img" aria-label="hinshitsu gauge: 58 percent, 6 of 12 stages complete">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" width="860" height="420" role="img" aria-label="hinshitsu gauge: 58 percent, 7 of 12 stages complete">
 <rect width="860" height="420" fill="#ffffff"/>
 <text x="20" y="30" font-family="sans-serif" font-size="18" font-weight="bold" fill="#212121">hinshitsu gauge</text>
 <path d="M 80.0 246.9 A 180 180 0 0 1 85.3 206.5" fill="none" stroke="#2e7d32" stroke-width="30"/>
@@ -13,7 +13,7 @@
 <text x="178.9" y="58.1" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S5</text>
 <path d="M 216.5 75.3 A 180 180 0 0 1 256.9 70.0" fill="none" stroke="#2e7d32" stroke-width="30"/>
 <text x="232.3" y="43.8" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S6</text>
-<path d="M 263.1 70.0 A 180 180 0 0 1 303.5 75.3" fill="none" stroke="#f9a825" stroke-width="30"/>
+<path d="M 263.1 70.0 A 180 180 0 0 1 303.5 75.3" fill="none" stroke="#2e7d32" stroke-width="30"/>
 <text x="287.7" y="43.8" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S7</text>
 <path d="M 309.6 77.0 A 180 180 0 0 1 347.3 92.6" fill="none" stroke="#e0e0e0" stroke-width="30"/>
 <text x="341.1" y="58.1" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S8</text>
@@ -28,8 +28,8 @@
 <line x1="260.0" y1="250.0" x2="297.3" y2="104.7" stroke="#212121" stroke-width="6" stroke-linecap="round"/>
 <circle cx="260.0" cy="250.0" r="12" fill="#212121"/>
 <text x="260.0" y="310.0" font-family="sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#212121">58%</text>
-<text x="260.0" y="334.0" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#424242">6 of 12 stages complete</text>
-<text x="260.0" y="360.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#212121">Now: S7 Build and audit (hinshitsu-audit) - work units 1 of 1</text>
+<text x="260.0" y="334.0" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#424242">7 of 12 stages complete</text>
+<text x="260.0" y="360.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#212121">Next: S8 Recipient and stability checks (hinshitsu-audit)</text>
 <rect x="520" y="48" width="14" height="14" fill="#2e7d32" stroke="#757575"/>
 <text x="542" y="60" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S1 Capability and tier</text>
 <text x="542" y="72" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu - done</text>
@@ -48,9 +48,9 @@
 <rect x="520" y="188" width="14" height="14" fill="#2e7d32" stroke="#757575"/>
 <text x="542" y="200" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S6 Reconcile and freeze</text>
 <text x="542" y="212" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu-baby-bird-plan - done</text>
-<rect x="520" y="216" width="14" height="14" fill="#f9a825" stroke="#757575"/>
-<text x="542" y="228" font-family="sans-serif" font-size="13" font-weight="bold" fill="#212121">S7 Build and audit</text>
-<text x="542" y="240" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu-audit - running</text>
+<rect x="520" y="216" width="14" height="14" fill="#2e7d32" stroke="#757575"/>
+<text x="542" y="228" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S7 Build and audit</text>
+<text x="542" y="240" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu-audit - done</text>
 <rect x="520" y="244" width="14" height="14" fill="#e0e0e0" stroke="#757575"/>
 <text x="542" y="256" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S8 Recipient and stability checks</text>
 <text x="542" y="268" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu-audit - pending</text>
