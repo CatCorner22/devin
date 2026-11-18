@@ -675,3 +675,11 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Reason: WORK UNIT complete (rule 8.2(a)), and before a context compaction of the ORCHESTRATOR's session (rule 8.2(b))
 - `SESSION-STATE.md` rewritten: yes — fields 4 and 8; the other 6 fields stand as rewritten for E-53 and E-61
 - Helper commands on the ORCHESTRATOR's machine, outside the repository: `~/bin/hlog <TYPE> <role>` appends 1 entry from standard input and commits the RUN FOLDER; `~/bin/hlogn` appends with no commit; `~/bin/hgauge` runs the gauge and commits.
+
+### E-67 · 2026-11-18T20:18:41Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: start
+- Skill read: `skills/hinshitsu-audit/SKILL.md`, 14089 bytes, SHA-256 1f5483a9c216a6790bc2314a0efdc21858908b962973e1dace4668b5d2f32549
+- Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- The skill was read whole, from the file, before this entry was written. The conductor and the glossary were not read again at this STAGE; their hashes are taken again and equal those of the first read (E-3).
