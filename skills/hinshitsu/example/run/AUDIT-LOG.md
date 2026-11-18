@@ -3502,3 +3502,7 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Verdict, word for word: "PLAN SURVIVES WITH CHANGES"
 - 7 BLOCKERS raised: F-153 to F-159 (E-355 to E-361). Answers so far: E-362 quotes the USER (F-154); E-363 states what the 29 overrules are worth (F-156 to F-158); `skills/hinshitsu/EXAMPLE.md` exists since commit 0f2c0d1 or later (F-159). None is closed: no AUDITOR has confirmed an answer.
 - Premortem causes (rule 6.6): a link shows source code (F-155); the hash in the report differs from the audited file (F-153); open BLOCKERS shipped on a chat message, not on a card (F-154).
+
+### E-365 · 2026-11-18T18:36:34Z · CORRECTION · orchestrator
+
+- Corrects the `STAGE` entry that ends S9 (the entry before this one): the words "since commit 0f2c0d1 or later" name a commit ID that the ORCHESTRATOR wrote from memory, against rule 8.1. The commit that added `skills/hinshitsu/EXAMPLE.md` is 2be1fd7 (output of `git log --diff-filter=A --format=%h -- skills/hinshitsu/EXAMPLE.md`).
