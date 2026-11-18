@@ -1,4 +1,6 @@
 import importlib.util
+import os
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,6 +13,20 @@ spec.loader.exec_module(hcheck)
 SHA = "a" * 64
 ROW = "| %s | " + " | ".join(["`PASS` `audits/WU-1-correctness-E-19.md`"] * 10) + " |"
 
+
+
+def sync_state(d):
+    """Write the 3 state files so that they agree with the log, as rule 14.6 requires at delivery."""
+    log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+    crit = re.findall(r"### E-(\d+) · \S+ · CRITERIA ·", log)[-1]
+    stage = re.findall(r"- Stage: (S\d+)", log)[-1]
+    closed = set(re.findall(r"- Finding: (F-\d+)", log))
+    ids = re.findall(r"- ID: (F-\d+)", log)
+    (d / "SESSION-STATE.md").write_text("CRITERIA E-%s. STAGE %s.\n" % (crit, stage)
+                                        + "".join("%s is open\n" % i for i in ids if i not in closed), encoding="utf-8")
+    (d / "FRAMEWORK.md").write_text("CRITERIA: E-%s\n" % crit, encoding="utf-8")
+    (d / "MINDMAP.md").write_text("".join("- %s a fault (DEFECT, %s)\n" % (i, "closed" if i in closed else "open")
+                                          for i in ids), encoding="utf-8")
 
 def good_run():
     """Build a run folder that passes at stage delivery. Tests then break 1 thing."""
@@ -64,8 +80,8 @@ def good_run():
     (d / "audits/WU-1-correctness-E-19.md").write_text("run-abc\nreport", encoding="utf-8")
     (d / "audits/WU-1-reaudit-E-21.md").write_text("run-def\nreport", encoding="utf-8")
     (d / ("audits/final-audit-E-%d.md" % k)).write_text("run-fin\npassed", encoding="utf-8")
-    for name in ("FRAMEWORK.md", "SESSION-STATE.md", "MINDMAP.md", "GAUGE.svg"):
-        (d / name).write_text("x", encoding="utf-8")
+    (d / "GAUGE.svg").write_text("x", encoding="utf-8")
+    sync_state(d)
     (d / "CONNECTIONS.md").write_text("```mermaid\ngraph LR\n  A -->|reads| B\n```\n", encoding="utf-8")
     (d / "COVERAGE-LEDGER.md").write_text(
         "| Row | COR | FOR | BP | ADV | RX | DRIFT | LANG | RED | RSV | STAB |\n|---|---|---|---|---|---|---|---|---|---|---|\n"
@@ -196,10 +212,58 @@ class Check(unittest.TestCase):
 
     def test_banned_word_fails_and_quoted_one_passes(self):
         d = good_run()
-        edit(d, "FRAMEWORK.md", "x", "It should work.")
+        edit(d, "FRAMEWORK.md", "CRITERIA:", "It should work. CRITERIA:")
         self.assertFails(d, "banned word", "plan")
         (d / "FRAMEWORK.md").write_text('The USER wrote "it should work".', encoding="utf-8")
         self.assertEqual(hcheck.check(d, "plan"), [])
+
+    def test_identifier_none_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- SUB-AGENT identifier: run-abc", "- SUB-AGENT identifier: none")
+        self.assertFails(d, "has no SUB-AGENT identifier")
+
+    def test_degraded_first_line_without_degraded_mode_fails(self):
+        d = good_run()
+        (d / "audits/WU-1-correctness-E-19.md").write_text("DEGRADED — single-agent audit\nreport", encoding="utf-8")
+        self.assertFails(d, "no CAPABILITY entry states Mode: DEGRADED")
+
+    def test_ledger_with_no_row_fails(self):
+        d = good_run()
+        (d / "COVERAGE-LEDGER.md").write_text(
+            "| Row | COR | FOR | BP | ADV | RX | DRIFT | LANG | RED | RSV | STAB |\n|---|---|---|---|---|---|---|---|---|---|---|\n",
+            encoding="utf-8")
+        self.assertFails(d, "the ledger has no row")
+
+    def test_totals_table_is_not_a_ledger_row(self):
+        d = good_run()
+        p = d / "COVERAGE-LEDGER.md"
+        p.write_text(p.read_text(encoding="utf-8") + "\n## Totals\n\n| PASS | FAIL | N/A | UNVERIFIED | Empty |\n|---|---|---|---|---|\n| 10 | 0 | 0 | 0 | 0 |\n",
+                     encoding="utf-8")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_criterion_row_in_code_marks_cannot_hide_unverified(self):
+        d = good_run()
+        p = d / "COVERAGE-LEDGER.md"
+        text = p.read_text(encoding="utf-8")
+        row = [l for l in text.splitlines() if l.startswith("| C1")][0]
+        cells = row.split(" | ")
+        cells[1] = "UNVERIFIED — not run"
+        p.write_text(text.replace(row, " | ".join(cells).replace("| C1 works", "| `C1` works")), encoding="utf-8")
+        self.assertFails(d, "UNVERIFIED CRITERION rows")
+
+    def test_delivery_stage_runs_the_record_check(self):
+        d = good_run()
+        (d / "MINDMAP.md").write_text("- nothing\n", encoding="utf-8")
+        self.assertFails(d, "MINDMAP.md")
+
+    def test_same_verdict_from_another_working_directory(self):
+        d = good_run()
+        here = os.getcwd()
+        try:
+            os.chdir(tempfile.gettempdir())
+            self.assertEqual(hcheck.check(d, "delivery"), [])
+        finally:
+            os.chdir(here)
 
     def test_missing_final_audit_fails(self):
         d = good_run()

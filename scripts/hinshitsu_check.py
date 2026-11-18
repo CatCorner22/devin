@@ -158,6 +158,7 @@ def check(folder, stage):
 
     # --- custody (rules 1.5 to 1.7) ---
     cited_reports = set()
+    degraded_reports = []
     for e in by_type.get("LAUNCH", []):
         b = e["body"]
         scope = re.search(r"`(prompts/[^`]+)`", field(b, "Scope") or "")
@@ -166,7 +167,7 @@ def check(folder, stage):
         ident = ident.split()[0] if ident else ident  # the identifier is the first word; a link may follow
         if not scope or not (folder / scope.group(1)).is_file():
             err("AUDIT-LOG.md: E-%d LAUNCH scope file is missing (rule 1.5)" % e["n"])
-        if not ident or ident.startswith("<"):
+        if not ident or ident.startswith("<") or ident.strip("`.").lower() in ("none", "n/a", "unknown", "tbd"):
             err("AUDIT-LOG.md: E-%d LAUNCH has no SUB-AGENT identifier (rule 1.5)" % e["n"])
         if not field(b, "Commit under review"):
             err("AUDIT-LOG.md: E-%d LAUNCH names no commit and no `no git` (rule 1.5)" % e["n"])
@@ -178,7 +179,11 @@ def check(folder, stage):
         first = lines[0] if lines else ""
         # Devin prints a session identifier with or without its "devin-" prefix.
         bare = ident[len("devin-"):] if ident and ident.startswith("devin-") else ident
-        if ident and bare not in first and not first.startswith("DEGRADED — single-agent audit"):
+        if first.startswith("DEGRADED — single-agent audit"):
+            degraded_reports.append(report.group(1))
+            if not any((field(c["body"], "Mode") or "").startswith("DEGRADED") for c in by_type.get("CAPABILITY", [])):
+                err("%s: first line says DEGRADED, and no CAPABILITY entry states Mode: DEGRADED (rule 21.3)" % report.group(1))
+        elif ident and bare not in first:
             err("%s: first line does not hold the identifier of E-%d (rule 1.6)" % (report.group(1), e["n"]))
     for sub in ("audits", "memos"):
         d = folder / sub
@@ -261,9 +266,18 @@ def check(folder, stage):
     # --- ledger (section 10) ---
     p = folder / "COVERAGE-LEDGER.md"
     if p.is_file():
+        in_ledger = False  # the Totals table and any other table are not ledger rows
+        ledger_rows = 0
         for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
-            if not line.startswith("|") or re.match(r"\|\s*-", line) or re.match(r"\|\s*Row\s*\|", line):
+            if not line.startswith("|"):
+                in_ledger = False
                 continue
+            if re.match(r"\|\s*Row\s*\|", line):
+                in_ledger = True
+                continue
+            if re.match(r"\|\s*-", line) or not in_ledger:
+                continue
+            ledger_rows += 1
             cells = [c.strip() for c in line.strip().strip("|").split("|")]
             if len(cells) != 11:
                 err("COVERAGE-LEDGER.md:%d: row has %d cells; 11 required (rule 10.2)" % (i, len(cells)))
@@ -290,6 +304,8 @@ def check(folder, stage):
                         err("COVERAGE-LEDGER.md:%d: FAIL names no logged FINDING (rule 10.3)" % i)
                 elif not rest:
                     err("COVERAGE-LEDGER.md:%d: %s gives no reason (rule 10.3)" % (i, kind))
+        if ledger_rows == 0:
+            err("COVERAGE-LEDGER.md: the ledger has no row (rule 10.1)")
 
     if stage == "unit":
         return errors
@@ -319,9 +335,16 @@ def check(folder, stage):
         ledger = (folder / "COVERAGE-LEDGER.md")
         ledger_text = ledger.read_text(encoding="utf-8") if ledger.is_file() else ""
         unverified_criteria = [l for l in ledger_text.splitlines()
-                               if re.match(r"\|\s*C\d+", l) and "UNVERIFIED" in l]
+                               if re.match(r"\|\s*`?C\d+", l) and "UNVERIFIED" in l]
+        criterion_rows = set(re.findall(r"^\|\s*`?(C\d+)\b", ledger_text, re.M))
+        criteria_ids = set(re.findall(r"^- (C\d+)\.", crit[-1]["body"], re.M)) if crit else set()
+        if is_done and criteria_ids - criterion_rows:
+            err("DELIVERY-REPORT.md: Status DONE, and the ledger has no row for %s (DONE, part 1)"
+                % ", ".join(sorted(criteria_ids - criterion_rows, key=lambda c: int(c[1:]))))
+        if is_done and degraded_reports:
+            err("DELIVERY-REPORT.md: Status DONE with a DEGRADED report, %s (rule 21.6)" % degraded_reports[0])
         if is_done and open_ids:
-            err("DELIVERY-REPORT.md: Status DONE with open FINDINGS %s (DONE, part 4)" % ", ".join(open_ids))
+            err("DELIVERY-REPORT.md: Status DONE with open FINDINGS %s (DONE, parts 2 and 3)" % ", ".join(open_ids))
         if is_done and unverified_criteria:
             err("DELIVERY-REPORT.md: Status DONE with %d UNVERIFIED CRITERION rows (rule 22.4)" % len(unverified_criteria))
         if is_done and entries and (field(entries[0]["body"], "Mode") or "").startswith("DEGRADED"):
@@ -341,6 +364,14 @@ def check(folder, stage):
                 err("DELIVERY-REPORT.md: %r has no citation; it is ASSERTED (rule 17.2)" % label)
         if not by_type.get("LESSON"):
             err("AUDIT-LOG.md: no LESSON entry (rule 20.4)")
+        cap = by_type.get("CAPABILITY", [])
+        if cap and (field(cap[-1]["body"], "Mode") or "").startswith("SWARM"):
+            probe = folder / "evidence" / "capability-probe.md"
+            if not probe.is_file() or not probe.read_text(encoding="utf-8").strip():
+                err("evidence/capability-probe.md: missing or empty in a SWARM run (rule 0.2)")
+        # F5: the state files must agree with the log before delivery (rule 14.6)
+        for msg in check_record(folder):
+            err(msg)
         final = [r for r in cited_reports if r.startswith("audits/final-audit-")]
         if not final:
             err("audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)")
