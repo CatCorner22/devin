@@ -1,0 +1,7 @@
+pass B: cases 6000, cumulative fails 0, 50s
+spot 10.00 0 3: MATCH page lines ["Bill: 10.00","Tip: 0 percent","People: 3","Tip amount: 0.00","Total: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the extra cent."]
+spot 1000000.00 100 100: MATCH page lines ["Bill: 1000000.00","Tip: 100 percent","People: 100","Tip amount: 1000000.00","Total: 2000000.00","100 people pay 20000.00 each"]
+spot 0.01 0 100: MATCH page lines ["Bill: 0.01","Tip: 0 percent","People: 100","Tip amount: 0.00","Total: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the extra cent."]
+extra-sentence cases where more than 1 person pays the higher amount: 3395
+TOTAL cases 6003, mismatches 0
+cases with a result line that is not a header or pay line: 4455 {"Your group decides who pays the extra cent.":4455}

@@ -1,0 +1,262 @@
+Chrome: 156.0.8078.47
+
+== C1 request log on file:// open: 1 request(s)
+   file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html [Document]
+location.href: file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html
+
+== C4 first open: {"vals":["","",""],"errs":["","",""],"invalid":[null,null,null],"resultShown":false,"lines":[],"resultText":""}
+visible text of main: "Split the bill\n\nType the bill, the tip and the number of people. The split shows below.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"
+after focus only on bill: errs ["","",""] result false
+
+== C2 typed tests
+["100.00","18","4"] MATCH ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"] 
+["0.30","15","1"] MATCH ["Bill: 0.30","Tip: 15 percent","People: 1","Tip amount: 0.05","Total: 0.35","1 person pays 0.35"] 
+["10.10","15","1"] MATCH ["Bill: 10.10","Tip: 15 percent","People: 1","Tip amount: 1.52","Total: 11.62","1 person pays 11.62"] 
+["12.25","18","1"] MATCH ["Bill: 12.25","Tip: 18 percent","People: 1","Tip amount: 2.21","Total: 14.46","1 person pays 14.46"] 
+["10.00","0","3"] MISMATCH ["Bill: 10.00","Tip: 0 percent","People: 3","Tip amount: 0.00","Total: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the extra cent."] expected ["Bill: 10.00","Tip: 0 percent","People: 3","Tip amount: 0.00","Total: 10.00","1 person pays 3.34","2 people pay 3.33 each"]
+["10.02","0","4"] MISMATCH ["Bill: 10.02","Tip: 0 percent","People: 4","Tip amount: 0.00","Total: 10.02","2 people pay 2.51 each","2 people pay 2.50 each","Your group decides who pays the extra cent."] expected ["Bill: 10.02","Tip: 0 percent","People: 4","Tip amount: 0.00","Total: 10.02","2 people pay 2.51 each","2 people pay 2.50 each"]
+["0.01","0","1"] MATCH ["Bill: 0.01","Tip: 0 percent","People: 1","Tip amount: 0.00","Total: 0.01","1 person pays 0.01"] 
+["1000000.00","100","100"] MATCH ["Bill: 1000000.00","Tip: 100 percent","People: 100","Tip amount: 1000000.00","Total: 2000000.00","100 people pay 20000.00 each"] 
+["1000000","0","1"] MATCH ["Bill: 1000000.00","Tip: 0 percent","People: 1","Tip amount: 0.00","Total: 1000000.00","1 person pays 1000000.00"] 
+["12.5","18","2"] MISMATCH ["Bill: 12.50","Tip: 18 percent","People: 2","Tip amount: 2.25","Total: 14.75","1 person pays 7.38","1 person pays 7.37","Your group decides who pays the extra cent."] expected ["Bill: 12.50","Tip: 18 percent","People: 2","Tip amount: 2.25","Total: 14.75","1 person pays 7.38","1 person pays 7.37"]
+[" 007.10 "," 018 "," 02 "] MATCH ["Bill: 7.10","Tip: 18 percent","People: 2","Tip amount: 1.28","Total: 8.38","2 people pay 4.19 each"] 
+["0.05","50","1"] MATCH ["Bill: 0.05","Tip: 50 percent","People: 1","Tip amount: 0.03","Total: 0.08","1 person pays 0.08"] 
+["0.10","5","1"] MATCH ["Bill: 0.10","Tip: 5 percent","People: 1","Tip amount: 0.01","Total: 0.11","1 person pays 0.11"] 
+["0.09","5","1"] MATCH ["Bill: 0.09","Tip: 5 percent","People: 1","Tip amount: 0.00","Total: 0.09","1 person pays 0.09"] 
+["999999.99","99","97"] MISMATCH ["Bill: 999999.99","Tip: 99 percent","People: 97","Tip amount: 989999.99","Total: 1989999.98","36 people pay 20515.47 each","61 people pay 20515.46 each","Your group decides who pays the extra cent."] expected ["Bill: 999999.99","Tip: 99 percent","People: 97","Tip amount: 989999.99","Total: 1989999.98","36 people pay 20515.47 each","61 people pay 20515.46 each"]
+
+== C4 inputs (other 2 fields hold valid values 100.00 / 18 / 4)
+bill bad "" -> error "Enter the bill total." | result shown false | PASS
+bill bad "abc" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "12a" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "12,50" -> error "Use a dot, not a comma. Example: 12.50" | result shown false | PASS
+bill bad "1,000.00" -> error "Use a dot, not a comma. Example: 12.50" | result shown false | PASS
+bill bad "1e3" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "10." -> error "" | result shown true ["Bill: 10.00","Tip: 18 percent","People: 4","Tip amount: 1.80","Total: 11.80"] | FAIL
+bill bad "0." -> error "Enter an amount above 0." | result shown false | PASS
+bill bad ".5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "." -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "$12.50" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "12.50$" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "€5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "£5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "¥5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "-5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "-0.01" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "0" -> error "Enter an amount above 0." | result shown false | PASS
+bill bad "0.0" -> error "Enter an amount above 0." | result shown false | PASS
+bill bad "0.00" -> error "Enter an amount above 0." | result shown false | PASS
+bill bad "00" -> error "Enter an amount above 0." | result shown false | PASS
+bill bad "1000000.01" -> error "Enter 1000000.00 or less." | result shown false | PASS
+bill bad "1000001" -> error "Enter 1000000.00 or less." | result shown false | PASS
+bill bad "9999999" -> error "Enter 1000000.00 or less." | result shown false | PASS
+bill bad "10000000" -> error "Enter 1000000.00 or less." | result shown false | PASS
+bill bad "99999999999999999999999" -> error "Enter 1000000.00 or less." | result shown false | PASS
+bill bad "1.234" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "0.001" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "1.000" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "1..2" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "1.2.3" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "1 2" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "+5" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "１２" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "١٢" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "Infinity" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "NaN" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "0x10" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "1_000" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "5%" -> error "Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50" | result shown false | PASS
+bill bad "   " -> error "Enter the bill total." | result shown false | PASS
+bill good "0.01" -> error "" | result shown true ["Bill: 0.01","Tip: 18 percent","People: 4","Tip amount: 0.00","Total: 0.01"] | PASS
+bill good "1000000" -> error "" | result shown true ["Bill: 1000000.00","Tip: 18 percent","People: 4","Tip amount: 180000.00","Total: 1180000.00"] | PASS
+bill good "1000000.00" -> error "" | result shown true ["Bill: 1000000.00","Tip: 18 percent","People: 4","Tip amount: 180000.00","Total: 1180000.00"] | PASS
+bill good "1000000.0" -> error "" | result shown true ["Bill: 1000000.00","Tip: 18 percent","People: 4","Tip amount: 180000.00","Total: 1180000.00"] | PASS
+bill good "  12.50  " -> error "" | result shown true ["Bill: 12.50","Tip: 18 percent","People: 4","Tip amount: 2.25","Total: 14.75"] | PASS
+bill good "12.5" -> error "" | result shown true ["Bill: 12.50","Tip: 18 percent","People: 4","Tip amount: 2.25","Total: 14.75"] | PASS
+bill good "007" -> error "" | result shown true ["Bill: 7.00","Tip: 18 percent","People: 4","Tip amount: 1.26","Total: 8.26"] | PASS
+bill good "0.10" -> error "" | result shown true ["Bill: 0.10","Tip: 18 percent","People: 4","Tip amount: 0.02","Total: 0.12"] | PASS
+bill good "0000001000000.00" -> error "" | result shown true ["Bill: 1000000.00","Tip: 18 percent","People: 4","Tip amount: 180000.00","Total: 1180000.00"] | PASS
+tip bad "" -> error "Enter the tip percent. Enter 0 for no tip." | result shown false | PASS
+tip bad "abc" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "18.0" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "1e1" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "+4" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "4." -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "-1" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "101" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "1000" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "18%" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "1,5" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "1 8" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad ".5" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "１８" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip bad "99999999999999999999999" -> error "Enter a whole number from 0 to 100, in digits only." | result shown false | PASS
+tip good "0" -> error "" | result shown true ["Bill: 100.00","Tip: 0 percent","People: 4","Tip amount: 0.00","Total: 100.00"] | PASS
+tip good "100" -> error "" | result shown true ["Bill: 100.00","Tip: 100 percent","People: 4","Tip amount: 100.00","Total: 200.00"] | PASS
+tip good "018" -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00"] | PASS
+tip good " 18 " -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00"] | PASS
+tip good "00" -> error "" | result shown true ["Bill: 100.00","Tip: 0 percent","People: 4","Tip amount: 0.00","Total: 100.00"] | PASS
+people bad "" -> error "Enter the number of people." | result shown false | PASS
+people bad "0" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "00" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "101" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "abc" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "18.0" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "1e1" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "+4" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "4." -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "-1" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "1.5" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "4 people" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "1,0" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "1000" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people bad "99999999999999999999999" -> error "Enter a whole number from 1 to 100, in digits only." | result shown false | PASS
+people good "1" -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 1","Tip amount: 18.00","Total: 118.00"] | PASS
+people good "100" -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 100","Tip amount: 18.00","Total: 118.00"] | PASS
+people good "004" -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00"] | PASS
+people good " 4 " -> error "" | result shown true ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00"] | PASS
+C4 input failures: 1
+bill with NBSP, tab, ideographic space at ends -> errs ["","",""] result true "Bill: 12.50"
+
+== C4 transitions
+focus bill, Tab (leave empty): errs ["Enter the bill total.","",""] invalid ["true",null,null] result false active tip
+type x in tip: errs ["Enter the bill total.","Enter a whole number from 0 to 100, in digits only.",""] result false
+error placement: [{"field":"bill","inputBottom":207.1875,"errTop":211.1875,"errBottom":235.1875,"sameParent":true,"color":"rgb(164, 0, 0)","describedby":"bill-error"},{"field":"tip","inputBottom":326.375,"errTop":330.375,"errBottom":354.375,"sameParent":true,"color":"rgb(164, 0, 0)","describedby":"tip-error"},{"field":"people","inputBottom":443.5625,"errTop":447.5625,"errBottom":471.5625,"sameParent":true,"color":"rgb(164, 0, 0)","describedby":"people-error"}]
+bill+tip valid, people untouched: errs ["","",""] result false
+people 4: true ["Bill: 100.00","Tip: 18 percent","People: 4","Tip amount: 18.00","Total: 118.00","4 people pay 29.50 each"]
+append 0 -> people 40: true ["Bill: 100.00","Tip: 18 percent","People: 40","Tip amount: 18.00","Total: 118.00","40 people pay 2.95 each"]
+append 0 -> people 400: errs ["","","Enter a whole number from 1 to 100, in digits only."] result false resultText ""
+delete all of people (not left yet): errs ["","","Enter the number of people."] result false
+people 3: errs ["","",""] true ["Bill: 100.00","Tip: 18 percent","People: 3","Tip amount: 18.00","Total: 118.00","1 person pays 39.34","2 people pay 39.33 each","Your group decides who pays the extra cent."]
+tip 18 -> 1: ["Bill: 100.00","Tip: 1 percent","People: 3","Tip amount: 1.00","Total: 101.00","2 people pay 33.67 each","1 person pays 33.66","Your group decides who pays the extra cent."]
+Enter in bill then form.requestSubmit(): defaultPrevented true url unchanged true vals kept ["100.00","1","3"]
+
+== direct function calls
+   splitBill(10000,18,4) extra=0 => {"tipCents":1800,"totalCents":11800,"shares":[{"count":4,"cents":2950}]}
+   splitBill(1000,0,3) extra>0 => {"tipCents":0,"totalCents":1000,"shares":[{"count":1,"cents":334},{"count":2,"cents":333}]}
+   splitBill(100000000,100,100) => {"tipCents":100000000,"totalCents":200000000,"shares":[{"count":100,"cents":2000000}]}
+   splitBill(30,15,1) half cent => {"tipCents":5,"totalCents":35,"shares":[{"count":1,"cents":35}]}
+   splitBill(1,0,100) more people than cents => {"tipCents":0,"totalCents":1,"shares":[{"count":1,"cents":1},{"count":99,"cents":0}]}
+   readAmount("") => {"error":"Enter the bill total."}
+   readAmount("  ") => {"error":"Enter the bill total."}
+   readAmount("1,5") => {"error":"Use a dot, not a comma. Example: 12.50"}
+   readAmount("x") => {"error":"Enter an amount above 0 in digits, with at most 2 digits after a dot. Example: 12.50"}
+   readAmount("10.") => {"cents":1000}
+   readAmount("10.5") => {"cents":1050}
+   readAmount("10.50") => {"cents":1050}
+   readAmount("10") => {"cents":1000}
+   readAmount("12345678") => {"error":"Enter 1000000.00 or less."}
+   readAmount("9999999") => {"error":"Enter 1000000.00 or less."}
+   readAmount("0") => {"error":"Enter an amount above 0."}
+   readAmount("0.00") => {"error":"Enter an amount above 0."}
+   readAmount("1000000.01") => {"error":"Enter 1000000.00 or less."}
+   readAmount("1000000.00") => {"cents":100000000}
+   readAmount("007.07") => {"cents":707}
+   readWhole("",1,100,"E") => {"error":"E"}
+   readWhole("x",1,100,"E") => {"error":"Enter a whole number from 1 to 100, in digits only."}
+   readWhole("1000",1,100,"E") => {"error":"Enter a whole number from 1 to 100, in digits only."}
+   readWhole("101",1,100,"E") => {"error":"Enter a whole number from 1 to 100, in digits only."}
+   readWhole("0",1,100,"E") => {"error":"Enter a whole number from 1 to 100, in digits only."}
+   readWhole("100",1,100,"E") => {"value":100}
+   readWhole("007",1,100,"E") => {"value":7}
+   readWhole("0",0,100,"E") => {"value":0}
+   money(0) => 0.00
+   money(5) => 0.05
+   money(10) => 0.10
+   money(99) => 0.99
+   money(100) => 1.00
+   money(105) => 1.05
+   money(20000000000) => 200000000.00
+   payLine count 1 => 1 person pays 3.34
+   payLine count 2 => 2 people pay 3.33 each
+   typeof window.splitBill => function
+   globals added by script => MAX_BILL_CENTS,MAX_TIP_PERCENT,MAX_PEOPLE,splitBill,readAmount,readWhole,money,payLine,fields,resultBox,addLine,update
+
+== C5 widths
+width 360 state first: {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"bodyScrollWidth":360,"maxRight":344,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w360-first.png
+width 360 state error: {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"bodyScrollWidth":360,"maxRight":344,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w360-error.png
+width 360 state error2: {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"bodyScrollWidth":360,"maxRight":344,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w360-error2.png
+width 360 state result: {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"bodyScrollWidth":360,"maxRight":344,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w360-result.png
+width 768 state first: {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"bodyScrollWidth":768,"maxRight":624,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w768-first.png
+width 768 state error: {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"bodyScrollWidth":768,"maxRight":624,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w768-error.png
+width 768 state error2: {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"bodyScrollWidth":768,"maxRight":624,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w768-error2.png
+width 768 state result: {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"bodyScrollWidth":768,"maxRight":624,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w768-result.png
+width 1280 state first: {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"bodyScrollWidth":1280,"maxRight":880,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w1280-first.png
+width 1280 state error: {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"bodyScrollWidth":1280,"maxRight":880,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w1280-error.png
+width 1280 state error2: {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"bodyScrollWidth":1280,"maxRight":880,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w1280-error2.png
+width 1280 state result: {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"bodyScrollWidth":1280,"maxRight":880,"scrollXAfterScrollTo1000":0,"clipped":[],"inputFont":"16px"} -> /home/ubuntu/audit/out/w1280-result.png
+markup: {
+ "labels": [
+  {
+   "id": "bill",
+   "label": "Bill total, tax included",
+   "labelVisible": true,
+   "inputmode": "decimal",
+   "autocomplete": "off",
+   "type": "text",
+   "describedby": "bill-error"
+  },
+  {
+   "id": "tip",
+   "label": "Tip percent",
+   "labelVisible": true,
+   "inputmode": "numeric",
+   "autocomplete": "off",
+   "type": "text",
+   "describedby": "tip-error"
+  },
+  {
+   "id": "people",
+   "label": "Number of people",
+   "labelVisible": true,
+   "inputmode": "numeric",
+   "autocomplete": "off",
+   "type": "text",
+   "describedby": "people-error"
+  }
+ ],
+ "errorRegions": [
+  {
+   "id": "bill-error",
+   "role": "alert",
+   "live": null
+  },
+  {
+   "id": "tip-error",
+   "role": "alert",
+   "live": null
+  },
+  {
+   "id": "people-error",
+   "role": "alert",
+   "live": null
+  }
+ ],
+ "result": {
+  "role": "status",
+  "live": "polite"
+ },
+ "csp": "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'\">",
+ "lang": "en"
+}
+AX nodes (role: name): heading: "Split the bill" | form: "" | status: "" | textbox: "Bill total, tax included" | alert: "" | textbox: "Tip percent" | alert: "" | textbox: "Number of people" | alert: ""
+
+== C7
+fetch('https://example.com'): {"outcome":"REJECTED TypeError: Failed to fetch","v":[{"blockedURI":"https://example.com/","violatedDirective":"connect-src","effectiveDirective":"connect-src"}]}
+  console error: Connecting to 'https://example.com/' violates the following Content Security Policy directive: "default-src 'none'". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.
+  console error: Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy.
+img + sendBeacon probes: {"sendBeacon":true,"violations":["connect-src https://example.com/b","img-src https://example.com/x.png"]}
+storage after use: {"localStorage":0,"sessionStorage":0,"cookie":"","indexedDB":0,"caches":0}
+before reload: ["100.00","18","4"] result true
+after page.reload(): ["","",""] errs ["","",""] result false
+after F5 key: ["100.00","18","4"] errs ["","",""] result true
+after about:blank then Back: ["","",""] errs ["","",""] result false
+source matches for /localStorage|sessionStorage|indexedDB|document\.cookie|caches\.|openDatabase|history\.(push|replace)State|location\.(hash|search|href)\s*=/g : null
+source matches for /fetch\(|XMLHttpRequest|sendBeacon|WebSocket|EventSource|<img|<link|<iframe|<a\s|src=|href=|url\(|@import|import\(|action=|method=|\bname=/g : ["name="]
+autocomplete attributes in source: ["<form id=\"form\" autocomplete=\"off\" novalidate>","<input id=\"bill\" type=\"text\" inputmode=\"decimal\" autocomplete=\"off\" aria-describedby=\"bill-error\">","<input id=\"tip\" type=\"text\" inputmode=\"numeric\" autocomplete=\"off\" aria-describedby=\"tip-error\">","<input id=\"people\" type=\"text\" inputmode=\"numeric\" autocomplete=\"off\" aria-describedby=\"people-error\">"]
+CSP tag exact match: true
+non-ASCII bytes in file: 0 | CR bytes: 0
+
+== C6 JavaScript disabled
+main innerText with JS off (read through DevTools): "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page.\n\nType the bill, the tip and the number of people. The split shows below.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"
+JS off, after typing 100.00/18/4: {"hidden":true,"errs":["","",""],"vals":["100.00","18","4"],"scrollWidth":360,"innerWidth":360}
