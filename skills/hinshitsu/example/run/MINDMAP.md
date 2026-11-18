@@ -137,6 +137,13 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
       - F-150 With U+202E in front, the field shows 12.50 and the page c, round 3 (DEFECT, open)
       - F-151 The README links to EXAMPLE.md, which did not exist, S8 (DEFECT, open)
       - F-152 The README has no step to download and open the page, S8 (DEFECT, open)
+      - F-153 The delivered file matches neither the copy the AUDITORS r, S9 (BLOCKER, open)
+      - F-154 The USER's instruction to stop has no entry that quotes it, S9 (BLOCKER, open)
+      - F-155 The page is not published; a link to the file shows source, S9 (BLOCKER, open)
+      - F-156 The overrules of the window.splitBill FINDINGS rest on a false statement, S9 (BLOCKER, open)
+      - F-157 9 wording FINDINGS are closed and also promised to the USE, S9 (BLOCKER, open)
+      - F-158 The stock reason of 17 overrules is false for 2 and unwritten for 15, S9 (BLOCKER, open)
+      - F-159 EXAMPLE.md did not exist at the commit under review, and, S9 (BLOCKER, open)
     - C1 1 file, works from disk
       - D-8 1 file, policy tag, published with GitHub Pages after its audits
         - D-6 superseded
