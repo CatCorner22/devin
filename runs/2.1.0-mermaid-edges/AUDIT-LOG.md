@@ -657,3 +657,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Stage: S7
 - Event: progress
 - Work units: 1 of 1
+
+### E-64 · 2026-11-18T20:17:44Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: end
+- Artifacts: `audits/WU-1-correctness-E-31.md`, `audits/WU-1-r2-correctness-E-44.md`, `evidence/builder-run-WU-1.txt`, `evidence/builder-run-WU-1-round-2.txt`, `COVERAGE-LEDGER.md`, `prompts/WU-1-correctness.md`, `prompts/WU-1-r2-correctness.md`
