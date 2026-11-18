@@ -519,3 +519,44 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 > hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
 > STOPPED — blocker open: 1: F-5
 > — end of card —
+
+### E-49 · 2026-11-18T21:52:22Z · ANSWER · orchestrator
+
+The USER's message, word for word, sent 2026-11-18 16:51 EST (21:51 UTC), message `event-01a1f0a4b2547f49aee9e7a7928f7b75`, in answer to the card of E-48:
+
+> Decision 1: fix. I lift "do not repair a rule" for those 2 sentences of `skills/hinshitsu-gauge/SKILL.md` only. I do not approve the long form: keep the run in its short form (CORE), and report every check the long form would have added as not run. If the rules give you no way to do that on my word, say so in FRICTION.md and end the run instead, without another card. I allow 5 runs of separate sessions in total: 1 re-check of this fix, then the final check. Decision 2: set aside. Decision 3: set aside.
+
+- Effect: decision 1 — F-5 is fixed in 2 sentences of `skills/hinshitsu-gauge/SKILL.md` (rules 24.2 and 24.3) and no other line of a rule; a new SUB-AGENT re-audits; the run keeps the CORE form by the WAIVER entry that follows. Decision 2 — the USER overrules F-6. Decision 3 — the USER overrules F-7. The CRITERIA of E-21 stay as they are.
+- Planned SUB-AGENT runs: 5
+
+### E-50 · 2026-11-18T21:52:22Z · WAIVER · orchestrator
+
+WAIVER by the USER (rule 1.5), quoted from the message logged in the ANSWER entry before this one:
+
+> I do not approve the long form: keep the run in its short form (CORE), and report every check the long form would have added as not run.
+
+- Rule waived: rule 0.5, the sentence "When a later `TIER` entry gives `FULL`, the run is `FULL` from that entry on and S5 runs before more building", and with it every STAGE and role that only a `FULL` run performs (S5, S9, roles 2 to 8 of rule 13.1, the planted defect of rule 16.7).
+- Checks skipped, each UNVERIFIED (rule 1.5): the 4 LENS memos and the plan-time RED CELL attack (S5); the pre-delivery RED CELL attack and premortem (S9); the AUDITOR roles 2 to 8; the planted defect; the language audit of rule 19.14 by a separate language auditor.
+- Note: the USER names the long form in plain words, not by rule number; a card must not cite a rule number (rule 23.4). See `FRICTION.md` item 18.
+
+### E-51 · 2026-11-18T21:52:22Z · OVERRULE · orchestrator
+
+- Finding: F-6 (DEFECT; never a BLOCKER)
+- Result: OVERRULED
+- By: USER — "Decision 2: set aside." (E-49; decision 2 of the card in E-48)
+- Reason: the same fault as the second half of F-1, which the USER set aside in E-35; C2 is silent on the picture's unread count. The delivery report lists it.
+
+### E-52 · 2026-11-18T21:52:22Z · OVERRULE · orchestrator
+
+- Finding: F-7 (FRAGILITY)
+- Result: OVERRULED
+- By: USER — "Decision 3: set aside." (E-49; decision 3 of the card in E-48)
+- Reason: it lies in the checker, outside the USER's request; S12 proposes it. The delivery report lists it.
+
+### E-53 · 2026-11-18T21:52:23Z · TRACE · orchestrator
+
+Change: fix of F-5. `skills/hinshitsu-gauge/SKILL.md`, rule 24.2 and rule 24.3, 1 sentence each: 24.2 states that the script reads each FINDING whose ID has the form `F-<n>` and counts every other FINDING as an entry it could not read; 24.3 states that a BLOCKER with a refused ID is not shown as STOPPED and is counted in the unread line. No script and no test changes. The USER lifted "do not repair a rule" for these 2 sentences only (E-49).
+
+- forward: rule 24.2 and 24.3 → a reader of the skill (the ORCHESTRATOR of a later run); `scripts/lint.py` reads `SKILL.md` files for their form. No script reads these 2 sentences. `STAGE` start entries of this run state the SHA-256 of `SKILL.md` files as read; the gauge skill's file changes after those entries, which stay true of the time they were written.
+- backward: C2 (E-21) requires the behavior the 2 sentences now state. C4 "nothing else changes" names the script, the tests and the imports; the rule text is not in it. F-1 (E-36, OVERRULED) named the same 2 rules; this fix also removes the first half of its cause. Rule 20.3 asks for a version and a `CHANGELOG.md` line when an approved amendment changes a skill: the USER's leave covers 2 sentences only, so neither is touched (see `FRICTION.md` item 18).
+- lateral: WU-1 is the only WORK UNIT. Files 4: by the numbers of rule 0.5 the TIER is FULL; the WAIVER of E-50 keeps the run in the CORE form.
