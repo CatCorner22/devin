@@ -162,3 +162,51 @@ A "refused ID" below means: the FINDING entry has no `- ID:` line, or the line i
 - C4: nothing else changes: a BLOCKER with an ID of the form `F-<n>` is shown and is cleared by its RESOLUTION as before; every test that passed at commit a3717b1 passes; `gauge.py` imports only the standard library. Test: `python3 -m unittest discover -s tests` exits 0 and `python3 scripts/hinshitsu_lint.py` prints 0 failures; `git diff a3717b1 -- tests/test_gauge.py` removes or changes no existing test line.
 - C5: `tests/test_gauge.py` holds the new tests named in C1 to C3, and each of them fails when run against `gauge.py` of commit a3717b1. Test: the correctness auditor checks out `gauge.py` of a3717b1 beside the new tests and saves the failing output under `evidence/`.
 - C6: the change is on the branch `devin/hinshitsu-run-3.0.0` only; `main` on GitHub stays at a3717b1 and no pull request exists. Test: `git ls-remote origin main` and `gh pr list --head devin/hinshitsu-run-3.0.0 --state all`.
+
+### E-15 · 2026-11-18T21:26:18Z · CORRECTION · orchestrator
+
+Corrects E-14, CRITERION C4: the lint command is `python3 scripts/lint.py`, not `python3 scripts/hinshitsu_lint.py`; no file of that second name exists (`ls scripts`). No other word of E-14 changes. The CRITERIA stay PROPOSED.
+
+### E-16 · 2026-11-18T21:26:18Z · CARD · orchestrator
+
+Working assumption while the card is open (not the USER's decision): Decision 1 approve; Decision 2 yes; Decision 3 yes. Planned SUB-AGENT runs stated on the card: 4. The text sent, word for word:
+
+> DECISION CARD — hinshitsu run 3.0.0-finding-id (3 decisions; please answer all 3)
+> 
+> Decision 1
+> (a) Question: Do you approve the 6 acceptance tests below as the definition of finished for this task?
+> (b) Recommended: approve, because they restate your request as commands whose output a third party can read.
+> (c) "Approve": I build against them and 2 separate AI sessions check the result; you give up changing them later without a new card. "Change": you get your wording; you give up the time of 1 more round.
+> (d) Reply with: "Decision 1: I approve C1 to C6" or "Decision 1: change: <your text>".
+> 
+> Decision 2
+> (a) Question: When a logged fault of a class other than blocker (a blocker is a fault that stops the run) has an ID the checker refuses, does the gauge count it as an entry it could not read?
+> (b) Recommended: yes, because your request says "A FINDING", not only a blocker.
+> (c) "Yes": the unread count matches the checker for every logged fault; you give up nothing shown today, since such entries were never shown. "No": only blockers are counted; a refused ID on a lesser fault stays invisible.
+> (d) Reply with: "Decision 2: yes" or "Decision 2: no".
+> 
+> Decision 3
+> (a) Question: When a logged fault has no ID line at all, does the gauge count it as an entry it could not read?
+> (b) Recommended: yes, because the checker refuses that entry too and today the gauge drops it in silence.
+> (c) "Yes": 1 more condition and 1 more test; the count also covers a missing ID. "No": only an ID that is present and malformed is counted, which is the narrowest reading of your words.
+> (d) Reply with: "Decision 3: yes" or "Decision 3: no".
+> 
+> The 6 acceptance tests (written for Decision 2 = yes and Decision 3 = yes; a "no" removes those words from C1)
+> A "refused ID" means: the entry has no `- ID:` line, or the line is empty, or the first word of the ID field does not fully match `F-<digits>`. This is the test in `scripts/hinshitsu_check.py`, lines 299 to 306.
+> - C1: `gauge.py` counts each FINDING entry with a refused ID, whatever its class, as 1 entry it could not read. Test: `python3 -m unittest tests.test_gauge -v` — tests in which a log with the IDs `F-1.` and `blocker one` (and 1 with no ID line) gives `unread` equal to the number of such entries, and the text gauge prints "<n> entries could not be read".
+> - C2: a FINDING entry with a refused ID does not appear in the `STOPPED — blocker open` line of the text gauge nor in `GAUGE.svg`, and a log whose only BLOCKERS have refused IDs prints no STOPPED line. Test: `python3 -m unittest tests.test_gauge -v` — tests that run the script on such a log and read both outputs.
+> - C3: the gauge and the checker agree: for each ID field in a list that holds at least `F-1`, `F-12`, `F-3 (local 2)`, `F-1.`, `blocker one`, `f-1`, `F-`, `F-1a` and ` F-2`, the gauge lists the BLOCKER when, and only when, `hinshitsu_check.FINDING_ID` fully matches the first word. Test: `python3 -m unittest tests.test_gauge -v` — 1 test that imports both modules and compares them on the list.
+> - C4: nothing else changes: a BLOCKER with an ID of the form `F-<n>` is shown and is cleared by its RESOLUTION as before; every test that passed at commit a3717b1 passes; `gauge.py` imports only the standard library. Test: `python3 -m unittest discover -s tests` exits 0 and `python3 scripts/lint.py` prints 0 failures; `git diff a3717b1 -- tests/test_gauge.py` removes or changes no existing test line.
+> - C5: `tests/test_gauge.py` holds the new tests named in C1 to C3, and each of them fails when run against `gauge.py` of commit a3717b1. Test: the correctness auditor (a separate AI session that reads and runs the code) checks out `gauge.py` of a3717b1 beside the new tests and saves the failing output under `evidence/`.
+> - C6: the change is on the branch `devin/hinshitsu-run-3.0.0` only; `main` on GitHub stays at a3717b1 and no pull request exists. Test: `git ls-remote origin main` and `gh pr list --head devin/hinshitsu-run-3.0.0 --state all`.
+> 
+> Choices I made that you may reverse (each can be undone by reverting files of this run)
+> - G3: an ID field with words after the ID, such as `F-3 (local 2)`, is accepted, as the checker accepts it by its first word.
+> - G4: the pattern `F-<digits>` is copied into `gauge.py`, with a test that it agrees with the checker's, because `gauge.py` imports nothing outside its skill folder.
+> - G5: the unread line keeps stating a count only, not which entry.
+> - G6: a closing entry that names a refused ID is left as it is today.
+> 
+> Size of the run: the change is small (2 files, 60 lines or fewer), so the short form of the process applies: 4 runs of separate AI sessions are planned (1 capability test, already used; 1 correctness check; 1 final check; 1 re-check after a fix). The capability test passed: the separate session had no record of this conversation.
+> 
+> Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
+> hinshitsu gauge  [######..................] 25%  3 of 12 stages complete (the log's state, not proof of DONE)
