@@ -1,0 +1,132 @@
+log entries: 1 to 85 count 85
+== DELIVERY-REPORT.md: 28 distinct paths, 85 distinct entry IDs
+EXISTS  AUDIT-LOG.md  -> runs/2.1.0-mermaid-edges/AUDIT-LOG.md  cited at lines 3,109,136
+EXISTS  CONNECTIONS.md  -> runs/2.1.0-mermaid-edges/CONNECTIONS.md  cited at lines 132
+EXISTS  COVERAGE-LEDGER.md  -> runs/2.1.0-mermaid-edges/COVERAGE-LEDGER.md  cited at lines 34,126
+EXISTS  GAUGE.svg  -> runs/2.1.0-mermaid-edges/GAUGE.svg  cited at lines 132
+EXISTS  MINDMAP.md  -> runs/2.1.0-mermaid-edges/MINDMAP.md  cited at lines 132
+EXISTS  audits/WU-1-correctness-E-31.md  -> runs/2.1.0-mermaid-edges/audits/WU-1-correctness-E-31.md  cited at lines 5,12,115
+EXISTS  audits/WU-1-r2-correctness-E-44.md  -> runs/2.1.0-mermaid-edges/audits/WU-1-r2-correctness-E-44.md  cited at lines 5,19,21,34,76,77,116
+EXISTS  audits/final-audit-E-72.md  -> runs/2.1.0-mermaid-edges/audits/final-audit-E-72.md  cited at lines 5,12,13,23,31,118
+EXISTS  evidence/  -> runs/2.1.0-mermaid-edges/evidence/  cited at lines 143,147
+EXISTS  evidence/WU-1-r2-correctness-E-44/C4-same.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/C4-same.txt  cited at lines 81
+EXISTS  evidence/WU-1-r2-correctness-E-44/C6-base.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/C6-base.txt  cited at lines 75
+EXISTS  evidence/WU-1-r2-correctness-E-44/C6-suite.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/C6-suite.txt  cited at lines 75
+EXISTS  evidence/WU-1-r2-correctness-E-44/C7-import.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/C7-import.txt  cited at lines 79
+EXISTS  evidence/WU-1-r2-correctness-E-44/C7-stat.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/C7-stat.txt  cited at lines 74,82
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_edge_forms_set_the_exit_code.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_edge_forms_set_the_exit_code.txt  cited at lines 78
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_edge_with_label_between_dashes_passes.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_edge_with_label_between_dashes_passes.txt  cited at lines 73
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_good_run_passes_every_stage.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_good_run_passes_every_stage.txt  cited at lines 80
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_unlabeled_dotted_edge_fails.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_unlabeled_dotted_edge_fails.txt  cited at lines 72
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_unlabeled_edge_fails.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_unlabeled_edge_fails.txt  cited at lines 80
+EXISTS  evidence/WU-1-r2-correctness-E-44/test_unlabeled_thick_edge_fails.txt  -> runs/2.1.0-mermaid-edges/evidence/WU-1-r2-correctness-E-44/test_unlabeled_thick_edge_fails.txt  cited at lines 11,72
+EXISTS  evidence/capability-commands.txt  -> runs/2.1.0-mermaid-edges/evidence/capability-commands.txt  cited at lines 58
+EXISTS  evidence/capability-probe.md  -> runs/2.1.0-mermaid-edges/evidence/capability-probe.md  cited at lines 120
+EXISTS  evidence/new-tests-count.txt  -> runs/2.1.0-mermaid-edges/evidence/new-tests-count.txt  cited at lines 19
+EXISTS  scripts/  -> scripts/  cited at lines 3
+EXISTS  scripts/hinshitsu_check.py  -> scripts/hinshitsu_check.py  cited at lines 74
+EXISTS  skills/  -> skills/  cited at lines 3
+EXISTS  skills/hinshitsu-delivery/SKILL.md  -> skills/hinshitsu-delivery/SKILL.md  cited at lines 3
+EXISTS  tests/  -> tests/  cited at lines 3
+EXISTS  E-1  cited at lines 32,120,136
+EXISTS  E-2  cited at lines 32,136
+EXISTS  E-3  cited at lines 43,66,136
+EXISTS  E-4  cited at lines 32,136
+EXISTS  E-5  cited at lines 43,136
+EXISTS  E-6  cited at lines 136
+EXISTS  E-7  cited at lines 136
+EXISTS  E-8  cited at lines 136
+EXISTS  E-9  cited at lines 136
+EXISTS  E-10  cited at lines 62,90,91,92,93,95,97,98,136
+EXISTS  E-11  cited at lines 136
+EXISTS  E-12  cited at lines 136
+EXISTS  E-13  cited at lines 23,83,84,136
+EXISTS  E-14  cited at lines 136
+EXISTS  E-15  cited at lines 94,136
+EXISTS  E-16  cited at lines 136
+EXISTS  E-17  cited at lines 66,136
+EXISTS  E-18  cited at lines 136
+EXISTS  E-19  cited at lines 136
+EXISTS  E-20  cited at lines 66,136,143
+EXISTS  E-21  cited at lines 66,136,143
+EXISTS  E-22  cited at lines 62,96,136
+EXISTS  E-23  cited at lines 42,102,106,136
+EXISTS  E-24  cited at lines 42,136
+EXISTS  E-25  cited at lines 97,136
+EXISTS  E-26  cited at lines 42,102,136
+EXISTS  E-27  cited at lines 136
+EXISTS  E-28  cited at lines 136
+EXISTS  E-29  cited at lines 136
+EXISTS  E-30  cited at lines 32,136
+EXISTS  E-31  cited at lines 5,12,32,115,136
+EXISTS  E-32  cited at lines 38,136,142
+EXISTS  E-33  cited at lines 38,136,142
+EXISTS  E-34  cited at lines 38,136
+EXISTS  E-35  cited at lines 38,136
+EXISTS  E-36  cited at lines 91,136,145
+EXISTS  E-37  cited at lines 32,51,136
+EXISTS  E-38  cited at lines 5,23,34,38,51,84,136
+EXISTS  E-39  cited at lines 136
+EXISTS  E-40  cited at lines 91,136
+EXISTS  E-41  cited at lines 83,91,136
+EXISTS  E-42  cited at lines 19,92,136
+EXISTS  E-43  cited at lines 5,32,120,122,128,136
+EXISTS  E-44  cited at lines 5,11,19,21,32,34,72,73,74,75,76,77,78,79,80,81,82,116,136
+EXISTS  E-45  cited at lines 38,136
+EXISTS  E-46  cited at lines 38,136
+EXISTS  E-47  cited at lines 38,136
+EXISTS  E-48  cited at lines 38,136
+EXISTS  E-49  cited at lines 38,136
+EXISTS  E-50  cited at lines 21,34,38,136
+EXISTS  E-51  cited at lines 21,34,38,136
+EXISTS  E-52  cited at lines 116,136
+EXISTS  E-53  cited at lines 136
+EXISTS  E-54  cited at lines 136,145
+EXISTS  E-55  cited at lines 23,52,53,54,55,56,57,136
+EXISTS  E-56  cited at lines 5,34,38,52,136
+EXISTS  E-57  cited at lines 5,34,38,53,136
+EXISTS  E-58  cited at lines 5,34,38,54,136
+EXISTS  E-59  cited at lines 5,34,38,55,136
+EXISTS  E-60  cited at lines 5,34,38,56,136
+EXISTS  E-61  cited at lines 5,34,38,57,94,136
+EXISTS  E-62  cited at lines 42,136
+EXISTS  E-63  cited at lines 136
+EXISTS  E-64  cited at lines 136
+EXISTS  E-65  cited at lines 66,136,144
+EXISTS  E-66  cited at lines 136
+EXISTS  E-67  cited at lines 136
+EXISTS  E-68  cited at lines 23,128,136,146
+EXISTS  E-69  cited at lines 136
+EXISTS  E-70  cited at lines 107,108,136
+EXISTS  E-71  cited at lines 136
+EXISTS  E-72  cited at lines 5,12,13,23,31,32,66,118,136
+EXISTS  E-73  cited at lines 31,38,42,136,147
+EXISTS  E-74  cited at lines 31,38,43,136,147
+EXISTS  E-75  cited at lines 31,38,44,136
+EXISTS  E-76  cited at lines 31,38,45,136
+EXISTS  E-77  cited at lines 38,66,136
+EXISTS  E-78  cited at lines 38,136
+EXISTS  E-79  cited at lines 23,42,43,44,45,136
+EXISTS  E-80  cited at lines 34,38,66,136
+EXISTS  E-81  cited at lines 136
+EXISTS  E-82  cited at lines 66,136,147
+EXISTS  E-83  cited at lines 23,25,32,58,136
+EXISTS  E-84  cited at lines 38,58,136
+EXISTS  E-85  cited at lines 34,66,136
+== COVERAGE-LEDGER.md: 5 distinct paths, 10 distinct entry IDs
+EXISTS  audits/WU-1-correctness-E-31.md  -> runs/2.1.0-mermaid-edges/audits/WU-1-correctness-E-31.md  cited at lines 7
+EXISTS  audits/WU-1-r2-correctness-E-44.md  -> runs/2.1.0-mermaid-edges/audits/WU-1-r2-correctness-E-44.md  cited at lines 7,13,14,15,16,17,18,19,26,33,34,35,36,37,38,39,40,41,42,43,49,50,53,55,56,57,60,61,62,63,64,65
+EXISTS  scripts/hinshitsu_check.py  -> scripts/hinshitsu_check.py  cited at lines 25,32,49,50,51,52,53,54,55,56,57,58,59,60
+EXISTS  skills/hinshitsu-record/SKILL.md  -> skills/hinshitsu-record/SKILL.md  cited at lines 3
+EXISTS  tests/test_check.py  -> tests/test_check.py  cited at lines 26,33,34,35,36,37,38,39,40,41,42,43,61,62,63,64,65
+EXISTS  E-31  cited at lines 7
+EXISTS  E-38  cited at lines 73
+EXISTS  E-44  cited at lines 7,13,14,15,16,17,18,19,26,33,34,35,36,37,38,39,40,41,42,43,49,50,53,55,56,57,60,61,62,63,64,65
+EXISTS  E-55  cited at lines 25,32,51,52,54,58,59
+EXISTS  E-56  cited at lines 73
+EXISTS  E-57  cited at lines 73
+EXISTS  E-58  cited at lines 73
+EXISTS  E-59  cited at lines 73
+EXISTS  E-60  cited at lines 73
+EXISTS  E-61  cited at lines 73
+missing total: 0

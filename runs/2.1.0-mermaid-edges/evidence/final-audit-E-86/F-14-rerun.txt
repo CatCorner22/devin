@@ -1,0 +1,20 @@
+$ sed -n 3p SESSION-STATE.md
+Last rewritten: 2026-11-18T20:35:29Z and after — log entries E-83 to E-85 (the time is that of E-83, copied from the log heading)
+$ sed -n 6p SESSION-STATE.md   (item 2)
+2. **CRITERIA:** C1 to C7 `FROZEN` (E-25). The round-2 correctness auditor (E-44) reports that each passes its tests at commit 5099f2a; the ledger COR cells are filled from that report (E-62, E-65).
+$ sed -n 12p SESSION-STATE.md | cut -c1-200   (item 8)
+8. **Single next action:** start run 5, the second final AUDITOR, with `prompts/final-auditor-r2.md`; log its `LAUNCH` entry; save its report whole as `audits/final-audit-E-<n>.md` and its files under
+$ git log --format="%h %s" -3 -- SESSION-STATE.md
+d7ee32e log E-83 to E-85: ANSWER, OVERRULE F-15, CORRECTION of E-80; report corrected; scope of the second final AUDITOR; friction 23
+149af0d log E-82: CORRECTION
+5438eb6 log E-81: CARD
+$ grep -o "`DELIVERY-REPORT.md` ([^)]*)" SESSION-STATE.md   (item 6)
+`DELIVERY-REPORT.md` (draft, before the final audit)
+`DELIVERY-REPORT.md` (Status, open FINDINGS, 5 SUB-AGENT runs, count of log entries, swarm row, check 3)
+$ git log --format="%h %s" -4 -- DELIVERY-REPORT.md
+ae00d74 report: cite E-43 and E-44 for the commit of the fix
+d284995 report: Summary within 200 words
+d7ee32e log E-83 to E-85: ANSWER, OVERRULE F-15, CORRECTION of E-80; report corrected; scope of the second final AUDITOR; friction 23
+5438eb6 log E-81: CARD
+$ sed -n 11p SESSION-STATE.md   (item 7)
+7. **Checks actually run:** by AUDITORS: `evidence/WU-1-correctness-E-31/`, `evidence/WU-1-r2-correctness-E-44/`. By the BUILDER (they support no `PASS`): `evidence/builder-run-WU-1.txt`, `evidence/builder-run-WU-1-round-2.txt`, `evidence/baseline-93311ab.txt`.

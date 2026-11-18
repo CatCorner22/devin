@@ -1,0 +1,137 @@
+== LAUNCH E-1, run bcb91172004e46e2ba8f5660b0641d0b: last message 1014 characters; saved file evidence/capability-probe.md 1047 characters; attachments named in the message: 0
+   last message EQUALS saved file after line 1 (the identifier line, which the saved file adds): bcb91172004e46e2ba8f5660b0641d0b
+   attachments downloaded: 0 of 0
+== LAUNCH E-31, run 6b750018b2914b0a9b8d30fafc55d59d: last message 19490 characters; saved file audits/WU-1-correctness-E-31.md 41843 characters; attachments named in the message: 17
+   last message DIFFERS from saved file: lines only in the message: 18; lines only in the saved file: 400
+   msg-only> 
+   msg-only> **1 difference between this message and the attached `WU-1-correctness.md`:** the attached file prints the complete output of each command inside the report. This message names the output file instead, because the outputs total about 30,000 characters. Every other word is the same. Each output file 
+   msg-only> 1. C1. Command: `python3 -m unittest discover -s tests -k test_unlabeled_thick_edge_fails -v > c1-thick.txt 2>&1`. Exit code: 0. Output file `c1-thick.txt`.
+   msg-only> 2. C2. Command: `python3 -m unittest discover -s tests -k test_unlabeled_dotted_edge_fails -v > c2-dotted.txt 2>&1`. Exit code: 0. Output file `c2-dotted.txt`.
+   msg-only> 3. C3. Command: `python3 -m unittest discover -s tests -k test_edge_with_label_between_dashes_passes -v > c3-between-dashes.txt 2>&1`. Exit code: 0. Output file `c3-between-dashes.txt`.
+   msg-only> 4. C1, C2, C3. Command: `python3 -m unittest discover -s tests -k test_edge_forms_set_the_exit_code -v > c1-c2-c3-exit-code.txt 2>&1`. Exit code: 0. Output file `c1-c2-c3-exit-code.txt`.
+   msg-only> 5. C4. Command: `python3 -m unittest discover -s tests -k test_unlabeled_edge_fails -v > c4-unlabeled-edge.txt 2>&1`. Exit code: 0. Output file `c4-unlabeled-edge.txt`.
+   msg-only> 6. C4. Command: `python3 -m unittest discover -s tests -k test_good_run_passes_every_stage -v > c4-good-run.txt 2>&1`. Exit code: 0. Output file `c4-good-run.txt`.
+   msg-only> 7. C4. Command: `bash -c 'git show 93311ab:scripts/hinshitsu_check.py > /tmp/old_check.py; for d in skills/hinshitsu/example/run build-record; do diff <(python3 /tmp/old_check.py --stage delivery $d) <(python3 scripts/hinshitsu_check.py --stage delivery $d) && echo same; done' > c4-diff-old-new.txt 
+   msg-only> 8. C5. Command: `python3 -m unittest discover -s tests -k test_labeled_thick_and_dotted_edges_pass -v > c5-labeled.txt 2>&1`. Exit code: 0. Output file `c5-labeled.txt`.
+   msg-only> 9. C6. Command: `python3 -m unittest discover -s tests > c6-whole-suite.txt 2>&1`. Exit code: 0. Output file `c6-whole-suite.txt`.
+   msg-only> 10. C6. Command: `bash -c 'git worktree add /tmp/base 93311ab && cp tests/test_check.py /tmp/base/tests/ && (cd /tmp/base && python3 -m unittest discover -s tests -k edge)' > c6-base-edge.txt 2>&1`. Exit code: 1. Output file `c6-base-edge.txt`.
+   msg-only> 11. C7. Command: `git diff --stat 93311ab -- . ':!runs' > c7-diff-stat-fe82be2.txt 2>&1`. Exit code: 0. Output file `c7-diff-stat-fe82be2.txt`.
+   msg-only> 12. C7. Command: `git diff --stat 93311ab origin/devin/hinshitsu-run-2.1.0 -- . ':!runs' > c7-diff-stat-branch-tip-03b0161.txt 2>&1`. Exit code: 0. Output file `c7-diff-stat-branch-tip-03b0161.txt`.
+   msg-only> 13. C7. Command: `git diff 93311ab -- scripts tests | grep -E '^\+\s*(import|from) ' > c7-import-grep.txt 2>&1`. Exit code: 1. Output file `c7-import-grep.txt` (empty: the command printed nothing).
+   msg-only> 14. C7. Command: `python3 scripts/lint.py > c7-lint.txt 2>&1`. Exit code: 0. Output file `c7-lint.txt`.
+   msg-only> 15. Old script against new script on the 9 lines of the CRITERIA at 3 stages, and on 71 other edge lines at stage `plan`. Command: `python3 /home/ubuntu/audit/probe.py > probe-old-vs-new.txt 2>&1`. Exit code: 0. Each tuple is (`main()` return, `check()` list). The probe script is printed in the atta
+   msg-only> 16. Suite, lint and diff at the branch tip 03b0161, in a second detached worktree. Command: `(python3 -m unittest discover -s tests; echo "suite exit=$?"; python3 scripts/lint.py; echo "lint exit=$?"; git diff --stat 93311ab HEAD -- . ':!runs'; git diff fe82be2 HEAD --stat | tail -1; git diff fe82be
+   attachments downloaded: 17 of 17
+   attachment WU-1-correctness.md (41858 bytes): saved as audits/WU-1-correctness-E-31.md (41858 bytes): IDENTICAL
+   attachment c1-thick.txt (187 bytes): saved as evidence/WU-1-correctness-E-31/c1-thick.txt (187 bytes): IDENTICAL
+   attachment c2-dotted.txt (189 bytes): saved as evidence/WU-1-correctness-E-31/c2-dotted.txt (189 bytes): IDENTICAL
+   attachment c3-between-dashes.txt (209 bytes): saved as evidence/WU-1-correctness-E-31/c3-between-dashes.txt (209 bytes): IDENTICAL
+   attachment c1-c2-c3-exit-code.txt (665 bytes): saved as evidence/WU-1-correctness-E-31/c1-c2-c3-exit-code.txt (665 bytes): IDENTICAL
+   attachment c4-unlabeled-edge.txt (175 bytes): saved as evidence/WU-1-correctness-E-31/c4-unlabeled-edge.txt (175 bytes): IDENTICAL
+   attachment c4-good-run.txt (189 bytes): saved as evidence/WU-1-correctness-E-31/c4-good-run.txt (189 bytes): IDENTICAL
+   attachment c4-diff-old-new.txt (10 bytes): saved as evidence/WU-1-correctness-E-31/c4-diff-old-new.txt (10 bytes): IDENTICAL
+   attachment c5-labeled.txt (205 bytes): saved as evidence/WU-1-correctness-E-31/c5-labeled.txt (205 bytes): IDENTICAL
+   attachment c6-whole-suite.txt (1537 bytes): saved as evidence/WU-1-correctness-E-31/c6-whole-suite.txt (1537 bytes): IDENTICAL
+   attachment c6-base-edge.txt (3948 bytes): saved as evidence/WU-1-correctness-E-31/c6-base-edge.txt (3948 bytes): IDENTICAL
+   attachment c7-diff-stat-fe82be2.txt (161 bytes): saved as evidence/WU-1-correctness-E-31/c7-diff-stat-fe82be2.txt (161 bytes): IDENTICAL
+   attachment c7-diff-stat-branch-tip-03b0161.txt (161 bytes): saved as evidence/WU-1-correctness-E-31/c7-diff-stat-branch-tip-03b0161.txt (161 bytes): IDENTICAL
+   attachment c7-import-grep.txt (0 bytes): saved as evidence/WU-1-correctness-E-31/c7-import-grep.txt (0 bytes): IDENTICAL
+   attachment c7-lint.txt (86 bytes): saved as evidence/WU-1-correctness-E-31/c7-lint.txt (86 bytes): IDENTICAL
+   attachment probe-old-vs-new.txt (10467 bytes): saved as evidence/WU-1-correctness-E-31/probe-old-vs-new.txt (10467 bytes): IDENTICAL
+   attachment branch-tip-03b0161-suite-lint.txt (1898 bytes): saved as evidence/WU-1-correctness-E-31/branch-tip-03b0161-suite-lint.txt (1898 bytes): IDENTICAL
+   files under evidence/WU-1-correctness-E-31/ that match no attachment of the last message: []
+== LAUNCH E-44, run cecdcf81310d47498b7a6dfc923e59b9: last message 42084 characters; saved file audits/WU-1-r2-correctness-E-44.md 42084 characters; attachments named in the message: 24
+   last message EQUALS saved file exactly
+   attachments downloaded: 24 of 24
+   attachment WU-1-r2-correctness.md (42095 bytes): saved as audits/WU-1-r2-correctness-E-44.md (42095 bytes): IDENTICAL
+   attachment test_unlabeled_thick_edge_fails.txt (278 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_unlabeled_thick_edge_fails.txt (278 bytes): IDENTICAL
+   attachment test_edge_forms_set_the_exit_code.txt (758 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_edge_forms_set_the_exit_code.txt (758 bytes): IDENTICAL
+   attachment test_unlabeled_dotted_edge_fails.txt (281 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_unlabeled_dotted_edge_fails.txt (281 bytes): IDENTICAL
+   attachment test_edge_with_label_between_dashes_passes.txt (311 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_edge_with_label_between_dashes_passes.txt (311 bytes): IDENTICAL
+   attachment test_unlabeled_edge_fails.txt (260 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_unlabeled_edge_fails.txt (260 bytes): IDENTICAL
+   attachment test_good_run_passes_every_stage.txt (281 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_good_run_passes_every_stage.txt (281 bytes): IDENTICAL
+   attachment C4-same.txt (276 bytes): saved as evidence/WU-1-r2-correctness-E-44/C4-same.txt (276 bytes): IDENTICAL
+   attachment test_labeled_thick_and_dotted_edges_pass.txt (305 bytes): saved as evidence/WU-1-r2-correctness-E-44/test_labeled_thick_and_dotted_edges_pass.txt (305 bytes): IDENTICAL
+   attachment C6-suite.txt (1595 bytes): saved as evidence/WU-1-r2-correctness-E-44/C6-suite.txt (1595 bytes): IDENTICAL
+   attachment C6-base.txt (4111 bytes): saved as evidence/WU-1-r2-correctness-E-44/C6-base.txt (4111 bytes): IDENTICAL
+   attachment C7-stat.txt (235 bytes): saved as evidence/WU-1-r2-correctness-E-44/C7-stat.txt (235 bytes): IDENTICAL
+   attachment C7-import.txt (82 bytes): saved as evidence/WU-1-r2-correctness-E-44/C7-import.txt (82 bytes): IDENTICAL
+   attachment C7-lint.txt (125 bytes): saved as evidence/WU-1-r2-correctness-E-44/C7-lint.txt (125 bytes): IDENTICAL
+   attachment criteria-lines.txt (1340 bytes): saved as evidence/WU-1-r2-correctness-E-44/criteria-lines.txt (1340 bytes): IDENTICAL
+   attachment F-1.txt (735 bytes): saved as evidence/WU-1-r2-correctness-E-44/F-1.txt (735 bytes): IDENTICAL
+   attachment F-2.txt (825 bytes): saved as evidence/WU-1-r2-correctness-E-44/F-2.txt (825 bytes): IDENTICAL
+   attachment F-4.txt (1446 bytes): saved as evidence/WU-1-r2-correctness-E-44/F-4.txt (1446 bytes): IDENTICAL
+   attachment hunt-1-later-link.txt (1091 bytes): saved as evidence/WU-1-r2-correctness-E-44/hunt-1-later-link.txt (1091 bytes): IDENTICAL
+   attachment hunt-2-dotted-earlier-link.txt (762 bytes): saved as evidence/WU-1-r2-correctness-E-44/hunt-2-dotted-earlier-link.txt (762 bytes): IDENTICAL
+   attachment hunt-3-ends-and-shapes.txt (1937 bytes): saved as evidence/WU-1-r2-correctness-E-44/hunt-3-ends-and-shapes.txt (1937 bytes): IDENTICAL
+   attachment hunt-4-blocks.txt (1966 bytes): saved as evidence/WU-1-r2-correctness-E-44/hunt-4-blocks.txt (1966 bytes): IDENTICAL
+   attachment hunt-5-lengths.txt (1870 bytes): saved as evidence/WU-1-r2-correctness-E-44/hunt-5-lengths.txt (1870 bytes): IDENTICAL
+   attachment probe.py.txt (1183 bytes): saved as evidence/WU-1-r2-correctness-E-44/probe.py.txt (1183 bytes): IDENTICAL
+   files under evidence/WU-1-r2-correctness-E-44/ that match no attachment of the last message: []
+== LAUNCH E-72, run 2c6f057a16be412f89e76ffa6a5a5a78: last message 16445 characters; saved file audits/final-audit-E-72.md 16445 characters; attachments named in the message: 63
+   last message EQUALS saved file exactly
+   attachments downloaded: 63 of 63
+   attachment final-audit.md (16488 bytes): saved as audits/final-audit-E-72.md (16488 bytes): IDENTICAL
+   attachment a-cited-paths.txt (2109 bytes): saved as evidence/final-audit-E-72/a-cited-paths.txt (2109 bytes): IDENTICAL
+   attachment b-report-examples.txt (420 bytes): saved as evidence/final-audit-E-72/b-report-examples.txt (420 bytes): IDENTICAL
+   attachment c-rerun-E-31-comparison.txt (2013 bytes): saved as evidence/final-audit-E-72/c-rerun-E-31-comparison.txt (2013 bytes): IDENTICAL
+   attachment c-rerun-comparison.txt (4487 bytes): saved as evidence/final-audit-E-72/c-rerun-comparison.txt (4487 bytes): IDENTICAL
+   attachment e-auditlog-history.txt (2622 bytes): saved as evidence/final-audit-E-72/e-auditlog-history.txt (2622 bytes): IDENTICAL
+   attachment e-forward-cites.txt (277 bytes): saved as evidence/final-audit-E-72/e-forward-cites.txt (277 bytes): IDENTICAL
+   attachment e-session-vs-saved.txt (3562 bytes): saved as evidence/final-audit-E-72/e-session-vs-saved.txt (3562 bytes): IDENTICAL
+   attachment h-delivery-check.txt (455 bytes): saved as evidence/final-audit-E-72/h-delivery-check.txt (455 bytes): IDENTICAL
+   attachment i-hashes.txt (1134 bytes): saved as evidence/final-audit-E-72/i-hashes.txt (1134 bytes): IDENTICAL
+   attachment rerun-E-31-c1-c2-c3-exit-code.txt (665 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c1-c2-c3-exit-code.txt (665 bytes): IDENTICAL
+   attachment rerun-E-31-c1-thick.txt (187 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c1-thick.txt (187 bytes): IDENTICAL
+   attachment rerun-E-31-c2-dotted.txt (189 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c2-dotted.txt (189 bytes): IDENTICAL
+   attachment rerun-E-31-c3-between-dashes.txt (209 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c3-between-dashes.txt (209 bytes): IDENTICAL
+   attachment rerun-E-31-c4-diff-old-new.txt (10 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c4-diff-old-new.txt (10 bytes): IDENTICAL
+   attachment rerun-E-31-c4-good-run.txt (189 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c4-good-run.txt (189 bytes): IDENTICAL
+   attachment rerun-E-31-c4-unlabeled-edge.txt (175 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c4-unlabeled-edge.txt (175 bytes): IDENTICAL
+   attachment rerun-E-31-c5-labeled.txt (205 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c5-labeled.txt (205 bytes): IDENTICAL
+   attachment rerun-E-31-c6-base-edge.txt (3948 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c6-base-edge.txt (3948 bytes): IDENTICAL
+   attachment rerun-E-31-c6-whole-suite.txt (1537 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c6-whole-suite.txt (1537 bytes): IDENTICAL
+   attachment rerun-E-31-c7-diff-stat-at-03b0161.txt (161 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c7-diff-stat-at-03b0161.txt (161 bytes): IDENTICAL
+   attachment rerun-E-31-c7-diff-stat-branch-tip-03b0161.txt (182 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c7-diff-stat-branch-tip-03b0161.txt (182 bytes): IDENTICAL
+   attachment rerun-E-31-c7-diff-stat-fe82be2.txt (161 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c7-diff-stat-fe82be2.txt (161 bytes): IDENTICAL
+   attachment rerun-E-31-c7-import-grep.txt (0 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c7-import-grep.txt (0 bytes): IDENTICAL
+   attachment rerun-E-31-c7-lint.txt (86 bytes): saved as evidence/final-audit-E-72/rerun-E-31-c7-lint.txt (86 bytes): IDENTICAL
+   attachment rerun-E-31-probe-old-vs-new.txt (10467 bytes): saved as evidence/final-audit-E-72/rerun-E-31-probe-old-vs-new.txt (10467 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C4-same.txt (276 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C4-same.txt (276 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C6-base.txt (4111 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C6-base.txt (4111 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C6-suite.txt (1595 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C6-suite.txt (1595 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C7-import.txt (82 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C7-import.txt (82 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C7-lint.txt (125 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C7-lint.txt (125 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__C7-stat.txt (235 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__C7-stat.txt (235 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__F-1.txt (735 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__F-1.txt (735 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__F-2.txt (825 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__F-2.txt (825 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__F-4.txt (1446 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__F-4.txt (1446 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__criteria-lines.txt (1340 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__criteria-lines.txt (1340 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__hunt-1-later-link.txt (1091 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__hunt-1-later-link.txt (1091 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__hunt-2-dotted-earlier-link.txt (762 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__hunt-2-dotted-earlier-link.txt (762 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__hunt-3-ends-and-shapes.txt (1937 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__hunt-3-ends-and-shapes.txt (1937 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__hunt-4-blocks.txt (1966 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__hunt-4-blocks.txt (1966 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__hunt-5-lengths.txt (1870 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__hunt-5-lengths.txt (1870 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_edge_forms_set_the_exit_code.txt (758 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_edge_forms_set_the_exit_code.txt (758 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_edge_with_label_between_dashes_passes.txt (311 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_edge_with_label_between_dashes_passes.txt (311 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_good_run_passes_every_stage.txt (281 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_good_run_passes_every_stage.txt (281 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_labeled_thick_and_dotted_edges_pass.txt (305 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_labeled_thick_and_dotted_edges_pass.txt (305 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_unlabeled_dotted_edge_fails.txt (281 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_unlabeled_dotted_edge_fails.txt (281 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_unlabeled_edge_fails.txt (260 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_unlabeled_edge_fails.txt (260 bytes): IDENTICAL
+   attachment rerun-WU-1-r2-correctness-E-44__test_unlabeled_thick_edge_fails.txt (278 bytes): saved as evidence/final-audit-E-72/rerun-WU-1-r2-correctness-E-44__test_unlabeled_thick_edge_fails.txt (278 bytes): IDENTICAL
+   attachment rerun-baseline-at-93311ab.txt (295 bytes): saved as evidence/final-audit-E-72/rerun-baseline-at-93311ab.txt (295 bytes): IDENTICAL
+   attachment rerun-builder-run-WU-1-at-fe82be2.txt (3460 bytes): saved as evidence/final-audit-E-72/rerun-builder-run-WU-1-at-fe82be2.txt (3460 bytes): IDENTICAL
+   attachment rerun-builder-run-WU-1-round-2.txt (3725 bytes): saved as evidence/final-audit-E-72/rerun-builder-run-WU-1-round-2.txt (3725 bytes): IDENTICAL
+   attachment rerun-capability-commands.txt (1398 bytes): saved as evidence/final-audit-E-72/rerun-capability-commands.txt (1398 bytes): IDENTICAL
+   attachment rerun-card-2-word-count.txt (295 bytes): saved as evidence/final-audit-E-72/rerun-card-2-word-count.txt (295 bytes): IDENTICAL
+   attachment rerun-card-3-word-count.txt (192 bytes): saved as evidence/final-audit-E-72/rerun-card-3-word-count.txt (192 bytes): IDENTICAL
+   attachment rerun-card-word-count.txt (292 bytes): saved as evidence/final-audit-E-72/rerun-card-word-count.txt (292 bytes): IDENTICAL
+   attachment rerun-existing-connections-forms.txt (449 bytes): saved as evidence/final-audit-E-72/rerun-existing-connections-forms.txt (449 bytes): IDENTICAL
+   attachment rerun-existing-implementations-at-93311ab.txt (318 bytes): saved as evidence/final-audit-E-72/rerun-existing-implementations-at-93311ab.txt (318 bytes): IDENTICAL
+   attachment rerun-existing-implementations.txt (1085 bytes): saved as evidence/final-audit-E-72/rerun-existing-implementations.txt (1085 bytes): IDENTICAL
+   attachment rerun-mermaid-flowchart-links.diff.txt (0 bytes): saved as evidence/final-audit-E-72/rerun-mermaid-flowchart-links.diff.txt (0 bytes): IDENTICAL
+   attachment rerun-mermaid-flowchart-links.txt (7395 bytes): saved as evidence/final-audit-E-72/rerun-mermaid-flowchart-links.txt (7395 bytes): IDENTICAL
+   attachment rerun-new-tests-count.txt (340 bytes): saved as evidence/final-audit-E-72/rerun-new-tests-count.txt (340 bytes): IDENTICAL
+   attachment rerun-quoted-labels-and-fences.txt (310 bytes): saved as evidence/final-audit-E-72/rerun-quoted-labels-and-fences.txt (310 bytes): IDENTICAL
+   attachment rerun-record-check-E-65.txt (210 bytes): saved as evidence/final-audit-E-72/rerun-record-check-E-65.txt (210 bytes): IDENTICAL
+   files under evidence/final-audit-E-72/ that match no attachment of the last message: []

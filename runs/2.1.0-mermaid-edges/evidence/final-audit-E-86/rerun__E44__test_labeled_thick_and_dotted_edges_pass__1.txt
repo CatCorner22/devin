@@ -1,0 +1,7 @@
+test_labeled_thick_and_dotted_edges_pass (test_check.Check.test_labeled_thick_and_dotted_edges_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+OK
+exit: 0

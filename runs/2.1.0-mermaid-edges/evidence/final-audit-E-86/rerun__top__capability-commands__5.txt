@@ -1,0 +1,4 @@
+15005 skills/hinshitsu/SKILL.md
+ 8354 skills/hinshitsu/GLOSSARY.md
+23359 total
+exit: 0

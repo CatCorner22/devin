@@ -1,0 +1,6 @@
+test_good_run_passes_every_stage (test_check.Check.test_good_run_passes_every_stage) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.011s
+
+OK

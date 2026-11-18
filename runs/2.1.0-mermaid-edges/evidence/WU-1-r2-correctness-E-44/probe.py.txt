@@ -1,0 +1,25 @@
+"""Auditor probe: for each fixture line, run check() and main() of the old (93311ab) and new (working tree) scripts."""
+import contextlib, importlib.util, io, sys
+sys.path.insert(0, "tests")
+import test_check as T
+def load(name, path):
+    s = importlib.util.spec_from_file_location(name, path); m = importlib.util.module_from_spec(s); s.loader.exec_module(m); return m
+old = load("old", "/tmp/old_check.py"); new = T.hcheck
+def run(mod, line, whole=None):
+    d = T.good_run()
+    if whole is not None:
+        (d / "CONNECTIONS.md").write_text(whole, encoding="utf-8")
+    else:
+        T.edit(d, "CONNECTIONS.md", "A -->|reads| B", line)
+    errs = [e for e in mod.check(d, "plan")]
+    with contextlib.redirect_stdout(io.StringIO()):
+        code = mod.main(["x", "--stage", "plan", str(d)])
+    return errs, code
+for arg in sys.argv[1:]:
+    whole = None
+    if arg.startswith("WHOLE:"):
+        whole = arg[6:].encode().decode("unicode_escape")
+    print("line: %r" % (whole if whole is not None else arg))
+    for nm, mod in (("93311ab", old), ("5099f2a", new)):
+        errs, code = run(mod, arg, whole)
+        print("  %s: check() -> %r ; main() -> %d" % (nm, errs, code))

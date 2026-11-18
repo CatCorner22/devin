@@ -1,0 +1,61 @@
+$ git log --oneline --numstat -- runs/2.1.0-mermaid-edges/AUDIT-LOG.md (added, removed per commit)
+d7ee32e log E-83 to E-85: ANSWER, OVERRULE F-15, CORRECTION of E-80; report corrected; scope of the second final AUDITOR; friction 23  19 added, 0 removed
+149af0d log E-82: CORRECTION  6 added, 0 removed
+5438eb6 log E-81: CARD  38 added, 0 removed
+cf4694a log E-73 to E-78: FINDING F-10 to F-15 (final AUDITOR); friction 20-22  70 added, 0 removed
+4832ee5 log E-72: LAUNCH  10 added, 0 removed
+bb4ee02 log E-71: STAGE  8 added, 0 removed
+5fa5f53 log E-70: STAGE  5 added, 0 removed
+d87f362 log E-69: STAGE  6 added, 0 removed
+4a278c1 log E-68: CHECK  5 added, 0 removed
+c1f9c8a log E-67: STAGE  8 added, 0 removed
+50b8422 log E-66: COMPACTION  6 added, 0 removed
+4f44684 log E-65: CORRECTION  6 added, 0 removed
+d0cf804 log E-64: STAGE  6 added, 0 removed
+c3939c3 log E-63: STAGE  6 added, 0 removed
+8abb157 log E-62: CHECK  5 added, 0 removed
+b7f6753 log E-55 to E-61: ANSWER, OVERRULE F-4 to F-9, with mind map and session state  48 added, 0 removed
+7f1d8fb log E-54: CARD  27 added, 0 removed
+0e6563d log E-45 to E-53: FINDING F-5 to F-9, RESOLUTION F-1 and F-2, CHECK, COMPACTION; state files; friction 14-18  80 added, 0 removed
+d22f5a6 log E-44: LAUNCH  9 added, 0 removed
+4843e44 log E-43: TIER  11 added, 0 removed
+f4ea401 log E-42: TRACE  7 added, 0 removed
+a330018 log E-37 to E-41: ANSWER, OVERRULE F-3, ASSUMPTION, REVERSAL, DECISION D-3, with state files  37 added, 0 removed
+d0d401c log E-36: CARD  33 added, 0 removed
+d2a098d log E-32 to E-35: FINDING F-1 to F-4, with mind map and session state  44 added, 0 removed
+03b0161 log E-31: LAUNCH  9 added, 0 removed
+f24cf3b log E-30: TIER  10 added, 0 removed
+640bbbc log E-29: TRACE  7 added, 0 removed
+cbc7961 log E-28: CHECK  5 added, 0 removed
+0b62668 log E-27: STAGE  8 added, 0 removed
+8d87b7d log E-26: STAGE  7 added, 0 removed
+4b8f493 log E-25: CRITERIA  14 added, 0 removed
+ddd7c9c log E-24: STAGE  7 added, 0 removed
+2335024 log E-23: STAGE  5 added, 0 removed
+b3a571d log E-22: ANSWER  6 added, 0 removed
+c1adedf log E-21: CORRECTION  17 added, 0 removed
+1740d7e log E-20: CORRECTION  17 added, 0 removed
+8a96d64 log E-19: STAGE  6 added, 0 removed
+47ced5f log E-18: CARD  41 added, 0 removed
+8c35532 log E-17: CHECK  5 added, 0 removed
+d2473df log E-16: CRITERIA  14 added, 0 removed
+a5f2d77 log E-15: DECISION  8 added, 0 removed
+90c9505 log E-14: DECISION  8 added, 0 removed
+dc45353 log E-13: ASSUMPTION  15 added, 0 removed
+9bb3aa4 log E-12: STAGE  7 added, 0 removed
+53262ba log E-11: STAGE  6 added, 0 removed
+c3bf8d9 log E-10: GAP  19 added, 0 removed
+e321c08 log E-9: VOC  41 added, 0 removed
+238ff4a log E-8: STAGE  7 added, 0 removed
+b8154c0 log E-7: STAGE  6 added, 0 removed
+c6be6bb log E-6: STAGE  7 added, 0 removed
+6ebf4c2 log E-5: STAGE  6 added, 0 removed
+1c1c528 log E-4: TIER  7 added, 0 removed
+3c9cee0 log E-3: STAGE  8 added, 0 removed
+6639ae8 log E-2: CAPABILITY  16 added, 0 removed
+72b4f50 log E-1: LAUNCH capability probe  13 added, 0 removed
+commits: 55, total added: 852, total removed: 0
+$ git log --merges --oneline -- AUDIT-LOG.md | wc -l
+0
+$ wc -l AUDIT-LOG.md
+852

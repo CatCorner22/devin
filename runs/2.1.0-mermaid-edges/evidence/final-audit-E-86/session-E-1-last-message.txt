@@ -1,0 +1,11 @@
+NO RECORD. This session was spawned by a parent session, but no orchestrator task was passed to me.
+
+Besides your message, the runtime showed me:
+
+- **System prompt:** my standing operating instructions (communication, coding, git/PR, testing, security, memory rules, tool list) and session details (session URL, IDs, start time, parent session ID, snapshot build link).
+- **System notes:** use browser previews for web apps; workspace info with recent repos and PRs; Slack is not connected; repos are shallow clones with a background unshallow fetch running.
+- **Knowledge hints:** auto-generated indexes for CatCorner22/hike, coaching, Dental_Mgmt, and precog.
+- **Memory:** the contents of `~/memory/blakereaganlaw_7eb639/MEMORY.md` (6 working-style rules), plus a listing of the other memory files (names only: 2 in `projects/`, 5 in `repos/`, 6 in `topics/`).
+- **System guidance:** reply to your message through the message tool before running anything else.
+
+I have not opened any files or run any commands.

@@ -1,0 +1,7 @@
+FAIL AUDIT-LOG.md: stage S10 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: stage S11 has no end or skipped entry (rule 0.7)
+FAIL AUDIT-LOG.md: E-80 closes FRAGILITY F-14 as a record fault; rule 14.6 covers a DEFECT only
+FAIL AUDIT-LOG.md: no LESSON entry (rule 20.4)
+hinshitsu_check (delivery): 4 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit: 1

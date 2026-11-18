@@ -15,7 +15,9 @@ Answer to the independent line-by-line review of the scripts on commit `93311ab`
 - Rule 0.9: the USER's reply to the budget card is logged with the new number. Rule 24.3: the count and the first 4 IDs.
 - `TESTING.md`: a section in plain words on what "0 failures" does and does not mean.
 
-Open from the code review: bug 10 (Mermaid edge forms; the subject of the first run under 2.1.0, on branch `devin/hinshitsu-run-2.1.0`); bug 23 (the final auditor cannot get 0 from `--stage delivery` before its own report exists; the fix changes a rule); bug 24 (placeholder forms); bugs 30 and 31 in part (wording, 1 doubled message).
+- Checker (bug 10): thick and dotted Mermaid arrows are tested for a label, and a label written between dashes passes. This fix was made by the first run under 2.1.0 and merged from commit `5099f2a`; its record is `runs/2.1.0-mermaid-edges/`, and its 6 known limits are listed there (only the first arrow on a line is tested). 134 tests.
+
+Open from the code review: bug 23 (the final auditor cannot get 0 from `--stage delivery` before its own report exists; the fix changes a rule); bug 24 (placeholder forms); bugs 30 and 31 in part (wording, 1 doubled message).
 
 ## 2.1.0 — 2026-11-18
 

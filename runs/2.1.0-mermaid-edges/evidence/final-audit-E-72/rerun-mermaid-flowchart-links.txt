@@ -1,0 +1,278 @@
+## Links between nodes
+
+Nodes can be connected with links/edges. It is possible to have different types of links or attach a text string to a link.
+
+### A link with arrow head
+
+```mermaid-example
+flowchart LR
+    A-->B
+```
+
+### An open link
+
+```mermaid-example
+flowchart LR
+    A --- B
+```
+
+### Text on links
+
+```mermaid-example
+flowchart LR
+    A-- This is the text! ---B
+```
+
+or
+
+```mermaid-example
+flowchart LR
+    A---|This is the text|B
+```
+
+### A link with arrow head and text
+
+```mermaid-example
+flowchart LR
+    A-->|text|B
+```
+
+or
+
+```mermaid-example
+flowchart LR
+    A-- text -->B
+```
+
+### Dotted link
+
+```mermaid-example
+flowchart LR
+   A-.->B;
+```
+
+### Dotted link with text
+
+```mermaid-example
+flowchart LR
+   A-. text .-> B
+```
+
+### Thick link
+
+```mermaid-example
+flowchart LR
+   A ==> B
+```
+
+### Thick link with text
+
+```mermaid-example
+flowchart LR
+   A == text ==> B
+```
+
+### An invisible link
+
+This can be a useful tool in some instances where you want to alter the default positioning of a node.
+
+```mermaid-example
+flowchart LR
+    A ~~~ B
+```
+
+### Chaining of links
+
+It is possible declare many links in the same line as per below:
+
+```mermaid-example
+flowchart LR
+   A -- text --> B -- text2 --> C
+```
+
+It is also possible to declare multiple nodes links in the same line as per below:
+
+```mermaid-example
+flowchart LR
+   a --> b & c--> d
+```
+
+You can then describe dependencies in a very expressive way. Like the one-liner below:
+
+```mermaid-example
+flowchart TB
+    A & B--> C & D
+```
+
+If you describe the same diagram using the basic syntax, it will take four lines. A
+word of warning, one could go overboard with this making the flowchart harder to read in
+markdown form. The Swedish word `lagom` comes to mind. It means, not too much and not too little.
+This goes for expressive syntaxes as well.
+
+```mermaid
+flowchart TB
+    A --> C
+    A --> D
+    B --> C
+    B --> D
+```
+
+### Attaching an ID to Edges
+
+Mermaid now supports assigning IDs to edges, similar to how IDs and metadata can be attached to nodes. This feature lays the groundwork for more advanced styling, classes, and animation capabilities on edges.
+
+**Syntax:**
+
+To give an edge an ID, prepend the edge syntax with the ID followed by an `@` character. For example:
+
+```mermaid
+flowchart LR
+  A e1@--> B
+```
+
+In this example, `e1` is the ID of the edge connecting `A` to `B`. You can then use this ID in later definitions or style statements, just like with nodes.
+
+### Turning an Animation On
+
+Once you have assigned an ID to an edge, you can turn on animations for that edge by defining the edge’s properties:
+
+```mermaid
+flowchart LR
+  A e1@==> B
+  e1@{ animate: true }
+```
+
+This tells Mermaid that the edge `e1` should be animated.
+
+### Selecting Type of Animation
+
+In the initial version, two animation speeds are supported: `fast` and `slow`. Selecting a specific animation type is a shorthand for enabling animation and setting the animation speed in one go.
+
+**Examples:**
+
+```mermaid
+flowchart LR
+  A e1@--> B
+  e1@{ animation: fast }
+```
+
+This is equivalent to `{ animate: true, animation: fast }`.
+
+### Using classDef Statements for Animations
+
+You can also animate edges by assigning a class to them and then defining animation properties in a `classDef` statement. For example:
+
+```mermaid
+flowchart LR
+  A e1@--> B
+  classDef animate stroke-dasharray: 9,5,stroke-dashoffset: 900,animation: dash 25s linear infinite;
+  class e1 animate
+```
+
+In this snippet:
+
+- `e1@-->` creates an edge with ID `e1`.
+- `classDef animate` defines a class named `animate` with styling and animation properties.
+- `class e1 animate` applies the `animate` class to the edge `e1`.
+
+**Note on Escaping Commas:**
+When setting the `stroke-dasharray` property, remember to escape commas as `\,` since commas are used as delimiters in Mermaid’s style definitions.
+
+### Step-by-step flow animation (v12.3.0+)
+
+Edges can also play in order, which is handy for showing how a request moves through a system. Give an edge a `step` number and a dot travels along it when that step comes up. The dot visits step 1, then step 2, and so on, and starts again after the last step. Edges that share a step number play at the same time.
+
+```mermaid-example
+flowchart LR
+  Client e1@--> API
+  API e2@--> Cache
+  Cache e3@-->|miss| DB
+  DB e4@--> API
+  API e5@--> Client
+  e1@{ step: 1 }
+  e2@{ step: 2 }
+  e3@{ step: 3 }
+  e4@{ step: 4 }
+  e5@{ step: 5 }
+```
+
+- Edges without a `step` are drawn as usual, so a diagram with no `step` looks exactly as before.
+- While its dot travels, the edge is highlighted with a thicker stroke in the edge's colour (v12.3.0+). The highlight has the class `edge-step-highlight`, so it can be restyled with `themeCSS`.
+- Set `flowchart.stepNumbers: true` (v12.3.0+) to show each edge's step number in a small badge, so the order can be read without watching the animation, in print, or when motion is reduced. It is off by default. The badge sits on the edge clear of labels, nodes, arrowheads and other badges (just beside the edge when it is too short), and is drawn above every edge and moving dot. The badge has the class `edge-step-badge`, so it can be restyled with `themeCSS`. Its size is fixed in diagram units, so when the diagram is scaled down to fit its container (`useMaxWidth`) the badge shrinks with it; set `flowchart.useMaxWidth: false` to keep it full size.
+- `step` must be a positive whole number (`1`, `2`, `3`, ...). Other values are ignored.
+- Each step lasts one second by default. Set `flowchart.stepDuration` (in seconds, v12.3.0+) to make the flow faster or slower:
+
+```mermaid-example
+---
+config:
+  flowchart:
+    stepDuration: 0.5
+---
+flowchart LR
+  Client e1@--> API
+  API e2@--> Client
+  e1@{ step: 1 }
+  e2@{ step: 2 }
+```
+
+- When the reader's system asks for reduced motion (`prefers-reduced-motion: reduce`), the dot and the highlight are hidden and the diagram is static.
+- `step` can be combined with `animate` or `animation` if you also want the edge's dashes to move.
+
+## New arrow types
+
+There are new types of arrows supported:
+
+- circle edge
+- cross edge
+
+### Circle edge example
+
+```mermaid-example
+flowchart LR
+    A --o B
+```
+
+### Cross edge example
+
+```mermaid-example
+flowchart LR
+    A --x B
+```
+
+## Multi directional arrows
+
+There is the possibility to use multidirectional arrows.
+
+```mermaid-example
+flowchart LR
+    A o--o B
+    B <--> C
+    C x--x D
+```
+
+### Minimum length of a link
+
+Each node in the flowchart is ultimately assigned to a rank in the rendered
+graph, i.e. to a vertical or horizontal level (depending on the flowchart
+orientation), based on the nodes to which it is linked. By default, links
+can span any number of ranks, but you can ask for any link to be longer
+than the others by adding extra dashes in the link definition.
+
+In the following example, two extra dashes are added in the link from node _B_
+to node _E_, so that it spans two more ranks than regular links:
+
+```mermaid-example
+flowchart TD
+    A[Start] --> B{Is it?}
+    B -->|Yes| C[OK]
+    C --> D[Rethink]
+    D --> B
+    B ---->|No| E[End]
+```
+
+> **Note** Links may still be made longer than the requested number of ranks
+> by the rendering engine to accommodate other requests.
+
+When the link label is written in the middle of the link, the extra dashes must
+be added on the right side of the link. The following example is equivalent to
+the previous one:

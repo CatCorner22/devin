@@ -1,0 +1,42 @@
+entries: 85 first 1 last 85
+numbers ascend by 1: True
+times do not decrease: True
+forward cites: 0
+types: {'ANSWER': 4, 'ASSUMPTION': 2, 'CAPABILITY': 1, 'CARD': 4, 'CHECK': 6, 'COMPACTION': 2, 'CORRECTION': 5, 'CRITERIA': 2, 'DECISION': 3, 'FINDING': 15, 'GAP': 1, 'LAUNCH': 4, 'OVERRULE': 8, 'RESOLUTION': 3, 'REVERSAL': 1, 'STAGE': 18, 'TIER': 3, 'TRACE': 2, 'VOC': 1}
+--- LAUNCH entries and their reports
+E-1 id bcb91172004e46e2ba8f5660b0641d0b | scope prompts/capability-probe.md exists=True | report evidence/capability-probe.md exists=True | line 1 holds id: True | line 1: bcb91172004e46e2ba8f5660b0641d0b
+E-31 id 6b750018b2914b0a9b8d30fafc55d59d | scope prompts/WU-1-correctness.md exists=True | report audits/WU-1-correctness-E-31.md exists=True | line 1 holds id: True | line 1: identifier: devin-6b750018b2914b0a9b8d30fafc55d59d (Devin session ID; https://app.devin.ai/sessions/6b750018b2
+E-44 id cecdcf81310d47498b7a6dfc923e59b9 | scope prompts/WU-1-r2-correctness.md exists=True | report audits/WU-1-r2-correctness-E-44.md exists=True | line 1 holds id: True | line 1: session ID: devin-cecdcf81310d47498b7a6dfc923e59b9
+E-72 id 2c6f057a16be412f89e76ffa6a5a5a78 | scope prompts/final-auditor.md exists=True | report audits/final-audit-E-72.md exists=True | line 1 holds id: True | line 1: identifier: devin-2c6f057a16be412f89e76ffa6a5a5a78 (Devin session ID; https://app.devin.ai/sessions/2c6f057a16
+--- files under audits/ and memos/
+audits/WU-1-correctness-E-31.md: LAUNCH entry ['E-31']
+audits/WU-1-r2-correctness-E-44.md: LAUNCH entry ['E-44']
+audits/final-audit-E-72.md: LAUNCH entry ['E-72']
+memos/: no such folder
+--- FINDING / RESOLUTION / OVERRULE
+E-32 FINDING F-1 DEFECT 
+E-33 FINDING F-2 DEFECT 
+E-34 FINDING F-3 DEFECT 
+E-35 FINDING F-4 FRAGILITY 
+E-38 OVERRULE F-3  OVERRULED
+E-45 FINDING F-5 DEFECT 
+E-46 FINDING F-6 DEFECT 
+E-47 FINDING F-7 DEFECT 
+E-48 FINDING F-8 FRAGILITY 
+E-49 FINDING F-9 STYLE 
+E-50 RESOLUTION F-1  FIXED
+E-51 RESOLUTION F-2  FIXED
+E-56 OVERRULE F-4  OVERRULED
+E-57 OVERRULE F-5  OVERRULED
+E-58 OVERRULE F-6  OVERRULED
+E-59 OVERRULE F-7  OVERRULED
+E-60 OVERRULE F-8  OVERRULED
+E-61 OVERRULE F-9  OVERRULED
+E-73 FINDING F-10 DEFECT 
+E-74 FINDING F-11 DEFECT 
+E-75 FINDING F-12 DEFECT 
+E-76 FINDING F-13 FRAGILITY 
+E-77 FINDING F-14 FRAGILITY 
+E-78 FINDING F-15 STYLE 
+E-80 RESOLUTION F-14  FIXED
+E-84 OVERRULE F-15  OVERRULED

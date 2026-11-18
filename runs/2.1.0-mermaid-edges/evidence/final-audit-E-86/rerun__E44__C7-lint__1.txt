@@ -1,0 +1,2 @@
+lint: 0 failure(s). This script tests form; it does not prove that any rule is sound.
+exit: 0

@@ -1,0 +1,46 @@
+exit code: 0
+--- git status --short after:
+?? C
+--- content of file C:
+line: 'A'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--x'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--o'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'reads'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '---'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '--'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0

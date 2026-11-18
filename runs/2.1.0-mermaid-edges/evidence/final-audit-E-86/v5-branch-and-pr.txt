@@ -1,0 +1,9 @@
+$ git ls-remote origin "refs/heads/*" "refs/pull/*"
+d93c0020547309376ad13b7063659783bab6146b	refs/heads/devin/hinshitsu-build
+8b740fe9127aa6bb9e2b16eb92f0af3b1f60aeac	refs/heads/devin/hinshitsu-run-2.1.0
+93311abb80ff4154617ee0962be10fa375d59982	refs/heads/main
+$ git merge-base --is-ancestor 93311ab origin/main; echo $?
+93311abb80ff4154617ee0962be10fa375d59982
+main is ancestor of 5099f2a: 0
+93311ab version 2.1.0: round-2 auditor answered (12 rules made testable, rules 0.2, 0.3, 23.10, checker and gauge error handling, adapters, README, EXAMPLE citations, cold-start transcript); build record E-022, E-023; delivery report rewritten
+$ gh pr list --repo CatCorner22/devin --state all --head devin/hinshitsu-run-2.1.0

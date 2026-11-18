@@ -1,0 +1,32 @@
+$ sed -n 12p DELIVERY-REPORT.md
+2. Open https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d (the first correctness auditor's run, which raised the first DEFECT of the run; no finding of the run has a higher class) and compare its last message with `audits/WU-1-correctness-E-31.md`. You see: the same 4 findings in the same words; the message names each output file where the saved file prints its contents [`audits/final-audit-E-72.md`].
+$ grep -n "4 mismatches\|ran Mermaid itself" DELIVERY-REPORT.md
+5:**Read this first.** The status is `DELIVERED — NOT DONE`. The fix is on the branch `devin/hinshitsu-run-2.1.0`, in commit 5099f2a [E-43, E-44]. The 3 lines the USER named and all 7 CRITERIA passed in 2 independent audits [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]. 7 faults that the audits found stay in the code as known limits, each accepted by the USER [E-38, E-56, E-57, E-58, E-59, E-60, E-61]. The first final audit ended `not passed`: it found 4 mismatches in this report and the record, and none in the fix [`audits/final-audit-E-72.md`].
+23:**What was not proven.** That my record of the run is true: the final check ended `not passed`, with 4 faults in my paperwork; 3 are corrected and none is confirmed by a new session [`audits/final-audit-E-72.md`; E-79]. Nobody used the checker as a later user would, ran the 4 stability checks, or ran Mermaid itself [E-68]. My 2 guesses about users have no proof [E-13]. 8 known limits remain, accepted by you [E-38, E-55, E-83].
+$ sed -n 5p audits/final-audit-E-72.md
+Verdict: **not passed**. The DELIVERABLE and every saved command output reproduce. The record has 3 mismatches under (b), 1 under (c) and 1 under (e), and 1 comparison under (e) is UNVERIFIED.
+$ entry E-68
+### E-68 · 2026-11-18T20:18:54Z · CHECK · orchestrator
+
+- What: S8, sections 11 and 12. No AUDITOR performed a RECIPIENT task and no AUDITOR ran a stability check: a `CORE` run has 2 AUDITORS (rule 0.5), and the 1 SUB-AGENT run left of the 4 the USER allowed (E-37) is the final AUDITOR's. The BUILDER must not perform these checks (rule 11.2).
+- Result: recipient-side verification and stability testing are UNVERIFIED — not run (rule 22.1). The RSV and STAB cells of `COVERAGE-LEDGER.md` read `N/A` — CORE, as rule 0.5 words it (`FRICTION.md` item 11). The delivery report lists both under what was not proven.
+
+$ grep -c -i mermaid on entry E-68
+0
+$ grep -c for 2 test names in audits/WU-1-r2-correctness-E-44.md
+test_quoted_label_between_the_halves_passes: 0
+test_bare_dot_arrow_is_not_an_edge: 0
+test_earlier_link_is_not_the_label_of_a_later_arrow: 2
+$ grep -n "F-1[0-5]" MINDMAP.md | cut -c1-90
+22:        - **F-10** DEFECT, BLOCKER under rule 17.4 — the report cites E-24 and E-62 f
+23:        - **F-11** DEFECT, BLOCKER under rule 17.4 — the report names E-5 as marked l
+24:        - **F-12** DEFECT, BLOCKER under rule 17.4 — check 2 of the report promises t
+25:        - **F-13** FRAGILITY, BLOCKER under rule 17.4 — 9 output files of E-44 record
+26:        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date
+27:        - **F-15** STYLE — some output files hold no command line or no exit code —
+56:  REC["the run record and DELIVERY-REPORT.md"] --> F10["F-10 report cites the wrong ent
+57:  REC --> F11["F-11 report names the wrong late entry (open)"]
+58:  REC --> F12["F-12 check 2 promises the same text (open)"]
+59:  REC --> F13["F-13 saved commands have no quotes (open)"]
+60:  REC --> F14["F-14 session state out of date (FIXED)"]
+61:  REC --> F15["F-15 output files lack command or exit code (overruled by the USER)"]

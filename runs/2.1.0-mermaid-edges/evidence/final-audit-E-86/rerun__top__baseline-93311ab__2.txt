@@ -1,0 +1,5 @@
+bash: line 1: mermaidngraph: command not found
+Traceback (most recent call last):
+  File "<stdin>", line 5, in <module>
+TypeError: not all arguments converted during string formatting
+exit: 1

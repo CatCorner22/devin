@@ -1,0 +1,64 @@
+$ git worktree add /tmp/base 93311ab && cp tests/test_check.py /tmp/base/tests/ && (cd /tmp/base && python3 -m unittest discover -s tests -k edge)
+Preparing worktree (detached HEAD 93311ab)
+HEAD is now at 93311ab version 2.1.0: round-2 auditor answered (12 rules made testable, rules 0.2, 0.3, 23.10, checker and gauge error handling, adapters, README, EXAMPLE citations, cold-start transcript); build record E-022, E-023; delivery report rewritten
+.FFFF....F..F
+======================================================================
+FAIL: test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) (line='A ==> B')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 261, in test_edge_forms_set_the_exit_code
+    self.assertEqual(hcheck.main(["x", "--stage", "plan", str(edge_run(line))]), code)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) (line='C -.-> D')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 261, in test_edge_forms_set_the_exit_code
+    self.assertEqual(hcheck.main(["x", "--stage", "plan", str(edge_run(line))]), code)
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) (line='A -- reads --> B')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 261, in test_edge_forms_set_the_exit_code
+    self.assertEqual(hcheck.main(["x", "--stage", "plan", str(edge_run(line))]), code)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_edge_with_label_between_dashes_passes (test_check.Check.test_edge_with_label_between_dashes_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 226, in test_edge_with_label_between_dashes_passes
+    self.assertFalse(any("no label" in x for x in hcheck.check(edge_run("A -- reads --> B"), "plan")))
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unlabeled_dotted_edge_fails (test_check.Check.test_unlabeled_dotted_edge_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 223, in test_unlabeled_dotted_edge_fails
+    self.assertIn("CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)", hcheck.check(edge_run("C -.-> D"), "plan"))
+AssertionError: 'CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)' not found in []
+
+======================================================================
+FAIL: test_unlabeled_thick_edge_fails (test_check.Check.test_unlabeled_thick_edge_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/base/tests/test_check.py", line 220, in test_unlabeled_thick_edge_fails
+    self.assertIn("CONNECTIONS.md: edge A ==> B has no label (rule 9.3)", hcheck.check(edge_run("A ==> B"), "plan"))
+AssertionError: 'CONNECTIONS.md: edge A ==> B has no label (rule 9.3)' not found in []
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.052s
+
+FAILED (failures=6)
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge A --> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit code: 1

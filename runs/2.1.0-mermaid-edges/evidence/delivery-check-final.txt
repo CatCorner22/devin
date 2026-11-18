@@ -1,0 +1,8 @@
+$ python3 scripts/hinshitsu_check.py --stage delivery runs/2.1.0-mermaid-edges
+FAIL AUDIT-LOG.md: E-100 cites later entry E-101 (rule 9.6)
+FAIL AUDIT-LOG.md: E-104 cites later entry E-114 (rule 9.6)
+FAIL AUDIT-LOG.md: E-80 closes FRAGILITY F-14 as a record fault; rule 14.6 covers a DEFECT only
+FAIL AUDIT-LOG.md: F-14 has 2 closing entries (rule 15.4)
+hinshitsu_check (delivery): 4 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit: 1

@@ -1,0 +1,52 @@
+line: 'A -- reads --> B --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'note: see A ==> B for detail'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge note ==> B has no label (rule 9.3)'] ; main() -> 1
+line: 'A == reads ==> B --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A -. reads .- B -.-> C'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A --oB --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A ---> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A ---> B has no label (rule 9.3)'] ; main() -> 1
+line: 'A ==> B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge A ==> B has no label (rule 9.3)'] ; main() -> 1
+line: 'C -.-> D'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)'] ; main() -> 1
+line: 'A -- reads --> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A --- B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A --o B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A --x B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A <--> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+line: 'A --> B --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+line: 'A & B --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+line: 'A ~~~ B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A e1@--> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+exit: 0

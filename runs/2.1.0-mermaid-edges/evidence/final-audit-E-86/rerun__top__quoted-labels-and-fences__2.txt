@@ -1,0 +1,5 @@
+skills/hinshitsu/example/run/CONNECTIONS.md:1
+build-record/CONNECTIONS.md:1
+runs/2.1.0-mermaid-edges/CONNECTIONS.md:1
+templates/CONNECTIONS.md:1
+exit: 0

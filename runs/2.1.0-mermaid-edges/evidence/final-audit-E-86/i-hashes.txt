@@ -1,0 +1,39 @@
+$ git rev-parse HEAD origin/devin/hinshitsu-run-2.1.0 5099f2a 93311ab fe82be2 03b0161
+ae00d74f7039803f531484822678776881de5f9d
+ae00d74f7039803f531484822678776881de5f9d
+5099f2aa421c3745783efdb48ad227d07a5f1cad
+93311abb80ff4154617ee0962be10fa375d59982
+fe82be2150dd5481be0dfb81accb37234e1c0239
+03b0161af97af1bdb9289bb25c30c50b81a4448a
+$ git ls-remote origin devin/hinshitsu-run-2.1.0
+8b740fe9127aa6bb9e2b16eb92f0af3b1f60aeac	refs/heads/devin/hinshitsu-run-2.1.0
+$ git rev-parse HEAD:scripts/hinshitsu_check.py HEAD:tests/test_check.py
+2a13af2cc92812dc236924bda998e49067e3cd28
+2a53c6c2d78cd9f264664bcdfd4f7bc2eb9d0a09
+$ git rev-parse 5099f2a:scripts/hinshitsu_check.py 5099f2a:tests/test_check.py
+2a13af2cc92812dc236924bda998e49067e3cd28
+2a53c6c2d78cd9f264664bcdfd4f7bc2eb9d0a09
+$ git diff --stat 93311ab HEAD -- . ":!runs"
+ scripts/hinshitsu_check.py | 18 +++++++++++++++--
+ tests/test_check.py        | 50 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 2 deletions(-)
+$ git diff --stat 5099f2a HEAD -- . ":!runs"  (prints nothing when equal)
+$ git status --short (my clone)
+$ sha256sum of record files
+30184fef8bfc120606376c31dc8d0587cd0cca5ef56cdb71a8e7c33e56b0e86c  AUDIT-LOG.md
+4fbb3522861864270e8412215914695ba0749cf6b6576148db4c199894291bb7  CONNECTIONS.md
+dbd06ddfd11f19011f2f7f15c0fd2709de4b6e7ea4b36a598649edc2a9608102  COVERAGE-LEDGER.md
+e4dd561816caf88f16be8e7d8f1f7604722b5a4de18a8d31e8cfb8d409719477  DELIVERY-REPORT.md
+8fb01fe65dfbff552a3335c92557bdaffe8fd925f025007d87a1127ab2918cc2  FRAMEWORK.md
+2239356a0fb5e1d1f0d84d4e10f8242dc4bf2e19d580b85e6a117a1ca8a7f379  FRICTION.md
+4df2793e60a92dab275af6ec07afccf8e7c5480c3e0bc97bd42c5a14ef99a44e  MINDMAP.md
+2441a0377e10ee07e0db0bcf98732e4cf241491dcbef9bbcf19b9e116475d819  SESSION-STATE.md
+8c73807ee776d90d33fa466ec9ab46d68ac2d32f0fd86355eaf5baf7ad2ac258  GAUGE.svg
+20bca4978f2bab2f37f5c1a945edb3afc37eff55e3f3af56033fc042be45fbde  audits/WU-1-correctness-E-31.md
+104db4b948c7492a1b2ac0fce953954e93a966943e992d540f66d3ab8a2da327  audits/WU-1-r2-correctness-E-44.md
+4d8aa5afbe9eb8104900e5eb494b3f0e53b9f9ea3bf82f73dbb73f05c0e20c87  audits/final-audit-E-72.md
+42b4af6a755b5b11f0801a61a0548b7a4f282bc64a1e6d8542724e194834ce69  prompts/WU-1-correctness.md
+01f0f728aad349329209769f85e8ec8d8f4911b13f4d2ee78287cf2b1c2b5dff  prompts/WU-1-r2-correctness.md
+d33cf9f0fc8ba802ae478f25abd75356662d84bdc710b4c475c342f76196113b  prompts/capability-probe.md
+55070fca187cfb194321ca5b97983d274c964695ee78e7961752df934f53c20b  prompts/final-auditor-r2.md
+59fbce2a488335ecdad63d03ae0de1df04501fae2dde7513217775eb728421dc  prompts/final-auditor.md

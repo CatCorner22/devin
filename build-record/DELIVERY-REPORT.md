@@ -4,7 +4,11 @@ Status: `DELIVERED — NOT DONE`. Paths are relative to the root of the reposito
 
 ## Summary
 
-The repository holds 7 skills, 1 glossary, templates, 7 adapters, 2 plugin manifests, 2 scripts with 71 unit tests, and 1 worked example run from start to end. Independent sessions reviewed the set 2 times. Both times the red cell's verdict was "SKILL SET FAILS" [`build-record/audits/post-build-red-cell.md`, `build-record/audits/round2-red-cell.md`]. Round 2 confirmed that 19 of the 43 earlier findings no longer reproduce, and raised 38 more [E-022]. The ORCHESTRATOR answered most of them in version 2.1.0 [`CHANGELOG.md`]. No independent session has reviewed version 2.1.0. The skill set is usable and has caught real faults in every run made with it. It is not proven sound, and no run made with it has ended `DONE`.
+The repository holds 7 skills, 1 glossary, templates, 7 adapters, 2 plugin manifests, 3 scripts with 134 unit tests, 1 worked example and the record of 1 run on a real task. Independent sessions reviewed the set 3 times and did not pass it: 2 red cells said "SKILL SET FAILS", and a line-by-line review of the scripts said "SCRIPTS UNSOUND" with 41 bugs, 38 of them now answered in version 2.2.0 [E-022, E-025 to E-027; `CHANGELOG.md`]. No independent session has reviewed version 2.2.0.
+
+**What the first real run showed** [`build-record/audits/round3-real-run.md`]. A fresh agent used version 2.1.0 to fix a real fault in the checker. Independent sessions found 9 faults that the builder had missed, 1 of them a regression the fix itself made. The budget rule stopped the run at its planned 3 sub-agent runs and asked before spending more. The run did not reach `DONE`: both final audits failed on faults in the agent's report and record (a wrong entry number in a citation, a stale line in a state file), none in the fix. It used 5 sub-agent runs.
+
+**What that means.** The skills do their main job: independent checkers catch faults that the builder misses. They do not yet reach `DONE` at a cost a small task can bear, because every slip in the hand-kept record stops the run and needs a new sub-agent. No run made with the skills has ended `DONE`.
 
 ## Check it yourself in 5 minutes
 
@@ -22,7 +26,7 @@ The USER approved C1 to C15 on 2026-11-18 [E-019]. The column "Round 2" is the i
 | C2 names, sections 0 to 24 | PASS | rules amended; not re-audited |
 | C3 glossary | PASS on the test as written; DEFECTS on use | open |
 | C4 banned words | PASS | `python3 scripts/lint.py` prints 0 failures |
-| C5 every rule testable | FAIL: 12 rules | the 12 rules were rewritten to name a file, an entry or a command; not re-audited |
+| C5 every rule testable | FAIL: 12 rules | the 12 rules were rewritten to name a file, an entry or a command; not re-audited; the real run lists 29 places where rules conflict or cannot be followed |
 | C6 adapter claims cited | PASS with 2 DEFECTS | both answered; not re-audited |
 | C7 real example | PASS on the checker test | the amended checker prints 1 failure on the example (E-92 of its log); `skills/hinshitsu/EXAMPLE.md` says so |
 | C8 the build's own record | FAIL | open: `build-record/` has no mind map, ledger or session state |
@@ -46,13 +50,13 @@ Listed whole in E-023. The 4 that matter most:
 ## UNVERIFIED
 
 - Every surface except Devin web: Claude Code, Cursor, Codex and ChatGPT Work, Gemini CLI, Kimi Code CLI, Muse Code, the Devin CLI.
-- Every amendment in `CHANGELOG.md` under 2.1.0.
+- Every change in `CHANGELOG.md` under 2.1.0 and 2.2.0.
 - The 4 lenses and 6 of the 7 auditor roles on the finished set: not run.
 - The example page on a phone, with a screen reader, and in a browser other than Chrome.
 
 ## What you did not ask for and got anyway
 
-- 2 scripts that test a run's record and the form of the skills, with 71 unit tests.
+- 3 scripts that test a run's record and the form of the skills, with 134 unit tests.
 - A budget rule for sub-agent runs (rule 0.9).
 - `build-record/`, the record of this build, with every independent report saved whole.
 - `CHANGELOG.md`, `TESTING.md`, `LICENSE` (MIT, on your answer).
@@ -63,7 +67,7 @@ The USER, 2026-11-18 14:00 EST: "I agree with all of your recommendations.  Plea
 
 ## What you need to decide next
 
-1. **A first real run.** Recommended: use version 2.1.0 on 1 small real task of yours, with the budget rule on. That tests the amendments on real work, which a third review round on paper cannot.
-2. **C8.** Recommended: change it to "the example run holds the full record; the build holds a log and the saved reports". The other choice is that I reconstruct the missing files after the fact, which would be a reconstruction, not a record.
+1. **Version 3: take the bookkeeping away from the agent.** Recommended: yes. A small tool writes every log entry (number, clock time, required fields) and rebuilds the state files and the report's citations from the log, so the agent cannot mis-keep them. A slip in the record becomes a fault the tool fixes, not a stop. The final audit tests the delivered work and the report's claims, 1 time. This answers the largest class of fault in all 3 runs made so far.
+2. **C8.** Recommended: change it to "the example run holds the full record; the build holds a log and the saved reports".
 3. **GitHub Pages.** My access cannot turn it on (HTTP 403). In the repository: Settings, Pages, Source "Deploy from a branch", branch `main`, folder `/ (root)`.
 4. **The 6 proposed lessons** in `skills/hinshitsu/example/run/DELIVERY-REPORT.md`, section `LESSONS`.

@@ -1,0 +1,8 @@
+89d1791a3961571754b15c24f3d0bacf735c6ddf
+89d1791a3961571754b15c24f3d0bacf735c6ddf
+'A ==> B' -> []
+'C -.-> D' -> []
+'A -- reads --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -->|reads| B' -> []
+exit: 0

@@ -1,0 +1,11 @@
+$ grep -rnE -e '--\+>' -e 'has no label' -e 'unlabel' --include=*.py scripts skills tests
+scripts/hinshitsu_check.py:30:EDGE_RE = re.compile(r"^\s*(\w+)([^\n|]*?)(--+>|==+>|-?\.+->)(?!\|)\s*(\w+)", re.M)
+scripts/hinshitsu_check.py:302:                err("CONNECTIONS.md: edge %s %s %s has no label (rule 9.3)" % (src, arrow, dst))
+tests/test_check.py:214:    def test_unlabeled_edge_fails(self):
+tests/test_check.py:219:    def test_unlabeled_thick_edge_fails(self):
+tests/test_check.py:220:        self.assertIn("CONNECTIONS.md: edge A ==> B has no label (rule 9.3)", hcheck.check(edge_run("A ==> B"), "plan"))
+tests/test_check.py:222:    def test_unlabeled_dotted_edge_fails(self):
+tests/test_check.py:223:        self.assertIn("CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)", hcheck.check(edge_run("C -.-> D"), "plan"))
+tests/test_check.py:236:                self.assertIn("CONNECTIONS.md: edge A --> C has no label (rule 9.3)", hcheck.check(edge_run(line), "plan"))
+tests/test_check.py:248:    def test_unlabeled_edge_in_a_file_with_no_mermaid_block_fails(self):
+exit: 0

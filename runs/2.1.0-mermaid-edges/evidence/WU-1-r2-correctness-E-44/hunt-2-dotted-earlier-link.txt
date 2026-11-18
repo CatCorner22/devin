@@ -1,0 +1,14 @@
+$ python3 /home/ubuntu/audit/probe.py A -. reads .- B -.-> C A -.- B -.-> C A == reads === B ==> C A --- B --> C
+line: 'A -. reads .- B -.-> C'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A -.- B -.-> C'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge A -.-> C has no label (rule 9.3)'] ; main() -> 1
+line: 'A == reads === B ==> C'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge A ==> C has no label (rule 9.3)'] ; main() -> 1
+line: 'A --- B --> C'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge A --> C has no label (rule 9.3)'] ; main() -> 1
+exit code: 0

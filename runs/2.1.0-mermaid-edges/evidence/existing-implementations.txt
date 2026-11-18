@@ -1,0 +1,5 @@
+$ grep -rnE -e '--\+>' -e 'has no label' -e 'unlabel' --include=*.py scripts skills tests
+scripts/hinshitsu_check.py:287:        for m in re.finditer(r"^\s*(\w+)[^\n|]*?--+>(?!\|)\s*(\w+)", text, re.M):
+scripts/hinshitsu_check.py:288:            err("CONNECTIONS.md: edge %s --> %s has no label (rule 9.3)" % (m.group(1), m.group(2)))
+tests/test_check.py:208:    def test_unlabeled_edge_fails(self):
+exit: 0

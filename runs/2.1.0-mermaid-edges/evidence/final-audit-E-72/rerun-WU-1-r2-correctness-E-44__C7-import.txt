@@ -1,0 +1,2 @@
+$ git diff 93311ab -- scripts tests | grep -E '^\+\s*(import|from) '
+exit code: 1

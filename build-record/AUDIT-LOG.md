@@ -359,3 +359,14 @@ In the second run the USER is this session, acting for the owner. Its answers to
 
 Answer: version 2.2.0, listed in `CHANGELOG.md`. 37 of the 41 bugs are answered in code, each with a test written first and seen to fail; 53 tests added. Open: bugs 10, 23, 24, and 30 and 31 in part. No independent session has reviewed the changes: ASSERTED. Command and result at this entry: `python3 -m unittest discover -s tests` prints "Ran 124 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures; `python3 scripts/hinshitsu_check.py --stage delivery skills/hinshitsu/example/run` prints 1 failure, the same E-92 as before.
 
+
+### E-027 · 2026-11-18T20:57Z · CHECK · orchestrator
+
+`audits/round3-real-run.md`, saved whole, identifier on its first line: the first run made under version 2.1.0, by a fresh session, on a real fault in the checker (code review bug 10). Its record is `runs/2.1.0-mermaid-edges/`, copied from branch `devin/hinshitsu-run-2.1.0` at `baf1216`.
+
+- Status, in the run's words: `DELIVERED — NOT DONE`. 5 SUB-AGENT runs were used; 3 were planned.
+- What the independent sessions found that the BUILDER had missed: 4 faults in the first fix, 1 of them a regression (`A --x B --> C` passed where the old script failed it); 5 more in the repaired fix. 2 were repaired and confirmed; the rest are listed as known limits, accepted in this session's replies.
+- Why the run did not reach DONE: both final audits ended "not passed" on faults in the report and the record (wrong entry IDs in citations, 2 stale lines in a state file), none in the fix. Each such fault is a BLOCKER that only a new SUB-AGENT may close.
+- The budget rule (0.9) worked: the run stopped at 3 runs and asked. The USER in that run was this session; its 5 replies are quoted in that run's log.
+- The run's `FRICTION.md` lists 29 places where a rule could not be followed or 2 rules conflict.
+- The fix of that run (commit `5099f2a`) and its 10 tests are merged into the checker of version 2.2.0. `python3 -m unittest discover -s tests` prints "Ran 134 tests" and "OK".

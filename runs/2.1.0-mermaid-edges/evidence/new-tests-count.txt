@@ -1,0 +1,6 @@
+$ git diff 93311ab 5099f2a -- tests/test_check.py | grep -c '^+    def test_'
+10
+$ git diff --stat 93311ab 5099f2a -- scripts tests
+ scripts/hinshitsu_check.py | 18 +++++++++++++++--
+ tests/test_check.py        | 50 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+), 2 deletions(-)

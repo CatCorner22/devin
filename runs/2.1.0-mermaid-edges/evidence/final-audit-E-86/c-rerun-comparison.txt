@@ -1,0 +1,103 @@
+SAME      evidence/baseline-93311ab.txt cmd 1 | run in wt-93311ab | saved exit None | exit now 0 | top__baseline-93311ab__1.txt
+DIFFERENT evidence/baseline-93311ab.txt cmd 2 | run in wt-93311ab | saved exit 0 | exit now 1 | top__baseline-93311ab__2.txt
+   command: bash -c "$(cat <<SCRIPT\npython3 - <<'PY'\nimport sys; sys.path.insert(0, "tests")\nimport test_check as t\nfor edge in ["A ==> B", "C -.-> D", "A -- reads --> B", "A --> B", "A -->|reads| B"]:\n    d = t.good_run()\n    (d / "CONNECTIONS.md").write_text("```mermaid\ngraph LR\n  %s\n```\n" % edge, encodin
+   --- saved
+   +++ now
+   @@ -1,5 +1,4 @@
+   -'A ==> B' -> []
+   -'C -.-> D' -> []
+   -'A -- reads --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+   -'A --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+   -'A -->|reads| B' -> []
+   +bash: line 1: mermaidngraph: command not found
+   +Traceback (most recent call last):
+   +  File "<stdin>", line 5, in <module>
+   +TypeError: not all arguments converted during string formatting
+SAME      evidence/builder-run-WU-1.txt cmd 1 | run in wt-fe82be2 | saved exit 0 | exit now 0 | top__builder-run-WU-1__1.txt
+SAME      evidence/builder-run-WU-1.txt cmd 2 | run in wt-fe82be2 | saved exit 0 | exit now 0 | top__builder-run-WU-1__2.txt
+SAME      evidence/builder-run-WU-1.txt cmd 3 | run in wt-fe82be2 | saved exit 0 | exit now 0 | top__builder-run-WU-1__3.txt
+SAME      evidence/builder-run-WU-1.txt cmd 4 | run in wt-fe82be2 | saved exit 0 | exit now 0 | top__builder-run-WU-1__4.txt
+SAME      evidence/builder-run-WU-1.txt cmd 5 | run in wt-fe82be2 | saved exit 0 | exit now 0 | top__builder-run-WU-1__5.txt
+SAME      evidence/builder-run-WU-1-round-2.txt cmd 1 | run in wt-5099f2a | saved exit 0 | exit now 0 | top__builder-run-WU-1-round-2__1.txt
+SAME      evidence/builder-run-WU-1-round-2.txt cmd 2 | run in wt-5099f2a | saved exit 0 | exit now 0 | top__builder-run-WU-1-round-2__2.txt
+SAME      evidence/builder-run-WU-1-round-2.txt cmd 3 | run in wt-5099f2a | saved exit 0 | exit now 0 | top__builder-run-WU-1-round-2__3.txt
+SAME      evidence/builder-run-WU-1-round-2.txt cmd 4 | run in wt-5099f2a | saved exit 0 | exit now 0 | top__builder-run-WU-1-round-2__4.txt
+SAME      evidence/builder-run-WU-1-round-2.txt cmd 5 | run in wt-5099f2a | saved exit 0 | exit now 0 | top__builder-run-WU-1-round-2__5.txt
+DIFFERENT evidence/capability-commands.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__1.txt
+   command: date -u +%Y-%m-%dT%H:%M:%SZ
+   --- saved
+   +++ now
+   @@ -1 +1 @@
+   -2026-11-18T19:31:22Z
+   +2026-11-18T20:40:17Z
+SAME      evidence/capability-commands.txt cmd 2 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__2.txt
+DIFFERENT evidence/capability-commands.txt cmd 3 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__3.txt
+   command: git rev-parse --short HEAD
+   --- saved
+   +++ now
+   @@ -1 +1 @@
+   -339ac9b
+   +ae00d74
+DIFFERENT evidence/capability-commands.txt cmd 4 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__4.txt
+   command: git status -sb
+   --- saved
+   +++ now
+   @@ -1,2 +1 @@
+   -## devin/hinshitsu-run-2.1.0
+   -?? runs/2.1.0-mermaid-edges/evidence/capability-commands.txt
+   +## HEAD (no branch)
+SAME      evidence/capability-commands.txt cmd 5 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__5.txt
+SAME      evidence/capability-commands.txt cmd 6 | run in wt-head | saved exit None | exit now 0 | top__capability-commands__6.txt
+SAME      evidence/card-word-count.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__card-word-count__1.txt
+SAME      evidence/card-2-word-count.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__card-2-word-count__1.txt
+SAME      evidence/card-3-word-count.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__card-3-word-count__1.txt
+SAME      evidence/card-4-word-count.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__card-4-word-count__1.txt
+SAME      evidence/existing-connections-forms.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | top__existing-connections-forms__1.txt
+SAME      evidence/existing-implementations.txt cmd 1 | run in wt-93311ab | saved exit 0 | exit now 0 | top__existing-implementations__1.txt
+SAME      evidence/mermaid-flowchart-links.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__mermaid-flowchart-links__1.txt
+SAME      evidence/new-tests-count.txt cmd 1 | run in wt-head | saved exit None | exit now 0 | top__new-tests-count__1.txt
+SAME      evidence/new-tests-count.txt cmd 2 | run in wt-head | saved exit None | exit now 0 | top__new-tests-count__2.txt
+SAME      evidence/quoted-labels-and-fences.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | top__quoted-labels-and-fences__1.txt
+SAME      evidence/quoted-labels-and-fences.txt cmd 2 | run in wt-head | saved exit 0 | exit now 0 | top__quoted-labels-and-fences__2.txt
+SAME      evidence/record-check-E-65.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | top__record-check-E-65__1.txt
+SAME      evidence/record-check-E-80.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | top__record-check-E-80__1.txt
+SAME      evidence/record-check-E-82.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | top__record-check-E-82__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C4-same.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__C4-same__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C6-base.txt cmd 1 | run in wt-head | saved exit 1 | exit now 1 | E44__C6-base__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C6-suite.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__C6-suite__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C7-import.txt cmd 1 | run in wt-head | saved exit 1 | exit now 1 | E44__C7-import__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C7-lint.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__C7-lint__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/C7-stat.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__C7-stat__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/F-1.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__F-1__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/F-2.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__F-2__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/F-4.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__F-4__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/criteria-lines.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__criteria-lines__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/hunt-1-later-link.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__hunt-1-later-link__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/hunt-2-dotted-earlier-link.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__hunt-2-dotted-earlier-link__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/hunt-3-ends-and-shapes.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__hunt-3-ends-and-shapes__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/hunt-4-blocks.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__hunt-4-blocks__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/hunt-5-lengths.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__hunt-5-lengths__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_edge_forms_set_the_exit_code.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_edge_forms_set_the_exit_code__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_edge_with_label_between_dashes_passes.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_edge_with_label_between_dashes_passes__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_good_run_passes_every_stage.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_good_run_passes_every_stage__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_labeled_thick_and_dotted_edges_pass.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_labeled_thick_and_dotted_edges_pass__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_unlabeled_dotted_edge_fails.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_unlabeled_dotted_edge_fails__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_unlabeled_edge_fails.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_unlabeled_edge_fails__1.txt
+SAME      evidence/WU-1-r2-correctness-E-44/test_unlabeled_thick_edge_fails.txt cmd 1 | run in wt-head | saved exit 0 | exit now 0 | E44__test_unlabeled_thick_edge_fails__1.txt
+SAME      evidence/WU-1-correctness-E-31/c1-thick.txt (report cmd 1) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c1-thick__1.txt
+SAME      evidence/WU-1-correctness-E-31/c2-dotted.txt (report cmd 2) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c2-dotted__2.txt
+SAME      evidence/WU-1-correctness-E-31/c3-between-dashes.txt (report cmd 3) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c3-between-dashes__3.txt
+SAME      evidence/WU-1-correctness-E-31/c1-c2-c3-exit-code.txt (report cmd 4) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c1-c2-c3-exit-code__4.txt
+SAME      evidence/WU-1-correctness-E-31/c4-unlabeled-edge.txt (report cmd 5) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c4-unlabeled-edge__5.txt
+SAME      evidence/WU-1-correctness-E-31/c4-good-run.txt (report cmd 6) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c4-good-run__6.txt
+SAME      evidence/WU-1-correctness-E-31/c4-diff-old-new.txt (report cmd 7) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c4-diff-old-new__7.txt
+SAME      evidence/WU-1-correctness-E-31/c5-labeled.txt (report cmd 8) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c5-labeled__8.txt
+SAME      evidence/WU-1-correctness-E-31/c6-whole-suite.txt (report cmd 9) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c6-whole-suite__9.txt
+SAME      evidence/WU-1-correctness-E-31/c6-base-edge.txt (report cmd 10) | run in wt-fe82be2 | saved exit 1 | exit now 1 | E31__c6-base-edge__10.txt
+SAME      evidence/WU-1-correctness-E-31/c7-diff-stat-fe82be2.txt (report cmd 11) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c7-diff-stat-fe82be2__11.txt
+SAME      evidence/WU-1-correctness-E-31/c7-diff-stat-branch-tip-03b0161.txt (report cmd 12) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c7-diff-stat-branch-tip-03b0161__12.txt
+SAME      evidence/WU-1-correctness-E-31/c7-import-grep.txt (report cmd 13) | run in wt-fe82be2 | saved exit 1 | exit now 1 | E31__c7-import-grep__13.txt
+SAME      evidence/WU-1-correctness-E-31/c7-lint.txt (report cmd 14) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__c7-lint__14.txt
+SAME      evidence/WU-1-correctness-E-31/probe-old-vs-new.txt (report cmd 15) | run in wt-fe82be2 | saved exit 0 | exit now 0 | E31__probe-old-vs-new__15.txt
+SAME      evidence/WU-1-correctness-E-31/branch-tip-03b0161-suite-lint.txt (report cmd 16) | run in wt-03b0161 | saved exit None | exit now 0 | E31__branch-tip-03b0161-suite-lint__16.txt
+total 70: same 66, different 4

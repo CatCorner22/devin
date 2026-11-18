@@ -1,0 +1,8 @@
+$ python3 -m unittest discover -s tests -k test_edge_with_label_between_dashes_passes -v
+test_edge_with_label_between_dashes_passes (test_check.Check.test_edge_with_label_between_dashes_passes) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+OK
+exit code: 0

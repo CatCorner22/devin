@@ -1,0 +1,22 @@
+line: '```mermaid\ngraph LR\n  A -->|reads| B\n```\n\n~~~mermaid\ngraph LR\n  C --> D\n~~~\n'
+  93311ab: check() -> ['CONNECTIONS.md: edge C --> D has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: '```mermaid\ngraph LR\n  A -->|reads| B\n```\n\n``` mermaid\ngraph LR\n  C --> D\n```\n'
+  93311ab: check() -> ['CONNECTIONS.md: edge C --> D has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: '~~~mermaid\ngraph LR\n  C --> D\n~~~\n'
+  93311ab: check() -> ['CONNECTIONS.md: edge C --> D has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> ['CONNECTIONS.md: edge C --> D has no label (rule 9.3)'] ; main() -> 1
+line: '```mermaid\r\ngraph LR\r\n  C ==> D\r\n```\r\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge C ==> D has no label (rule 9.3)'] ; main() -> 1
+line: '```mermaid\ngraph LR\n  A -->|reads| B\n```\n```mermaid\ngraph LR\n  C -.-> D\n```\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)'] ; main() -> 1
+line: '```mermaid\ngraph LR\n  C ==> D\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge C ==> D has no label (rule 9.3)'] ; main() -> 1
+line: '````mermaid\ngraph LR\n  C ==> D\n````\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge C ==> D has no label (rule 9.3)'] ; main() -> 1
+exit: 0

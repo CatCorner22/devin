@@ -1,0 +1,23 @@
+test_edge_forms_set_the_exit_code (test_check.Check.test_edge_forms_set_the_exit_code) ... ok
+test_edge_with_label_between_dashes_passes (test_check.Check.test_edge_with_label_between_dashes_passes) ... ok
+test_empty_ledger_cell_fails_at_delivery (test_check.Check.test_empty_ledger_cell_fails_at_delivery) ... ok
+test_labeled_thick_and_dotted_edges_pass (test_check.Check.test_labeled_thick_and_dotted_edges_pass) ... ok
+test_ledger_with_no_row_fails (test_check.Check.test_ledger_with_no_row_fails) ... ok
+test_totals_table_is_not_a_ledger_row (test_check.Check.test_totals_table_is_not_a_ledger_row) ... ok
+test_unlabeled_dotted_edge_fails (test_check.Check.test_unlabeled_dotted_edge_fails) ... ok
+test_unlabeled_edge_fails (test_check.Check.test_unlabeled_edge_fails) ... ok
+test_unlabeled_thick_edge_fails (test_check.Check.test_unlabeled_thick_edge_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.045s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit: 0
