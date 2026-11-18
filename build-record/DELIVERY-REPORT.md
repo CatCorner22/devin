@@ -56,11 +56,6 @@ Listed whole in E-018. The 3 that matter most:
 - `build-record/`, the record of this build, with every independent report saved whole.
 - `CHANGELOG.md` and `TESTING.md`.
 
-## What you need to decide next
+## What you decided
 
-1. **Move `main`?** Recommended: yes. `main` holds an early commit whose README links to a file that does not exist there. Moving it publishes work that independent sessions did not pass, labelled as such.
-2. **Approve C1 to C15, the 7 platforms and the tiers?** Recommended: approve. Until then nothing is frozen.
-3. **License.** No license file exists, so all rights are reserved. Recommended: MIT.
-4. **GitHub Pages.** The ORCHESTRATOR's access cannot turn it on (HTTP 403). In the repository: Settings, Pages, Source "Deploy from a branch", branch `main`, folder `/ (root)`.
-5. **1 more independent round on the amendments?** Recommended: yes, 2 sessions (1 red cell, 1 auditor), before you rely on the skills for work that matters.
-6. **The 6 proposed lessons** in `skills/hinshitsu/example/run/DELIVERY-REPORT.md`, section `LESSONS`.
+The USER, 2026-11-18 14:00 EST: "I agree with all of your recommendations.  Please proceed." That answer: moves `main` to this work; orders 1 more independent round (1 red cell, 1 auditor) on the amendments; sets the license to MIT; approves C1 to C15, the 7 platforms and the tiers. Still open: the 6 proposed lessons, and GitHub Pages (a setting only the owner can change) [E-019].
