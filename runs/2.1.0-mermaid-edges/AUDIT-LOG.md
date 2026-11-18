@@ -232,3 +232,9 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 
 - Attached to the card: the text of C1 to C7, copied from E-16.
 - Working assumption while the card is open (rule 23.5): `approve` and `3 forms only`. No building starts before the `ANSWER` entry.
+
+### E-19 · 2026-11-18T19:37:44Z · STAGE · orchestrator
+
+- Stage: S4
+- Event: end
+- Artifacts: `AUDIT-LOG.md` (E-13 `ASSUMPTION`, E-14 and E-15 `DECISION`, E-16 `CRITERIA`, E-18 `CARD`), `evidence/baseline-93311ab.txt`, `evidence/existing-connections-forms.txt`
