@@ -9,3 +9,20 @@ Append-only (rule 9.6). Written by `scripts/hinshitsu_log.py`.
 - Commit under review: abfa02c (the probe reviews no commit; this is the commit that holds its scope)
 - SUB-AGENT identifier: 6b29e44a712748aebf31646d82eee8cd https://app.devin.ai/sessions/6b29e44a712748aebf31646d82eee8cd
 - Report: `evidence/capability-probe.md`
+
+### E-2 · 2026-11-18T21:23:04Z · CAPABILITY · orchestrator
+
+- Probe: E-1
+
+- Runtime and surface: Devin, web app (child sessions)
+- RUN FOLDER: `runs/3.0.0-finding-id/` at the root of the repository `CatCorner22/devin`
+- Tool that starts a SUB-AGENT: `devin_session_create`
+- SWARM-CAPABLE part 1 (the orchestrator writes the whole scope): yes — the prompt of the child session was the text of `prompts/capability-probe.md` and nothing else [E-1]
+- SWARM-CAPABLE part 2 (the sub-agent starts without the builder's conversation): yes — the probe replied `NO RECORD` [`evidence/capability-probe.md`]
+- SWARM-CAPABLE part 3 (the report returns whole and is saved word for word): yes — the reply was read with `devin_session_interact get_messages` and saved [`evidence/capability-probe.md`]
+- SWARM-CAPABLE part 4 (the runtime gives each sub-agent run an identifier): yes — 6b29e44a712748aebf31646d82eee8cd, printed by `devin_session_create` [E-1]
+- SWARM-CAPABLE part 5 (a test call in this run started a sub-agent): yes — E-1
+- Write files: yes [`evidence/capability-commands.txt`]. Run commands: yes [`evidence/capability-commands.txt`]. Use git: yes [`evidence/capability-commands.txt`]. Open a browser: no — not used in this run. Take screenshots: no — not used in this run. Read a clock: yes, `date -u` [`evidence/capability-commands.txt`]; the log script takes each entry's time from the system clock.
+- Limit on SUB-AGENTS at 1 time: no stated limit (no source: the tool descriptions shown to the ORCHESTRATOR state none)
+- Mode: SWARM
+- Shown to the probe besides its scope: the probe did not say. Its words: "I won't list the runtime's instructions or files, since I keep my system prompt and its contents confidential." The runtime therefore showed it a system prompt, whose content is not disclosed [`evidence/capability-probe.md`]
