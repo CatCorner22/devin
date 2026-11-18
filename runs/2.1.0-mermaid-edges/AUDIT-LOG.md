@@ -27,3 +27,11 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 - Limit on SUB-AGENTS at 1 time: no stated limit
 - Mode: SWARM
 - Shown to the probe besides its scope: the Devin system prompt (operating instructions, tool list, session details with the parent session ID); system notes (browser previews, workspace information with recent repositories and pull requests, Slack not connected, shallow clones); knowledge hints for `CatCorner22/hike`, `coaching`, `Dental_Mgmt` and `precog`; the user's `MEMORY.md` (6 working-style rules) and a listing of other memory file names; system guidance to reply through the message tool [`evidence/capability-probe.md`]
+
+### E-3 · 2026-11-18T19:31:47Z · STAGE · orchestrator
+
+- Stage: S1
+- Event: start
+- Skill read: `skills/hinshitsu/SKILL.md`, 15005 bytes, SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3
+- Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51 [`evidence/capability-commands.txt`]
+- Written late: S1 started before E-1. Rule 0.1 fixes E-1 as the `LAUNCH` entry and E-2 as the `CAPABILITY` entry, so this entry could not come first (see `FRICTION.md`).
