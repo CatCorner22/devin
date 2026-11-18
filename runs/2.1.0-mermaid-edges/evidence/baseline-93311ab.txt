@@ -1,0 +1,20 @@
+$ git rev-parse HEAD:scripts/hinshitsu_check.py 93311ab:scripts/hinshitsu_check.py
+89d1791a3961571754b15c24f3d0bacf735c6ddf
+89d1791a3961571754b15c24f3d0bacf735c6ddf
+$ bash -c "$(cat <<SCRIPT
+python3 - <<'PY'
+import sys; sys.path.insert(0, "tests")
+import test_check as t
+for edge in ["A ==> B", "C -.-> D", "A -- reads --> B", "A --> B", "A -->|reads| B"]:
+    d = t.good_run()
+    (d / "CONNECTIONS.md").write_text("```mermaid\ngraph LR\n  %s\n```\n" % edge, encoding="utf-8")
+    print(repr(edge), "->", [e for e in t.hcheck.check(d, "plan") if "CONNECTIONS" in e])
+PY
+SCRIPT
+)"
+'A ==> B' -> []
+'C -.-> D' -> []
+'A -- reads --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A --> B' -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)']
+'A -->|reads| B' -> []
+exit: 0
