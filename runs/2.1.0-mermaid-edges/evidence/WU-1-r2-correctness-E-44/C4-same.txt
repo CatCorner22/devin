@@ -1,0 +1,4 @@
+$ git show 93311ab:scripts/hinshitsu_check.py > /tmp/old_check.py; for d in skills/hinshitsu/example/run build-record; do diff <(python3 /tmp/old_check.py --stage delivery $d) <(python3 scripts/hinshitsu_check.py --stage delivery $d) && echo same; done
+same
+same
+exit code: 0

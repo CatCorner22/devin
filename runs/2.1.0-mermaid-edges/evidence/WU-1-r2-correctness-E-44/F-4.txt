@@ -1,0 +1,23 @@
+$ python3 /home/ubuntu/audit/probe.py note: see A ==> B for detail Text with a.b...-> c A .-> B A ..-> B WHOLE:```mermaid\ngraph LR\n  A -->|reads| B\n```\nnote: see A ==> B for detail\nText with a.b...-> c\n WHOLE:```mermaid\ngraph LR\n  A -->|reads| B\n  note: see A ==> B for detail\n```\n WHOLE:graph LR\n  A -->|reads| B\nnote: see A ==> B for detail\n
+line: 'note: see A ==> B for detail'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge note ==> B has no label (rule 9.3)'] ; main() -> 1
+line: 'Text with a.b...-> c'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A .-> B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A ..-> B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '```mermaid\ngraph LR\n  A -->|reads| B\n```\nnote: see A ==> B for detail\nText with a.b...-> c\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: '```mermaid\ngraph LR\n  A -->|reads| B\n  note: see A ==> B for detail\n```\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge note ==> B has no label (rule 9.3)'] ; main() -> 1
+line: 'graph LR\n  A -->|reads| B\nnote: see A ==> B for detail\n'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> ['CONNECTIONS.md: edge note ==> B has no label (rule 9.3)'] ; main() -> 1
+exit code: 0
