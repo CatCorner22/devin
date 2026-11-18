@@ -1,1 +1,6 @@
+$ google-chrome --version
+Google Chrome for Testing 156.0.8078.47 
+$ uname -s
+Linux
+$ google-chrome --headless=new --no-sandbox --disable-gpu --dump-dom "file://$PWD/skills/hinshitsu/example/run/evidence/a3-page.html" | grep -o "<p id=\"o\">[^<]*</p>"
 <p id="o">script ran: 295</p>

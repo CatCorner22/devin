@@ -4,7 +4,7 @@ Form: section 7. Superseded lines stay, marked.
 
 ## 1. CRITERIA
 
-By reference: `AUDIT-LOG.md` E-39 (C1 to C8), `Status: PROPOSED`. ~~E-16 (C1 to C7)~~ superseded by E-39; never approved.
+By reference: `AUDIT-LOG.md` E-55 (C1 to C8), `Status: PROPOSED`. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
 
 ## 2. Architecture decisions
 

@@ -476,3 +476,137 @@ Memos: RX = `memos/lens-recipient-experience-E-19.md`; MVS = `memos/lens-minimal
 - SUB-AGENT identifier: devin-51ff85626c5946bca66b734a37342da5 (https://app.devin.ai/sessions/51ff85626c5946bca66b734a37342da5)
 - Report: `audits/plan-reaudit-E-40.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-41 · 2026-11-18T15:44:19Z · RESOLUTION · orchestrator
+
+- Finding: F-1
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-1: NO LONGER REPRODUCES
+
+### E-42 · 2026-11-18T15:44:19Z · RESOLUTION · orchestrator
+
+- Finding: F-2
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-2: NO LONGER REPRODUCES
+
+### E-43 · 2026-11-18T15:44:19Z · RESOLUTION · orchestrator
+
+- Finding: F-3
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-3: NO LONGER REPRODUCES
+
+### E-44 · 2026-11-18T15:44:19Z · RESOLUTION · orchestrator
+
+- Finding: F-4
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-4: NO LONGER REPRODUCES
+
+### E-45 · 2026-11-18T15:44:20Z · RESOLUTION · orchestrator
+
+- Finding: F-5
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-5: NO LONGER REPRODUCES
+
+### E-46 · 2026-11-18T15:44:20Z · RESOLUTION · orchestrator
+
+- Finding: F-6
+- Result: FIXED
+- Change: the entries E-24, E-25 and E-33 to E-39 and the record files at commit 79ad621
+- Re-audit: `audits/plan-reaudit-E-40.md` (LAUNCH E-40), row F-6: NO LONGER REPRODUCES
+
+### E-47 · 2026-11-18T15:44:20Z · FINDING · orchestrator
+
+- ID: F-8
+- Class: DEFECT
+- Where: E-33, A-8
+- Trigger: read its EVIDENCE cell, "USER, V2"; `grep -n -i "terminal|github.com" build-record/BRIEF.md` prints nothing
+- Violates: rule 4.1
+- Raised by: re-audit, LAUNCH E-40, `audits/plan-reaudit-E-40.md`, finding N-1
+- Lens: trust and controls
+
+### E-48 · 2026-11-18T15:44:20Z · FINDING · orchestrator
+
+- ID: F-9
+- Class: DEFECT
+- Where: `evidence/a3-local-script.txt`, `evidence/a4-integer-arithmetic.txt`
+- Trigger: `cat` both: output only, no command, no script; "Chrome 156 on Linux" appears in neither
+- Violates: rule 4.2 with the glossary's EVIDENCE
+- Raised by: re-audit, LAUNCH E-40, `audits/plan-reaudit-E-40.md`, finding N-2
+- Lens: trust and controls
+
+### E-49 · 2026-11-18T15:44:20Z · FINDING · orchestrator
+
+- ID: F-10
+- Class: DEFECT
+- Where: E-39, C4
+- Trigger: type `18.0`, `1e1`, `+4` or `4.` as tip or people: C4 gives a text rule for an amount only; 2 pages that differ both pass C4's listed inputs
+- Violates: rule 3.1
+- Raised by: re-audit, LAUNCH E-40, `audits/plan-reaudit-E-40.md`, finding N-3
+- Lens: trust and controls
+
+### E-50 · 2026-11-18T15:44:20Z · FINDING · orchestrator
+
+- ID: F-11
+- Class: STYLE
+- Where: E-39, C3 spot case "1,000,000.00, 100, 100"
+- Trigger: type the value as written; C4 requires an error for a comma
+- Violates: C4
+- Raised by: re-audit, LAUNCH E-40, `audits/plan-reaudit-E-40.md`, finding N-4
+- Lens: trust and controls
+
+### E-51 · 2026-11-18T15:44:20Z · FINDING · orchestrator
+
+- ID: F-12
+- Class: DEFECT
+- Where: E-34 rows "MVS cut" and "RC demand 6"; E-9
+- Trigger: `grep -c '· ANSWER ·|· CARD ·' AUDIT-LOG.md` prints 0, yet E-34 writes "G12 answered" and "G13 answered" for gaps E-9 gives to the USER; G13 still says "works for dollars, euros and pounds" and G11 "opens by double-click"
+- Violates: rules 23.5 and 9.6
+- Raised by: re-audit, LAUNCH E-40, `audits/plan-reaudit-E-40.md`, finding N-5
+- Lens: trust and controls
+
+### E-52 · 2026-11-18T15:45:11Z · CORRECTION · orchestrator
+
+- Corrects: E-34 and E-9, as F-12 requires; E-33 row A-8, as F-8 requires.
+- 1. In E-34 the words "G12 answered" and "G13 answered" are wrong. The USER has answered nothing. Read each as "the ORCHESTRATOR's working assumption, put to the USER on the card at S6".
+- 2. The `GAP` entry that follows replaces rows G11, G12 and G13 of E-9.
+- 3. The `ASSUMPTION` entry that follows replaces row A-8 of E-33.
+
+### E-53 · 2026-11-18T15:45:12Z · GAP · orchestrator
+
+Replaces rows G11, G12 and G13 of E-9. Rows G1 to G10 of E-9 stand.
+
+| ID | Gap | Recommended answer | Reason in plain words | Cost | Who decides | Status |
+|---|---|---|---|---|---|---|
+| G11 | Delivery and opening | Delivered as `skills/hinshitsu/example/index.html`. Opened from a copy of the repository on a laptop. A public link that works on a phone needs hosting | GitHub shows a file's source, not the running page | none without hosting | USER | Asked on the card at S6, question 2. Working assumption: no hosting |
+| G12 | Tip entry and uneven splits | 1 tip field, whole percent from 0 to 100, no default. Even split only | 1 field covers the task; item-by-item splitting is a larger product | none | USER | Asked on the card at S6, question 1, as part of the CRITERIA. Working assumption: as recommended |
+| G13 | Currency and number format | No currency symbol; 2 decimal places; amounts typed with a dot. A person who types `12,50` is told to use a dot | The page then serves any currency with cents, for people who type a dot; it does not serve yen, and it makes a person who types a comma retype | none | USER | Asked on the card at S6, question 1, as part of the CRITERIA. Working assumption: as recommended |
+
+### E-54 · 2026-11-18T15:45:12Z · ASSUMPTION · orchestrator
+
+Replaces row A-8 of E-33. Rows A-1 to A-7 of E-33 stand.
+
+| ID | PREMISE | Decision that rests on it | EVIDENCE | If false |
+|---|---|---|---|---|
+| A-8 | The reader of the example opens files in a browser on github.com and does not use a terminal | D-7 | not verified. The USER wrote that the USER does not "understand all technical aspects" (V2); where the USER reads files is the ORCHESTRATOR's guess | The 3 checks of C8 still work for a reader with a terminal; a reader with no GitHub access cannot do them |
+
+Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
+
+### E-55 · 2026-11-18T15:45:12Z · CRITERIA · orchestrator
+
+- Status: PROPOSED
+- Replaces: E-39, which was never approved. Changes from E-39: C3 writes its spot cases as they are typed (F-11); C4 states the text rule for a whole number (F-10).
+- C1. `skills/hinshitsu/example/index.html` is 1 file that loads no other file, and its calculator works when the file is opened from disk in desktop Chrome. Test: open the file by its `file://` path; the browser's request log shows 1 request; C2's first test passes. Covers G8, G11.
+- C2. Given a bill from 0.01 to 1,000,000.00, a whole-number tip from 0 to 100 percent and 1 to 100 people, the page shows: the bill, tip percent and people as read; the tip amount; the total; and what each person pays, as 1 line ("4 people pay 29.50 each") or 2 lines ("1 person pays 3.34" and "2 people pay 3.33 each"). Half a cent of tip rounds up. Tests, typed into the page: 100.00, 18, 4 gives tip 18.00, total 118.00, "4 people pay 29.50 each"; 0.30, 15, 1 gives tip 0.05; 10.10, 15, 1 gives tip 1.52 and total 11.62; 12.25, 18, 1 gives tip 2.21. Covers T1, G12.
+- C3. The payments sum to the total, to the cent, and no 2 payments differ by more than 0.01. Test: an AUDITOR types values into the page's own fields in a browser driven by a script, reads the page's own output, and compares it with a tip, total and payments computed by the AUDITOR's own code: every bill from 0.01 to 50.00 with tips 0, 15, 18 and 20 for 1 person; every bill from 0.01 to 5.00 with 1 to 12 people at tip 18; and the spot cases, as typed, `10.00`, `0`, `3` (3.34 and 3.33); `1000000.00`, `100`, `100`; and `0.01`, `0`, `100`. Covers G3.
+- C4. The page has 3 states. First open: 3 empty fields, 1 line of guidance, no error text, no result. Error: after a person types in a field or leaves it, a value that fails the rules below shows a message in plain words beside that field, and no result shows. Result: when all 3 fields are valid, the result shows and is recomputed on every change. An amount is digits, with an optional dot followed by 1 or 2 digits. A whole number is digits only. Spaces at either end are ignored. Each of these gets a message and no result: an empty field once left; letters; a comma (`12,50`, `1,000.00`); `1e3`; `10.`; `.5`; a currency sign; a negative or 0 bill; a bill above 1,000,000; 3 or more decimal places; a tip that is not a whole number from 0 to 100; people not a whole number from 1 to 100; `18.0`, `1e1`, `+4` or `4.` as tip or people. The message for a comma says to use a dot. Test: each input, in the browser. Covers G1, G2, G13.
+- C5. At widths of 360, 768 and 1280 pixels nothing is cut off and nothing scrolls sideways. Every field has a visible label; the bill's label reads "Bill total, tax included". Error text and the result sit in regions that screen readers announce. The bill field carries `inputmode="decimal"` and the other 2 fields `inputmode="numeric"`. Test: screenshots at the 3 widths; reading of the markup. A real phone is not tested and is reported UNVERIFIED. Covers G4, G5.
+- C6. With JavaScript off, the page shows a sentence saying that the calculator needs JavaScript. Test: load with JavaScript disabled. Covers G9.
+- C7. The page stores nothing and sends nothing. The file carries the tag `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">`, and each field carries `autocomplete="off"`. Test: with the page open, `fetch('https://example.com')` run in the browser is blocked; the source holds no storage call; a reload in Chrome clears every field. Firefox is not tested and is reported UNVERIFIED. Covers G6, G7.
+- C8. The delivery report opens with 3 checks that a reader can do in 5 minutes in a browser, with no terminal: each names what to open, what to do, and what to see. The report states the SHA-256 of `index.html` as audited. Test: an AUDITOR who did not build the page follows the 3 checks as written. Covers V1, V2.
+- Not covered by a CRITERION: G10 (license), which is the USER's open decision for the whole repository and changes no line of the page.
+- Approval: pending

@@ -4,22 +4,28 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
 
 - Goal: a real small deliverable that shows the skill set running (V1)
   - Task chosen: a page that splits a restaurant bill, tip added (T1)
-    - C1 1 file, works from disk — D-6
-    - C2 tip, total and payments shown; half a cent rounds up — D-4, D-5
-      - F-3 tip rounding had no rule (BLOCKER, fix awaits re-audit)
+    - WU-1 `index.html`, the whole page (not started)
+    - C1 1 file, works from disk — D-6 (D-3 superseded)
+    - C2 tip, total and payments shown; half a cent rounds up — D-4 (D-1 superseded), D-5 (D-2 superseded)
+      - F-3 tip rounding had no rule (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
     - C3 payments sum to the total; tested through the page's own fields — D-5
-      - F-5 the test ran a function, not the page (BLOCKER, fix awaits re-audit)
+      - F-5 the test ran a function, not the page (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
+      - F-11 a spot case was written with a comma (STYLE, fix awaits re-audit)
     - C4 3 states; what counts as an amount — D-5
-      - F-4 `12,50` had no defined result (BLOCKER, fix awaits re-audit)
+      - F-4 `12,50` had no defined result (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
+      - F-10 no text rule for a whole number (DEFECT, fix awaits re-audit)
     - C5 3 widths, labels, announced regions, keypad hints
     - C6 sentence when JavaScript is off
     - C7 stores nothing, sends nothing; policy tag — D-6
-      - F-2 no answer to how a phone gets the page (BLOCKER, fix awaits re-audit)
+      - F-2 no answer to how a phone gets the page (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
   - C8 3 browser-only checks; SHA-256 of the page — D-7
-    - F-1 the request was called the USER's words (BLOCKER, fix awaits re-audit)
+    - F-1 the request was called the USER's words (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
   - Record
-    - F-6 A-3 and A-4 were checkable and left unchecked (BLOCKER, fix awaits re-audit)
-    - F-7 state files were behind the log (BLOCKER, fix awaits re-audit)
+    - F-6 A-3 and A-4 were checkable and left unchecked (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
+    - F-7 state files were behind the log (BLOCKER, open: second fix awaits re-audit)
+    - F-8 A-8 cited EVIDENCE it did not have (DEFECT, fix awaits re-audit)
+    - F-9 2 evidence files held no command (DEFECT, fix awaits re-audit)
+    - F-12 gaps called answered with no answer (DEFECT, fix awaits re-audit)
 
 ```mermaid
 graph TD
@@ -47,4 +53,13 @@ graph TD
   GOAL --> REC[Record]
   REC --> F6[F-6 BLOCKER]
   REC --> F7[F-7 BLOCKER]
+  REC --> F8[F-8 DEFECT]
+  REC --> F9[F-9 DEFECT]
+  REC --> F12[F-12 DEFECT]
+  C4 --> F10[F-10 DEFECT]
+  C3 --> F11[F-11 STYLE]
+  T1 --> WU1[WU-1 index.html]
+  D4 --> D1[D-1 superseded]
+  D5 --> D2[D-2 superseded]
+  D6 --> D3[D-3 superseded]
 ```

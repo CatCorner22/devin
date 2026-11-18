@@ -1,3 +1,6 @@
-string-to-cents: checked every 7th amount from 0.01 to 1,000,000.00; wrong: 0
-largest product billCents*tip+50 = 10000000050 ; Number.MAX_SAFE_INTEGER = 9007199254740991
-tip 0.30@15: 5 ; tip 10.10@15: 152 ; tip 12.25@18: 221
+$ node skills/hinshitsu/example/run/evidence/a4-check.js
+digits-to-cents: every amount from 0.01 to 1000000.00 checked; wrong: 0
+largest product billCents*tipPercent+50 = 10000000050 ; safe integer: true
+tip cents: 0.30 at 15 = 5 ; 10.10 at 15 = 152 ; 12.25 at 18 = 221
+$ node --version
+v22.23.5
