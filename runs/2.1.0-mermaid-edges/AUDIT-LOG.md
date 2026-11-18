@@ -831,3 +831,22 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Corrects: E-80
 - What was wrong: E-80 cites `evidence/record-check-E-80.txt` as the check of rule 14.6(b). The ORCHESTRATOR ran that command before it wrote E-80, and did not change `MINDMAP.md`, which still called F-14 open on 2 lines. Run after E-80, the same command printed 2 failures and exited 1. The card of E-81 was committed and pushed in that state. The ORCHESTRATOR found this from the output of the command it ran after E-81; no AUDITOR found it.
 - What is true: `MINDMAP.md` now marks F-14 FIXED on both lines, and the command, run after that change, prints 0 failures and exits 0 [`evidence/record-check-E-82.txt`]. The result of E-80 (`FIXED`, record fault) stands on that file.
+
+### E-83 · 2026-11-18T20:35:29Z · ANSWER · orchestrator
+
+- Card: E-81 (`evidence/card-4-as-sent.md`)
+- The USER's reply, word for word: "one more check. F-15: accepted as a known limit. This is the last session I approve for this run: if the check does not end passed, end the run as delivered, not done, without asking again." (Wednesday, 2026-11-18 15:34 EST, which is 20:34 UTC)
+- Effect: 5 SUB-AGENT runs allowed; the fifth is a second final AUDITOR. The USER overrules F-15 (the entry that follows). If the fifth run's report does not end `passed`, the ORCHESTRATOR ends the run as `DELIVERED — NOT DONE` and sends no further card (exit (c) of rule 14.3, directed in advance by the USER).
+
+### E-84 · 2026-11-18T20:35:29Z · OVERRULE · orchestrator
+
+- Finding: F-15 (STYLE)
+- Result: OVERRULED
+- By: USER — "F-15: accepted as a known limit." (E-83)
+- Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-85 · 2026-11-18T20:36:09Z · CORRECTION · orchestrator
+
+- Corrects: E-80
+- What was wrong: E-80 closes F-14 as a record fault under rule 14.6. Rule 14.6 covers a DEFECT; the final AUDITOR classed F-14 a FRAGILITY (E-77), and the ORCHESTRATOR must not change that class (rule 15.3). The ORCHESTRATOR did not read the class against the rule before it wrote E-80. `python3 scripts/hinshitsu_check.py --stage delivery` reports it: "E-80 closes FRAGILITY F-14 as a record fault; rule 14.6 covers a DEFECT only". The log is append-only, so that line stays in every later run of the command.
+- What is true: the change that E-80 names was made (`SESSION-STATE.md`). Its closure of F-14 rests on no rule. F-14 is in the scope of the second final AUDITOR (`prompts/final-auditor-r2.md`) to re-run; a `RESOLUTION` entry that cites that report follows if the report says the trigger no longer gives its result.

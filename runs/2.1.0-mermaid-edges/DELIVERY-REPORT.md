@@ -2,7 +2,7 @@
 
 Form required by section 19 (`skills/hinshitsu-delivery/SKILL.md`). Every claim ends with a citation in square brackets to a file path, a command-output file or an `AUDIT-LOG.md` entry ID. Paths are relative to this folder unless they begin with `scripts/`, `tests/` or `skills/`.
 
-**Read this first.** The status is `DELIVERED — NOT DONE`. The fix is on the branch `devin/hinshitsu-run-2.1.0`, in commit 5099f2a [E-42]. The 3 lines the USER named and all 7 CRITERIA passed in 2 independent audits [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]. 7 faults that the audits found stay in the code as known limits, each accepted by the USER [E-38, E-56, E-57, E-58, E-59, E-60, E-61].
+**Read this first.** The status is `DELIVERED — NOT DONE`. The fix is on the branch `devin/hinshitsu-run-2.1.0`, in commit 5099f2a [E-42]. The 3 lines the USER named and all 7 CRITERIA passed in 2 independent audits [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]. 7 faults that the audits found stay in the code as known limits, each accepted by the USER [E-38, E-56, E-57, E-58, E-59, E-60, E-61]. The first final audit ended `not passed`: it found 4 mismatches in this report and the record, and none in the fix [`audits/final-audit-E-72.md`].
 
 ## Check it yourself in 5 minutes
 
@@ -20,22 +20,29 @@ The checker script tests the shape of the record; it does not prove that any che
 
 **What was proven.** A separate session, which did not write the fix, ran each test that the 7 acceptance statements name; each gave the required result [`audits/WU-1-r2-correctness-E-44.md`]. It also confirmed that 2 faults found in my first version no longer occur [E-50, E-51].
 
-**What was not proven.** Nobody used the checker as a later user would, and nobody ran the 4 stability checks: this small run had no session for them [E-68]. Nobody ran Mermaid itself. My 2 guesses about users (1 arrow on a line; 4 ways to write a label) have no proof [E-13]. 7 known wrong results remain, accepted by you [E-38, E-55].
+**What was not proven.** That my record of the run is true: the final check ended `not passed`, with 4 faults in my paperwork; 3 are corrected and none is confirmed by a new session [`audits/final-audit-E-72.md`; E-79]. Nobody used the checker as a later user would, ran the 4 stability checks, or ran Mermaid itself [E-68]. My 2 guesses about users have no proof [E-13]. 8 known limits remain, accepted by you [E-38, E-55, E-83].
 
-**What you need to decide next.** (1) Open the final check's session and tell me that you saw its saved text; without that, the work stays "delivered, not done". (2) Approve or reject the 5 proposed changes to the skills; if you do nothing, no skill changes.
+**What you need to decide next.** (1) Approve or reject the 6 proposed changes to the skills; if you do nothing, no skill changes. (2) Nothing else: you directed that the run ends if the second final check does not pass [E-83].
 
 You may stop reading here.
 
 ## Status
 
-DELIVERED — NOT DONE: part 6 (the audit of the audit has not yet reported; this is the draft that the final AUDITOR reads) and part 7 (no `ANSWER` entry quotes the USER's statement that the USER opened the final AUDITOR's run and saw the saved report's text there).
-TIER: CORE [E-4, E-30, E-43]. Mode: SWARM [E-2]. SUB-AGENT runs: 3 at the time of this draft (E-1, E-31, E-44); the final AUDITOR's is the fourth; planned 3 [E-4], raised to 4 by the USER [E-37].
+DELIVERED — NOT DONE: part 2 (4 BLOCKERS are open: F-10, F-11, F-12, F-13 [E-73, E-74, E-75, E-76]); part 6 (the audit of the audit ended `not passed` [`audits/final-audit-E-72.md`]); part 7 (no `ANSWER` entry quotes the USER's statement that the USER opened the final AUDITOR's run and saw the saved report's text there).
+TIER: CORE [E-4, E-30, E-43]. Mode: SWARM [E-2]. SUB-AGENT runs: 4 `LAUNCH` entries (E-1, E-31, E-44, E-72) when this report was given to the second final AUDITOR, whose run is the fifth; planned 3 [E-4], raised by the USER to 4 [E-37] and to 5 [E-83].
 
-Parts of DONE that are met: part 1, with the limit that only the correctness role verified each CRITERION (`CORE`, rule 0.5) [`audits/WU-1-r2-correctness-E-44.md`]; part 2, no BLOCKER was raised [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]; part 3 [E-38, E-50, E-51, E-56, E-57, E-58, E-59, E-60, E-61]; part 4 [`COVERAGE-LEDGER.md`].
+Parts of DONE that are met: part 1, with the limit that only the correctness role verified each CRITERION (`CORE`, rule 0.5) [`audits/WU-1-r2-correctness-E-44.md`]; part 3, except F-14: a FRAGILITY that the ORCHESTRATOR corrected and closed under rule 14.6, which covers a DEFECT only [E-38, E-50, E-51, E-56, E-57, E-58, E-59, E-60, E-61, E-80, E-85]; part 4 [`COVERAGE-LEDGER.md`].
 
 ### Open FINDINGS
 
-None. 9 `FINDING` entries; 2 `RESOLUTION` entries and 7 `OVERRULE` entries; 0 open (rule 15.6) [E-32 to E-35, E-45 to E-49; E-50, E-51; E-38, E-56 to E-61].
+15 `FINDING` entries; 3 `RESOLUTION` entries and 8 `OVERRULE` entries; 4 open (rule 15.6) [E-32 to E-35, E-45 to E-49, E-73 to E-78; E-50, E-51, E-80; E-38, E-56 to E-61, E-84].
+
+| ID | Class | What | State |
+|---|---|---|---|
+| F-10 | DEFECT in the report; BLOCKER under rule 17.4 | the draft of this report cited E-24 and E-62 for facts that E-23 and E-26 hold | corrected; no SUB-AGENT has confirmed it [E-73, E-79] |
+| F-11 | DEFECT in the report; BLOCKER under rule 17.4 | the draft named E-5 as marked late; it is E-3 | corrected; not confirmed [E-74, E-79] |
+| F-12 | DEFECT in the report; BLOCKER under rule 17.4 | check 2 of the draft promised "the same text"; the run's last message is shorter than the saved report | corrected; not confirmed [E-75, E-79] |
+| F-13 | FRAGILITY in the report; BLOCKER under rule 17.4 | 9 output files of the round-2 AUDITOR record their command with no quotation marks | the files stay as attached; a log entry states the commands with quotes [E-76, E-79] |
 
 ### Known limits, each accepted by the USER
 
@@ -48,6 +55,7 @@ None. 9 `FINDING` entries; 2 `RESOLUTION` entries and 7 `OVERRULE` entries; 0 op
 | F-7 | DEFECT | A circle or cross end with no space, a flag-shaped node, a `]` inside quoted text and an empty quoted label count as a label | `A --oB --> C` passes | "accept" [E-55, E-59] |
 | F-8 | FRAGILITY | A second diagram in a `~~~mermaid` fence, or a fence with a space before `mermaid`, is not read | — | "accept" [E-55, E-60] |
 | F-9 | STYLE | The message shows the arrow as written | `edge A ---> B has no label` | "accept" [E-55, E-61] |
+| F-15 | STYLE | Some saved output files hold no command line or no exit code | `evidence/capability-commands.txt` | "F-15: accepted as a known limit." [E-83, E-84] |
 
 ### Link forms the checker does not test (G8, G12)
 
@@ -55,7 +63,7 @@ Links with no arrowhead (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way
 
 ### Corrections made to the record
 
-E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings) [E-20, E-21, E-65]. 3 entries are marked late: E-3, E-17 and E-72 [E-3, E-17, E-72].
+E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings), E-82 (a record check was run before the entry it supports, and the map still called F-14 open) [E-20, E-21, E-65, E-82]. F-14, 2 lines of the state file out of date, was corrected and closed as a record fault [E-77, E-80]; that closure was itself wrong in form, since rule 14.6 covers a DEFECT and the final AUDITOR classed F-14 a FRAGILITY [E-85]. 3 entries are marked late: E-3, E-17 and E-72 [E-3, E-17, E-72].
 
 ## Voice of the Customer
 
@@ -107,6 +115,8 @@ No `RECONCILIATION` table: S5 was skipped in this `CORE` run, and no LENS memo e
 | WU-1, commit fe82be2 | Correctness auditor | E-31 | 0 | 3 | 1 | 0 | FIXED 2 (F-1, F-2), OVERRULED 2 by the USER (F-3, F-4) | `audits/WU-1-correctness-E-31.md` |
 | WU-1, commit 5099f2a | Correctness auditor, round 2 | E-44 | 0 | 3 | 1 | 1 | OVERRULED 5 by the USER (F-5 to F-9); its finding 4 is F-4 again, in part [E-52] | `audits/WU-1-r2-correctness-E-44.md` |
 
+| the whole run | Final AUDITOR | E-72 | 0 by its own classes; 4 under rule 17.4 (F-10 to F-13) | 3 | 2 | 1 | open 4 (F-10 to F-13), FIXED 1 as a record fault (F-14), OVERRULED 1 by the USER (F-15); last line `not passed` | `audits/final-audit-E-72.md` |
+
 Roles 2 to 8 of rule 13.1 did not run: UNVERIFIED — `CORE` run (rule 0.5) [E-43]. The capability probe is the run of E-1 [`evidence/capability-probe.md`].
 
 Planted defect (rule 16.7): none; the rule applies to a `FULL` run [E-43].
@@ -123,7 +133,7 @@ UNVERIFIED rows: none. Each `FAIL` cell names a FINDING that the USER overruled.
 
 ## Audit log
 
-`AUDIT-LOG.md` — 71 entries at the time of this draft
+`AUDIT-LOG.md` — 85 entries when this report was given to the second final AUDITOR (E-1 to E-85)
 
 ## LESSONS
 
@@ -134,3 +144,4 @@ UNVERIFIED rows: none. Each `FAIL` cell names a FINDING that the USER overruled.
 | AGENT error: 1 ledger cell read `PASS` against a branch on which the report raised 2 findings; a script matched the wrong text and the count it printed was not compared | E-65 | 1 `CORRECTION` entry | Rule 10.5, add: "After filling cells from a report, state in a `CHECK` entry the count of `FAIL` cells and the count of rows the report's findings name; the 2 must agree." |
 | A `CORE` run plans 3 SUB-AGENT runs, and rule 16.5 needs a new one after every fix; the first audit that finds a fault always breaks the budget. After 2 rounds, 6 non-BLOCKER FINDINGS were open and no rule says when to stop | E-36, E-54 | 2 cards to the USER | Rule 0.5: present "plans 3 SUB-AGENT runs"; new "plans 4: the probe, the correctness auditor, 1 re-audit, the final AUDITOR". Rule 14.5: present "if any BLOCKER is still open"; new "if any BLOCKER, DEFECT or FRAGILITY is still open". |
 | In a `CORE` run nobody may perform sections 11 and 12 (an AUDITOR is required and none is planned), and the rule gives `N/A`, which reads as "does not apply" where the truth is "not run" | E-68 | recipient-side and stability checks not proven | Rule 0.5, add: "In a `CORE` run the final AUDITOR also performs the first RECIPIENT task of the `VOC` entry (rule 11.2); the cells of roles that did not run read `UNVERIFIED — CORE`, not `N/A`." |
+| AGENT error: the draft report cited 2 wrong entries for the skipped S5 and named the wrong late entry; the ORCHESTRATOR typed entry IDs from memory. Later it ran a record check before the entry the check supports | E-73, E-74, E-82 | the final audit ended `not passed`; 1 more SUB-AGENT run; 1 card | Rule 17.1, add: "Before the final AUDITOR starts, the ORCHESTRATOR opens each entry that the draft report cites and saves, under `evidence/`, a list of each citation with the first line of the cited entry." Rule 14.6(b), add: "run the command after the `RESOLUTION` entry is written, not before". |
