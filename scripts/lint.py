@@ -185,6 +185,12 @@ def lint(root):
                 data = json.loads(p.read_text(encoding="utf-8"))
                 if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", str(data.get("name", ""))):
                     err(rel, "name is missing or not kebab-case (C15)")
+                allowed = {"$schema", "name", "version", "description", "author", "homepage",
+                           "repository", "license", "keywords", "extensions"}
+                for key in sorted(set(data) - allowed):
+                    err(rel, "key %r is not in the Agent Plugins 1.0.0 schema (C15)" % key)
+                if rel == "plugin.json" and "$schema" not in data:
+                    err(rel, "no $schema, which the Agent Plugins 1.0.0 schema requires (C15)")
             except ValueError as e:
                 err(rel, "not valid JSON: %s (C15)" % e)
     return errors

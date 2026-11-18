@@ -31,7 +31,7 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 
 ## Install
 
-- Plugin: the Devin CLI reads `.claude-plugin/plugin.json` and the root `plugin.json` of this repository; install the repository as a plugin (https://docs.devin.ai/cli/subagents and the CLI's plugin pages, read 2026-11-18).
+- Plugin: the Devin CLI reads `.claude-plugin/plugin.json` and the root `plugin.json` of this repository; install the repository as a plugin (https://docs.devin.ai/cli/extensibility/plugins/overview.md, read 2026-11-18).
 - Skills alone: copy the 7 folders under `skills/` into `.devin/skills/` or `.agents/skills/` of the repository where the work happens.
 - `AGENTS.md`: Devin includes up to 16 KiB of `AGENTS.md` (https://docs.devin.ai/onboard-devin/agents-md, read 2026-11-18). Add 1 line to it: "Before any task that produces something a person will receive, read `skills/hinshitsu/SKILL.md` and follow it." Do not paste the skills into `AGENTS.md`; the 7 files exceed 16 KiB.
 
