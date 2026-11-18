@@ -319,3 +319,8 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Skill read: `skills/hinshitsu-audit/SKILL.md`, 14089 bytes, SHA-256 1f5483a9c216a6790bc2314a0efdc21858908b962973e1dace4668b5d2f32549
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
 - Also in the commit of this entry: `SESSION-STATE.md` line 3 gave 19:43:40Z as the time of E-25; the ORCHESTRATOR typed that time and did not copy it from a command. The line now holds the time of E-25, 19:43:22Z.
+
+### E-28 · 2026-11-18T19:43:47Z · CHECK · orchestrator
+
+- What: before WU-1 (rule 7.3). WU-1 rests on these parts of `FRAMEWORK.md`: part 1 (C1 to C7, E-25); part 2 (D-1, D-2); part 3 (test names, the form of a failure string, the spelling "unlabeled"); part 4 (the contract of `check()` with the tests, and of `main()` with its callers); part 5 (the ORCHESTRATOR is the BUILDER of both files); part 7 (no second implementation).
+- `FRAMEWORK.md` part 6 now gives WU-1 the status `building`.
