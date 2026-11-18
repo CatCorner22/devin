@@ -216,3 +216,8 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 - Stage: S4
 - Event: end
 - Artifacts: `AUDIT-LOG.md` ASSUMPTION (E-13), CRITERIA PROPOSED (E-14), CORRECTION (E-15), CARD (E-16); `evidence/premises.txt`
+
+### E-18 · 2026-11-18T21:26:18Z · STAGE · orchestrator
+
+- Stage: S5
+- Event: skipped — CORE (E-4)
