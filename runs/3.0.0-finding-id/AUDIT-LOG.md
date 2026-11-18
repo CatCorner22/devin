@@ -425,3 +425,97 @@ Change: fix of F-3. `scripts/hinshitsu_check.py`: lines 299 to 306 move into 1 f
 - Commit under review: 894fd4fe3580bfeb9a0d9e66396444287d73bf0f
 - SUB-AGENT identifier: 5c654de1b2de42d4acc3c2d029445796 https://app.devin.ai/sessions/5c654de1b2de42d4acc3c2d029445796
 - Report: `audits/WU-1-r2-correctness_E-41.md`
+
+### E-42 · 2026-11-18T21:50:12Z · RESOLUTION · orchestrator
+
+- Finding: F-3
+- Result: FIXED
+- Change: commit 894fd4fe3580bfeb9a0d9e66396444287d73bf0f (`finding_id` in `scripts/hinshitsu_check.py`; the agreement test calls it)
+- Re-audit: `audits/WU-1-r2-correctness_E-41.md`, command 6, mutation A: "The agreement test now fails, so the trigger does not reproduce" (a new SUB-AGENT, LAUNCH E-41, that did not raise F-3)
+
+### E-43 · 2026-11-18T21:50:28Z · FINDING · auditor: correctness
+
+- ID: F-5
+- Class: BLOCKER (d) (the AUDITOR's words: "BLOCKER, under part (d) of the glossary: a statement in the DELIVERABLE is false. The file is outside the list my scope names; if the ORCHESTRATOR holds that it is outside the DELIVERABLE of this WORK UNIT, the class is DEFECT.")
+- Where: `skills/hinshitsu-gauge/SKILL.md`, section 24, item 2 and item 3. The commit does not change this file.
+- Trigger: probe P1. Write a log with 1 S7 start entry and 3 FINDING entries of class BLOCKER with the IDs `F-1.`, `blocker one` and no ID line. Run `python3 skills/hinshitsu-gauge/scripts/gauge.py <folder>`. The text gauge and `GAUGE.svg` hold no `STOPPED`. At a3717b1 the same log gives `STOPPED — blocker open: 2: F-1., blocker one`.
+- Violates: glossary, BLOCKER part (d); rule 24.2 and rule 24.3 as written. C2 requires the new behavior, so the text of the rule is what is wrong, not the script.
+- Raised by: correctness auditor, LAUNCH E-41, `audits/WU-1-r2-correctness_E-41.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: yes (rule 14.1): the class as the AUDITOR wrote it starts with BLOCKER, and the ORCHESTRATOR does not lower it (rule 15.3). No new work on the DELIVERABLE starts. The same place and fault as F-1, which the first AUDITOR classed DEFECT.
+
+### E-44 · 2026-11-18T21:50:28Z · FINDING · auditor: correctness
+
+- ID: F-6
+- Class: DEFECT
+- Where: `skills/hinshitsu-gauge/scripts/gauge.py`, `svg_gauge`, lines 153 to 210: no line prints `st["unread"]`. Line 137 prints it in the text gauge only.
+- Trigger: probe P1 on 894fd4f. `GAUGE.svg` holds no `STOPPED`, no "could not be read" and a black needle. The text gauge prints `3 entries could not be read`. At a3717b1 the picture of the same log showed the red stop.
+- Violates: rule 24.3. No CRITERION: C2 requires that the entry stay out of the picture and is silent on the unread count there.
+- Raised by: correctness auditor, LAUNCH E-41, `audits/WU-1-r2-correctness_E-41.md`, finding 2
+- Lens: recipient experience
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-45 · 2026-11-18T21:50:29Z · FINDING · auditor: correctness
+
+- ID: F-7
+- Class: FRAGILITY
+- Where: `scripts/hinshitsu_check.py` line 310 (the only call of `finding_id`) and lines 540 to 541 (`check_record` applies the same test by hand); `tests/test_gauge.py` line 90; `tests/test_check.py` line 467.
+- Trigger: mutation C. On a copy of 894fd4f, replace line 310 with `fid = (field(b, "ID") or "").split()[0:1]`, `fid = fid[0].strip(",") if fid else None`, `fid = fid if fid and FINDING_ID.fullmatch(fid) else None`. `check()` now accepts `F-1,` and the gauge refuses it. `python3 -m unittest discover -s tests` exits 0: `Ran 162 tests`, `OK`.
+- Violates: no CRITERION today; C3 holds on 894fd4f.
+- Raised by: correctness auditor, LAUNCH E-41, `audits/WU-1-r2-correctness_E-41.md`, finding 3
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-46 · 2026-11-18T21:50:29Z · FINDING · auditor: correctness
+
+- ID: F-8
+- Class: STYLE
+- Where: `skills/hinshitsu-gauge/scripts/gauge.py` line 137.
+- Trigger: probe P7. A log with 1 FINDING whose ID is `F-1.` prints `1 entries could not be read (rule 9.4, rule 0.7)`. For the same entry the checker prints `FINDING ID F-1. is not F-<n> (rule 9.5)`.
+- Violates: nothing in C1 to C6.
+- Raised by: correctness auditor, LAUNCH E-41, `audits/WU-1-r2-correctness_E-41.md`, finding 4
+- Lens: recipient experience
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-47 · 2026-11-18T21:50:29Z · OVERRULE · orchestrator
+
+- Finding: F-8 (STYLE)
+- Result: OVERRULED
+- By: ORCHESTRATOR (rule 15.5)
+- Reason: the same line and fault as F-4 (E-38): line 137 of `gauge.py` is unchanged by this task and C1 fixes its words. The delivery report lists it.
+
+### E-48 · 2026-11-18T21:50:54Z · CARD · orchestrator
+
+Working assumption while the card is open (not the USER's decision): Decision 1 end; Decision 2 set aside; Decision 3 set aside. No work that depends on the answers starts before the reply. The text sent, word for word:
+
+> DECISION CARD 3 — hinshitsu run 3.0.0-finding-id (3 decisions; please answer all 3)
+> 
+> A new separate session re-checked the change after the F-3 fix. C1 to C6 each passed again and F-3 is confirmed fixed. It raised 4 faults. 1 of them it classed as a blocker (a fault that stops the run, which nobody may set aside), so the run is stopped.
+> 
+> Decision 1 (fault F-5, blocker)
+> (a) Question: The second checker classed the stale rule text of the gauge skill (the fault you set aside as F-1) as a blocker, because a sentence in the shipped skill is now false; how do I close it?
+> (b) Recommended: end, because it is the cheapest honest exit and shows what this trial run was meant to find.
+> (c) "End": the run finishes as "delivered, not finished", the blocker listed open; costs the 1 planned final check. "Fix": I correct 2 sentences in `skills/hinshitsu-gauge/SKILL.md`; you lift "do not repair a rule" for them; a 4th file means the long form, about 12 more runs. "Referee": 1 more run (5 in place of 4); a separate session rules whether that file belongs to this task; if not, your "set aside" stands.
+> (d) Reply with: "Decision 1: end", "Decision 1: fix" or "Decision 1: referee".
+> 
+> Decision 2 (fault F-6)
+> (a) Question: `GAUGE.svg` shows no sign of the unread entries, which you already set aside as part of F-1; do you set it aside again under its new number?
+> (b) Recommended: set aside, because nothing about it changed.
+> (c) "Set aside": the picture stays as it is; a reader of the picture alone sees no warning. "Fix": 1 line in the picture and 1 test; 1 acceptance test changes and 1 more run of a separate session re-checks it.
+> (d) Reply with: "Decision 2: set aside" or "Decision 2: fix".
+> 
+> Decision 3 (fault F-7)
+> (a) Question: The checker still applies its ID test by hand in 1 other place, so the checker could drift from the gauge unseen; do I fix it or do you set it aside?
+> (b) Recommended: set aside, because it lies in the checker, outside what you asked for, and I will propose it at the end of the run.
+> (c) "Set aside": no change; the risk stays until a later task. "Fix": 2 lines and 1 test; 1 more run of a separate session; not possible when Decision 1 is "end", since no work on the code may go on while a blocker is open.
+> (d) Reply with: "Decision 3: set aside" or "Decision 3: fix".
+> 
+> What I did without a decision from you
+> - F-8 (form only, the same as F-4: the unread line cites the wrong rule number): set aside.
+> 
+> Runs of separate sessions: 3 of 4 used (capability test, correctness check, re-check). Left: 1, the final check. I start no session beyond 4 without your word.
+> 
+> Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
+> hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
+> STOPPED — blocker open: 1: F-5
+> — end of card —
