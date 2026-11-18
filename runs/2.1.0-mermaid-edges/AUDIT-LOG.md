@@ -646,3 +646,8 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Result: OVERRULED
 - By: USER — "accept" (E-55; the card in E-54 asked: "Do you accept the 6 open faults (F-4 to F-9) as known limits, or do you want 1 more repair round?")
 - Reason: the USER accepts the fault as a known limit. The delivery report lists it.
+
+### E-62 · 2026-11-18T20:17:44Z · CHECK · orchestrator
+
+- What: after WU-1 (rules 7.3, 10.5). `COVERAGE-LEDGER.md`: the COR cells are filled from `audits/WU-1-r2-correctness-E-44.md`; a row against which that report raised a FINDING reads `FAIL` with the FINDING ID, and the USER overruled each (E-55). `FRAMEWORK.md` part 6: WU-1 is `complete`.
+- No LENS memo for WU-1 (rule 5.6): this is a `CORE` run (rule 0.5), and the 4 SUB-AGENT runs the USER allowed leave none for a LENS. The role is reported UNVERIFIED.

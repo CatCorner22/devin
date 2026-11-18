@@ -45,7 +45,7 @@ See `AUDIT-LOG.md` entry E-25 (`CRITERIA`, `FROZEN`: C1 to C7, the same text as 
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | in audit, round 2 (repairs of F-1, F-2, F-4 built at commit 5099f2a) | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
+| WU-1 | the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py` | complete (audited at commit 5099f2a, E-44; F-1 and F-2 FIXED; the USER overruled F-3 to F-9) | none — `CORE` run (rule 0.5) | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 
