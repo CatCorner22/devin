@@ -717,3 +717,73 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - SUB-AGENT identifier: 2c6f057a16be412f89e76ffa6a5a5a78 https://app.devin.ai/sessions/2c6f057a16be412f89e76ffa6a5a5a78
 - Report: `audits/final-audit-E-72.md`
 - Late: the SUB-AGENT started before this entry was written, since the entry holds the identifier that the start returns. The head of the branch moves by this commit while the SUB-AGENT clones.
+
+### E-73 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-10
+- Class: DEFECT
+- Class under rule 17.4: BLOCKER of class (d). The report gives the class above; rule 17.4 says "Each mismatch under (a) to (e) is a BLOCKER of class (d)", and the report places this finding under (b). Section 17 controls over section 15, so the ORCHESTRATOR treats this FINDING as a BLOCKER (`FRICTION.md` item 20). This raises the class; rule 15.3 forbids only lowering it.
+- Where: `DELIVERY-REPORT.md` lines 94 and 98
+- Trigger: open E-24 for the claim "S5 skipped"; it reads "Stage: S6, Event: start". Open E-62 for "no LENS memo exists"; it is the ledger check. E-23 and E-26 hold the facts.
+- Violates: rule 17.4 (b): a cited entry does not show what the claim says. A mismatch in (a) to (e).
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 1
+- Lens: trust and controls
+- Forward work stopped: yes — the report was not sent and the run was not ended; only fixing, re-auditing and keeping the record continue (rule 14.2)
+
+### E-74 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-11
+- Class: DEFECT
+- Class under rule 17.4: BLOCKER of class (d). The report gives the class above; rule 17.4 says "Each mismatch under (a) to (e) is a BLOCKER of class (d)", and the report places this finding under (b). Section 17 controls over section 15, so the ORCHESTRATOR treats this FINDING as a BLOCKER (`FRICTION.md` item 20). This raises the class; rule 15.3 forbids only lowering it.
+- Where: `DELIVERY-REPORT.md` line 58
+- Trigger: open E-5; it holds no late mark. `grep -n -i late AUDIT-LOG.md` gives E-3, E-17 and E-72.
+- Violates: rule 17.4 (b); the report must list the record's corrections truly.
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 2
+- Lens: trust and controls
+- Forward work stopped: yes — the report was not sent and the run was not ended; only fixing, re-auditing and keeping the record continue (rule 14.2)
+
+### E-75 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-12
+- Class: DEFECT
+- Class under rule 17.4: BLOCKER of class (d). The report gives the class above; rule 17.4 says "Each mismatch under (a) to (e) is a BLOCKER of class (d)", and the report places this finding under (e). Section 17 controls over section 15, so the ORCHESTRATOR treats this FINDING as a BLOCKER (`FRICTION.md` item 20). This raises the class; rule 15.3 forbids only lowering it.
+- Where: `DELIVERY-REPORT.md`, "Check it yourself in 5 minutes", check 2; `audits/WU-1-correctness-E-31.md`
+- Trigger: open https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d and compare its last message with the saved file: 19,490 characters against 41,843; the message names the output files where the saved file prints their contents.
+- Violates: rule 17.4 (e) (a run opened by identifier differs from its saved report) and rule 19.2 (a check the USER can do must show what the report says it shows). The saved file's source (the attachment) is UNVERIFIED by me. Repair: word check 2 as "the same text, except that the message names each output file and the saved file prints it", or point check 2 at run cecdcf81…, whose last message is identical.
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 3
+- Lens: trust and controls
+- Forward work stopped: yes — the report was not sent and the run was not ended; only fixing, re-auditing and keeping the record continue (rule 14.2)
+
+### E-76 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-13
+- Class: FRAGILITY
+- Class under rule 17.4: BLOCKER of class (d). The report gives the class above; rule 17.4 says "Each mismatch under (a) to (e) is a BLOCKER of class (d)", and the report places this finding under (c). Section 17 controls over section 15, so the ORCHESTRATOR treats this FINDING as a BLOCKER (`FRICTION.md` item 20). This raises the class; rule 15.3 forbids only lowering it.
+- Where: 9 files under `evidence/WU-1-r2-correctness-E-44/` (`F-1.txt`, `F-2.txt`, `F-4.txt`, `criteria-lines.txt`, `hunt-1-later-link.txt` to `hunt-5-lengths.txt`), line 1 of each
+- Trigger: paste line 1 of `F-1.txt` into a shell at the repository root: the output differs from the saved output and a file `C` appears. With each argument quoted, the output is the saved output.
+- Violates: rule 17.4 (c) and the glossary's EVIDENCE: the saved command is not the command that produced the saved output. The results themselves reproduce.
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 4
+- Lens: trust and controls
+- Forward work stopped: yes — the report was not sent and the run was not ended; only fixing, re-auditing and keeping the record continue (rule 14.2)
+
+### E-77 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-14
+- Class: FRAGILITY
+- Where: `SESSION-STATE.md` line 3 and item 2
+- Trigger: item 2 reads "the ledger cells are not yet filled from that report"; the ledger was filled at E-62 and corrected at E-65. Line 3 reads "Last rewritten … E-55 to E-61", while item 8 names E-72 and the file changed again in commit 4832ee5.
+- Violates: the rule that `SESSION-STATE.md` states the present state of the run. Outside checks (a) to (e); it does not change the last line.
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 5
+- Lens: trust and controls
+- Forward work stopped: no
+
+### E-78 · 2026-11-18T20:32:48Z · FINDING · auditor: final
+
+- ID: F-15
+- Class: STYLE
+- Where: `evidence/capability-commands.txt`; `evidence/WU-1-correctness-E-31/*.txt`
+- Trigger: `evidence/capability-commands.txt` holds 6 commands and no exit code; the 16 files of E-31 hold output with no command line (the commands are in the saved report).
+- Violates: the form of a command-output file (command, complete output, exit code).
+- Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 6
+- Lens: trust and controls
+- Forward work stopped: no
