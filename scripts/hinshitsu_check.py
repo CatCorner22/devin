@@ -497,9 +497,10 @@ def check_record(folder):
     running = None
     for e in log:
         if e["type"] == "STAGE":
-            m = re.search(r"\b(S\d+)\b.*?\b(start|end|skipped)\b", e["body"], re.S)
-            if m:
-                running = m.group(1) if m.group(2) == "start" else None
+            sid = re.match(r"(S\d+)\b", field(e["body"], "Stage") or "")
+            event = (field(e["body"], "Event") or "").split()[0:1]
+            if sid and event and event[0] in ("start", "end", "skipped"):
+                running = sid.group(1) if event[0] == "start" else None
     texts = {}
     for name in ("SESSION-STATE.md", "FRAMEWORK.md", "MINDMAP.md"):
         p = folder / name
@@ -511,8 +512,10 @@ def check_record(folder):
                 if fid not in state:
                     err("%s:%d: names %s, which has no FINDING entry (rule 14.6)" % (name, i, fid))
                     continue
-                says_open = re.search(r"\bopen\b|not re-audited|waits (for|until) %s\b" % fid, line)
-                says_closed = re.search(r"\bFIXED\b|\bWITHDRAWN\b|\bclosed\b|overruled", line)
+                negated_open = re.search(r"\b(?:no longer|not|never) open\b", line)
+                says_open = not negated_open and re.search(
+                    r"\bopen\b|not re-audited|waits (for|until) %s\b" % fid, line)
+                says_closed = negated_open or re.search(r"\bFIXED\b|\bWITHDRAWN\b|\bclosed\b|overruled", line)
                 if len(set(re.findall(r"\bF-\d+\b", line))) > 1:
                     continue  # a line that names several FINDINGS is not tested
                 if state[fid] == "closed" and says_open and not says_closed:
@@ -526,7 +529,7 @@ def check_record(folder):
     if running and "SESSION-STATE.md" in texts and not re.search(r"\b%s\b" % running, texts["SESSION-STATE.md"]):
         err("SESSION-STATE.md: does not name %s, the STAGE the log shows as started (rule 14.6)" % running)
     if "MINDMAP.md" in texts:
-        listed = texts["MINDMAP.md"].split("```")[0]
+        listed = re.sub(r"```.*?```", "", texts["MINDMAP.md"], flags=re.S)  # the list, wherever the diagram stands
         for fid in sorted(state, key=lambda x: int(x[2:])):
             n = len(re.findall(r"\b%s\b" % fid, listed))
             if n != 1:

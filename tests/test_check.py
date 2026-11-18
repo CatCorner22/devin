@@ -528,6 +528,27 @@ class Record(unittest.TestCase):
         self.assertEqual(hcheck.main(["x", "--record", str(record_run("open", "FIXED"))]), 1)
         self.assertEqual(hcheck.main(["x", "--record"]), 2)
 
+    # --- round-3 code review, bugs 8 and 9 ---
+
+    def test_running_stage_is_read_from_the_event_field_only(self):
+        d = record_run()
+        edit(d, "AUDIT-LOG.md", "- Stage: S5\n", "- Stage: S5 (begins after the end of S4)\n")
+        edit(d, "SESSION-STATE.md", "STAGE S5", "STAGE S4")
+        self.assertTrue(any("does not name S5" in x for x in hcheck.check_record(d)))
+
+    def test_no_longer_open_is_read_as_closed(self):
+        d = record_run(state="no longer open", mind="FIXED", closed=True)
+        self.assertEqual(hcheck.check_record(d), [])
+
+    def test_the_word_closed_in_a_description_is_not_a_state(self):
+        d = record_run(state="open: the menu stays closed when tapped")
+        self.assertEqual(hcheck.check_record(d), [])
+
+    def test_mindmap_with_the_diagram_above_the_list_passes(self):
+        d = record_run()
+        (d / "MINDMAP.md").write_text("```mermaid\nF1[F-1]\n```\n- F-1 a fault (DEFECT, open)\n", encoding="utf-8")
+        self.assertEqual(hcheck.check_record(d), [])
+
     def test_record_fault_resolution_needs_the_saved_output(self):
         d = good_run()
         log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
