@@ -1,4 +1,4 @@
-You are a sub-agent in a quality run. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `devin/hinshitsu-build`, commit 5d77f0711fd7fc41aa01c41c755d4f0e130f3a67. Clone it and check out that commit. Do not change, commit or push any file. Deliver your report as the full text of your final message, and attach the same text as a Markdown file. Put the ID of your own Devin session on the first line of the report.
+You are a sub-agent in a quality run. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `devin/hinshitsu-build`, commit cf37bd26ca7590450ff4abb0a07b5a367fb55531. Clone it and check out that commit. Do not change, commit or push any file. Deliver your report as the full text of your final message, and attach the same text as a Markdown file. Put the ID of your own Devin session on the first line of the report.
 
 # Role: re-audit of BLOCKER findings (plan stage)
 
