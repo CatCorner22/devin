@@ -30,3 +30,4 @@ First line: the identifier. Then the trigger event, the 1 PREMISE it puts in dou
 - Do not change any file.
 - Do not soften a verdict because the work is far along.
 - Do not report a check that you did not run.
+- Where your scope holds the heading `Accepted by the USER — do not report`, do not report a fault listed under it (rule 15.7). A new fault at the same place is a finding.

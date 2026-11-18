@@ -32,3 +32,4 @@ Write 1 report, in Markdown, in this order:
 - Read only the files this scope names, and files those files reference.
 - Report what you observed. Do not report a check that you did not run. A check that you cannot run is UNVERIFIED, with the reason.
 - If you find nothing, say so, and list under `Examined` what you checked. Do not invent a finding and do not withhold one.
+- Where your scope holds the heading `Accepted by the USER — do not report`, do not report a fault listed under it (rule 15.7). A new fault at the same place is a finding.

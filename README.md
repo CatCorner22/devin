@@ -91,7 +91,7 @@ See [`TESTING.md`](TESTING.md) for the commands.
 
 ## Status
 
-Version 3.0.0. Independent sessions reviewed the set 3 times and did not pass it; the changes made in answer to the third review are not yet reviewed. 1 run on a real task found 9 faults that the builder had missed, and did not reach `DONE` (`runs/2.1.0-mermaid-edges/`). Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
+Version 3.1.0. Independent sessions reviewed the set 3 times and did not pass it; the changes made in answer to the third review are not yet reviewed. 1 run on a real task found 9 faults that the builder had missed, and did not reach `DONE` (`runs/2.1.0-mermaid-edges/`). Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
 
 License: MIT (`LICENSE`).
 

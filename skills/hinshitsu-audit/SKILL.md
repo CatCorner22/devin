@@ -63,6 +63,8 @@ This skill holds sections 11 to 16. It serves STAGE S7 (sections 13 to 16, for e
 4. **3 results.** Every FINDING ends in exactly 1 `RESOLUTION` or `OVERRULE` entry: `FIXED` (the change, and the re-audit report that confirms it); `WITHDRAWN` (the report showing that the trigger does not produce the result); or `OVERRULED` (the written reason, and who overruled).
 5. **Who may overrule.** Only the USER may overrule a DEFECT or a FRAGILITY, in a message that the entry quotes. The ORCHESTRATOR may overrule a STYLE FINDING with a written reason. Nobody overrules a BLOCKER (rule 14.4).
 6. **No silent dismissals.** At delivery, the count of `FINDING` entries equals the count of FINDINGS with a `RESOLUTION` or `OVERRULE` entry plus the count of open FINDINGS listed in the delivery report.
+7. **A KNOWN LIMIT is not raised again.** Every scope written after an `OVERRULE` entry lists each KNOWN LIMIT: its place and its trigger, word for word from its `FINDING` entry, under the heading `Accepted by the USER — do not report`. Where a report repeats a KNOWN LIMIT, log 1 `CHECK` entry that cites the `OVERRULE` entry, and log no `FINDING` entry. Rule 16.2 does not forbid this list.
+8. **1 card ends the repairs.** A FINDING other than a BLOCKER that a re-audit raises for the first time is not repaired in this run. After the re-audit of a WORK UNIT, send the USER 1 DECISION CARD that lists every open DEFECT, FRAGILITY and STYLE FINDING in 1 line each, with the reply `accept all` and the reply `fix <IDs>`. Log `accept all` as 1 `OVERRULE` entry for each FINDING, each quoting the USER. A `fix` reply costs 1 more re-audit, and the card states that cost in SUB-AGENT runs.
 
 ## 16. Swarm management
 

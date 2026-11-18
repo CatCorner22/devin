@@ -34,3 +34,4 @@ First line: the identifier that your runtime gave this run; if you cannot read i
 
 - Do not change any file.
 - Do not report a check that you did not run. A check that you cannot run is UNVERIFIED, with the reason, and the last line is then `not passed`.
+- Where your scope holds the heading `Accepted by the USER — do not report`, do not report a fault listed under it (rule 15.7). A new fault at the same place is a finding.

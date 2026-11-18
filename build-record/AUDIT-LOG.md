@@ -390,3 +390,10 @@ Proof run under version 3.0.0, announced to the USER before its start. 1 fresh s
 - The rounds did not converge: each re-audit raised a new fault, and 2 AUDITORS classed as BLOCKER a fault that the USER of that run had set aside.
 - `scripts/hinshitsu_log.py` refused a `LAUNCH` entry whose report path holds the entry's own number (friction items 15 and 22): a fault of version 3.0.0.
 - Result: version 3.0.0 did not make DONE reachable. The record-keeping no longer caused the stop; the classing of FINDINGS and the lack of an end to the audit rounds did.
+
+### E-031 · 2026-11-18T23:09Z · DECISION · orchestrator
+
+- The USER, 2026-11-18, chose "Build version 3.1, then the app-specific versions; no more paid runs unless I say so (recommended)". No SUB-AGENT starts from this entry on without the USER's word.
+- The USER, 2026-11-18 18:08 EST: "For the stop unless thresholds or guidelines: I would add \"unstable or improperly formatted code\" that is risky for the future." Recorded as BLOCKER (f) in the glossary, in 4 testable parts, and sent to the USER in those words.
+- Version 3.1.0 is listed in `CHANGELOG.md`. `python3 -m unittest discover -s tests` prints "Ran 165 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
+- ASSERTED: no independent session has reviewed version 3.1.0, and no run has been made under it.

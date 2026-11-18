@@ -50,7 +50,7 @@ Each term below has 1 meaning everywhere in the 7 hinshitsu skills, the template
 
 A FINDING has exactly 1 class. When 2 classes fit, the class listed first below applies.
 
-**BLOCKER** — a FINDING in which any 1 of these is true: (a) the DELIVERABLE fails a CRITERION; (b) a RECIPIENT cannot complete a task that the Voice of the Customer statement lists; (c) the DELIVERABLE loses or corrupts data, exposes a secret or exposes data to a person the CRITERIA do not authorize; (d) a statement in the delivery report or in the DELIVERABLE is false; (e) the RED CELL raised it under section 6 in the form rule 6.6 requires.
+**BLOCKER** — a FINDING in which any 1 of these is true: (a) the DELIVERABLE fails a CRITERION; (b) a RECIPIENT cannot complete a task that the Voice of the Customer statement lists; (c) the DELIVERABLE loses or corrupts data, exposes a secret or exposes data to a person the CRITERIA do not authorize; (d) a statement in the `Summary` or the `Status` of the delivery report is false (a false statement elsewhere, or in a part of the DELIVERABLE that no CRITERION covers, is a DEFECT); (e) the RED CELL raised it under section 6 in the form rule 6.6 requires; (f) code in the DELIVERABLE is unstable or ill-formed, which means 1 of these 4: the same check gives 2 different results in 2 runs; the code does not parse, or the project's own formatter, linter or type checker exits with a failure on it; the code catches an error and neither handles nor reports it; a dependency that the DELIVERABLE adds has no pinned version.
 
 **DEFECT** — a FINDING that the DELIVERABLE gives a wrong result or breaks a rule of the skills, and that is not a BLOCKER. A false or out-of-date statement in a file of the RUN FOLDER other than the delivery report is a DEFECT (rule 14.6).
 
@@ -66,7 +66,9 @@ A FINDING has exactly 1 class. When 2 classes fit, the class listed first below 
 
 **UNVERIFIED** — a check that did not run, or that ran without meeting all 3 parts of VERIFIED, reported with the reason.
 
-**DONE** — the state in which all 8 of these are true: (1) every CRITERION is VERIFIED; (2) no BLOCKER is open; (3) every DEFECT and every FRAGILITY is FIXED, WITHDRAWN or carries the USER's written overrule; (4) `COVERAGE-LEDGER.md` has no empty cell; (5) the delivery report has no ASSERTED claim; (6) the audit of the audit in section 17 passed; (7) `scripts/hinshitsu_check.py` exits 0 on the RUN FOLDER, and an `ANSWER` entry quotes the USER's statement that the USER opened the final AUDITOR's run by its link and saw the saved report's text there; the script alone proves nothing, and where no link exists the state is `DELIVERED — NOT DONE`;  (8) the ORCHESTRATOR sent the delivery report to the USER.
+**DONE** — the state in which all 8 of these are true: (1) every CRITERION is VERIFIED; (2) no BLOCKER is open; (3) every DEFECT and every FRAGILITY is FIXED, WITHDRAWN or a KNOWN LIMIT; (4) `COVERAGE-LEDGER.md` has no empty cell; (5) the delivery report has no ASSERTED claim; (6) the audit of the audit in section 17 passed; (7) `scripts/hinshitsu_check.py` exits 0 on the RUN FOLDER, and an `ANSWER` entry quotes the USER's statement that the USER opened the final AUDITOR's run by its link and saw the saved report's text there; the script alone proves nothing, and where no link exists the state is `DELIVERED — NOT DONE`;  (8) the ORCHESTRATOR sent the delivery report to the USER.
+
+**KNOWN LIMIT** — a DEFECT, a FRAGILITY or a STYLE FINDING that the USER accepted without a fix, in a message that an `OVERRULE` entry quotes. The delivery report lists each one, and the `Status` line states their count. No AUDITOR raises a KNOWN LIMIT again (rule 15.7).
 
 **DELIVERED — NOT DONE** — the state of a run whose delivery report went to the USER while 1 or more of the 8 parts of DONE is not met. The report names each such part.
 

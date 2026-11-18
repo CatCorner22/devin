@@ -2,6 +2,20 @@
 
 Rule 20.3 requires 1 entry for each amendment of a skill. Newest first.
 
+## 3.1.0 — 2026-11-18
+
+Answer to the proof run under 3.0.0 (`build-record/audits/round4-proof-run.md`): 5 SUB-AGENT runs and 4 cards for a change of 102 lines, no failed CRITERION in 3 audits, and the run still ended `DELIVERED — NOT DONE`, because each re-audit raised new faults and 2 AUDITORS classed as BLOCKER a fault the USER had set aside. The USER chose this version, with no further paid run. No independent session has reviewed it, and no run has been made under it.
+
+- Glossary, BLOCKER (d): only a false statement in the `Summary` or the `Status` of the delivery report. A false statement elsewhere, or in a part of the DELIVERABLE that no CRITERION covers, is a DEFECT.
+- Glossary, BLOCKER (f) (new, in the USER's words "unstable or improperly formatted code that is risky for the future"): 2 different results in 2 runs of 1 check; code that does not parse or that fails the project's own formatter, linter or type checker; an error that is caught and neither handled nor reported; an added dependency with no pinned version.
+- Glossary, KNOWN LIMIT (new), and DONE part 3: a DEFECT or FRAGILITY that the USER accepted counts as closed; the `Status` line states the count.
+- Rule 15.7 (new): each scope lists the KNOWN LIMITS, and no AUDITOR raises one again. The role texts say so.
+- Rule 15.8 (new): a FINDING other than a BLOCKER that a re-audit raises for the first time is not repaired in the run; 1 card lists every open one, and `accept all` closes them.
+- Rule 0.5: the TIER counts the DELIVERABLE only; the USER may hold a run at `CORE`.
+- `scripts/hinshitsu_log.py`: an entry may hold its own number, as rule 1.6 requires of a report's file name. `scripts/hinshitsu_check.py`: an `ANSWER` that states a higher number of planned runs raises the budget whenever it is written. Merged from the proof run: the gauge leaves a FINDING with a refused ID out of the `STOPPED` line and counts it as unread. 165 tests.
+
+Open: the friction items of the 2 real runs that this list does not answer (`runs/*/FRICTION.md`).
+
 ## 3.0.0 — 2026-11-18
 
 Answer to the first run on a real task (`build-record/audits/round3-real-run.md`): independent sessions found 9 faults the builder had missed, and the run still could not reach DONE, because each slip in the hand-kept record stopped it. The USER chose this version before the app-specific files. No independent session has reviewed it, and no run has been made under it.
