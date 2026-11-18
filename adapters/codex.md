@@ -33,6 +33,7 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 
 ## Install
 
-- Plugin: ChatGPT and Codex install a plugin from a root `plugin.json` with a `skills/` folder; this repository has both (https://developers.openai.com/codex/plugins/build.md, read 2026-11-18).
-- Install the whole repository. The 7 skill folders need `scripts/`, `templates/` and `skills/hinshitsu/GLOSSARY.md`; a copy of the skill folders alone is not a supported install.
+- Zip file: `dist/hinshitsu-codex.zip` holds the 7 skills in the layout Codex reads, with an installer. Unzip it and run `python3 hinshitsu-codex/install.py <project folder>`, or `python3 hinshitsu-codex/install.py --home` for every project. Codex reads the folder `.agents` in the project, in each folder above it up to the repository root, and in the user's home folder (https://developers.openai.com/codex/skills, read 2026-11-18). Then type `$hinshitsu` and the request.
+- Plugin: ChatGPT and Codex also install a plugin from a root `plugin.json` with the skill folders beside it; this repository has both (https://developers.openai.com/codex/plugins/build.md, read 2026-11-18).
+- Install every part. The 7 skill folders need the scripts, the templates and the glossary; the zip file and the plugin hold them, and a copy of the skill folders alone is not a supported install.
 - `AGENTS.md`: add 1 line: "Before any task that produces something a person will receive, read `skills/hinshitsu/SKILL.md` and follow it. Use subagents for every auditor, lens and red-cell role." The second sentence is the explicit request that the vendor's page describes.

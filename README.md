@@ -66,7 +66,7 @@ Ordinary Claude chat and ordinary ChatGPT cannot start a sub-agent, so the 7 ski
 | Claude chat (claude.ai and the apps) | [`chat/claude/hinshitsu-claude/`](chat/claude/hinshitsu-claude/SKILL.md) | [`dist/hinshitsu-claude.zip`](dist/hinshitsu-claude.zip) | no |
 | ChatGPT (chatgpt.com and the apps) | [`chat/chatgpt/hinshitsu-chatgpt/`](chat/chatgpt/hinshitsu-chatgpt/SKILL.md); without Skills, [`chat/chatgpt/PASTE-IN.md`](chat/chatgpt/PASTE-IN.md) | [`dist/hinshitsu-chatgpt.zip`](dist/hinshitsu-chatgpt.zip) | no |
 
-[`INSTALL.md`](INSTALL.md) gives the steps for each of the 9 surfaces. `python3 scripts/package.py dist` writes the zip files.
+[`INSTALL.md`](INSTALL.md) gives the steps for each of the 9 surfaces. `python3 scripts/package.py dist` writes the 4 zip files; [`dist/hinshitsu-codex.zip`](dist/hinshitsu-codex.zip) holds the 7 skills in the layout Codex reads, with an installer.
 
 **Not supported:** the Gemini app, kimi.com chat and the Meta AI app, which do not let the main agent scope a sub-agent and for which no single-assistant skill is written. Perplexity has no adapter: its Computer product starts sub-agents itself, and its documentation shows no way for the main agent to write each one's scope.
 

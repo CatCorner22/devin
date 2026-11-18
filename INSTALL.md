@@ -7,7 +7,7 @@ Version 3.1.0. Pick your surface. Only Devin was run in this repository; every o
 | Claude chat (claude.ai, Claude apps) | `dist/hinshitsu-claude.zip` | no: 1 assistant |
 | ChatGPT (chatgpt.com, ChatGPT apps) | `dist/hinshitsu-chatgpt.zip`, or the paste-in block | no: 1 assistant |
 | Claude Code | the whole repository as a plugin | yes |
-| Codex, ChatGPT Work | the whole repository as a plugin | yes |
+| Codex, ChatGPT Work | `dist/hinshitsu-codex.zip` | yes |
 | Devin | the whole repository | yes |
 | Cursor | the whole repository as a plugin | yes |
 | Gemini CLI | the whole repository | yes |
@@ -41,7 +41,13 @@ Clone the repository, add it as a plugin source, and install `hinshitsu` (it hol
 
 ## Codex and ChatGPT Work
 
-Clone the repository; Codex reads `plugin.json` at its root and the `skills/` folder. Details and tool names: `adapters/codex.md`.
+1. Download `dist/hinshitsu-codex.zip` and unzip it. You get the folder `hinshitsu-codex`.
+2. Run `python3 hinshitsu-codex/install.py <your project folder>` for 1 project, or `python3 hinshitsu-codex/install.py --home` for every project. Or ask Codex: "Unzip hinshitsu-codex.zip and run its install.py for this project."
+3. Start Codex in the project and write: `$hinshitsu baby bird me: <your request>`. Restart Codex if the skill is not listed.
+
+The installer puts the 7 skills in `.agents/skills/` and the scripts and templates in `.agents/hinshitsu/`, the folders Codex reads. Details and tool names: `adapters/codex.md`.
+
+Source: https://developers.openai.com/codex/skills
 
 ## Devin
 

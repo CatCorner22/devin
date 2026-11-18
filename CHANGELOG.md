@@ -15,6 +15,7 @@ Answer to the proof run under 3.0.0 (`build-record/audits/round4-proof-run.md`):
 - `scripts/hinshitsu_log.py`: an entry may hold its own number, as rule 1.6 requires of a report's file name. `scripts/hinshitsu_check.py`: an `ANSWER` that states a higher number of planned runs raises the budget whenever it is written. Merged from the proof run: the gauge leaves a FINDING with a refused ID out of the `STOPPED` line and counts it as unread. 165 tests.
 
 - App-specific files: 2 single-assistant skills for ordinary Claude chat and ordinary ChatGPT (`chat/`), with a report checker and a paste-in form; `adapters/chatgpt.md` renamed `adapters/codex.md`; `INSTALL.md`; `scripts/package.py` and `dist/` with 3 zip files. 187 tests. None was run on its surface.
+- `dist/hinshitsu-codex.zip` (the USER's request): the 7 skills in the layout Codex reads (`.agents/skills`), with `install.py` for 1 project or for the user's home folder. 9 tests (195 in all). Never run on Codex.
 
 Open: the friction items of the 2 real runs that this list does not answer (`runs/*/FRICTION.md`).
 

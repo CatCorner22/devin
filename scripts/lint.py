@@ -29,7 +29,7 @@ REQUIRED_FILES = [
     "templates/AUDIT-LOG.md", "templates/COVERAGE-LEDGER.md", "templates/DELIVERY-REPORT.md",
     "templates/FRAMEWORK.md", "templates/SESSION-STATE.md",
     "INSTALL.md", "chat/claude/hinshitsu-claude/SKILL.md", "chat/chatgpt/hinshitsu-chatgpt/SKILL.md",
-    "chat/chatgpt/PASTE-IN.md", "scripts/package.py", "scripts/hinshitsu_check.py", "scripts/hinshitsu_log.py", "scripts/hinshitsu_text.py", "scripts/lint.py",
+    "chat/chatgpt/PASTE-IN.md", "codex/README.md", "codex/install.py", "scripts/package.py", "scripts/hinshitsu_check.py", "scripts/hinshitsu_log.py", "scripts/hinshitsu_text.py", "scripts/lint.py",
     "skills/hinshitsu-gauge/scripts/gauge.py",
     "adapters/claude-code.md", "adapters/cursor.md", "adapters/devin.md",
     "adapters/codex.md", "adapters/gemini.md", "adapters/kimi.md", "adapters/muse.md",

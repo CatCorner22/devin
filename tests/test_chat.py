@@ -174,15 +174,117 @@ class Package(unittest.TestCase):
         with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
             for d in (a, b):
                 subprocess.run([sys.executable, str(ROOT / "scripts/package.py"), d], capture_output=True, text=True)
-            for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip"):
+            for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip", "hinshitsu-codex.zip"):
                 self.assertEqual((Path(a) / name).read_bytes(), (Path(b) / name).read_bytes(), name)
 
     def test_the_committed_dist_folder_is_current(self):
         with tempfile.TemporaryDirectory() as d:
             subprocess.run([sys.executable, str(ROOT / "scripts/package.py"), d], capture_output=True, text=True)
-            for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip"):
+            for name in ("hinshitsu-claude.zip", "hinshitsu-chatgpt.zip", "hinshitsu-plugin.zip", "hinshitsu-codex.zip"):
                 self.assertEqual((ROOT / "dist" / name).read_bytes(), (Path(d) / name).read_bytes(),
                                  "run `python3 scripts/package.py dist`: %s is out of date" % name)
+
+
+class CodexPackage(unittest.TestCase):
+    """dist/hinshitsu-codex.zip: the 7 skills laid out for the folders Codex reads (.agents/skills)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        subprocess.run([sys.executable, str(ROOT / "scripts/package.py"), cls.tmp.name], capture_output=True, text=True)
+        cls.zip_path = Path(cls.tmp.name) / "hinshitsu-codex.zip"
+        with zipfile.ZipFile(cls.zip_path) as z:
+            cls.names = z.namelist()
+            cls.texts = {n: z.read(n).decode("utf-8") for n in cls.names if n.endswith("SKILL.md")}
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_zip_holds_the_7_skills_the_scripts_the_templates_and_the_installer(self):
+        for needle in ["hinshitsu-codex/README.md", "hinshitsu-codex/install.py",
+                       "hinshitsu-codex/agents/hinshitsu/scripts/hinshitsu_check.py",
+                       "hinshitsu-codex/agents/hinshitsu/scripts/hinshitsu_log.py",
+                       "hinshitsu-codex/agents/hinshitsu/templates/roles/final-auditor.md",
+                       "hinshitsu-codex/agents/hinshitsu/adapters/codex.md",
+                       "hinshitsu-codex/agents/skills/hinshitsu/GLOSSARY.md",
+                       "hinshitsu-codex/agents/skills/hinshitsu-gauge/scripts/gauge.py"]:
+            self.assertIn(needle, self.names)
+        skills = sorted(n.split("/")[3] for n in self.texts)
+        self.assertEqual(skills, ["hinshitsu", "hinshitsu-audit", "hinshitsu-baby-bird-plan", "hinshitsu-challenge",
+                                  "hinshitsu-delivery", "hinshitsu-gauge", "hinshitsu-record"])
+        self.assertTrue(all(n.startswith("hinshitsu-codex/") for n in self.names))
+        self.assertFalse(any("/example/" in n or "__pycache__" in n for n in self.names))
+
+    def test_every_path_a_packaged_skill_names_exists_in_the_zip(self):
+        have = {n[len("hinshitsu-codex/agents/"):] for n in self.names if n.startswith("hinshitsu-codex/agents/")}
+        folders = {str(Path(h).parent) + "/" for h in have} | {str(Path(h).parent.parent) + "/" for h in have}
+        for name, text in self.texts.items():
+            for ref in re.findall(r"`(?:python3 )?\.agents/([A-Za-z0-9_./-]+)", text):
+                ref = ref.rstrip(".")
+                self.assertTrue(ref in have or ref.rstrip("/") + "/" in folders, "%s names .agents/%s" % (name, ref))
+
+    def test_no_packaged_skill_names_a_path_of_the_repository_layout(self):
+        for name, text in self.texts.items():
+            for bad in re.findall(r"`(?:python3 )?((?:scripts|templates|adapters|skills)/[A-Za-z0-9_./-]+)", text):
+                self.fail("%s still names `%s`" % (name, bad))
+
+    def test_each_packaged_skill_keeps_the_size_limit(self):
+        for name, text in self.texts.items():
+            self.assertLessEqual(len(text.encode("utf-8")), 18432, name)
+
+    def test_install_into_a_project_puts_the_skills_where_codex_reads_them(self):
+        with tempfile.TemporaryDirectory() as d:
+            with zipfile.ZipFile(self.zip_path) as z:
+                z.extractall(d)
+            project = Path(d) / "project"
+            project.mkdir()
+            r = subprocess.run([sys.executable, str(Path(d) / "hinshitsu-codex/install.py"), str(project)],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertTrue((project / ".agents/skills/hinshitsu/SKILL.md").is_file())
+            self.assertTrue((project / ".agents/skills/hinshitsu-baby-bird-plan/SKILL.md").is_file())
+            log = subprocess.run([sys.executable, str(project / ".agents/hinshitsu/scripts/hinshitsu_log.py"), "add",
+                                  str(project / "run"), "VOC", "--text", "words"], capture_output=True, text=True)
+            self.assertEqual((log.returncode, log.stdout.strip()), (0, "E-1"), log.stderr)
+            gauge = subprocess.run([sys.executable, str(project / ".agents/skills/hinshitsu-gauge/scripts/gauge.py"),
+                                    str(project / "run")], capture_output=True, text=True)
+            self.assertEqual(gauge.returncode, 0, gauge.stderr)
+
+    def test_install_twice_gives_the_same_files_and_keeps_other_skills(self):
+        with tempfile.TemporaryDirectory() as d:
+            with zipfile.ZipFile(self.zip_path) as z:
+                z.extractall(d)
+            project = Path(d) / "project"
+            (project / ".agents/skills/mine").mkdir(parents=True)
+            (project / ".agents/skills/mine/SKILL.md").write_text("mine", encoding="utf-8")
+            cmd = [sys.executable, str(Path(d) / "hinshitsu-codex/install.py"), str(project)]
+            subprocess.run(cmd, capture_output=True, text=True)
+            first = (project / ".agents/skills/hinshitsu/SKILL.md").read_bytes()
+            self.assertEqual(subprocess.run(cmd, capture_output=True, text=True).returncode, 0)
+            self.assertEqual((project / ".agents/skills/hinshitsu/SKILL.md").read_bytes(), first)
+            self.assertEqual((project / ".agents/skills/mine/SKILL.md").read_text(encoding="utf-8"), "mine")
+
+    def test_install_for_the_user_writes_whole_paths(self):
+        with tempfile.TemporaryDirectory() as d:
+            with zipfile.ZipFile(self.zip_path) as z:
+                z.extractall(d)
+            home = Path(d) / "home"
+            home.mkdir()
+            r = subprocess.run([sys.executable, str(Path(d) / "hinshitsu-codex/install.py"), "--home", str(home)],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            text = (home / ".agents/skills/hinshitsu-record/SKILL.md").read_text(encoding="utf-8")
+            self.assertIn(str(home / ".agents/hinshitsu/scripts/hinshitsu_log.py"), text)
+            self.assertNotRegex(text, r"`(?:python3 )?\.agents/")
+
+    def test_install_with_a_wrong_argument_exits_2(self):
+        with tempfile.TemporaryDirectory() as d:
+            with zipfile.ZipFile(self.zip_path) as z:
+                z.extractall(d)
+            r = subprocess.run([sys.executable, str(Path(d) / "hinshitsu-codex/install.py"), str(Path(d) / "none")],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 2)
 
 
 if __name__ == "__main__":

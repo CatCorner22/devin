@@ -406,3 +406,10 @@ App-specific files, after the code double-check the USER asked for (E-025 to E-0
 - `adapters/chatgpt.md` is renamed `adapters/codex.md` (Codex and ChatGPT Work). `INSTALL.md` gives the steps for 9 surfaces. `scripts/package.py` writes `dist/hinshitsu-claude.zip`, `dist/hinshitsu-chatgpt.zip` and `dist/hinshitsu-plugin.zip`.
 - `python3 -m unittest discover -s tests` prints "Ran 187 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
 - UNVERIFIED: no file of this entry was uploaded to or run on Claude, ChatGPT, Claude Code, Codex, Cursor, Gemini CLI, Muse Code CLI or Kimi Code CLI; this session has no account on them.
+
+### E-033 · 2026-11-18T23:31Z · DECISION · orchestrator
+
+- The USER, 2026-11-18 18:28 EST: "Can you do whatever you need to do to save to Codex?  Please give me a ZIP file.  That's the best way, I think, for Codex."
+- `dist/hinshitsu-codex.zip`, written by `scripts/package.py`: the 7 skills under `agents/skills/`, the scripts and templates under `agents/hinshitsu/`, `install.py` and `README.md`. Each path in a packaged `SKILL.md` is written for the layout Codex reads, `.agents/skills` (https://developers.openai.com/codex/skills, read 2026-11-18).
+- `python3 -m unittest discover -s tests` prints "Ran 195 tests" and "OK": the tests unzip the file, run the installer into an empty project and into a home folder, and run the log script and the gauge from the installed place.
+- UNVERIFIED: the file was never opened by Codex; this session has no Codex.
