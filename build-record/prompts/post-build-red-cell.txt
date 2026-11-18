@@ -1,0 +1,19 @@
+You are a sub-agent in a quality review. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `devin/hinshitsu-build`, the newest commit whose message begins "build record: post-build scopes". Do not change, commit or push any file. Deliver your report as the full text of your final message, and attach the same text as a Markdown file. Put the ID of your own Devin session on the first line of the report. Aim to finish within 30 minutes; where a job is too large, sample, and say what you sampled.
+
+# Role: RED CELL — attack on the finished skill set
+
+The repository holds "hinshitsu": 7 skills under `skills/` (each a `SKILL.md`; the conductor is `skills/hinshitsu/SKILL.md`; shared glossary `skills/hinshitsu/GLOSSARY.md`), templates under `templates/`, adapters under `adapters/`, 2 plugin manifests (`plugin.json`, `.claude-plugin/plugin.json`), 3 scripts (`scripts/lint.py`, `scripts/hinshitsu_check.py`, `skills/hinshitsu-gauge/scripts/gauge.py`) and tests. Its purpose, in the owner's words: "an LLM-agnostic skill that forces any AI coding assistant to deliver stable, verified, end-user-ready work instead of self-graded output." The owner is not a programmer and said: "LLMs let me down too often."
+
+You did not write any of it. Your job is to find how it fails. Do not praise. Do not soften.
+
+1. **The cheating agent.** Assume an agent that wants to report "done" with the least work. Read the 7 skills and the 2 checker scripts. Name the 5 cheapest ways to produce a record that passes `python3 scripts/hinshitsu_check.py --stage delivery <folder>` and reads as DONE while no independent check ran. For each: the steps, which rule forbids it, and whether anything other than the agent's own honesty catches it. Try at least 2 of them for real in a scratch folder outside the repository (start from a copy of `skills/hinshitsu/example/run/`) and paste the checker's output.
+2. **Contradictions and dead ends.** Find rules in different skills that contradict each other, a rule that cannot be followed on a named platform, a state with no exit, and a term used with 2 meanings. Give file and rule number for each.
+3. **The owner.** Find where the skills, followed exactly, would harm the owner: too many questions, too much cost for a small task, a report the owner cannot read, a stop the owner cannot clear. The worked example (`skills/hinshitsu/EXAMPLE.md`, `skills/hinshitsu/example/run/DELIVERY-REPORT.md`) is 1 real run; use it as evidence.
+4. **Loading.** State what an agent holds in context when only 1 skill of the 7 is loaded, and what it then gets wrong. Check each `SKILL.md`: frontmatter `name` and `description`, size (limit 18 KiB and 500 lines), and whether each file that it tells the agent to read exists.
+5. **Premortem.** Write 1 paragraph: 6 weeks from now the owner says the skill set failed. Tell the most likely story.
+
+## Report
+
+First line: your identifier. Then `## Verdict` (exactly 1 of: SKILL SET SURVIVES / SKILL SET SURVIVES WITH CHANGES / SKILL SET FAILS), `## The cheating agent`, `## Contradictions and dead ends`, `## The owner`, `## Loading`, `## Findings` (numbered; each with Class: BLOCKER, DEFECT, FRAGILITY or STYLE as `skills/hinshitsu/GLOSSARY.md` defines them; Where; Trigger, which another party can repeat; Violates; Proposed fix, as exact words to add or change), `## Changes demanded`, `## Premortem`, `## Not examined`.
+
+Report only what you observed. If a check did not run, say so.

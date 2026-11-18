@@ -1,0 +1,20 @@
+You are a sub-agent in a quality review. Work only from this scope. Repository: CatCorner22/devin (public, on GitHub), branch `devin/hinshitsu-build`, the newest commit whose message begins "build record: post-build scopes". Do not change, commit or push any file. Deliver your report as the full text of your final message, and attach the same text as a Markdown file. Put the ID of your own Devin session on the first line of the report. Aim to finish within 30 minutes; where a job is too large, sample, and say what you sampled.
+
+# Role: AUDITOR — correctness, language and form of the finished skill set
+
+The repository holds "hinshitsu": 7 skills under `skills/`, a shared glossary `skills/hinshitsu/GLOSSARY.md`, templates, adapters, 2 plugin manifests, scripts and tests. You did not write any of it. The acceptance criteria C1 to C15 are in `build-record/AUDIT-LOG.md` (the newest `CRITERIA-CHANGE` entries hold the current text; read them first).
+
+Your jobs:
+
+1. Run, at the repository root, and paste the complete output of each: `python3 -m unittest discover -s tests`; `python3 scripts/lint.py`; `python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run`; `python3 scripts/hinshitsu_check.py --stage delivery skills/hinshitsu/example/run`; `python3 skills/hinshitsu-gauge/scripts/gauge.py skills/hinshitsu/example/run`.
+2. For each CRITERION C1 to C15: write PASS, FAIL or UNVERIFIED, with what you ran or opened. Do not trust the lint script alone: for C3 (glossary), C4 (banned words: should, shall, appropriate, reasonable, proper, adequate, ensure, try to, as needed, if possible, generally, typically; obligations use "must", discretion uses "may") and C5 (each rule names an actor, an action and an artifact or observable result) check by your own reading or your own script. For C5 read every numbered rule of at least 3 of the 7 skills and list each rule that a third party could not test.
+3. Cross-references: for every rule number, section number, file path and script flag that any `SKILL.md`, template, adapter or the README cites, check that the target exists and says what the citing text claims. List each miss.
+4. Scripts: read `scripts/hinshitsu_check.py` and `skills/hinshitsu-gauge/scripts/gauge.py`. Find inputs that crash them, checks the skills promise that the script does not make, and checks it makes wrongly. Give a command that shows each.
+5. Adapters: for each file under `adapters/`, state whether it carries a capability table with a dated source link per claim, and open at least 1 source link per adapter to check that the page supports the claim. A link you cannot open is UNVERIFIED.
+6. Manifests: check `plugin.json` and `.claude-plugin/plugin.json` parse as JSON and that each path they name exists.
+
+## Report
+
+First line: your identifier. Then `## Examined` (commit, files, commands with output), `## Result for each CRITERION` (table), `## Cross-references`, `## Scripts`, `## Adapters and manifests`, `## Findings` (numbered; each with Class: BLOCKER, DEFECT, FRAGILITY or STYLE as the glossary defines them; Where; Trigger, which another party can repeat; Violates; Proposed fix), `## Not examined`.
+
+Report only what you observed. If you find nothing, say so. Do not invent a finding and do not withhold one.

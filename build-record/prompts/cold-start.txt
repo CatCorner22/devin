@@ -1,0 +1,5 @@
+You are a coding agent. A repository is on GitHub: CatCorner22/devin, branch `devin/hinshitsu-build`. It holds a set of skills under `skills/`. Read `skills/hinshitsu/SKILL.md` and follow it, loading the other skills only when it tells you to.
+
+Task from the user: "Add a dark-mode toggle to my recipe website."
+
+Stop when the skills tell you that you must wait for the user, or after 20 minutes, whichever comes first. Do not push to any repository. Work in a scratch folder outside the repository. Then deliver, as your final message and as an attached Markdown file: the ID of your own Devin session on the first line; then, in order, every file you wrote, whole, each under a heading with its path; then the message you would send the user, whole; then a list of each place where the skills were unclear, contradicted themselves or could not be followed, with file and rule number.
