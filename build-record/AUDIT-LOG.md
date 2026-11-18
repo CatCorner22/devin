@@ -251,3 +251,21 @@ Request: message 8 (`BRIEF.md`). Reading sent to the user at 2026-11-18T15:08Z; 
 - C15 (new). The repository installs as a plugin on each surface whose documentation defines a plugin format; the manifest follows that documentation, cited with the date read. Test: `scripts/lint.py` validates the manifest; install run on Devin or `UNVERIFIED`.
 - C1 gains: `skills/hinshitsu-gauge/SKILL.md` and the plugin manifest. C2, C3, C4, C13 apply to 7 skills.
 - Per-skill plans are written in `build-record/PLAN-v2.md` before each skill is coded.
+
+### E-015 · 2026-11-18T18:40Z · CORRECTION · orchestrator
+
+This log has no entry between E-014 and this one. The work in that gap was not logged here as it happened: the 7 skills, scripts, templates, adapters and manifests were written; the USER answered the cards; the worked example ran. What exists as a record of that time: the git history of branch `devin/hinshitsu-build` (`git log`), and the example's own log, `skills/hinshitsu/example/run/AUDIT-LOG.md`, which holds the USER's answers word for word (entries of type `ANSWER`). No entry is back-dated to fill the gap.
+
+The USER's decisions on the build's own card, as far as the chat shows: the criteria for the example were approved ("1. A.  2. A.  3.  A.  4. A", and "I approve of your recommendations.  Proceed"). The 4 decisions for the skill set (criteria C1 to C15, platforms, tiers, license) were never answered separately. They stay open; the build went on with the recommended options as working assumptions: 7 adapters, tiers by rule, and no license file.
+
+### E-016 · 2026-11-18T18:40Z · LAUNCH · orchestrator
+
+Post-build review of the finished skill set, as the USER asked ("run the same tests and red teams over it once you finish"). Commit under review: `18cbe7e`. Scopes: `prompts/post-build-red-cell.txt`, `prompts/post-build-forensic-auditor.txt`, `prompts/cold-start.txt`, each sent whole as the session's first message.
+
+| Role | Devin session (platform identifier) | Report |
+|---|---|---|
+| Red cell, finished skill set | https://app.devin.ai/sessions/f083233e93bb4529a5642b858528a39b | `audits/post-build-red-cell.md` |
+| Auditor: correctness, language, form (C1 to C15) | https://app.devin.ai/sessions/93145814433943ac8fea4655abf6cee7 | `audits/post-build-auditor.md` |
+| Cold start (C12): a fresh agent given only the skills and a 1-line task | https://app.devin.ai/sessions/61272d260949486c84d9c887b1582d9c | `audits/cold-start.md` |
+
+Not run, to protect the USER's credits: the 4 lenses on the finished set, and the other 6 auditor roles. UNVERIFIED.
