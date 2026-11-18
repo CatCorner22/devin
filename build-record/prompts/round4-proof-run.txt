@@ -1,0 +1,17 @@
+You are a fresh agent. Repository: CatCorner22/devin (public, on GitHub), branch `main`, commit `a3717b175f15c9356edcbd3c371f4a2e0731e56f`. This repository holds "hinshitsu", version 3.0.0: 7 skills that tell an AI coding agent how to deliver checked work. Read `skills/hinshitsu/SKILL.md` (the conductor) and follow it, and the skills it calls, exactly, for the task below. This is the first run made under version 3.0.0; its purpose is to learn whether the skills work as written on a small real task.
+
+# The task (the USER's words)
+
+"The gauge counts a FINDING as an open blocker when its Class field starts with BLOCKER, and it never tests the ID. A FINDING whose ID is not of the form F-<n>, such as `F-1.` or `blocker one`, is shown in the STOPPED line. The checker refuses such an ID. Make `skills/hinshitsu-gauge/scripts/gauge.py` count such an entry among the entries it could not read, and leave it out of the STOPPED line, with tests."
+
+# Conditions of this run
+
+- The USER of this run is the session that started you, acting for the owner of the repository. Send every DECISION CARD and every message for the USER as a message in this session and wait for the reply. Quote the replies as the USER's messages.
+- RUN FOLDER: `runs/3.0.0-finding-id/` at the root of the repository.
+- Work on a new branch `devin/hinshitsu-run-3.0.0`. Push that branch. Do not push to `main` and do not open a pull request.
+- You may start child Devin sessions as SUB-AGENTS. If your runtime cannot start one, follow rule 0.3 and say so.
+- Write every log entry with `python3 scripts/hinshitsu_log.py add`, and run `python3 scripts/hinshitsu_log.py state` as rule 9.4 says. Follow the skills as written even where a rule seems costly or unclear. Do not repair a rule. When a rule cannot be followed, or 2 rules conflict, or a rule is unclear, do what the text most plainly says, and write the place in `runs/3.0.0-finding-id/FRICTION.md`: the rule number, what you could not do or did not know, and what you did.
+
+# When the run ends
+
+Send, as your final message and as 1 attached Markdown file: line 1, your identifier; the `Status` line of your delivery report; the branch and commit; the number of SUB-AGENT runs planned and used, with each identifier; the complete text of `FRICTION.md`; and, in 1 paragraph, whether following the skills changed the outcome of this task compared with fixing the bug directly, with the EVIDENCE for your answer (each fault that a SUB-AGENT found and you had missed, by file and line).
