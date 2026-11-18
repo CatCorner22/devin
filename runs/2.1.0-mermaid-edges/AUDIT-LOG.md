@@ -683,3 +683,8 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Skill read: `skills/hinshitsu-audit/SKILL.md`, 14089 bytes, SHA-256 1f5483a9c216a6790bc2314a0efdc21858908b962973e1dace4668b5d2f32549
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
 - The skill was read whole, from the file, before this entry was written. The conductor and the glossary were not read again at this STAGE; their hashes are taken again and equal those of the first read (E-3).
+
+### E-68 · 2026-11-18T20:18:54Z · CHECK · orchestrator
+
+- What: S8, sections 11 and 12. No AUDITOR performed a RECIPIENT task and no AUDITOR ran a stability check: a `CORE` run has 2 AUDITORS (rule 0.5), and the 1 SUB-AGENT run left of the 4 the USER allowed (E-37) is the final AUDITOR's. The BUILDER must not perform these checks (rule 11.2).
+- Result: recipient-side verification and stability testing are UNVERIFIED — not run (rule 22.1). The RSV and STAB cells of `COVERAGE-LEDGER.md` read `N/A` — CORE, as rule 0.5 words it (`FRICTION.md` item 11). The delivery report lists both under what was not proven.
