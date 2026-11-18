@@ -339,3 +339,14 @@ Left open:
 - Auditor 14 in part (inputs other than the 3 error types now caught), 18 (glossary BLOCKER classes; report names in rules 5.3 and 6.2; `--record` scope; Mermaid arrow forms; inflected banned words in the checker), 20 (wording). Red cell 17 (gauge text), and the terms seeder, referee and round.
 - C15: no plugin install was run on any surface. Every surface but Devin web: no run.
 
+
+### E-024 · 2026-11-18T19:25Z · LAUNCH · orchestrator
+
+Round 3, on the USER's message of 2026-11-18 14:24 EST: "Please ensure that you double check the code before we move to making app-specific files, … And, please be sure that this tool, the thing we're building, actually works.  It must improve outcomes and do its intended job, every time." Commit under review: `93311abb80ff4154617ee0962be10fa375d59982` (branch `main`). Both sessions run on the mode "Ultra".
+
+| Role | Scope | Devin session (platform identifier) | Report |
+|---|---|---|---|
+| Code reviewer, the 3 scripts and the tests | `prompts/round3-code-review.txt` | https://app.devin.ai/sessions/76f7874b7ab945e4b44a4e9d543d864f | `audits/round3-code-review.md` |
+| First run under version 2.1.0, on a real fault in the checker (auditor finding 17) | `prompts/round3-real-run.txt` | https://app.devin.ai/sessions/7a48183ed55c47359ba86e1b59999645 | `audits/round3-real-run.md` |
+
+In the second run the USER is this session, acting for the owner. Its answers to that run's cards are the ORCHESTRATOR's, not the owner's; the report of that run must be read with this in mind.
