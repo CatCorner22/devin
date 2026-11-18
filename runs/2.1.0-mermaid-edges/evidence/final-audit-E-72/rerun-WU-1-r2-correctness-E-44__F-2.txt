@@ -1,0 +1,17 @@
+$ python3 /home/ubuntu/audit/probe.py A == "reads" ==> B C -. "reads" .-> D A -- "reads" --> B A -- (reads) --> B A -- [1] --> B
+line: 'A == "reads" ==> B'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'C -. "reads" .-> D'
+  93311ab: check() -> [] ; main() -> 0
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A -- "reads" --> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A -- (reads) --> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+line: 'A -- [1] --> B'
+  93311ab: check() -> ['CONNECTIONS.md: edge A --> B has no label (rule 9.3)'] ; main() -> 1
+  5099f2a: check() -> [] ; main() -> 0
+exit code: 0

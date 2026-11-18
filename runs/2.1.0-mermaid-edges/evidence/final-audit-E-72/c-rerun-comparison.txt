@@ -1,0 +1,81 @@
+?? C
+WU-1-r2-correctness-E-44__C4-same.txt ['same']
+WU-1-r2-correctness-E-44__C6-base.txt ['same']
+WU-1-r2-correctness-E-44__C6-suite.txt ['same']
+WU-1-r2-correctness-E-44__C7-import.txt ['same']
+WU-1-r2-correctness-E-44__C7-lint.txt ['same']
+WU-1-r2-correctness-E-44__C7-stat.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__F-1.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__F-2.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__F-4.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__criteria-lines.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__hunt-1-later-link.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__hunt-2-dotted-earlier-link.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__hunt-3-ends-and-shapes.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__hunt-4-blocks.txt ['same']
+    (probe: saved command line is not valid shell as written; arguments taken from the saved "line:" lines)
+WU-1-r2-correctness-E-44__hunt-5-lengths.txt ['same']
+WU-1-r2-correctness-E-44__test_edge_forms_set_the_exit_code.txt ['same']
+WU-1-r2-correctness-E-44__test_edge_with_label_between_dashes_passes.txt ['same']
+WU-1-r2-correctness-E-44__test_good_run_passes_every_stage.txt ['same']
+WU-1-r2-correctness-E-44__test_labeled_thick_and_dotted_edges_pass.txt ['same']
+WU-1-r2-correctness-E-44__test_unlabeled_dotted_edge_fails.txt ['same']
+WU-1-r2-correctness-E-44__test_unlabeled_edge_fails.txt ['same']
+WU-1-r2-correctness-E-44__test_unlabeled_thick_edge_fails.txt ['same']
+new-tests-count.txt ['same', 'same']
+record-check-E-65.txt ['same']
+card-word-count.txt ['same']
+card-2-word-count.txt ['same']
+card-3-word-count.txt ['same']
+    --- saved
+    +++ rerun
+    @@ -1,3 +1,9 @@
+    -scripts/hinshitsu_check.py:287:        for m in re.finditer(r"^\s*(\w+)[^\n|]*?--+>(?!\|)\s*(\w+)", text, re.M):
+    -scripts/hinshitsu_check.py:288:            err("CONNECTIONS.md: edge %s --> %s has no label (rule 9.3)" % (m.group(1), m.group(2)))
+    -tests/test_check.py:208:    def test_unlabeled_edge_fails(self):
+    +scripts/hinshitsu_check.py:30:EDGE_RE = re.compile(r"^\s*(\w+)([^\n|]*?)(--+>|==+>|-?\.+->)(?!\|)\s*(\w+)", re.M)
+    +scripts/hinshitsu_check.py:302:                err("CONNECTIONS.md: edge %s %s %s has no label (rule 9.3)" % (src, arrow, dst))
+    +tests/test_check.py:214:    def test_unlabeled_edge_fails(self):
+    +tests/test_check.py:219:    def test_unlabeled_thick_edge_fails(self):
+    +tests/test_check.py:220:        self.assertIn("CONNECTIONS.md: edge A ==> B has no label (rule 9.3)", hcheck.check(edge_run("A ==> B"), "plan"))
+    +tests/test_check.py:222:    def test_unlabeled_dotted_edge_fails(self):
+    +tests/test_check.py:223:        self.assertIn("CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)", hcheck.check(edge_run("C -.-> D"), "plan"))
+    +tests/test_check.py:236:                self.assertIn("CONNECTIONS.md: edge A --> C has no label (rule 9.3)", hcheck.check(edge_run(line), "plan"))
+existing-implementations.txt ['DIFFERENT']
+    --- saved
+    +++ rerun
+    @@ -5,0 +6 @@
+    +exit: 0
+existing-connections-forms.txt ['DIFFERENT']
+    --- saved
+    +++ rerun
+    @@ -1 +1 @@
+    -5099f2a
+    +4832ee5
+builder-run-WU-1-round-2.txt ['DIFFERENT', 'same', 'same', 'same', 'same']
+    --- saved
+    +++ rerun
+    @@ -1 +1 @@
+    -2026-11-18T19:31:22Z
+    +2026-11-18T20:24:00Z
+    --- saved
+    +++ rerun
+    @@ -1 +1 @@
+    -339ac9b
+    +4832ee5
+    --- saved
+    +++ rerun
+    @@ -1,2 +1,2 @@
+    -## devin/hinshitsu-run-2.1.0
+    -?? runs/2.1.0-mermaid-edges/evidence/capability-commands.txt
+    +## devin/hinshitsu-run-2.1.0...origin/devin/hinshitsu-run-2.1.0
+    +?? C
+capability-commands.txt ['DIFFERENT', 'same', 'DIFFERENT', 'DIFFERENT', 'same', 'same']

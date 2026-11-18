@@ -1,0 +1,6 @@
+test_unlabeled_edge_fails (test_check.Check.test_unlabeled_edge_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+OK

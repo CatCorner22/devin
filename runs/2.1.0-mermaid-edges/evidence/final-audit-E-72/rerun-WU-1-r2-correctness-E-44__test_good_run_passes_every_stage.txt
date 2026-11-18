@@ -1,0 +1,8 @@
+$ python3 -m unittest discover -s tests -k test_good_run_passes_every_stage -v
+test_good_run_passes_every_stage (test_check.Check.test_good_run_passes_every_stage) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.012s
+
+OK
+exit code: 0

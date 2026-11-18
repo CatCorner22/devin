@@ -1,0 +1,35 @@
+===== bcb91172004e46e2ba8f5660b0641d0b evidence/capability-probe.md session message chars 1014 saved chars 1047 not identical
+  insert session lines 1-0 saved lines 1-1
+    F| bcb91172004e46e2ba8f5660b0641d0b
+===== 6b750018b2914b0a9b8d30fafc55d59d audits/WU-1-correctness-E-31.md session message chars 19490 saved chars 41843 not identical
+  delete session lines 6-7 saved lines 6-5
+    S| 
+    S| **1 difference between this message and the attached `WU-1-correctness.md`:** the attached file prints the complete output of each command inside the report. This message names the output file instead, because the outputs total about 30,000 characters. Every o
+  replace session lines 99-112 saved lines 97-316
+    S| 1. C1. Command: `python3 -m unittest discover -s tests -k test_unlabeled_thick_edge_fails -v > c1-thick.txt 2>&1`. Exit code: 0. Output file `c1-thick.txt`.
+    S| 2. C2. Command: `python3 -m unittest discover -s tests -k test_unlabeled_dotted_edge_fails -v > c2-dotted.txt 2>&1`. Exit code: 0. Output file `c2-dotted.txt`.
+    S| 3. C3. Command: `python3 -m unittest discover -s tests -k test_edge_with_label_between_dashes_passes -v > c3-between-dashes.txt 2>&1`. Exit code: 0. Output file `c3-between-dashes.txt`.
+    S| 4. C1, C2, C3. Command: `python3 -m unittest discover -s tests -k test_edge_forms_set_the_exit_code -v > c1-c2-c3-exit-code.txt 2>&1`. Exit code: 0. Output file `c1-c2-c3-exit-code.txt`.
+    S| 5. C4. Command: `python3 -m unittest discover -s tests -k test_unlabeled_edge_fails -v > c4-unlabeled-edge.txt 2>&1`. Exit code: 0. Output file `c4-unlabeled-edge.txt`.
+    S| 6. C4. Command: `python3 -m unittest discover -s tests -k test_good_run_passes_every_stage -v > c4-good-run.txt 2>&1`. Exit code: 0. Output file `c4-good-run.txt`.
+    S| ... (14 lines)
+    F| 1. C1. Command: `python3 -m unittest discover -s tests -k test_unlabeled_thick_edge_fails -v > c1-thick.txt 2>&1`. Exit code: 0. Output file `c1-thick.txt`:
+    F| 
+    F| ````text
+    F| test_unlabeled_thick_edge_fails (test_check.Check.test_unlabeled_thick_edge_fails) ... ok
+    F| 
+    F| ----------------------------------------------------------------------
+    F| ... (220 lines)
+  replace session lines 116-116 saved lines 320-320
+    S| 15. Old script against new script on the 9 lines of the CRITERIA at 3 stages, and on 71 other edge lines at stage `plan`. Command: `python3 /home/ubuntu/audit/probe.py > probe-old-vs-new.txt 2>&1`. Exit code: 0. Each tuple is (`main()` return, `check()` list).
+    F| 15. Old script against new script on the 9 lines of the CRITERIA at 3 stages, and on 71 other edge lines at stage `plan`. Command: `python3 /home/ubuntu/audit/probe.py > probe-old-vs-new.txt 2>&1`. Exit code: 0. Each tuple is (`main()` return, `check()` list).
+  replace session lines 118-118 saved lines 322-500
+    S| 16. Suite, lint and diff at the branch tip 03b0161, in a second detached worktree. Command: `(python3 -m unittest discover -s tests; echo "suite exit=$?"; python3 scripts/lint.py; echo "lint exit=$?"; git diff --stat 93311ab HEAD -- . ':!runs'; git diff fe82be
+    F| ````python
+    F| import importlib.util, sys, io, contextlib
+    F| sys.path.insert(0, "tests")
+    F| import test_check as t
+    F| new = t.hcheck
+    F| spec = importlib.util.spec_from_file_location("old", "/tmp/old_check.py"); old = importlib.util.module_from_spec(spec); spec.loader.exec_module(old)
+    F| ... (179 lines)
+===== cecdcf81310d47498b7a6dfc923e59b9 audits/WU-1-r2-correctness-E-44.md session message chars 42084 saved chars 42084 identical

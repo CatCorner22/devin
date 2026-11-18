@@ -1,0 +1,4 @@
+$ python3 -c "t=open('runs/2.1.0-mermaid-edges/evidence/card-2-as-sent.md').read(); a=t.index('**Decision 2 of 2'); b=t.index('**What the'); print('decision 1 words:', len(t[:a].split())); print('decision 2 words:', len(t[a:b].split()))"
+decision 1 words: 119
+decision 2 words: 119
+exit code: 0
