@@ -23,7 +23,7 @@ graph TD
   G --> C4["C4 nothing else changes"]
   G --> C5["C5 tests fail on old gauge"]
   G --> C6["C6 branch only"]
-  C1 --> WU1["WU-1 gauge.py read_state and tests"]
+  C1 --> WU1["WU-1 gauge.py read_state and tests; hinshitsu_check.py finding_id; SKILL.md rules 24.2 and 24.3"]
   WU1 --> D1["D-1 first word of the ID matches F-digits"]
   WU1 --> F1["F-1 DEFECT"]
   WU1 --> F2["F-2 DEFECT"]
@@ -36,6 +36,15 @@ graph TD
   WU1 --> F9["F-9 BLOCKER, open"]
   WU1 --> F10["F-10 FRAGILITY"]
   WU1 --> F11["F-11 STYLE"]
+  WU1 --> F12["F-12 BLOCKER, open"]
+  WU1 --> F13["F-13 BLOCKER, open"]
+  WU1 --> F14["F-14 BLOCKER, open"]
+  WU1 --> F15["F-15 DEFECT"]
+  WU1 --> F16["F-16 DEFECT"]
+  WU1 --> F17["F-17 DEFECT, open"]
+  WU1 --> F18["F-18 DEFECT, open"]
+  WU1 --> F19["F-19 DEFECT, open"]
+  WU1 --> F20["F-20 DEFECT, open"]
 ```
 
 ## Node check
@@ -45,7 +54,7 @@ graph TD
 | CRITERIA | 6 | 6 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 1 | 1 |
-| FINDINGS | 11 | 11 (the list is the block "FINDINGS, from the log"; the diagram holds 1 node each) |
+| FINDINGS | 20 | 20 (the list is the block "FINDINGS, from the log"; the diagram holds 1 node each) |
 
 ## FINDINGS, from the log
 
@@ -62,4 +71,13 @@ Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
 - F-9 `skills/hinshitsu-gauge/SKILL.md`, section 24, item 3 (line 16): "shows `STOPPED — blocker open` with the count of open BLOCKERS and the first 4 FINDING IDs". `skills/hinshitsu-gauge/scripts/gauge.py`, lines 88 and 89. (BLOCKER, open)
 - F-10 `tests/test_gauge.py`, lines 156 to 159 (`test_svg_is_well_formed_and_escapes`), with `gauge.py` lines 85 to 87 and 144 to 145. (FRAGILITY, OVERRULED by E-63)
 - F-11 `skills/hinshitsu-gauge/scripts/gauge.py`, line 137. (STYLE, OVERRULED by E-60)
+- F-12 `skills/hinshitsu-gauge/SKILL.md` line 16 (rule 24.3) against `skills/hinshitsu-gauge/scripts/gauge.py` lines 88 to 89. (BLOCKER, open)
+- F-13 `DELIVERY-REPORT.md`, `Status`, "Part 5 and part 8: see the `DELIVERY` entry [`AUDIT-LOG.md`]", under "Parts of DONE that are met". (BLOCKER, open)
+- F-14 `DELIVERY-REPORT.md`, "What you got". (BLOCKER, open)
+- F-15 `SESSION-STATE.md` lines 10, 14 and 18. (DEFECT, FIXED by E-84)
+- F-16 `CONNECTIONS.md` and `MINDMAP.md`. (DEFECT, FIXED by E-85)
+- F-17 `audits/WU-1-r2-correctness_E-41.md` and `audits/WU-1-r3-correctness_E-55.md`. (DEFECT, open)
+- F-18 `AUDIT-LOG.md`,  and  (see ). (DEFECT, open)
+- F-19 `evidence/delivery-tests.txt`. (DEFECT, open)
+- F-20 `AUDIT-LOG.md`, , , , . (DEFECT, open)
 <!-- from the log: end -->

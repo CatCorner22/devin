@@ -14,6 +14,7 @@ graph LR
   SG -->|GAUGE.svg text| T
   RS -->|state dict| T
   FID["scripts/hinshitsu_check.py finding_id"] -->|the accepted ID or None, for the agreement test| T
+  FID -->|the accepted ID or None, for the 2 messages of the checker| CHK
   RS -->|what the script reads and shows| SK["skills/hinshitsu-gauge/SKILL.md rules 24.2 and 24.3"]
 ```
 
@@ -28,6 +29,7 @@ graph LR
 | gauge.py text_gauge | tests/test_gauge.py | STOPPED line and unread line | a test of `tests/test_gauge.py` fails |
 | gauge.py svg_gauge | tests/test_gauge.py | GAUGE.svg text | a test of `tests/test_gauge.py` fails |
 | gauge.py read_state | tests/test_gauge.py | state dict | a test of `tests/test_gauge.py` fails |
+| scripts/hinshitsu_check.py finding_id | scripts/hinshitsu_check.py FINDING ID test | the accepted ID or None, for the 2 messages of the checker | line 310 picks the ID in another way than `finding_id` (F-7) |
 | scripts/hinshitsu_check.py finding_id | tests/test_gauge.py | the accepted ID or None, for the agreement test | the checker picks the ID out of the field in another way than `finding_id` does (F-7) |
 | gauge.py read_state | skills/hinshitsu-gauge/SKILL.md rules 24.2 and 24.3 | what the script reads and shows | a sentence of rule 24.2 or 24.3 is false of the script (F-5, F-9) |
 
@@ -35,5 +37,6 @@ graph LR
 
 | Node | Kind | Version or date checked |
 |---|---|---|
+| `AUDIT-LOG.md` FINDING entry | input file that the gauge reads; a file of a RUN FOLDER, not of the DELIVERABLE | form of rule 15.1, commit 1ce96d3 |
 | Python 3 standard library | library | version in `evidence/capability-commands.txt` |
 | `scripts/hinshitsu_check.py`, other than `finding_id` and lines 306 to 317 | script of this repository; those lines were changed by this run (fix of F-3, commit 894fd4f) | commit 1ce96d3 |

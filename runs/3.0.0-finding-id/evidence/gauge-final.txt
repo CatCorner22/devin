@@ -1,0 +1,18 @@
+$ python3 skills/hinshitsu-gauge/scripts/gauge.py runs/3.0.0-finding-id
+hinshitsu gauge  [########################] 100%  12 of 12 stages complete (the log's state, not proof of DONE)
+All 12 stages have an end or skipped entry.
+STOPPED — blocker open: 4: F-9, F-12, F-13, F-14
+  [x] S1  Capability and tier            hinshitsu
+  [x] S2  Record set up                  hinshitsu-record
+  [x] S3  Customer voice and gap list    hinshitsu-baby-bird-plan
+  [x] S4  Assumptions and criteria       hinshitsu-baby-bird-plan
+  [-] S5  Lenses and red cell            hinshitsu-challenge
+  [x] S6  Reconcile and freeze           hinshitsu-baby-bird-plan
+  [x] S7  Build and audit                hinshitsu-audit
+  [x] S8  Recipient and stability checks hinshitsu-audit
+  [-] S9  Pre-delivery red cell          hinshitsu-challenge
+  [x] S10 Audit of the audit             hinshitsu-delivery
+  [x] S11 Delivery report                hinshitsu-delivery
+  [x] S12 Lessons                        hinshitsu-delivery
+  x done   - skipped   > running   (blank) pending
+exit 0

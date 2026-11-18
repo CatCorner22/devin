@@ -741,3 +741,187 @@ A "refused ID" means: the entry has no `- ID:` line, or the line is empty, or th
 ### E-74 · 2026-11-18T22:06:07Z · CORRECTION · orchestrator
 
 Corrects E-62 and E-73. (1) E-62 quotes the USER: "Run the final check as the 5th and last session", and lacks the line `- Planned SUB-AGENT runs: 5` that rule 0.9 asks of an ANSWER entry written after the number was reached; the number 4 was reached at E-55, and the line of E-49 was written before that. The ORCHESTRATOR's error. The USER's leave for the 5th run is in the quoted message of E-62; `scripts/hinshitsu_check.py` reads only the line, and reports E-73 as over the budget. No later entry can cure it, since the script counts an ANSWER only before the LAUNCH. (2) E-73 names the report `audits/final-audit_E-73.md`; rule 17.4 and `scripts/hinshitsu_check.py` (line 510) ask for a name that starts `final-audit-`, and `scripts/hinshitsu_log.py` refuses a path that holds `-E-73` in the entry E-73 itself (`FRICTION.md` item 15). A name such as `audits/final-audit-r1_E-73.md` would have met both; the ORCHESTRATOR did not see this before E-73. The report is saved at the path E-73 states. The stage `delivery` check therefore prints 2 failures that stay.
+
+### E-75 · 2026-11-18T22:14:30Z · FINDING · auditor: final
+
+- ID: F-12
+- Class: BLOCKER (d) (the AUDITOR's words: "BLOCKER — DELIVERABLE.")
+- Where: `skills/hinshitsu-gauge/SKILL.md` line 16 (rule 24.3) against `skills/hinshitsu-gauge/scripts/gauge.py` lines 88 to 89.
+- Trigger: a log with 2 BLOCKERS whose ID fields are `F-7` and `F-7 (local 2)`; the gauge prints `STOPPED — blocker open: 2: F-7, F-7 (local 2)`.
+- Violates: rule 24.3. The AUDITOR's words: "This is F-9 (E-57), open; the report states it truthfully."
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: yes (rule 14.1); the run was already stopped on F-9, which is the same fault
+
+### E-76 · 2026-11-18T22:14:30Z · FINDING · auditor: final
+
+- ID: F-13
+- Class: BLOCKER (d) (the AUDITOR's words: "BLOCKER — `Status` claim.")
+- Where: `DELIVERY-REPORT.md`, `Status`, "Part 5 and part 8: see the `DELIVERY` entry [`AUDIT-LOG.md`]", under "Parts of DONE that are met".
+- Trigger: search `AUDIT-LOG.md` for an entry of kind `DELIVERY`; none exists, and part 8 (the report was sent) is not yet true.
+- Violates: rule 17.1 and rule 17.6.
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 2
+- Lens: structural integrity
+- Forward work stopped: yes (rule 14.1)
+
+### E-77 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-14
+- Class: BLOCKER (d) (the AUDITOR's words: "BLOCKER — `Summary` claims.")
+- Where: `DELIVERY-REPORT.md`, "What you got".
+- Trigger: open `evidence/delivery-gauge-demo.txt`: it shows no picture; open `evidence/delivery-tests.txt`: it does not show the number 6.
+- Violates: rule 17.4 (b), rule 17.1. The AUDITOR's words: "Both claims are true by my own runs and by the E-55 report; only the citations fall short."
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 3
+- Lens: structural integrity
+- Forward work stopped: yes (rule 14.1)
+
+### E-78 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-15
+- Class: DEFECT
+- Where: `SESSION-STATE.md` lines 10, 14 and 18.
+- Trigger: Line 18 says "the 4 scopes under `prompts/`"; 5 exist. Line 14 cites E-21 for the CRITERIA where line 3 names E-72 as the newest. Line 10: last rewritten at E-70, before E-71 to E-73.
+- Violates: rule 8.1.
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 4
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-79 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-16
+- Class: DEFECT
+- Where: `CONNECTIONS.md` and `MINDMAP.md`.
+- Trigger: `CONNECTIONS.md` lacks the edge `finding_id` → the checker's FINDING ID test (line 310) and omits the node `AUDIT-LOG.md FINDING entry` from "Nodes outside the DELIVERABLE"; the diagram node `WU-1` of `MINDMAP.md` omits 2 of the 4 files.
+- Violates: rule 17.4 (d).
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 5
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-80 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-17
+- Class: DEFECT
+- Where: `audits/WU-1-r2-correctness_E-41.md` and `audits/WU-1-r3-correctness_E-55.md`.
+- Trigger: compare each with the last message of its session: the saved files omit the last line (`ATTACHMENT:{…}`) of the message; check 2 of the report says "the same text". The body is identical.
+- Violates: rule 1.6 (saved word for word).
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 6
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-81 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-18
+- Class: DEFECT
+- Where: `AUDIT-LOG.md`, E-62 and E-73 (see E-74).
+- Trigger: run `python3 scripts/hinshitsu_check.py --stage delivery` after the final report is saved: 2 failures stay (the count of planned runs, and the name `final-audit_E-73.md`).
+- Violates: part 7 of DONE; rules 0.9 and 17.4.
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 7
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-82 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-19
+- Class: DEFECT
+- Where: `evidence/delivery-tests.txt`.
+- Trigger: read the file: it holds lines of other checks ("lint: 1 failure(s)", a `UnicodeDecodeError`) printed by tests that feed the scripts bad input; nothing marks them as such.
+- Violates: rule 17.3 as the AUDITOR reads it: a reader may take them for failures.
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 8
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-83 · 2026-11-18T22:14:31Z · FINDING · auditor: final
+
+- ID: F-20
+- Class: DEFECT
+- Where: `AUDIT-LOG.md`, E-20, E-35, E-49, E-62.
+- Trigger: open the ORCHESTRATOR's session: each quoted answer is shown as sent by `Devin Bot` through the API from another session. The words match; the record does not show who wrote them.
+- Violates: rule 23.4 (the USER's reply).
+- Raised by: final AUDITOR, LAUNCH E-73, `audits/final-audit_E-73.md`, finding 9
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-84 · 2026-11-18T22:15:07Z · RESOLUTION · orchestrator
+
+- Finding: F-15
+- Result: FIXED
+- Record fault: yes
+- Change: `SESSION-STATE.md` lines 10, 14 and 18 corrected by hand; `python3 scripts/hinshitsu_log.py state` run
+- Evidence: `evidence/record-check-E-83.txt` (exit 0). No AUDITOR has read this correction: the audit of the audit ran before it (rule 14.6).
+
+### E-85 · 2026-11-18T22:15:07Z · RESOLUTION · orchestrator
+
+- Finding: F-16
+- Result: FIXED
+- Record fault: yes
+- Change: `CONNECTIONS.md`: the edge `finding_id` → the checker's FINDING ID test, and the node `AUDIT-LOG.md` FINDING entry in the table of nodes outside the DELIVERABLE; `MINDMAP.md`: the diagram node WU-1 names the 4 files, and the 9 FINDINGS of the final audit are added
+- Evidence: `evidence/record-check-E-83.txt` (exit 0). No AUDITOR has read this correction: the audit of the audit ran before it (rule 14.6).
+
+### E-86 · 2026-11-18T22:15:08Z · STAGE · orchestrator
+
+- Stage: S10
+- Event: end
+- Artifacts: `audits/final-audit_E-73.md` (last words `not passed`), `prompts/final-auditor.md`
+- Note: the audit of the audit did not pass: 3 BLOCKERS and 6 DEFECTS (F-12 to F-20). It runs 1 time (rule 17.4); the USER allowed no further SUB-AGENT run and no further card (E-62).
+
+### E-87 · 2026-11-18T22:15:08Z · STAGE · orchestrator
+
+- Stage: S11
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 9614 bytes, SHA-256 f9b51a3182e6c18035971ca7efaa0f617d8006767008766a35d8a01bf1d61357
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- Note: the skill was read at the start of S10 (E-70); its hash is taken again and is equal
+
+### E-88 · 2026-11-18T22:16:16Z · DELIVERY · orchestrator
+
+- Status: DELIVERED — NOT DONE: parts 2, 3, 5, 6 and 7 of DONE are not met (the `Status` of `DELIVERY-REPORT.md` names each)
+- Channel: the final message of this session to the USER, with 1 attached Markdown file that holds the Status line, the branch and commit, the SUB-AGENT runs and `FRICTION.md`; `DELIVERY-REPORT.md` is on the branch `devin/hinshitsu-run-3.0.0`. The message is sent after the S12 entries, as the USER's first message asks ("When the run ends").
+- Report: `DELIVERY-REPORT.md`
+
+### E-89 · 2026-11-18T22:16:17Z · STAGE · orchestrator
+
+- Stage: S11
+- Event: end
+- Artifacts: `DELIVERY-REPORT.md`
+
+### E-90 · 2026-11-18T22:16:17Z · STAGE · orchestrator
+
+- Stage: S12
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 9614 bytes, SHA-256 f9b51a3182e6c18035971ca7efaa0f617d8006767008766a35d8a01bf1d61357
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- Note: the skill was read at the start of S10 (E-70); its hash is taken again and is equal
+
+### E-91 · 2026-11-18T22:16:17Z · LESSON · orchestrator
+
+Lesson 1 (the AGENT's error). What happened: the FROZEN CRITERIA entry E-21 lacked the field line `- Approval:`; the stage `unit` check was first run at S10 (E-71, E-72). E-14 named a lint script that does not exist (E-15). Cost: 2 CORRECTION entries and 1 repeated CRITERIA entry. Proposed amendment: rule 9.4, add "Before each `LAUNCH` entry of an AUDITOR, run `python3 scripts/hinshitsu_check.py --stage unit <run folder>`; it must print 0 failures." Full text: `DELIVERY-REPORT.md`, LESSONS, row 1. Not applied (rule 20.3).
+
+### E-92 · 2026-11-18T22:16:17Z · LESSON · orchestrator
+
+Lesson 2 (the AGENT's error). What happened: the TRACE of E-26 did not follow the change to the rule text that describes the script; rules 24.2 and 24.3 became false (E-30, E-43). The fix (E-53) wrote "FINDING IDs" into rule 24.3 without a test against an ID field of 2 words (E-57). Cost: 2 BLOCKERS, 2 DECISION CARDS, 1 SUB-AGENT run; the run ends with F-9 open. Proposed amendment: rule 24.3, new text for the sentence on the STOPPED line. Full text: `DELIVERY-REPORT.md`, LESSONS, row 2. Not applied.
+
+### E-93 · 2026-11-18T22:16:17Z · LESSON · orchestrator
+
+Lesson 3. What happened: the builder and 2 AUDITORS missed that the old test `test_svg_is_well_formed_and_escapes` lost its force; the third AUDITOR found it (E-58). Cost: 1 FRAGILITY left in the DELIVERABLE. Proposed amendment: rule 10.1, add rows for every existing test whose input the change treats in a new way and for every sentence of a shipped text that describes the changed behavior. Full text: `DELIVERY-REPORT.md`, LESSONS, row 3. Not applied.
+
+### E-94 · 2026-11-18T22:16:17Z · LESSON · orchestrator
+
+Lesson 4. What happened: 2 AUDITORS classed 1 fault differently (DEFECT in E-30, BLOCKER in E-43), 2 wrote a class with a condition (E-43, E-57), and the USER's overrule (E-36) did not carry to the same fault raised again. Cost: 1 DECISION CARD, 1 WAIVER. Proposed amendment: rule 15.3, exactly 1 class with no condition; the scope lists the files of the DELIVERABLE; a line `Repeats: F-<n>`. Full text: `DELIVERY-REPORT.md`, LESSONS, row 4. Not applied.
+
+### E-95 · 2026-11-18T22:16:17Z · LESSON · orchestrator
+
+Lesson 5. What happened: each re-audit after a fix audited the whole WORK UNIT again and raised findings on lines the fix did not touch (E-41, E-55); 3 rounds did not converge. Cost: 1 SUB-AGENT run beyond the plan, 2 DECISION CARDS. Proposed amendment: rule 16.5, the scope of a re-run names the changed lines and the triggers of the FINDINGS the fix closes. Full text: `DELIVERY-REPORT.md`, LESSONS, row 5. Not applied.
+
+### E-96 · 2026-11-18T22:16:18Z · LESSON · orchestrator
+
+Lesson 6. What happened: the fix of a BLOCKER put the change over the CORE numbers and the rules stated no way to stay in CORE (E-50, E-54); S8 has no AUDITOR in a CORE run (E-67). Cost: every FULL check UNVERIFIED; `FRICTION.md` items 18 and 19. Proposed amendment: rule 0.5, the USER may keep CORE by a WAIVER; the correctness auditor performs rules 11.2 and 12.2. Full text: `DELIVERY-REPORT.md`, LESSONS, row 6. Not applied.
+
+### E-97 · 2026-11-18T22:16:18Z · LESSON · orchestrator
+
+Lesson 7 (the AGENT's error). What happened: the draft report cited files that do not show 2 claims and listed 2 parts of DONE as met on an entry that did not exist (E-76, E-77); E-62 lacked the line of planned runs and E-73 named the final report in a form the checker does not take (E-74, E-81). Cost: 2 BLOCKERS and 1 DEFECT of the final audit; the stage `delivery` check cannot print 0. Proposed amendment: rules 0.9 and 17.4. Full text: `DELIVERY-REPORT.md`, LESSONS, row 7. Not applied.
+
+### E-98 · 2026-11-18T22:16:18Z · STAGE · orchestrator
+
+- Stage: S12
+- Event: end
+- Artifacts: `DELIVERY-REPORT.md` (the heading `LESSONS`), 7 `LESSON` entries (E-91 to E-97)

@@ -1,0 +1,4 @@
+$ python3 scripts/hinshitsu_check.py --record runs/3.0.0-finding-id
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+exit 0
