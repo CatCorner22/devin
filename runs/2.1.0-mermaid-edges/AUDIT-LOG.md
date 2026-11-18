@@ -156,3 +156,11 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 | A-8 | The finished change is at most 3 files and 100 lines outside the RUN FOLDER | the TIER of E-4 | not verified — measured before the audit of WU-1 | the run becomes `FULL` |
 
 Sent to: the USER, on the card that follows the `CRITERIA` entry (A-6 and A-7, which concern RECIPIENTS). This is a `CORE` run: no LENS and no RED CELL saw the list (rule 4.3).
+
+### E-14 · 2026-11-18T19:36:36Z · DECISION · orchestrator
+
+- ID: D-1
+- Decision: Replace the 1 pattern at `scripts/hinshitsu_check.py:287` with a test of the first arrow link on each line that starts with a node name. The link is an arrow (`--+>`), a thick arrow (`==+>`) or a dotted arrow (`-.+->`, or `.+->` after a label). The edge has a label when `|` follows the link, or when the text between the node and the link, with node brackets and quoted text removed, opens the same kind of link (`--`, `==` or `-.`) followed by text. Every other edge is unlabeled.
+- Rests on: A-1, A-2, A-3, A-4, A-6, A-7
+- Reason: it gives the verdicts the USER asked for on the 3 named forms, keeps the 2 existing verdicts, and stays inside the standard library.
+- Alternatives rejected: (1) add `==>` and `-.->` to the old pattern and nothing else — `A -- reads --> B` still fails; (2) a Mermaid parser from a package — `TESTING.md` says Python 3 only (O3); (3) test every link form and every link on a line — G12 is the USER's call and is on the card; this decision changes if the USER answers `approve, all forms`.
