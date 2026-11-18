@@ -299,3 +299,77 @@ Not an action of section 18; written for the record of the push. Action: `git pu
 - Commit under review: eda8e66335c25bc2bde4eecb09f8d65d175ef6ab
 - SUB-AGENT identifier: ba78966202cd49adb922bca5e32944c4 https://app.devin.ai/sessions/ba78966202cd49adb922bca5e32944c4
 - Report: `audits/WU-1-correctness_E-29.md`
+
+### E-30 · 2026-11-18T21:37:40Z · FINDING · auditor: correctness
+
+- ID: F-1
+- Class: DEFECT
+- Where: `skills/hinshitsu-gauge/SKILL.md`, rules 24.2 and 24.3 (lines 15 and 16), against `gauge.py` lines 83 to 89 and `svg_gauge` (lines 153 to 210).
+- Trigger: Run `gauge.py` on a log that holds only `### E-1 · t · FINDING · a`, `- ID: F-1.`, `- Class: BLOCKER` (probe P15). The text prints `1 entries could not be read …` and no STOPPED line, as C1 and C2 require. `GAUGE.svg` holds no `STOPPED`, a black needle, and no mention of an unread entry: it is the same picture as for a log with no FINDING. Rule 24.2 still says the script reads "each `FINDING` entry with `- Class: BLOCKER` that no `RESOLUTION` entry names", and rule 24.3 says the picture shows STOPPED "while any BLOCKER is open". After this change both sentences are false for a BLOCKER with a refused ID. The commit changed no line of `SKILL.md`.
+- Violates: rules 24.2 and 24.3 as written (the script no longer does what they state). No CRITERION: C2 requires this behavior and C4 forbids other changes, so the CRITERIA did not cover the rule text.
+- Raised by: correctness auditor, LAUNCH E-29, `audits/WU-1-correctness_E-29.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-31 · 2026-11-18T21:37:40Z · FINDING · auditor: correctness
+
+- ID: F-2
+- Class: DEFECT (old behavior; this change did not introduce it and no CRITERION covers it)
+- Where: `gauge.py` lines 88 to 89 (`fid not in blockers`, `blockers.append(fid)`), against `hinshitsu_check.py` line 302 (`fid = fid.split()[0]`).
+- Trigger: Log 2 BLOCKER entries, `- ID: F-7` and `- ID: F-7 (local 1)` (probe P3). The gauge returns `['F-7', 'F-7 (local 1)']` and prints a count of 2. The checker keys both by the first word, `F-7`: 1 FINDING. 1 `RESOLUTION` of `F-7` clears both (P4). The old code compared the whole field in the same way, so a3717b1 does the same.
+- Violates: rule 24.3 ("the count of open BLOCKERS"): the count is 2 where 1 BLOCKER is open. It also runs against the intent of the old test `test_blocker_logged_2_times_is_listed_1_time`. No CRITERION.
+- Raised by: correctness auditor, LAUNCH E-29, `audits/WU-1-correctness_E-29.md`, finding 2
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-32 · 2026-11-18T21:37:40Z · FINDING · auditor: correctness
+
+- ID: F-3
+- Class: FRAGILITY
+- Where: `gauge.py` line 31 and lines 84 to 85; `tests/test_gauge.py` lines 83 to 92; `scripts/hinshitsu_check.py` lines 85 and 299 to 306.
+- Trigger: The gauge copies the checker's pattern and its 3-step test (no field, first word, full match). The test of C3 reads `hinshitsu_check.FINDING_ID`, so a change to that pattern is caught. It does not call the checker's test: line 89 writes `raw.split()[0]` again by hand. If a later commit changes how the checker picks the ID out of the field — for example it strips a full stop, as lines 304 to 305 already do for the class word — the checker will accept `F-1.`, the gauge will refuse it, and this test will still pass. The gauge also tests the class in another way than the checker (`startswith("BLOCKER")` against a first word in `CLASSES`): probe P7, `- Class: BLOCKERS`, shows STOPPED in the gauge while the checker reports "has no class". That part is old behavior.
+- Violates: no CRITERION today; it puts C3 at risk under the change named.
+- Raised by: correctness auditor, LAUNCH E-29, `audits/WU-1-correctness_E-29.md`, finding 3
+- Lens: structural integrity
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-33 · 2026-11-18T21:37:40Z · FINDING · auditor: correctness
+
+- ID: F-4
+- Class: STYLE
+- Where: `gauge.py` line 137.
+- Trigger: Any log with 1 refused ID (probe P15) prints `1 entries could not be read (rule 9.4, rule 0.7); the gauge leaves them out.` The entry breaks rule 9.5 (ID formats), which the comment on line 31 itself names; the heading form of rule 9.4 is sound. The line also says "1 entries". The line is unchanged by this commit, and C1 requires the words "<n> entries could not be read", which it prints.
+- Violates: nothing in C1 to C6; form only.
+- Raised by: correctness auditor, LAUNCH E-29, `audits/WU-1-correctness_E-29.md`, finding 4
+- Lens: recipient experience
+- Forward work stopped: no (the class is not BLOCKER)
+
+### E-34 · 2026-11-18T21:38:25Z · CARD · orchestrator
+
+Working assumption while the card is open (not the USER's decision): Decision 1 set aside; Decision 2 set aside. No work that depends on the answers starts before the reply. The text sent, word for word:
+
+> DECISION CARD 2 — hinshitsu run 3.0.0-finding-id (2 decisions; please answer both)
+> 
+> The separate session that checked the fix reports that C1 to C6 each passed their tests, and raised 4 faults, none of which stops the run. 2 of them only you may set aside.
+> 
+> Decision 1 (fault F-1)
+> (a) Question: The rule text of the gauge skill (24.2, 24.3) still says the picture shows every open blocker (a fault that stops the run), and `GAUGE.svg` shows no count of unread entries; do I fix this now or do you set it aside?
+> (b) Recommended: set aside, because the fix edits a rule file, which you told me not to repair; I will propose the new rule text at the end of the run instead.
+> (c) "Set aside": the run stays small; the rule text stays false for a blocker with a refused ID until you approve the proposal. "Fix": rule text and picture are corrected; a 4th file moves the run to the long form, about 12 more runs of separate sessions, and 1 acceptance test changes.
+> (d) Reply with: "Decision 1: set aside" or "Decision 1: fix".
+> 
+> Decision 2 (fault F-2)
+> (a) Question: The gauge lists `F-7` and `F-7 (local 1)` as 2 open blockers where the checker sees 1; this is old behavior that my change kept; do I fix it now or do you set it aside?
+> (b) Recommended: set aside, because your request did not ask for it and acceptance test C4 says nothing else changes.
+> (c) "Set aside": the gauge behaves as at a3717b1 for such IDs; the over-count remains. "Fix": the gauge shows the first word of the ID only (`F-3` where it now shows `F-3 (local 2)`); acceptance tests C3 and C4 change, which costs 1 more run of a separate session (5 planned in place of 4).
+> (d) Reply with: "Decision 2: set aside" or "Decision 2: fix".
+> 
+> What I do without a decision from you
+> - F-3 (the gauge and the checker could drift apart unseen if the checker later changes how it picks the ID): I fix it. The checker's ID test moves into 1 function, with no change of behavior, and the agreement test calls that function. A new separate session then re-checks the whole change; this is the re-check already planned.
+> - F-4 (form only: the unread line cites rule 9.4 and not 9.5, and says "1 entries"): I set it aside, because that line is unchanged by this task and C1 fixes its words.
+> 
+> Runs of separate sessions: 2 of 4 used (capability test, correctness check). Left: 1 re-check, 1 final check.
+> 
+> Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
+> hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
+> — end of card —
