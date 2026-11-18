@@ -1012,3 +1012,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8999 bytes, SHA-256 6cc55525c67f9d60d653b28b5005730c4baeeb74db839eb36b32e342f6187eda
 - Conductor as read: SHA-256 ec87d1bbaddff30a01f2c547283e49bdfe8a906e18699b62260a5b0ab81a5dd3. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
 - The skill was read whole at the start of S10 (E-71). It was not read again at this STAGE; its hash is taken again and is equal (`FRICTION.md` item 27).
+
+### E-104 · 2026-11-18T20:54:18Z · DELIVERY · orchestrator
+
+- Report: `DELIVERY-REPORT.md`
+- Status line: DELIVERED — NOT DONE: parts 2, 3, 5, 6 and 7 of DONE are not met; the report states each with its reason.
+- Sent to the USER: with the final message of this Devin session, as an attached file, after this entry and after E-114; the time of sending is not known when this entry is written. No language auditor audited the report (rule 19.14): UNVERIFIED — `CORE` run, and no SUB-AGENT run is left.
