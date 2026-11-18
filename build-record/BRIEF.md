@@ -102,3 +102,7 @@ Please build the skill or plugin only for platforms that allow sub-agents.
 ## Message 7 — 2026-11-18 10:06 EST
 
 > please keep baby bird in the plan name so I remember.  Please now build each skill fully and run the same tests and red teams over it once you finish
+
+## Message 8 — 2026-11-18 10:08 EST
+
+> please also have the conductor build a picture or graphic that looks like a progress bar but it is in the form of a speedometer.  Please show me that the conductor knows where it is in the overall process, and update as it triggers skills to complete work.  If this can be a plugin, please build a separate plugin and still keep the skills spearate.  Please carefully plan and code each skill.

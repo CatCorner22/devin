@@ -240,3 +240,14 @@ Requests: message 5 "Wait, let's divide these up into separate skills."; message
 - C13. Each `SKILL.md` is at most 18 KiB and 500 lines; each `description` is at most 1,024 characters. Test: `scripts/lint.py`.
 
 Work units from here: WU-1 `scripts/lint.py`; WU-2 `scripts/hinshitsu_check.py`; WU-3 glossary and 6 skills; WU-4 templates and role prompts; WU-5 Devin adapter; WU-6 example; WU-7 the other 6 adapters; WU-8 README, `TESTING.md`, `CHANGELOG.md`. The user's message 7 sets the audit point: 1 full swarm, 4 lenses and a red cell over the finished set, then re-audit after fixes.
+
+### E-014 · 2026-11-18T15:08Z · CRITERIA-CHANGE · orchestrator
+
+Request: message 8 (`BRIEF.md`). Reading sent to the user at 2026-11-18T15:08Z; no reply yet, so the reading is an assumption (A-009) and the 2 criteria are `PROPOSED`.
+
+- A-009. "A separate plugin" means: the repository is 1 installable plugin that bundles the skills, each skill in its own folder and usable alone; the speedometer is its own skill. If false: move the gauge skill into a second plugin folder; cost, 1 manifest and 1 move.
+- D-012. A 7th skill, `hinshitsu-gauge`, holds a standard-library script that reads `AUDIT-LOG.md` in the run folder and writes `GAUGE.svg` plus a text gauge. The conductor fixes the list of stages and logs a `STAGE` entry when each starts and ends; the needle moves only on logged entries. Rests on A-009.
+- C14 (new). `skills/hinshitsu-gauge/scripts/gauge.py <run-folder>` writes `GAUGE.svg`, a speedometer that shows the current stage, the count of stages complete out of the total, and a stop mark while a BLOCKER is open; it prints the same as text; the same log gives the same file. The conductor's rules require a run of it after each `STAGE` entry. Test: unit tests in `tests/`; the picture opened in a browser.
+- C15 (new). The repository installs as a plugin on each surface whose documentation defines a plugin format; the manifest follows that documentation, cited with the date read. Test: `scripts/lint.py` validates the manifest; install run on Devin or `UNVERIFIED`.
+- C1 gains: `skills/hinshitsu-gauge/SKILL.md` and the plugin manifest. C2, C3, C4, C13 apply to 7 skills.
+- Per-skill plans are written in `build-record/PLAN-v2.md` before each skill is coded.
