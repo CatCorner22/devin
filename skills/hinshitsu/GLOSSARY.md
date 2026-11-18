@@ -50,9 +50,9 @@ Each term below has 1 meaning everywhere in the 7 hinshitsu skills, the template
 
 A FINDING has exactly 1 class. When 2 classes fit, the class listed first below applies.
 
-**BLOCKER** — a FINDING in which any 1 of these is true: (a) the DELIVERABLE fails a CRITERION; (b) a RECIPIENT cannot complete a task that the Voice of the Customer statement lists; (c) the DELIVERABLE loses or corrupts data, exposes a secret or exposes data to a person the CRITERIA do not authorize; (d) a statement in the delivery report or in an artifact is false; (e) the RED CELL raised it under section 6 in the form rule 6.6 requires.
+**BLOCKER** — a FINDING in which any 1 of these is true: (a) the DELIVERABLE fails a CRITERION; (b) a RECIPIENT cannot complete a task that the Voice of the Customer statement lists; (c) the DELIVERABLE loses or corrupts data, exposes a secret or exposes data to a person the CRITERIA do not authorize; (d) a statement in the delivery report or in the DELIVERABLE is false; (e) the RED CELL raised it under section 6 in the form rule 6.6 requires.
 
-**DEFECT** — a FINDING that the DELIVERABLE gives a wrong result or breaks a rule of the skills, and that is not a BLOCKER.
+**DEFECT** — a FINDING that the DELIVERABLE gives a wrong result or breaks a rule of the skills, and that is not a BLOCKER. A false or out-of-date statement in a file of the RUN FOLDER other than the delivery report is a DEFECT (rule 14.6).
 
 **FRAGILITY** — a FINDING that the DELIVERABLE works today and will fail under a change the FINDING names: a dependency update, a larger input, another browser, another machine, a later date.
 

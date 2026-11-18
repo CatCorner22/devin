@@ -2,6 +2,7 @@
 """hinshitsu check: test the form of a run's record.
 
 Usage: hinshitsu_check.py [--stage plan|unit|delivery] <run-folder>
+       hinshitsu_check.py --record <run-folder>   (state files against the log, rule 14.6)
 Exit 0 when every check for the stage passes, 1 when any fails, 2 on a usage error.
 Standard library only. Same folder in, same verdict out.
 
@@ -216,9 +217,14 @@ def check(folder, stage):
             result = (field(b, "Result") or "").split()[0:1]
             if not result or result[0] not in ("FIXED", "WITHDRAWN"):
                 err("AUDIT-LOG.md: E-%d has no result FIXED or WITHDRAWN (rule 15.4)" % e["n"])
-            ra = re.search(r"`(audits/[^`]+)`", b)
-            if not ra or not (folder / ra.group(1)).is_file():
-                err("AUDIT-LOG.md: E-%d cites no existing re-audit report (rule 14.3)" % e["n"])
+            if re.search(r"^- Record fault: yes", b, re.M):
+                rc = re.search(r"`(evidence/record-check-[^`]+)`", b)
+                if not rc or not (folder / rc.group(1)).is_file():
+                    err("AUDIT-LOG.md: E-%d cites no existing record-check output (rule 14.6)" % e["n"])
+            else:
+                ra = re.search(r"`(audits/[^`]+)`", b)
+                if not ra or not (folder / ra.group(1)).is_file():
+                    err("AUDIT-LOG.md: E-%d cites no existing re-audit report (rule 14.3)" % e["n"])
     for fid, f in findings.items():
         if f["closed"] > 1:
             err("AUDIT-LOG.md: %s has %d closing entries (rule 15.4)" % (fid, f["closed"]))
@@ -335,8 +341,78 @@ def check(folder, stage):
     return errors
 
 
+def check_record(folder):
+    """Compare the state files with the log (rule 14.6). Returns a list of failures."""
+    folder = Path(folder)
+    errors = []
+    err = errors.append
+    log_path = folder / "AUDIT-LOG.md"
+    if not log_path.is_file():
+        return ["AUDIT-LOG.md: file is missing (rule 9.1)"]
+    log = parse_log(log_path.read_text(encoding="utf-8"))
+    state = {}
+    for e in log:
+        if e["type"] == "FINDING":
+            fid = (field(e["body"], "ID") or "").split()[0:1]
+            if fid:
+                state[fid[0]] = "open"
+        elif e["type"] in ("RESOLUTION", "OVERRULE"):
+            fid = (field(e["body"], "Finding") or "").split()[0:1]
+            if fid and fid[0] in state:
+                state[fid[0]] = "closed"
+    criteria = [e["n"] for e in log if e["type"] == "CRITERIA"]
+    running = None
+    for e in log:
+        if e["type"] == "STAGE":
+            m = re.search(r"\b(S\d+)\b.*?\b(start|end|skipped)\b", e["body"], re.S)
+            if m:
+                running = m.group(1) if m.group(2) == "start" else None
+    texts = {}
+    for name in ("SESSION-STATE.md", "FRAMEWORK.md", "MINDMAP.md"):
+        p = folder / name
+        if p.is_file():
+            texts[name] = p.read_text(encoding="utf-8")
+    for name, text in texts.items():
+        for i, line in enumerate(text.splitlines(), 1):
+            for fid in re.findall(r"\bF-\d+\b", line):
+                if fid not in state:
+                    err("%s:%d: names %s, which has no FINDING entry (rule 14.6)" % (name, i, fid))
+                    continue
+                says_open = re.search(r"\bopen\b|not re-audited|waits (for|until) %s\b" % fid, line)
+                says_closed = re.search(r"\bFIXED\b|\bWITHDRAWN\b|\bclosed\b|overruled", line)
+                if len(set(re.findall(r"\bF-\d+\b", line))) > 1:
+                    continue  # a line that names several FINDINGS is not tested
+                if state[fid] == "closed" and says_open and not says_closed:
+                    err("%s:%d: calls %s open; the log closed it (rule 14.6)" % (name, i, fid))
+                if state[fid] == "open" and says_closed and not says_open:
+                    err("%s:%d: calls %s closed; the log holds no closing entry (rule 14.6)" % (name, i, fid))
+    if criteria:
+        for name in ("SESSION-STATE.md", "FRAMEWORK.md"):
+            if name in texts and not re.search(r"\bE-%d\b" % criteria[-1], texts[name]):
+                err("%s: does not name E-%d, the newest CRITERIA entry (rule 14.6)" % (name, criteria[-1]))
+    if running and "SESSION-STATE.md" in texts and not re.search(r"\b%s\b" % running, texts["SESSION-STATE.md"]):
+        err("SESSION-STATE.md: does not name %s, the STAGE the log shows as started (rule 14.6)" % running)
+    if "MINDMAP.md" in texts:
+        listed = texts["MINDMAP.md"].split("```")[0]
+        for fid in sorted(state, key=lambda x: int(x[2:])):
+            n = len(re.findall(r"\b%s\b" % fid, listed))
+            if n != 1:
+                err("MINDMAP.md: %s appears %d times in the list; rule 9.2 requires 1" % (fid, n))
+    return errors
+
+
 def main(argv):
     args = argv[1:]
+    if args[:1] == ["--record"]:
+        if len(args) != 2 or not Path(args[1]).is_dir():
+            print(__doc__.strip(), file=sys.stderr)
+            return 2
+        errors = check_record(args[1])
+        for e in errors:
+            print("FAIL " + e)
+        print("hinshitsu_check (record): %d failure(s)." % len(errors))
+        print("This script compares the state files with the log. It does not prove that the log is true.")
+        return 1 if errors else 0
     stage = "delivery"
     if "--stage" in args:
         i = args.index("--stage")

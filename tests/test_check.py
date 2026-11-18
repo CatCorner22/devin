@@ -205,5 +205,69 @@ class Check(unittest.TestCase):
         self.assertEqual(hcheck.check(d, "delivery"), hcheck.check(d, "delivery"))
 
 
+def record_run(state="open", mind="open", closed=False):
+    d = Path(tempfile.mkdtemp())
+    e = ["### E-1 · 2026-01-01T00:00Z · STAGE · orchestrator\n\n- Stage: S5\n- Event: start\n",
+         "### E-2 · 2026-01-01T00:00Z · CRITERIA · orchestrator\n\n- Status: PROPOSED\n",
+         "### E-3 · 2026-01-01T00:00Z · FINDING · orchestrator\n\n- ID: F-1\n- Class: DEFECT\n"]
+    if closed:
+        e.append("### E-4 · 2026-01-01T00:00Z · RESOLUTION · orchestrator\n\n- Finding: F-1\n- Result: FIXED\n")
+    (d / "AUDIT-LOG.md").write_text("# log\n\n" + "\n".join(e), encoding="utf-8")
+    (d / "SESSION-STATE.md").write_text("CRITERIA E-2. STAGE S5.\nF-1 is %s\n" % state, encoding="utf-8")
+    (d / "FRAMEWORK.md").write_text("CRITERIA: E-2\n", encoding="utf-8")
+    (d / "MINDMAP.md").write_text("- F-1 a fault (DEFECT, %s)\n```mermaid\nF1[F-1]\n```\n" % mind, encoding="utf-8")
+    return d
+
+
+class Record(unittest.TestCase):
+    def test_agreeing_files_pass(self):
+        self.assertEqual(hcheck.check_record(record_run()), [])
+        self.assertEqual(hcheck.check_record(record_run("closed", "FIXED", closed=True)), [])
+
+    def test_closed_finding_called_open_fails(self):
+        errs = hcheck.check_record(record_run("open", "FIXED", closed=True))
+        self.assertTrue(any("calls F-1 open" in x for x in errs), errs)
+
+    def test_open_finding_called_fixed_fails(self):
+        errs = hcheck.check_record(record_run("open", "FIXED"))
+        self.assertTrue(any("calls F-1 closed" in x for x in errs), errs)
+
+    def test_stale_criteria_entry_fails(self):
+        d = record_run()
+        (d / "FRAMEWORK.md").write_text("CRITERIA: E-9\n", encoding="utf-8")
+        self.assertTrue(any("newest CRITERIA entry" in x for x in hcheck.check_record(d)))
+
+    def test_wrong_stage_fails(self):
+        d = record_run()
+        (d / "SESSION-STATE.md").write_text("CRITERIA E-2. STAGE S4.\nF-1 is open\n", encoding="utf-8")
+        self.assertTrue(any("does not name S5" in x for x in hcheck.check_record(d)))
+
+    def test_finding_missing_from_mind_map_fails(self):
+        d = record_run()
+        (d / "MINDMAP.md").write_text("- nothing\n", encoding="utf-8")
+        self.assertTrue(any("F-1 appears 0 times" in x for x in hcheck.check_record(d)))
+
+    def test_unknown_finding_fails(self):
+        d = record_run()
+        (d / "FRAMEWORK.md").write_text("CRITERIA: E-2. F-9 is open\n", encoding="utf-8")
+        self.assertTrue(any("F-9, which has no FINDING entry" in x for x in hcheck.check_record(d)))
+
+    def test_cli_exit_codes(self):
+        self.assertEqual(hcheck.main(["x", "--record", str(record_run())]), 0)
+        self.assertEqual(hcheck.main(["x", "--record", str(record_run("open", "FIXED"))]), 1)
+        self.assertEqual(hcheck.main(["x", "--record"]), 2)
+
+    def test_record_fault_resolution_needs_the_saved_output(self):
+        d = good_run()
+        log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+        n = log.count("### E-")
+        log += ("\n### E-%d · 2026-01-01T00:00Z · FINDING · orchestrator\n\n- ID: F-77\n- Class: DEFECT\n- Where: `SESSION-STATE.md`\n- Trigger: read it\n- Violates: rule 8.1\n- Raised by: x\n- Lens: trust and controls\n"
+                "\n### E-%d · 2026-01-01T00:00Z · RESOLUTION · orchestrator\n\n- Finding: F-77\n- Result: FIXED\n- Record fault: yes\n- Evidence: `evidence/record-check-E-%d.txt`\n" % (n + 1, n + 2, n + 2))
+        (d / "AUDIT-LOG.md").write_text(log, encoding="utf-8")
+        self.assertTrue(any("record-check output (rule 14.6)" in x for x in hcheck.check(d, "plan")))
+        (d / "evidence" / ("record-check-E-%d.txt" % (n + 2))).write_text("ok", encoding="utf-8")
+        self.assertFalse(any("14.6" in x or "14.3" in x for x in hcheck.check(d, "plan")))
+
+
 if __name__ == "__main__":
     unittest.main()
