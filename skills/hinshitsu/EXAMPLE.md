@@ -39,7 +39,8 @@ All paths in the table are under `example/run/`.
 
 ## Why the run ended `DELIVERED — NOT DONE`
 
-- FINDINGS are open. `SESSION-STATE.md` field 5 lists them, and the delivery report names each one. Most concern wording of the CRITERIA that reads 2 ways; that wording belongs to the USER.
+- The audit of the audit ended "not passed". The final AUDITOR ran CRITERIA C1 to C7 on the delivered file in desktop Chrome and each passed; it raised 6 FINDINGS against the record, none against the page's behaviour [`example/run/audits/final-audit-E-374.md`].
+- FINDINGS are open (68 at the end of the run). `SESSION-STATE.md` field 5 lists them, and the delivery report names each one. Most concern wording of the CRITERIA that reads 2 ways; that wording belongs to the USER.
 - After round 3 the BUILDER removed the length limit that both AUDITORS proposed removing. No AUDITOR saw that change [E-268].
 - The USER had approved publishing the page with GitHub Pages. The ORCHESTRATOR's access cannot turn GitHub Pages on, so the page is not published and use on a phone is UNVERIFIED [E-348].
 - The USER asked the ORCHESTRATOR to stop spending rounds on this page. The skills give that choice a name and a report form; they do not let the ORCHESTRATOR call the result `DONE`.
@@ -50,6 +51,10 @@ All paths in the table are under `example/run/`.
 2. **A planted defect proved each audit round was real.** A round in which a required role misses the planted defect does not count.
 3. **The cost is high for a small page.** 3 audit rounds and 5 plan re-audits on 1 file drew the USER into more decisions than the page was worth. The `LESSONS` section of the delivery report proposes a limit on audit rounds by TIER.
 4. **Bookkeeping errors by the ORCHESTRATOR were the largest class of fault.** A script now compares the state files with the log: `python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run`.
+
+## Cold start
+
+A fresh session, given only this repository and the task "Add a dark-mode toggle to my recipe website", wrote the `CAPABILITY` entry and the gap list before any implementation, and stopped at 1 card for the USER. It also listed 16 places where the rules were unclear; the amendments that followed are in `CHANGELOG.md` [`build-record/audits/cold-start.md`].
 
 ## Run the checks yourself
 

@@ -269,3 +269,28 @@ Post-build review of the finished skill set, as the USER asked ("run the same te
 | Cold start (C12): a fresh agent given only the skills and a 1-line task | https://app.devin.ai/sessions/61272d260949486c84d9c887b1582d9c | `audits/cold-start.md` |
 
 Not run, to protect the USER's credits: the 4 lenses on the finished set, and the other 6 auditor roles. UNVERIFIED.
+
+### E-017 · 2026-11-18T18:59Z · CHECK · orchestrator
+
+The 3 post-build reports are saved whole, each with the session identifier on its first line.
+
+| Report | Verdict, in the report's words | Count |
+|---|---|---|
+| `audits/post-build-red-cell.md` | "SKILL SET FAILS" | 18 findings |
+| `audits/post-build-auditor.md` | C1, C2, C4, C9, C11, C13 PASS; C3 and C14 PASS with DEFECTS; C5, C6, C7, C8, C10, C12 FAIL at commit `18cbe7e`; C15 UNVERIFIED | 25 findings, 6 of them BLOCKERS |
+| `audits/cold-start.md` | the fresh agent wrote the `CAPABILITY` entry, then the gap list, and stopped at 1 card | 16 unclear places |
+
+### E-018 · 2026-11-18T18:59Z · DECISION · orchestrator
+
+What the ORCHESTRATOR changed in answer, and what it left open. No independent session has reviewed any of these changes: each is ASSERTED until one does.
+
+Changed (listed in `CHANGELOG.md`): the checker (red cell 1 to 5 and 18 in part; auditor 12, 13, 14, 19; cold start 16), the gauge (auditor 20, 21), rules 0.1, 0.2, 0.3, 0.5, 0.9, 1.5, 14.3, 16.7 (red cell 6 to 10, 14, 15; cold start 1 to 10, 14), the glossary terms AUDITOR and STAGE (red cell 16 in part; auditor 8 in part), the "skills alone" install (red cell 11, 12), the version numbers (red cell 13), 3 adapter claims and the Devin install line (auditor 6, 23), the example's S10 to S12 (red cell 17; auditor 3), the cold-start report (auditor 4).
+
+Left open:
+- Red cell 1, in substance: the checker tests the form of a record. A record written by hand in the right form, with made-up session identifiers, still passes. No script in this repository can open a session. The delivery report's "Check it yourself" links are the only defence, and they depend on the USER.
+- Auditor 5: 13 rules name no file or result that a third party can test (0.4, 0.6, 1.7, 6.1, 7.3, 8.1, 8.2(c), 16.4, 16.7, 17.3, 17.6, 21.2, and the former 0.1(g), now replaced). C5 is not met.
+- Auditor 2: this `build-record/` holds no `MINDMAP.md`, `COVERAGE-LEDGER.md` or `SESSION-STATE.md`, and its log does not pass the checker. C8 is not met for the build itself; the example run holds the full set.
+- Auditor 7, 9, 10, 11, 15, 16, 17, 18, 22, 24, 25 in part: glossary BLOCKER classes, report names in rules 5.3 and 6.2, 5 cross-references, 7 template lines, 4 checker gaps (DONE without a "passed" last line, the shared banned-word list, Mermaid arrow forms, a traceback on an unreadable file), wording.
+- Red cell 16: the terms ROUND and PASS are not defined.
+- Not run: the 4 lenses and 6 of the 7 auditor roles on the finished set; any run on a surface other than Devin web.
+
