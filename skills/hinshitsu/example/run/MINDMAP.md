@@ -71,6 +71,7 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
           - D-3 superseded
     - C2 tip, total and payments shown; half a cent rounds up
       - D-4 even split, whole-number tip
+        - D-9 a dot or a comma is the decimal mark (supersedes the dot-only part of D-4)
         - D-1 superseded
       - D-5 `splitBill`, half-up rounding, digits to cents
         - D-2 superseded
@@ -117,6 +118,7 @@ graph TD
   C1 --> D8[D-8 one file, policy tag, published after audits]
   C7 --> D8
   C2 --> D4[D-4 even split, whole-number tip]
+  C4 --> D9[D-9 dot or comma as decimal mark]
   C2 --> D5[D-5 splitBill, half-up, digits to cents]
   C3 --> D5
   C4 --> D5

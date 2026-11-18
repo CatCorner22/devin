@@ -4,7 +4,7 @@ Form: section 7. Superseded lines stay, marked.
 
 ## 1. CRITERIA
 
-By reference: `AUDIT-LOG.md` E-98 (C1 to C8), `Status: FROZEN`, approved by the USER in E-64. ~~E-55~~ is the same text as proposed. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
+By reference: `AUDIT-LOG.md` E-175 (C1 to C8), `Status: FROZEN`, approved by the USER in E-173. ~~E-98~~ is superseded by E-174 and E-175. ~~E-55~~ is the same text as proposed. ~~E-16 (C1 to C7)~~ and ~~E-39~~ superseded; never approved.
 
 ## 2. Architecture decisions
 
@@ -17,6 +17,7 @@ By reference: `AUDIT-LOG.md` E-98 (C1 to C8), `Status: FROZEN`, approved by the 
 | D-5 | 1 pure function `window.splitBill`; half a cent of tip rounds up; text converted to cents from its digits | E-36 | in force |
 | D-6 | 1 self-contained HTML file with a policy tag that blocks network requests; not hosted | E-37 | superseded by D-8 |
 | D-8 | 1 self-contained HTML file with a policy tag that blocks network requests; published with GitHub Pages after it passes its audits | E-68 | in force |
+| D-9 | the bill accepts a dot or a comma as the decimal mark; a thousands separator is refused. Supersedes the dot-only part of D-4 | E-176 | in force |
 | D-7 | the delivery report opens with 3 browser-only checks and the SHA-256 of `index.html` | E-38 | in force |
 
 ## 3. Naming conventions
