@@ -1,0 +1,15 @@
+bills 0.01-50.00, tip 0, 1 person: cases 5000, mismatches 0
+bills 0.01-50.00, tip 15, 1 person: cases 5000, mismatches 0
+bills 0.01-50.00, tip 18, 1 person: cases 5000, mismatches 0
+bills 0.01-50.00, tip 20, 1 person: cases 5000, mismatches 0
+bills 0.01-5.00, tip 18, people 1,2,3,4: cases 2000, mismatches 0
+bills 0.01-5.00, tip 18, people 5,6,7,8: cases 2000, mismatches 0
+bills 0.01-5.00, tip 18, people 9,10,11,12: cases 2000, mismatches 0
+spot cases: cases 3, mismatches 0
+EXTRA (not named in C3): bills 0.1-50.0 typed with 1 decimal place, tip 18, 1 person: cases 500, mismatches 450
+   {"typed":["0.1","18","1"],"page":["Bill total: 0.01","Tip percent: 18","Number of people: 1","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01"],"auditor":["Bill total: 0.10","Tip percent: 18","Number of people: 1","Tip amount: 0.02","Total with tip: 0.12","1 person pays 0.12"],"msgs":["","",""]}
+   {"typed":["0.2","18","1"],"page":["Bill total: 0.02","Tip percent: 18","Number of people: 1","Tip amount: 0.00","Total with tip: 0.02","1 person pays 0.02"],"auditor":["Bill total: 0.20","Tip percent: 18","Number of people: 1","Tip amount: 0.04","Total with tip: 0.24","1 person pays 0.24"],"msgs":["","",""]}
+spot 10.00 0 3 => ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."]
+spot 1000000.00 100 100 => ["Bill total: 1000000.00","Tip percent: 100","Number of people: 100","Tip amount: 1000000.00","Total with tip: 2000000.00","100 people pay 20000.00 each"]
+spot 0.01 0 100 => ["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."]
+C3 cases compared (without EXTRA): 26003 | seconds: 88

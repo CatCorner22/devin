@@ -1,0 +1,59 @@
+== Trigger 1 ==
+bill "5\u{B2}" => msgs[Y--] lines 0 billMsg "Type the amount in digits only, su"
+bill "\u{2460}\u{2461}" => msgs[Y--] lines 0 billMsg "Type the amount in digits only, su"
+bill "12\u{2024}50" => msgs[Y--] lines 0 billMsg "Type the amount in digits only, su"
+people "\u{2463}" bill 100.00 => msgs[--Y] lines 0 peopleMsg "Type a whole number from 1 to "
+== Trigger 2 ==
+bill "\u{200E}12.50" => msgs[---] lines 8 "Bill total: 12.50" | field holds "\u{200E}12.50" | pay "3 people pay 3.69 each"
+bill "12.50\u{200F}" => msgs[---] lines 8 "Bill total: 12.50" | field holds "12.50\u{200F}" | pay "3 people pay 3.69 each"
+bill "\u{61C}12.50" => msgs[---] lines 8 "Bill total: 12.50" | field holds "\u{61C}12.50" | pay "3 people pay 3.69 each"
+bill "\u{AD}12.50" => msgs[---] lines 8 "Bill total: 12.50" | field holds "\u{AD}12.50" | pay "3 people pay 3.69 each"
+bill "\u{2066}12.50\u{2069}" => msgs[---] lines 8 "Bill total: 12.50" | field holds "\u{2066}12.50\u{2069}" | pay "3 people pay 3.69 each"
+bill "\u{202A}12.50\u{202C}" => msgs[---] lines 8 "Bill total: 12.50" | field holds "\u{202A}12.50\u{202C}" | pay "3 people pay 3.69 each"
+bill "12.50\u{180E}" => msgs[---] lines 8 "Bill total: 12.50" | field holds "12.50\u{180E}" | pay "3 people pay 3.69 each"
+== Trigger 5 ==
+tip = 1 + 100000 spaces + x, 1 input event: {"length":100002,"ms":3.2,"msg":"Type a whole number from 0 to 100, in digits only."}
+other long values, 1 input event each: {"bill 1 .. len 100002":"5 ms","bill   .. len 100001":"6 ms","bill 11.. len 100001":"4.2 ms","bill 1ZWSP.. len 100002":"10.5 ms","people 00.. len 100001":"9.1 ms","bill 00.. len 1000000":"31.5 ms"}
+== Trigger 7 ==
+["Bill total: 10.01","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.01","2 people pay 3.34 each","1 person pays 3.33","Your group decides who pays the higher amount."]
+== Trigger 9 ==
+["Bill total: 12.50","Tip percent: 18","Number of people: 4","Tip amount: 2.25","Total with tip: 14.75","3 people pay 3.69 each","1 person pays 3.68","Your group decides who pays the higher amount."]
+12.50: ["Bill total: 12.50","Tip percent: 18","Number of people: 4","Tip amount: 2.25","Total with tip: 14.75","3 people pay 3.69 each","1 person pays 3.68","Your group decides who pays the higher amount."]
+== Trigger 8 / C5 change counts ==
+a) bill abc, Tab, type 18 in tip: {"bill":0,"tip":0,"people":0,"result":0} | bill msg "Type the amount in digits only"
+b) then Tab, type 4 in people: {"bill":0,"tip":0,"people":0,"result":0}
+c) 3 messages showing; type more letters in each field, click away: {"bill":0,"tip":0,"people":0,"result":0}
+d) result showing; type a space after people, a space after bill, Tab x3, a leading 0 in tip: {"bill":0,"tip":0,"people":0,"result":0} | result still "4 people pay 29.50 each"
+e) people changed 4 -> empty -> 5 (a real change; 3 keys): {"bill":0,"tip":0,"people":2,"result":2} | result "5 people pay 23.60 each"
+== Trigger 10 ==
+{"splitBill":true,"plain":false,"plainChar":false,"readAmount":false,"readWhole":false,"money":false,"payLine":false,"showResult":false,"update":false,"MAX_BILL_CENTS":false,"MAX_TIP_PERCENT":false,"MAX_PEOPLE":false,"IGNORED_AT_ENDS":false,"fields":true,"resultBox":false,"shownResult":false}
+window.splitBill(10000,18,4) = {"tipCents":1800,"totalCents":11800,"shares":[{"count":4,"cents":2950}]} | splitBill(1000,0,3) = {"tipCents":0,"totalCents":1000,"shares":[{"count":1,"cents":334},{"count":2,"cents":333}]}
+splitBill vs auditor formula, bills 1..3000 and 99997001..100000000, tips 0..100, people 1..100: {"calls":60600000,"mismatches":0,"first":null}
+== C5 markup ==
+{"labels":[{"text":"Bill total, tax included","for":"bill","visible":true,"labelsInput":true},{"text":"Tip percent","for":"tip","visible":true,"labelsInput":true},{"text":"Number of people","for":"people","visible":true,"labelsInput":true}],"inputs":[{"id":"bill","type":"text","inputmode":"decimal","autocomplete":"off","maxlength":"64","describedby":"bill-error"},{"id":"tip","type":"text","inputmode":"numeric","autocomplete":"off","maxlength":"64","describedby":"tip-error"},{"id":"people","type":"text","inputmode":"numeric","autocomplete":"off","maxlength":"64","describedby":"people-error"}],"errors":[{"id":"bill-error","role":"alert"},{"id":"tip-error","role":"alert"},{"id":"people-error","role":"alert"}],"result":{"role":"status","live":"polite"},"inputCount":3}
+== C5 widths ==
+360 first open: {"innerWidth":360,"clientWidth":360,"docScrollWidth":360,"bodyScrollWidth":360,"widestElement":360,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+360 3 messages: {"innerWidth":360,"clientWidth":360,"docScrollWidth":360,"bodyScrollWidth":360,"widestElement":360,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+360 largest 2-line result: {"innerWidth":360,"clientWidth":345,"docScrollWidth":345,"bodyScrollWidth":345,"widestElement":345,"elementsOutside":[],"scrollXAfterScrollTo500":0} ["2 people pay 20202.03 each","97 people pay 20202.02 each","Your group decides who pays the higher amount."]
+360 64-character values: {"innerWidth":360,"clientWidth":360,"docScrollWidth":360,"bodyScrollWidth":360,"widestElement":360,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+768 first open: {"innerWidth":768,"clientWidth":768,"docScrollWidth":768,"bodyScrollWidth":768,"widestElement":768,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+768 3 messages: {"innerWidth":768,"clientWidth":768,"docScrollWidth":768,"bodyScrollWidth":768,"widestElement":768,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+768 largest 2-line result: {"innerWidth":768,"clientWidth":768,"docScrollWidth":768,"bodyScrollWidth":768,"widestElement":768,"elementsOutside":[],"scrollXAfterScrollTo500":0} ["2 people pay 20202.03 each","97 people pay 20202.02 each","Your group decides who pays the higher amount."]
+768 64-character values: {"innerWidth":768,"clientWidth":768,"docScrollWidth":768,"bodyScrollWidth":768,"widestElement":768,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+1280 first open: {"innerWidth":1280,"clientWidth":1280,"docScrollWidth":1280,"bodyScrollWidth":1280,"widestElement":1280,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+1280 3 messages: {"innerWidth":1280,"clientWidth":1280,"docScrollWidth":1280,"bodyScrollWidth":1280,"widestElement":1280,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+1280 largest 2-line result: {"innerWidth":1280,"clientWidth":1280,"docScrollWidth":1280,"bodyScrollWidth":1280,"widestElement":1280,"elementsOutside":[],"scrollXAfterScrollTo500":0} ["2 people pay 20202.03 each","97 people pay 20202.02 each","Your group decides who pays the higher amount."]
+1280 64-character values: {"innerWidth":1280,"clientWidth":1280,"docScrollWidth":1280,"bodyScrollWidth":1280,"widestElement":1280,"elementsOutside":[],"scrollXAfterScrollTo500":0}
+== C7 ==
+fetch: rejected: TypeError: Failed to fetch | violations: connect-src blocked https://example.com/
+other channels: {"sendBeaconReturned":true,"xhr":"threw NetworkError","ws":"constructed","violations":["connect-src","connect-src","connect-src","img-src"]}
+storage after use: {"cookie":"","localStorage":0,"sessionStorage":0,"indexedDB":0,"caches":0}
+before reload: {"billErr":"","tipErr":"","peopleErr":"","lines":["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"],"resultText":"Bill total: 100.00Tip percent: 18Number of people: 4Tip amount: 18.00Total with tip: 118.004 people pay 29.50 each","active":"people","invalid":"","values":["100.00","18","4"]}
+after reload: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"BODY","invalid":"","values":["","",""]}
+after reload from an error state: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"BODY","invalid":"","values":["","",""]}
+after about:blank then Back: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"BODY","invalid":"","values":["","",""]}
+source search: {"localStorage":0,"sessionStorage":0,"indexedDB":0,"document.cookie":0,"caches":0,"fetch":0,"XMLHttpRequest":0,"sendBeacon":0,"WebSocket":0,"http:":0,"https:":0,"src=":0,"href=":0,"<form":0,"eval(":0,"innerHTML":0}
+CSP tag exact match count: 1 | non-ASCII bytes in file: 0
+== C6 / Trigger 6: JavaScript off ==
+visible text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page."
+guide visible: false | fields div visible: false | visible inputs: 0 | visible labels: 0 | noscript sentence visible: false

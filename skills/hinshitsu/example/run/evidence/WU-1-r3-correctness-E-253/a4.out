@@ -1,0 +1,14 @@
+chrome window 0x02800002 | other window 0x03600024 | windows: 0x02400011 -1 devin-box Desktop — Plasma ;; 0x0240001f -1 devin-box Plasma ;; 0x02800002  0 devin-box Split the bill - Google Chrome for Testing ;; 0x03600024  0 devin-box auditwin
+page: file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html | Chrome Chrome/156.0.8078.47
+T4 step 0, page open: {"windowHasFocus":true,"active":"BODY","billValue":"","billMsg":"","tipMsg":"","result":"","events":"window:focus"}
+T4 step 1, empty bill field clicked, nothing typed: {"windowHasFocus":true,"active":"bill","billValue":"","billMsg":"","tipMsg":"","result":"","events":"bill:focus"}
+T4 step 2, another window brought to the front: {"windowHasFocus":false,"active":"bill","billValue":"","billMsg":"","tipMsg":"","result":"","events":"bill:blur,window:blur"} | active X window: auditwin
+T4 step 3, Chrome brought back: {"windowHasFocus":true,"active":"bill","billValue":"","billMsg":"","tipMsg":"","result":"","events":"window:focus,bill:focus"}
+T4 step 4, then Tab (the person leaves the field): {"windowHasFocus":true,"active":"tip","billValue":"","billMsg":"Type the bill total.","tipMsg":"","result":"","events":"bill:blur,tip:focus"}
+T3 real keys, step 1, bill 12. typed, field focused: {"windowHasFocus":true,"active":"bill","billValue":"12.","billMsg":"","tipMsg":"","result":"","events":"tip:focus,tip:input,tip:input,tip:blur,people:focus,people:input,people:blur,bill:focus,bill:input,bill:input,bill:input"}
+T3 step 2, another window in front: {"windowHasFocus":false,"active":"bill","billValue":"12.","billMsg":"","tipMsg":"","result":"","events":"bill:blur,window:blur"}
+T3 step 3, Chrome back: {"windowHasFocus":true,"active":"bill","billValue":"12.","billMsg":"","tipMsg":"","result":"","events":"window:focus,bill:focus"}
+T3 step 4, Tab pressed: {"windowHasFocus":true,"active":"tip","billValue":"12.","billMsg":"Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","tipMsg":"","result":"","events":"bill:blur,tip:focus"}
+T3 step 5, bill field clicked again: {"windowHasFocus":true,"active":"bill","billValue":"12.","billMsg":"","tipMsg":"","result":"","events":"tip:blur,bill:focus"}
+T3 step 6, 5 typed (bill 12.5): {"windowHasFocus":true,"active":"bill","billValue":"12.5","billMsg":"","tipMsg":"","result":"Bill total: 12.05Tip percent: 18Number of people: 4Tip amount: 2.17Total with tip: 14.222 people pay 3.56 each2 people pay 3.55 eachYour group decides who pays the higher amount.","events":"bill:input"}
+extra: bill abc typed, another window in front: {"windowHasFocus":false,"active":"bill","billValue":"abc","billMsg":"Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators.","tipMsg":"","result":"","events":"bill:focus,bill:input,bill:input,bill:input,bill:blur,window:blur"}

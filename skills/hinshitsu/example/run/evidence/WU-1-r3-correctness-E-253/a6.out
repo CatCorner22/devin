@@ -1,0 +1,16 @@
+bill "   " => msg "Type the bill total." | result lines 0
+bill "\u{200B}\u{A0}\u{FEFF}" => msg "Type the bill total." | result lines 0
+tip "   " => msg "Type the tip percent. Type 0 for no tip." | result lines 0
+tip "\u{200B}\u{A0}\u{FEFF}" => msg "Type the tip percent. Type 0 for no tip." | result lines 0
+people "   " => msg "Type the number of people." | result lines 0
+people "\u{200B}\u{A0}\u{FEFF}" => msg "Type the number of people." | result lines 0
+bill "12345678.00" => msg "Type 1000000.00 or less." | result lines 0
+bill "10000000" => msg "Type 1000000.00 or less." | result lines 0
+bill "1000000.01" => msg "Type 1000000.00 or less." | result lines 0
+bill "0" => msg "Type an amount above 0." | result lines 0
+bill "0.0" => msg "Type an amount above 0." | result lines 0
+bill "00.00" => msg "Type an amount above 0." | result lines 0
+markup of a 2-line result: <div class="box"><p>Bill total: 10.00</p><p>Tip percent: 0</p><p>Number of people: 3</p><p class="gap-above">Tip amount: 0.00</p><p>Total with tip: 10.00</p><p class="pay gap-above">1 person pays 3.34</p><p class="pay">2 people pay 3.33 each</p><p>Your group decides who pays the higher amount.</p></div>
+markup of a 1-line result: <div class="box"><p>Bill total: 10.00</p><p>Tip percent: 0</p><p>Number of people: 2</p><p class="gap-above">Tip amount: 0.00</p><p>Total with tip: 10.00</p><p class="pay gap-above">2 people pay 5.00 each</p></div>
+markup after an error: "" | aria-invalid on people: true
+aria-invalid on people after a valid value: null

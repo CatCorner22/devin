@@ -1,0 +1,24 @@
+== visible format characters at an end (tip 18, people 4) ==
+bill "\u{600}12.50" => msgs[---] result "Bill total: 12.50"
+bill "12.50\u{6DD}" => msgs[---] result "Bill total: 12.50"
+bill "\u{70F}12.50" => msgs[---] result "Bill total: 12.50"
+bill "\u{8E2}12.50" => msgs[---] result "Bill total: 12.50"
+bill "\u{1680}12.50" => msgs[---] result "Bill total: 12.50"
+bill "12.50\u{301}" => msgs[Y--] result none
+bill "12.50\u{20E3}" => msgs[Y--] result none
+== invisible characters inside the number ==
+bill "12\u{200B}.50" => msgs[Y--] result none | "Type the amount in digits only, such as 12.5"
+bill "1\u{AD}2.50" => msgs[Y--] result none | "Type the amount in digits only, such as 12.5"
+bill "12.\u{200E}50" => msgs[Y--] result none | "Type the amount in digits only, such as 12.5"
+bill "1 2.50" => msgs[Y--] result none | "Type the amount in digits only, such as 12.5"
+bill "12.5\u{FE0F}0" => msgs[Y--] result none | "Type the amount in digits only, such as 12.5"
+== maxlength 64 ==
+pasted into bill "<60 spaces>1234.56" (67 chars) | field holds 64 chars ending "    1234" | msgs "" | result ["Bill total: 1234.00","Tip percent: 18"]
+pasted into bill "<60 zeros>1234.56" (67 chars) | field holds 64 chars ending "00001234" | msgs "" | result ["Bill total: 1234.00","Tip percent: 18"]
+pasted into bill "<57 spaces>12.50<10 spaces>" (72 chars) | field holds 64 chars ending " 12.50  " | msgs "" | result ["Bill total: 12.50","Tip percent: 18"]
+pasted into tip "<62 spaces>15" (64 chars) | field holds 64 chars ending "      15" | msgs "" | result []
+typed key by key: 60 spaces + 1234.56 | field holds 64 chars ending "    1234" | msgs "" | result ["Bill total: 1234.00"]
+== simulation: an engine that rejects the script (copy outside the repository, 1 property name changed) ==
+page errors: [
+  'SyntaxError: Invalid regular expression: /[\\s\\p{Cf}\\p{No_Such_Property}\\u2800]/u: Invalid '
+] | visible text: "Split the bill" | visible inputs: 0

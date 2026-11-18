@@ -1,0 +1,197 @@
+chrome binary: /opt/.devin/chrome/chrome/linux-156.0.8078.47/chrome-linux64/chrome
+browser version: 156.0.8078.47
+
+== C1 ==
+playwright request log (1): [
+  'GET file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html'
+]
+CDP Network.requestWillBeSent (1): [
+  'file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html'
+]
+performance entries: [
+  'navigation file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html',
+  'visibility-state visible'
+]
+elements with src/href, link, script[src], img, iframe: 0
+
+== C4 first open ==
+{"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"BODY","invalid":"","values":["","",""]}
+guide: {
+  hidden: false,
+  text: 'Type the bill total, the tip percent and the number of people.',
+  sentences: 1
+}
+visible body text: "Split the bill\n\nType the bill total, the tip percent and the number of people.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"
+
+== C2 tests ==
+100.00 | 18 | 4 => ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"] errors: ["","",""]
+0.30 | 15 | 1 => ["Bill total: 0.30","Tip percent: 15","Number of people: 1","Tip amount: 0.05","Total with tip: 0.35","1 person pays 0.35"] errors: ["","",""]
+10.10 | 15 | 1 => ["Bill total: 10.10","Tip percent: 15","Number of people: 1","Tip amount: 1.52","Total with tip: 11.62","1 person pays 11.62"] errors: ["","",""]
+12.25 | 18 | 1 => ["Bill total: 12.25","Tip percent: 18","Number of people: 1","Tip amount: 2.21","Total with tip: 14.46","1 person pays 14.46"] errors: ["","",""]
+0100.5 | 007 | 02 => ["Bill total: 100.05","Tip percent: 7","Number of people: 2","Tip amount: 7.00","Total with tip: 107.05","1 person pays 53.53","1 person pays 53.52","Your group decides who pays the higher amount."] errors: ["","",""]
+10.00 | 0 | 3 => ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."] errors: ["","",""]
+10.01 | 0 | 3 => ["Bill total: 10.01","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.01","2 people pay 3.34 each","1 person pays 3.33","Your group decides who pays the higher amount."] errors: ["","",""]
+after C2: requests 8 cdp 8 (7 navigations + first = 8 expected if 1 per load)
+
+== C4 incomplete ==
+bill+tip typed, people untouched: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"tip","invalid":"","values":["100.00","18",""]}
+people clicked, nothing typed, still focused: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"people","invalid":"","values":["100.00","18",""]}
+fresh page, bill clicked only: {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"bill","invalid":"","values":["","",""]}
+then Tab (left bill empty): {"billErr":"Type the bill total.","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"tip","invalid":"bill","values":["","",""]}
+fresh page, only tip typed (focus still in tip): {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"tip","invalid":"","values":["","18",""]}
+bill typed 5 then deleted, still focused: {"billErr":"Type the bill total.","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"bill","invalid":"bill","values":["","",""]}
+
+== C4 error inputs (other 2 fields valid: bill 100.00, tip 18, people 4) ==
+ok   bill "abc" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1,000.00" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1.000,00" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1e3" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill ".5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill ",5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "$12.50" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.50$" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "\u{20AC}12,50" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "\u{A3}5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "-5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "-0.01" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "\u{2212}5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "0" | focused: "Type an amount above 0." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "0.00" | focused: "Type an amount above 0." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "0,0" | focused: "Type an amount above 0." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "000" | focused: "Type an amount above 0." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1000000.01" | focused: "Type 1000000.00 or less." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1000001" | focused: "Type 1000000.00 or less." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1000000,01" | focused: "Type 1000000.00 or less." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "99999999" | focused: "Type 1000000.00 or less." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.345" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12,345" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1.000" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "0.001" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1 000" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12 .50" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12..5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.5.0" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.,5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "+5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.50x" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "Infinity" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "NaN" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "0x10" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1_000" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1'000" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12/5" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "5%" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "1e-2" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   bill "12.5e1" | focused: "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "abc" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "101" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "-1" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "18.0" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "18,5" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "1e1" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "+4" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "4." | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "18%" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "1 8" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "100.0" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "1000" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "0.5" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip ".5" | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   tip "4," | focused: "Type a whole number from 0 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "0" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "00" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "101" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "-1" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "18.0" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "18,5" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "1e1" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "+4" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "4." | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "abc" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "1.0" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "2 0" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "1000" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "4," | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+ok   people "four" | focused: "Type a whole number from 1 to 100, in digits only." | left: (same) | result lines: 0 0 | other msgs: ""
+error inputs: 71 not conforming: 0
+
+== C4 empty after typed/left ==
+bill | typed then emptied: "Type the bill total." lines 0 | focused then left: "Type the bill total." lines 0
+tip | typed then emptied: "Type the tip percent. Type 0 for no tip." lines 0 | focused then left: "Type the tip percent. Type 0 for no tip." lines 0
+people | typed then emptied: "Type the number of people." lines 0 | focused then left: "Type the number of people." lines 0
+
+== C4 trailing decimal mark ==
+"12." | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "12." | then type 5: "5" "Bill total: 5.00" msg ""
+"12," | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "12," | then type 5: "5" "Bill total: 5.00" msg ""
+"10." | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "10." | then type 5: "5" "Bill total: 5.00" msg ""
+"\u{FF11}\u{FF12}\u{FF0E}" | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "\u{FF11}\u{FF12}\u{FF0E}" | then type 5: "5" "Bill total: 5.00" msg ""
+"\u{661}\u{662}\u{66B}" | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "\u{661}\u{662}\u{66B}" | then type 5: "5" "Bill total: 5.00" msg ""
+"0." | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value "0." | then type 5: "5" "Bill total: 5.00" msg ""
+" 12. " | focused: msg "" lines 0 invalid "" | after Tab: msg "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." lines 0 active tip | back (Shift+Tab): msg "" lines 0 active bill value " 12. " | then type 5: "5" "Bill total: 5.00" msg ""
+tip "4." while focused: msg "Type a whole number from 0 to 100, in digits only." lines 0
+people "4." while focused: msg "Type a whole number from 1 to 100, in digits only." lines 0
+
+== C4 valid inputs (result must show) ==
+bill "12.50" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "12.50" | msgs ""
+bill "12,50" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "12,50" | msgs ""
+bill "  12.50  " => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "  12.50  " | msgs ""
+bill "\u{A0}12.50\u{200B}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{A0}12.50\u{200B}" | msgs ""
+bill "\t12.50\u{FEFF}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\t12.50\u{FEFF}" | msgs ""
+bill "\u{FF11}\u{FF12}\u{FF0E}\u{FF15}\u{FF10}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{FF11}\u{FF12}\u{FF0E}\u{FF15}\u{FF10}" | msgs ""
+bill "\u{FF11}\u{FF12}\u{FF0C}\u{FF15}\u{FF10}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{FF11}\u{FF12}\u{FF0C}\u{FF15}\u{FF10}" | msgs ""
+bill "\u{661}\u{662}\u{66B}\u{665}\u{660}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{661}\u{662}\u{66B}\u{665}\u{660}" | msgs ""
+bill "\u{661}\u{662}.\u{665}\u{660}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{661}\u{662}.\u{665}\u{660}" | msgs ""
+bill "\u{6F1}\u{6F2}\u{66B}\u{6F5}\u{6F0}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "\u{6F1}\u{6F2}\u{66B}\u{6F5}\u{6F0}" | msgs ""
+bill "1\u{FF12}.\u{665}\u{6F0}" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "1\u{FF12}.\u{665}\u{6F0}" | msgs ""
+bill "0.01" => "Bill total: 0.01 / Tip percent: 18 / Number of people: 4" | value in field "0.01" | msgs ""
+bill "0,01" => "Bill total: 0.01 / Tip percent: 18 / Number of people: 4" | value in field "0,01" | msgs ""
+bill "1000000.00" => "Bill total: 1000000.00 / Tip percent: 18 / Number of people: 4" | value in field "1000000.00" | msgs ""
+bill "1000000" => "Bill total: 1000000.00 / Tip percent: 18 / Number of people: 4" | value in field "1000000" | msgs ""
+bill "1000000,0" => "Bill total: 1000000.00 / Tip percent: 18 / Number of people: 4" | value in field "1000000,0" | msgs ""
+bill "1000000.0" => "Bill total: 1000000.00 / Tip percent: 18 / Number of people: 4" | value in field "1000000.0" | msgs ""
+bill "999999.99" => "Bill total: 999999.99 / Tip percent: 18 / Number of people: 4" | value in field "999999.99" | msgs ""
+bill "007" => "Bill total: 7.00 / Tip percent: 18 / Number of people: 4" | value in field "007" | msgs ""
+bill "12.5" => "Bill total: 12.05 / Tip percent: 18 / Number of people: 4" | value in field "12.5" | msgs ""
+bill "12,5" => "Bill total: 12.05 / Tip percent: 18 / Number of people: 4" | value in field "12,5" | msgs ""
+bill "0.5" => "Bill total: 0.05 / Tip percent: 18 / Number of people: 4" | value in field "0.5" | msgs ""
+bill "0.1" => "Bill total: 0.01 / Tip percent: 18 / Number of people: 4" | value in field "0.1" | msgs ""
+bill "0.10" => "Bill total: 0.10 / Tip percent: 18 / Number of people: 4" | value in field "0.10" | msgs ""
+bill "100.5" => "Bill total: 100.05 / Tip percent: 18 / Number of people: 4" | value in field "100.5" | msgs ""
+bill "5" => "Bill total: 5.00 / Tip percent: 18 / Number of people: 4" | value in field "5" | msgs ""
+bill "0000000000000000000000000000000000000000000000000000000012.50" => "Bill total: 12.50 / Tip percent: 18 / Number of people: 4" | value in field "0000000000000000000000000000000000000000000000000000000012.50" | msgs ""
+bill "1.05" => "Bill total: 1.05 / Tip percent: 18 / Number of people: 4" | value in field "1.05" | msgs ""
+bill "1.5" => "Bill total: 1.05 / Tip percent: 18 / Number of people: 4" | value in field "1.5" | msgs ""
+bill "1.50" => "Bill total: 1.50 / Tip percent: 18 / Number of people: 4" | value in field "1.50" | msgs ""
+tip "0" => "Bill total: 100.00 / Tip percent: 0 / Number of people: 4" | value in field "0" | msgs ""
+tip "100" => "Bill total: 100.00 / Tip percent: 100 / Number of people: 4" | value in field "100" | msgs ""
+tip "00" => "Bill total: 100.00 / Tip percent: 0 / Number of people: 4" | value in field "00" | msgs ""
+tip "018" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "018" | msgs ""
+tip "\u{FF11}\u{FF18}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{FF11}\u{FF18}" | msgs ""
+tip "\u{661}\u{668}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{661}\u{668}" | msgs ""
+tip "\u{6F1}\u{6F8}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{6F1}\u{6F8}" | msgs ""
+tip " 18 " => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field " 18 " | msgs ""
+tip "\u{200B}18\u{A0}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{200B}18\u{A0}" | msgs ""
+tip "000000000000000000000000000000000000000000000000000000000000100" => "Bill total: 100.00 / Tip percent: 100 / Number of people: 4" | value in field "000000000000000000000000000000000000000000000000000000000000100" | msgs ""
+people "1" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 1" | value in field "1" | msgs ""
+people "100" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 100" | value in field "100" | msgs ""
+people "001" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 1" | value in field "001" | msgs ""
+people "\u{FF14}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{FF14}" | msgs ""
+people "\u{664}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{664}" | msgs ""
+people "\u{6F4}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{6F4}" | msgs ""
+people " 4 " => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field " 4 " | msgs ""
+people "\u{200E}4\u{200F}" => "Bill total: 100.00 / Tip percent: 18 / Number of people: 4" | value in field "\u{200E}4\u{200F}" | msgs ""
+
+== C4 result recomputed on every change ==
+100.00/18/4: ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"]
+people emptied: {"billErr":"","tipErr":"","peopleErr":"Type the number of people.","lines":[],"resultText":"","active":"people","invalid":"people","values":["100.00","18",""]}
+people 3: ["Bill total: 100.00","Tip percent: 18","Number of people: 3","Tip amount: 18.00","Total with tip: 118.00","1 person pays 39.34","2 people pay 39.33 each","Your group decides who pays the higher amount."]
+tip 1: ["Bill total: 100.00","Tip percent: 1","Number of people: 3","Tip amount: 1.00","Total with tip: 101.00","2 people pay 33.67 each","1 person pays 33.66","Your group decides who pays the higher amount."]
+tip 1x: {"billErr":"","tipErr":"Type a whole number from 0 to 100, in digits only.","peopleErr":"","lines":[],"resultText":"","active":"tip","invalid":"tip","values":["100.00","1x","3"]}
+tip 15: ["Bill total: 100.00","Tip percent: 15","Number of people: 3","Tip amount: 15.00","Total with tip: 115.00","1 person pays 38.34","2 people pay 38.33 each","Your group decides who pays the higher amount."]
+bill 100.0: ["Bill total: 100.00","Tip percent: 15","Number of people: 3","Tip amount: 15.00","Total with tip: 115.00","1 person pays 38.34","2 people pay 38.33 each","Your group decides who pays the higher amount."]
+bill 100. (focused): {"billErr":"","tipErr":"","peopleErr":"","lines":[],"resultText":"","active":"bill","invalid":"","values":["100.","15","3"]}
+bill 100: ["Bill total: 100.00","Tip percent: 15","Number of people: 3","Tip amount: 15.00","Total with tip: 115.00","1 person pays 38.34","2 people pay 38.33 each","Your group decides who pays the higher amount."]
+
+final request counts: playwright 147 cdp 147 distinct urls [
+  'file:///home/ubuntu/audit/devin/skills/hinshitsu/example/run/review/index.html'
+]
