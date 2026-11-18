@@ -461,6 +461,75 @@ class Check(unittest.TestCase):
              "- Record fault: yes\n- Check: `evidence/record-check-E-22.txt`")
         self.assertFails(d, "does not show 0 failures")
 
+    # --- round-3 code review, bugs 5, 12, 18, 20, 21, 22, 25, 26 ---
+
+    def test_summary_sentence_with_no_citation_is_asserted(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "**What you got.** A page. [E-17]",
+             "**What you got.** A page. [E-17] It is the best page ever made.")
+        self.assertFails(d, "ASSERTED")
+
+    def test_summary_label_with_a_colon_is_still_tested(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "**What was proven.** It runs. [`audits/WU-1-correctness-E-19.md`]",
+             "**What was proven:** It runs.")
+        self.assertFails(d, "ASSERTED")
+
+    def test_line_number_after_a_code_block_is_the_line_in_the_file(self):
+        d = good_run()
+        (d / "FRAMEWORK.md").write_text("CRITERIA: E-17\n```\na\nb\n```\nIt should work.\n", encoding="utf-8")
+        self.assertFails(d, "FRAMEWORK.md:6: banned word", "plan")
+
+    def test_finding_closed_fixed_on_the_report_that_raised_it_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`", "- Re-audit: `audits/WU-1-correctness-E-19.md`")
+        self.assertFails(d, "matches no LAUNCH entry later than the FINDING")
+
+    def test_seed_report_closes_only_a_withdrawn_finding(self):
+        d = good_run()
+        (d / "audits/WU-1-seed-E-19.md").write_text("run-abc\nseed", encoding="utf-8")
+        edit(d, "AUDIT-LOG.md", "- Report: `audits/WU-1-correctness-E-19.md`", "- Report: `audits/WU-1-seed-E-19.md`")
+        edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`", "- Re-audit: `audits/WU-1-seed-E-19.md`")
+        self.assertFails(d, "matches no LAUNCH entry later than the FINDING")
+        edit(d, "AUDIT-LOG.md", "- Result: FIXED", "- Result: WITHDRAWN")
+        self.assertFalse(any("later than the FINDING" in x for x in hcheck.check(d, "delivery")))
+
+    def test_report_saved_as_txt_or_in_a_sub_folder_needs_a_launch_entry(self):
+        for rel in ("audits/extra.txt", "audits/old/WU-1-correctness.md"):
+            d = good_run()
+            (d / rel).parent.mkdir(exist_ok=True)
+            (d / rel).write_text("x", encoding="utf-8")
+            self.assertFails(d, "%s: report matches no LAUNCH entry" % rel)
+
+    def test_identifier_must_be_a_whole_word_of_the_first_line(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- SUB-AGENT identifier: run-abc", "- SUB-AGENT identifier: r")
+        self.assertFails(d, "first line does not hold the identifier")
+
+    def test_report_file_name_must_hold_the_launch_entry_id(self):
+        d = good_run()
+        (d / "audits/WU-1-correctness.md").write_text("run-abc\nreport", encoding="utf-8")
+        edit(d, "AUDIT-LOG.md", "- Report: `audits/WU-1-correctness-E-19.md`", "- Report: `audits/WU-1-correctness.md`")
+        self.assertFails(d, "file name does not hold E-19")
+
+    def test_artifact_path_outside_the_run_folder_fails(self):
+        for path in ("/tmp/elsewhere.md", "../../elsewhere.md"):
+            d = good_run()
+            edit(d, "AUDIT-LOG.md", "- Stage: S1\n- Event: end\n- Artifacts: `AUDIT-LOG.md`",
+                 "- Stage: S1\n- Event: end\n- Artifacts: `%s`" % path)
+            self.assertFails(d, "outside the RUN FOLDER")
+
+    def test_pass_that_cites_an_audits_file_with_no_launch_entry_fails(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "`PASS` `audits/WU-1-correctness-E-19.md`", "`PASS` `audits/mine.md`")
+        (d / "audits/mine.md").write_text("x", encoding="utf-8")
+        self.assertFails(d, "PASS cites audits/mine.md, which matches no LAUNCH entry", "unit")
+
+    def test_sub_heading_inside_an_entry_is_part_of_the_entry(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Mode: SWARM", "- Mode: SWARM\n\n### Notes\n\nA note.")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
     def test_missing_final_audit_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")

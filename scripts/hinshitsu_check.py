@@ -42,7 +42,7 @@ def parse_log(text):
             cur = {"n": int(m.group(1)), "time": m.group(2).strip(), "type": m.group(3),
                    "role": m.group(4).strip(), "lines": []}
             out.append(cur)
-        elif line.startswith("### "):
+        elif line.startswith("### E-"):  # any other sub-heading belongs to the entry it stands in
             out.append({"n": None, "type": None, "bad": line, "lines": []})
             cur = out[-1]
         elif cur is not None:
@@ -71,6 +71,24 @@ def criteria_ids_of(crit, changes=()):
 
 FINDING_ID = re.compile(r"F-\d+")
 QUOTE = r'["“][^"”\n]+["”]'
+def artifact_bases(folder):
+    """The folders an artifact path is tested against: the RUN FOLDER, and each folder above it up to the
+    root of its repository. Where no repository holds the run, the RUN FOLDER alone."""
+    run = folder.resolve()
+    above = []
+    for parent in run.parents:
+        above.append(parent)
+        if (parent / ".git").exists():
+            return [run] + above
+    return [run]
+
+
+def holds_identifier(line, identifier):
+    """True when the identifier stands in the line as a whole word."""
+    # Devin prints a session identifier with or without its "devin-" prefix.
+    return re.search(r"(?<![\w-])(?:devin-)?%s(?![\w-])" % re.escape(identifier), line) is not None
+
+
 PASSED_LINE = re.compile(r"(?:^|[—:;-])\s*`?passed`?\.?$")
 PLANNED_RUNS = re.compile(r"Planned SUB-AGENT runs:\s*(\d+)")
 
@@ -112,7 +130,8 @@ def first_launch_over_budget(entries):
 
 
 def strip_quotes(text):
-    text = re.sub(r"```.*?```", " ", text, flags=re.S)
+    # A code block is replaced by its line ends, so that each later line keeps its number.
+    text = re.sub(r"```.*?```", lambda m: "\n" * m.group(0).count("\n"), text, flags=re.S)
     text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
     text = re.sub(r'"[^"\n]*"', " ", text)
     return re.sub(r"“[^”\n]*”", " ", text)
@@ -170,8 +189,9 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d states no mode (rule 0.1)" % entries_cap["n"])
         if mode.startswith("SWARM") and re.search(r"SWARM-CAPABLE part \d[^\n:]*:\s*no\b", cap):
             err("AUDIT-LOG.md: E-%d says SWARM with a part answered no (rule 0.3)" % entries_cap["n"])
-        if mode.startswith("SWARM") and not (folder / "evidence/capability-probe.md").is_file():
-            err("evidence/capability-probe.md: missing (rule 0.2)")
+        probe = folder / "evidence" / "capability-probe.md"
+        if mode.startswith("SWARM") and not (probe.is_file() and probe.read_text(encoding="utf-8").strip()):
+            err("evidence/capability-probe.md: missing or empty in a SWARM run (rule 0.2)")
     if "TIER" not in by_type:
         err("AUDIT-LOG.md: no TIER entry (rule 0.5)")
     for t in ("VOC", "GAP", "ASSUMPTION", "CRITERIA"):
@@ -195,12 +215,11 @@ def check(folder, stage):
             # Only the Artifacts field names files to test; other fields may quote text that looks like a path.
             # A path is tested against the RUN FOLDER and against each folder above it, never against the working directory.
             for path in re.findall(r"`([^`\s]+\.[A-Za-z0-9]+)`", field(e["body"], "Artifacts") or ""):
-                bases = [folder.resolve()]
-                for b in folder.resolve().parents:  # up to the root of the repository, no further
-                    bases.append(b)
-                    if (b / ".git").exists():
-                        break
-                if not any((b / path).exists() for b in bases):
+                if path.startswith("/") or ".." in Path(path).parts:
+                    err("AUDIT-LOG.md: E-%d names artifact %s, which is outside the RUN FOLDER and its repository "
+                        "(rule 0.7)" % (e["n"], path))
+                    continue
+                if not any((b / path).exists() for b in artifact_bases(folder)):
                     err("AUDIT-LOG.md: E-%d names artifact %s, which does not exist (rule 0.7)" % (e["n"], path))
         if ev != "progress":
             state[sid] = ev
@@ -248,13 +267,15 @@ def check(folder, stage):
             degraded_reports.append(report.group(1))
             if not any((field(c["body"], "Mode") or "").startswith("DEGRADED") for c in by_type.get("CAPABILITY", [])):
                 err("%s: first line says DEGRADED, and no CAPABILITY entry states Mode: DEGRADED (rule 21.3)" % report.group(1))
-        elif ident and bare not in first:
+        elif ident and not holds_identifier(first, bare):
             err("%s: first line does not hold the identifier of E-%d (rule 1.6)" % (report.group(1), e["n"]))
+        if report.group(1).startswith(("audits/", "memos/")) and not re.search(r"(?<![A-Za-z0-9])E-%d(?!\d)" % e["n"], Path(report.group(1)).stem):
+            err("%s: file name does not hold E-%d, the ID of its LAUNCH entry (rule 1.6)" % (report.group(1), e["n"]))
     for sub in ("audits", "memos"):
         d = folder / sub
         if d.is_dir():
-            for p in sorted(d.glob("*.md")):
-                rel = "%s/%s" % (sub, p.name)
+            for p in sorted(x for x in d.rglob("*") if x.is_file()):
+                rel = p.relative_to(folder).as_posix()
                 if rel not in cited_reports:
                     err("%s: report matches no LAUNCH entry (rule 1.8)" % rel)
 
@@ -309,7 +330,7 @@ def check(folder, stage):
                 ra = re.search(r"`(audits/[^`]+)`", b)
                 if not ra or not (folder / ra.group(1)).is_file():
                     err("AUDIT-LOG.md: E-%d cites no existing re-audit report (rule 14.3)" % e["n"])
-                elif (findings[fid]["class"] == "BLOCKER" and "-seed-" not in ra.group(1)  # rule 16.7: the planted defect
+                elif (not ("-seed-" in ra.group(1) and result == ["WITHDRAWN"])  # rule 16.7: the planted defect
                       and not any(x["n"] > findings[fid]["n"] and ra.group(1) in (field(x["body"], "Report") or "")
                              for x in by_type.get("LAUNCH", []))):
                     err("AUDIT-LOG.md: E-%d cites %s, which matches no LAUNCH entry later than the FINDING (rule 14.3)"
@@ -376,6 +397,9 @@ def check(folder, stage):
                         err("COVERAGE-LEDGER.md:%d: PASS cites no report or evidence (rule 10.5)" % i)
                     elif not (folder / ev.group(1).split("#")[0]).is_file():
                         err("COVERAGE-LEDGER.md:%d: PASS cites %s, which does not exist (rule 17.4)" % (i, ev.group(1)))
+                    elif ev.group(1).startswith("audits/") and ev.group(1).split("#")[0] not in cited_reports:
+                        err("COVERAGE-LEDGER.md:%d: PASS cites %s, which matches no LAUNCH entry (rule 10.5)"
+                            % (i, ev.group(1)))
                 elif kind == "FAIL":
                     fm = re.search(r"F-\d+", rest)
                     if not fm or fm.group(0) not in findings:
@@ -443,16 +467,12 @@ def check(folder, stage):
             if int(ref) >= expected:
                 err("DELIVERY-REPORT.md: cites E-%s, which is not in the log (rule 17.4)" % ref)
         for label in ("What you got", "What was proven"):
-            m = re.search(r"\*\*%s\.?\*\*(.*?)(?=\n\*\*|\Z)" % label, summary, re.S)
-            if m and not re.search(r"\[[^\]]+\]", m.group(1)):
-                err("DELIVERY-REPORT.md: %r has no citation; it is ASSERTED (rule 17.2)" % label)
+            m = re.search(r"\*\*%s[.:]?\*\*:?(.*?)(?=\n\*\*|\Z)" % label, summary, re.S)
+            sentences = [x for x in re.split(r"(?<=[.!?\]])\s+(?=[A-Z])", m.group(1).strip()) if x] if m else []
+            if not m or not sentences or any(not re.search(r"\[[^\]]+\]\.?$", x) for x in sentences):
+                err("DELIVERY-REPORT.md: a sentence under %r ends with no citation; it is ASSERTED (rule 17.1)" % label)
         if not by_type.get("LESSON"):
             err("AUDIT-LOG.md: no LESSON entry (rule 20.4)")
-        cap = by_type.get("CAPABILITY", [])
-        if cap and (field(cap[-1]["body"], "Mode") or "").startswith("SWARM"):
-            probe = folder / "evidence" / "capability-probe.md"
-            if not probe.is_file() or not probe.read_text(encoding="utf-8").strip():
-                err("evidence/capability-probe.md: missing or empty in a SWARM run (rule 0.2)")
         # F5: the state files must agree with the log before delivery (rule 14.6)
         for msg in check_record(folder):
             err(msg)
