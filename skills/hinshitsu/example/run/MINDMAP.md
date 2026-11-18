@@ -5,27 +5,32 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
 - Goal: a real small deliverable that shows the skill set running (V1)
   - Task chosen: a page that splits a restaurant bill, tip added (T1)
     - WU-1 `index.html`, the whole page (not started)
-    - C1 1 file, works from disk — D-6 (D-3 superseded)
-    - C2 tip, total and payments shown; half a cent rounds up — D-4 (D-1 superseded), D-5 (D-2 superseded)
-      - F-3 tip rounding had no rule (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
-    - C3 payments sum to the total; tested through the page's own fields — D-5
-      - F-5 the test ran a function, not the page (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
-      - F-11 a spot case was written with a comma (STYLE, fix awaits re-audit)
-    - C4 3 states; what counts as an amount — D-5
-      - F-4 `12,50` had no defined result (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
-      - F-10 no text rule for a whole number (DEFECT, fix awaits re-audit)
+    - C1 1 file, works from disk
+      - D-6 1 file, policy tag, not hosted (D-3 superseded)
+    - C2 tip, total and payments shown; half a cent rounds up
+      - D-4 even split, whole-number tip (D-1 superseded)
+      - D-5 `splitBill`, half-up rounding, digits to cents (D-2 superseded); also serves C3 and C4
+      - F-3 tip rounding had no rule (BLOCKER, FIXED)
+    - C3 payments sum to the total; tested through the page's own fields
+      - F-5 the test ran a function, not the page (BLOCKER, FIXED)
+      - F-11 a spot case was written with a comma (STYLE, FIXED)
+    - C4 3 states; what counts as an amount and as a whole number
+      - F-4 `12,50` had no defined result (BLOCKER, FIXED)
+      - F-10 no text rule for a whole number (DEFECT, FIXED)
     - C5 3 widths, labels, announced regions, keypad hints
     - C6 sentence when JavaScript is off
-    - C7 stores nothing, sends nothing; policy tag — D-6
-      - F-2 no answer to how a phone gets the page (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
-  - C8 3 browser-only checks; SHA-256 of the page — D-7
-    - F-1 the request was called the USER's words (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
+    - C7 stores nothing, sends nothing; policy tag (decision listed under C1)
+      - F-2 no answer to how a phone gets the page (BLOCKER, FIXED)
+  - C8 3 browser-only checks; SHA-256 of the page
+    - D-7 the report opens with 3 checks
+    - F-1 the request was called the USER's words (BLOCKER, FIXED)
   - Record
-    - F-6 A-3 and A-4 were checkable and left unchecked (BLOCKER, FIXED, `audits/plan-reaudit-E-40.md`)
-    - F-7 state files were behind the log (BLOCKER, open: second fix awaits re-audit)
-    - F-8 A-8 cited EVIDENCE it did not have (DEFECT, fix awaits re-audit)
-    - F-9 2 evidence files held no command (DEFECT, fix awaits re-audit)
-    - F-12 gaps called answered with no answer (DEFECT, fix awaits re-audit)
+    - F-6 A-3 and A-4 were checkable and left unchecked (BLOCKER, FIXED)
+    - F-7 state files were behind the log (BLOCKER, open after 2 rounds; third fix made, not re-audited)
+    - F-8 A-8 cited EVIDENCE it did not have (DEFECT, FIXED)
+    - F-9 2 evidence files held no command (DEFECT, FIXED)
+    - F-12 gaps called answered with no answer (DEFECT, FIXED)
+    - F-13 the session state left out 2 evidence files (DEFECT, fix made, not re-audited)
 
 ```mermaid
 graph TD
@@ -56,6 +61,7 @@ graph TD
   REC --> F8[F-8 DEFECT]
   REC --> F9[F-9 DEFECT]
   REC --> F12[F-12 DEFECT]
+  REC --> F13[F-13 DEFECT]
   C4 --> F10[F-10 DEFECT]
   C3 --> F11[F-11 STYLE]
   T1 --> WU1[WU-1 index.html]

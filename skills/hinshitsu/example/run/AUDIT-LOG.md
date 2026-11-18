@@ -620,3 +620,48 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-1c8449a6fb6d4eb1b005ffaac555f696 (https://app.devin.ai/sessions/1c8449a6fb6d4eb1b005ffaac555f696)
 - Report: `audits/plan-reaudit-E-56.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-57 · 2026-11-18T15:50:59Z · RESOLUTION · orchestrator
+
+- Finding: F-8
+- Result: FIXED
+- Change: the entries E-52 to E-55, `MINDMAP.md` and `evidence/` at commit 21c31a9
+- Re-audit: `audits/plan-reaudit-E-56.md` (LAUNCH E-56), row F-8: NO LONGER REPRODUCES
+
+### E-58 · 2026-11-18T15:50:59Z · RESOLUTION · orchestrator
+
+- Finding: F-9
+- Result: FIXED
+- Change: the entries E-52 to E-55, `MINDMAP.md` and `evidence/` at commit 21c31a9
+- Re-audit: `audits/plan-reaudit-E-56.md` (LAUNCH E-56), row F-9: NO LONGER REPRODUCES
+
+### E-59 · 2026-11-18T15:50:59Z · RESOLUTION · orchestrator
+
+- Finding: F-10
+- Result: FIXED
+- Change: the entries E-52 to E-55, `MINDMAP.md` and `evidence/` at commit 21c31a9
+- Re-audit: `audits/plan-reaudit-E-56.md` (LAUNCH E-56), row F-10: NO LONGER REPRODUCES
+
+### E-60 · 2026-11-18T15:50:59Z · RESOLUTION · orchestrator
+
+- Finding: F-11
+- Result: FIXED
+- Change: the entries E-52 to E-55, `MINDMAP.md` and `evidence/` at commit 21c31a9
+- Re-audit: `audits/plan-reaudit-E-56.md` (LAUNCH E-56), row F-11: NO LONGER REPRODUCES
+
+### E-61 · 2026-11-18T15:50:59Z · RESOLUTION · orchestrator
+
+- Finding: F-12
+- Result: FIXED
+- Change: the entries E-52 to E-55, `MINDMAP.md` and `evidence/` at commit 21c31a9
+- Re-audit: `audits/plan-reaudit-E-56.md` (LAUNCH E-56), row F-12: NO LONGER REPRODUCES
+
+### E-62 · 2026-11-18T15:51:00Z · FINDING · orchestrator
+
+- ID: F-13
+- Class: DEFECT
+- Where: `SESSION-STATE.md` field 6
+- Trigger: `ls evidence` prints 5 files; field 6 lists 3. `evidence/a3-page.html` and `evidence/a4-check.js` are absent
+- Violates: rule 8.1
+- Raised by: second re-audit, LAUNCH E-56, `audits/plan-reaudit-E-56.md`, finding N-1
+- Lens: trust and controls
