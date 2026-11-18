@@ -66,13 +66,13 @@ A FINDING has exactly 1 class. When 2 classes fit, the class listed first below 
 
 **UNVERIFIED** — a check that did not run, or that ran without meeting all 3 parts of VERIFIED, reported with the reason.
 
-**DONE** — the state in which all 8 of these are true: (1) every CRITERION is VERIFIED; (2) no BLOCKER is open; (3) every DEFECT and every FRAGILITY is FIXED, WITHDRAWN or carries the USER's written overrule; (4) `COVERAGE-LEDGER.md` has no empty cell; (5) the delivery report has no ASSERTED claim; (6) the audit of the audit in section 17 passed; (7) `scripts/hinshitsu_check.py` exits 0 on the RUN FOLDER, or the report states UNVERIFIED for that check;  (8) the ORCHESTRATOR sent the delivery report to the USER.
+**DONE** — the state in which all 8 of these are true: (1) every CRITERION is VERIFIED; (2) no BLOCKER is open; (3) every DEFECT and every FRAGILITY is FIXED, WITHDRAWN or carries the USER's written overrule; (4) `COVERAGE-LEDGER.md` has no empty cell; (5) the delivery report has no ASSERTED claim; (6) the audit of the audit in section 17 passed; (7) `scripts/hinshitsu_check.py` exits 0 on the RUN FOLDER, and an `ANSWER` entry quotes the USER's statement that the USER opened the final AUDITOR's run by its link and saw the saved report's text there; the script alone proves nothing, and where no link exists the state is `DELIVERED — NOT DONE`;  (8) the ORCHESTRATOR sent the delivery report to the USER.
 
 **DELIVERED — NOT DONE** — the state of a run whose delivery report went to the USER while 1 or more of the 8 parts of DONE is not met. The report names each such part.
 
 ## States of a run
 
-**SWARM-CAPABLE** — a runtime in which all 5 of these are true: (1) the ORCHESTRATOR writes the full scope of each SUB-AGENT; (2) each SUB-AGENT starts without the BUILDER's conversation and reads only its scope and the files the scope names; (3) each SUB-AGENT's report returns whole and is saved word for word; (4) the runtime gives each SUB-AGENT run an identifier that the ORCHESTRATOR did not write; (5) 1 live test call in the current run started a SUB-AGENT and returned its identifier.
+**SWARM-CAPABLE** — a runtime in which all 5 of these are true: (1) the ORCHESTRATOR writes the full scope of each SUB-AGENT; (2) each SUB-AGENT starts without the BUILDER's conversation (what else the runtime shows it is disclosed under rule 0.1(g)); (3) each SUB-AGENT's report returns whole and is saved word for word; (4) the runtime gives each SUB-AGENT run an identifier that the ORCHESTRATOR did not write; (5) 1 live test call in the current run started a SUB-AGENT and returned its identifier.
 
 **DEGRADED** — a run, or a step of a run, in which 1 AGENT instance performed 2 roles that section 1 separates, or in which a SUB-AGENT failed any part of SWARM-CAPABLE.
 

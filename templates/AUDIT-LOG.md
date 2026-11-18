@@ -8,7 +8,17 @@ TYPE is 1 of: `CAPABILITY`, `TIER`, `STAGE`, `VOC`, `GAP`, `ASSUMPTION`, `CRITER
 
 The entries below show the fields each type requires; the numbers are examples. Delete this paragraph and replace every `<…>`.
 
-### E-1 · <UTC time> · CAPABILITY · orchestrator
+### E-1 · <UTC time> · LAUNCH · orchestrator
+
+- Role: capability probe (rule 0.2)
+- Scope: `prompts/capability-probe.md`
+- Commit under review: <commit | no git>
+- SUB-AGENT identifier: <the identifier as the runtime prints it> <link | not openable by the USER>
+- Report: `evidence/capability-probe.md`
+
+### E-2 · <UTC time> · CAPABILITY · orchestrator
+
+- Probe: E-1
 
 - Runtime and surface: <name>
 - RUN FOLDER: <path>
@@ -20,13 +30,14 @@ The entries below show the fields each type requires; the numbers are examples. 
 - SWARM-CAPABLE part 5 (a test call in this run started a sub-agent): <yes | no> — <reason>
 - Write files: <yes | no>. Run commands: <yes | no>. Use git: <yes | no>. Open a browser: <yes | no>. Take screenshots: <yes | no>. Read a clock: <yes | no>.
 - Mode: <SWARM | DEGRADED>
-- SUB-AGENT runs the TIER requires: <number>
+- Shown to the probe besides its scope: <each instruction or file the probe reports>
 
-### E-2 · <UTC time> · TIER · orchestrator
+### E-3 · <UTC time> · TIER · orchestrator
 
 - Change measured: <output of `git diff --stat`, or file count and line count>
 - Section-18 action in the change: <yes | no>
 - TIER: <CORE | FULL>
+- Planned SUB-AGENT runs: <n>
 
 ### E-3 · <UTC time> · STAGE · orchestrator
 

@@ -33,5 +33,5 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 
 ## Install
 
-- Copy the 7 folders under `skills/` to the place where Kimi Code CLI loads skills, as its documentation states at the time of install (https://www.kimi.com/code/docs/en/, read 2026-11-18). UNVERIFIED — this install was never performed.
+- Install the whole repository. The 7 skill folders need `scripts/`, `templates/` and `skills/hinshitsu/GLOSSARY.md`; a copy of the skill folders alone is not a supported install. UNVERIFIED — no install was run on this surface.
 - `AGENTS.md`: add 1 line: "Before any task that produces something a person will receive, read `skills/hinshitsu/SKILL.md` and follow it."

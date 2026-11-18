@@ -52,6 +52,10 @@ All paths in the table are under `example/run/`.
 3. **The cost is high for a small page.** 3 audit rounds and 5 plan re-audits on 1 file drew the USER into more decisions than the page was worth. The `LESSONS` section of the delivery report proposes a limit on audit rounds by TIER.
 4. **Bookkeeping errors by the ORCHESTRATOR were the largest class of fault.** A script now compares the state files with the log: `python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run`.
 
+## The example predates the amendments
+
+The run was made under the rules as they stood before the amendments listed in `CHANGELOG.md`. Its log therefore opens with the `CAPABILITY` entry and holds no `Planned SUB-AGENT runs` line (rules 0.1 and 0.9 as amended). The amended checker prints 1 failure on this run: E-92 closed a BLOCKER as a record fault, which rule 14.6 allows for a DEFECT only. The checker output saved in the run, `example/run/evidence/checker-delivery-final.txt`, is from the checker as it stood when the run ended. No run has yet been made under the amended rules.
+
 ## Cold start
 
 A fresh session, given only this repository and the task "Add a dark-mode toggle to my recipe website", wrote the `CAPABILITY` entry and the gap list before any implementation, and stopped at 1 card for the USER. It also listed 16 places where the rules were unclear; the amendments that followed are in `CHANGELOG.md` [`build-record/audits/cold-start.md`].

@@ -40,7 +40,7 @@ def good_run():
 
     add("CAPABILITY", "\n".join("- SWARM-CAPABLE part %d (x): yes — probe" % i for i in range(1, 6))
         + "\n- Mode: SWARM")
-    add("TIER", "- TIER: FULL")
+    add("TIER", "- TIER: FULL\n- Planned SUB-AGENT runs: 3")
     for i in range(1, 5):
         add("STAGE", "- Stage: S%d\n- Event: start\n- Skill read: `x`, 1 bytes, SHA-256 %s" % (i, SHA))
         if i == 3:
@@ -264,6 +264,51 @@ class Check(unittest.TestCase):
             self.assertEqual(hcheck.check(d, "delivery"), [])
         finally:
             os.chdir(here)
+
+    def test_done_with_final_audit_not_passed_fails(self):
+        d = good_run()
+        f = [p for p in (d / "audits").iterdir() if p.name.startswith("final-audit-")][0]
+        f.write_text("run-fin\nnot passed", encoding="utf-8")
+        self.assertFails(d, "does not read passed")
+
+    def test_done_without_planned_runs_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "\n- Planned SUB-AGENT runs: 3", "")
+        self.assertFails(d, "Planned SUB-AGENT runs")
+
+    def test_more_launches_than_planned_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "Planned SUB-AGENT runs: 3", "Planned SUB-AGENT runs: 1")
+        self.assertFails(d, "exceed the 1 planned")
+
+    def test_degraded_first_line_with_hyphen_fails(self):
+        d = good_run()
+        (d / "audits/WU-1-correctness-E-19.md").write_text("DEGRADED - single-agent audit\nreport", encoding="utf-8")
+        self.assertFails(d, "no CAPABILITY entry states Mode: DEGRADED")
+
+    def test_done_with_criteria_entry_that_lists_no_criterion_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- C1. It works.", "- It works.")
+        self.assertFails(d, "lists no CRITERION")
+
+    def test_criterion_listed_in_bold_is_counted(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- C1. It works.", "- **C1.** It works.")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_blocker_closed_as_record_fault_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- ID: F-1\n- Class: DEFECT", "- ID: F-1\n- Class: BLOCKER")
+        (d / "evidence/record-check-E-22.txt").write_text("0 failures", encoding="utf-8")
+        edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`",
+             "- Record fault: yes\n- Check: `evidence/record-check-E-22.txt`")
+        self.assertFails(d, "as a record fault")
+
+    def test_blocker_closed_by_a_report_older_than_the_finding_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- ID: F-1\n- Class: DEFECT", "- ID: F-1\n- Class: BLOCKER")
+        edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`", "- Re-audit: `audits/WU-1-correctness-E-19.md`")
+        self.assertFails(d, "matches no LAUNCH entry later than the FINDING")
 
     def test_missing_final_audit_fails(self):
         d = good_run()

@@ -7,7 +7,7 @@ description: The record skill of hinshitsu - the durable artifacts that let a th
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number.
 
-This skill holds sections 7, 8, 9, 10 and 18. It serves STAGE S2 (set-up) and applies in every later STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Used without a conductor run, it creates the RUN FOLDER (default `hinshitsu/` at the root of the repository or workspace) and the files below from the forms in `templates/`.
+This skill holds sections 7, 8, 9, 10 and 18. It serves STAGE S2 (set-up) and applies in every later STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Without a conductor run this skill produces no verdict: say so to the USER and start the conductor.
 
 **RUN FOLDER layout.** `AUDIT-LOG.md`, `FRAMEWORK.md`, `SESSION-STATE.md`, `MINDMAP.md`, `CONNECTIONS.md`, `COVERAGE-LEDGER.md`, `DELIVERY-REPORT.md`, `GAUGE.svg`, and the folders `prompts/` (scopes sent), `memos/` (LENS reports), `audits/` (AUDITOR and RED CELL reports), `evidence/` (command outputs, screenshots, recordings).
 

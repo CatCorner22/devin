@@ -58,6 +58,13 @@ def field(body, name):
     return (m.group(1).strip() or None) if m else None
 
 
+def criteria_ids_of(crit):
+    """IDs in the newest CRITERIA entry: a list item that starts with C<n>, with or without marks."""
+    if not crit:
+        return set()
+    return set(re.findall(r"^[-*\d.\s`]*\**`?(C\d+)\b", crit[-1]["body"], re.M))
+
+
 def strip_quotes(text):
     text = re.sub(r"```.*?```", " ", text, flags=re.S)
     text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
@@ -170,7 +177,7 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d LAUNCH scope file is missing (rule 1.5)" % e["n"])
         if not ident or ident.startswith("<") or ident.strip("`.").lower() in ("none", "n/a", "unknown", "tbd"):
             err("AUDIT-LOG.md: E-%d LAUNCH has no SUB-AGENT identifier (rule 1.5)" % e["n"])
-        if not field(b, "Commit under review"):
+        if not (field(b, "Commit") or field(b, "Commit under review")):
             err("AUDIT-LOG.md: E-%d LAUNCH names no commit and no `no git` (rule 1.5)" % e["n"])
         if not report or not (folder / report.group(1)).is_file():
             err("AUDIT-LOG.md: E-%d LAUNCH has no saved report (rule 1.7)" % e["n"])
@@ -180,7 +187,7 @@ def check(folder, stage):
         first = lines[0] if lines else ""
         # Devin prints a session identifier with or without its "devin-" prefix.
         bare = ident[len("devin-"):] if ident and ident.startswith("devin-") else ident
-        if first.startswith("DEGRADED — single-agent audit"):
+        if re.match(r"\W*DEGRADED\b", first):  # any separator after the word (rule 21.2)
             degraded_reports.append(report.group(1))
             if not any((field(c["body"], "Mode") or "").startswith("DEGRADED") for c in by_type.get("CAPABILITY", [])):
                 err("%s: first line says DEGRADED, and no CAPABILITY entry states Mode: DEGRADED (rule 21.3)" % report.group(1))
@@ -212,7 +219,7 @@ def check(folder, stage):
                 err("AUDIT-LOG.md: %s lacks the field %s (rule 15.1)" % (fid, name))
         if fid in findings:
             err("AUDIT-LOG.md: %s is logged 2 times (rule 9.5)" % fid)
-        findings[fid] = {"class": cls[0] if cls else "", "closed": 0}
+        findings[fid] = {"class": cls[0] if cls else "", "closed": 0, "n": e["n"]}
     for e in by_type.get("RESOLUTION", []) + by_type.get("OVERRULE", []):
         b = e["body"]
         fid = (field(b, "Finding") or "?").split()[0]
@@ -229,7 +236,10 @@ def check(folder, stage):
             result = (field(b, "Result") or "").split()[0:1]
             if not result or result[0] not in ("FIXED", "WITHDRAWN"):
                 err("AUDIT-LOG.md: E-%d has no result FIXED or WITHDRAWN (rule 15.4)" % e["n"])
-            if re.search(r"^- Record fault: yes", b, re.M):
+            if re.search(r"^- Record fault: yes", b, re.M) and findings[fid]["class"] != "DEFECT":
+                err("AUDIT-LOG.md: E-%d closes %s %s as a record fault; rule 14.6 covers a DEFECT only"
+                    % (e["n"], findings[fid]["class"], fid))
+            elif re.search(r"^- Record fault: yes", b, re.M):
                 rc = re.search(r"`(evidence/record-check-[^`]+)`", b)
                 if not rc or not (folder / rc.group(1)).is_file():
                     err("AUDIT-LOG.md: E-%d cites no existing record-check output (rule 14.6)" % e["n"])
@@ -237,6 +247,11 @@ def check(folder, stage):
                 ra = re.search(r"`(audits/[^`]+)`", b)
                 if not ra or not (folder / ra.group(1)).is_file():
                     err("AUDIT-LOG.md: E-%d cites no existing re-audit report (rule 14.3)" % e["n"])
+                elif (findings[fid]["class"] == "BLOCKER" and "-seed-" not in ra.group(1)  # rule 16.7: the planted defect
+                      and not any(x["n"] > findings[fid]["n"] and ra.group(1) in (field(x["body"], "Report") or "")
+                             for x in by_type.get("LAUNCH", []))):
+                    err("AUDIT-LOG.md: E-%d cites %s, which matches no LAUNCH entry later than the FINDING (rule 14.3)"
+                        % (e["n"], ra.group(1)))
     for fid, f in findings.items():
         if f["closed"] > 1:
             err("AUDIT-LOG.md: %s has %d closing entries (rule 15.4)" % (fid, f["closed"]))
@@ -336,9 +351,11 @@ def check(folder, stage):
         ledger = (folder / "COVERAGE-LEDGER.md")
         ledger_text = ledger.read_text(encoding="utf-8") if ledger.is_file() else ""
         unverified_criteria = [l for l in ledger_text.splitlines()
-                               if re.match(r"\|\s*`?C\d+", l) and "UNVERIFIED" in l]
-        criterion_rows = set(re.findall(r"^\|\s*`?(C\d+)\b", ledger_text, re.M))
-        criteria_ids = set(re.findall(r"^- (C\d+)\.", crit[-1]["body"], re.M)) if crit else set()
+                               if re.match(r"\|[\s`*]*C\d+", l) and "UNVERIFIED" in l]
+        criterion_rows = set(re.findall(r"^\|[\s`*]*(C\d+)\b", ledger_text, re.M))
+        if is_done and not criteria_ids_of(crit):
+            err("DELIVERY-REPORT.md: Status DONE, and the newest CRITERIA entry lists no CRITERION (DONE, part 1)")
+        criteria_ids = criteria_ids_of(crit)
         if is_done and criteria_ids - criterion_rows:
             err("DELIVERY-REPORT.md: Status DONE, and the ledger has no row for %s (DONE, part 1)"
                 % ", ".join(sorted(criteria_ids - criterion_rows, key=lambda c: int(c[1:]))))
@@ -374,6 +391,17 @@ def check(folder, stage):
         for msg in check_record(folder):
             err(msg)
         final = [r for r in cited_reports if r.startswith("audits/final-audit-")]
+        if is_done:
+            for r in final:
+                tail = (folder / r).read_text(encoding="utf-8").strip().splitlines()[-1:] or [""]
+                if "not passed" in tail[0] or "passed" not in tail[0]:
+                    err("%s: Status DONE, and the last line of the final audit does not read passed (DONE, part 6)" % r)
+            planned = [int(m) for t in by_type.get("TIER", []) for m in re.findall(r"Planned SUB-AGENT runs:\s*(\d+)", t["body"])]
+            if not planned:
+                err("AUDIT-LOG.md: Status DONE, and no TIER entry states Planned SUB-AGENT runs (rule 0.9)")
+            elif len(by_type.get("LAUNCH", [])) > planned[0] and not by_type.get("ANSWER"):
+                err("AUDIT-LOG.md: %d LAUNCH entries exceed the %d planned, with no ANSWER entry (rule 0.9)"
+                    % (len(by_type.get("LAUNCH", [])), planned[0]))
         if not final:
             err("audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)")
     return errors
