@@ -482,3 +482,12 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - The BUILDER's own run of the tests is in `evidence/builder-run-WU-1-round-2.txt`. It supports no `PASS` cell (rule 10.5).
 - A choice the BUILDER made, stated for the AUDITORS and the USER: the new test `test_text_outside_the_mermaid_block_is_not_read` fails against the script of commit 93311ab, because that script reads lines outside the block. The BUILDER first named it with the word `edge`; the test command of C6 (`-k edge`) then reported 5 failed tests against commit 93311ab, not the 4 that C6 names. The BUILDER renamed the new test so that the command of C6 selects the same failing tests as before. No test that a CRITERION names was changed (rule 3.6).
 - `COVERAGE-LEDGER.md` holds the rows of WU-1 as built at commit 5099f2a; `FRAMEWORK.md` part 6 gives WU-1 the status `in audit, round 2`.
+
+### E-44 · 2026-11-18T20:02:39Z · LAUNCH · orchestrator
+
+- Role: correctness auditor (rule 13.1, role 1), round 2: re-audit after the repairs (rules 14.3 and 16.5). This SUB-AGENT did not raise F-1, F-2 or F-4.
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-r2-correctness.md`
+- Commit under review: 5099f2a
+- SUB-AGENT identifier: cecdcf81310d47498b7a6dfc923e59b9 https://app.devin.ai/sessions/cecdcf81310d47498b7a6dfc923e59b9
+- Report: `audits/WU-1-r2-correctness-E-44.md`
