@@ -1,0 +1,35 @@
+sweep 1: bills 0.01-50.00 step 0.01, tips 0/15/18/20, 1 person: cases 20000 mismatches 0 invariant failures 0
+sweep 2: bills 0.01-5.00 step 0.01, 1-12 people, tip 18: cases 6000 mismatches 0 invariant failures 0
+spot ["10.00","0","3"] MATCH | page: {"r":["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."],"e":[]} | auditor: ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."]
+spot ["1000000.00","100","100"] MISMATCH | page: {"r":[],"e":["Enter 1000000.00 or less."]} | auditor: ["Bill total: 1000000.00","Tip percent: 100","Number of people: 100","Tip amount: 1000000.00","Total with tip: 2000000.00","100 people pay 20000.00 each"]
+spot ["0.01","0","100"] MATCH | page: {"r":["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."],"e":[]} | auditor: ["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."]
+extra, beyond C3: top of the range
+extra ["999999.99","100","100"] MATCH
+extra ["999999.99","99","97"] MATCH
+extra ["999999.99","1","7"] MATCH
+extra ["500000.00","100","3"] MATCH
+extra ["999999.50","15","99"] MATCH
+total cases 26008 mismatches 1 seconds 406
+first mismatches: [
+ {
+  "typed": [
+   "1000000.00",
+   "100",
+   "100"
+  ],
+  "page": {
+   "r": [],
+   "e": [
+    "Enter 1000000.00 or less."
+   ]
+  },
+  "auditor": [
+   "Bill total: 1000000.00",
+   "Tip percent: 100",
+   "Number of people: 100",
+   "Tip amount: 1000000.00",
+   "Total with tip: 2000000.00",
+   "100 people pay 20000.00 each"
+  ]
+ }
+]

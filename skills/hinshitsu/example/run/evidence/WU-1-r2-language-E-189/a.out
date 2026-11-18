@@ -1,0 +1,154 @@
+browser 156.0.8078.47
+## C1 requests after load: 1 ["GET file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html"]
+first open: {"bill":"","tip":"","people":"","be":"","te":"","pe":"","result":[],"active":"BODY"}
+visible text: "Split the bill\n\nType the bill total, the tip percent and the number of people.\n\nBill total, tax included\n\nTip percent\n\nNumber of people"
+## C2 tests
+["100.00","18","4"] => ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"] errors ["","",""]
+["0.30","15","1"] => ["Bill total: 0.30","Tip percent: 15","Number of people: 1","Tip amount: 0.05","Total with tip: 0.35","1 person pays 0.35"] errors ["","",""]
+["10.10","15","1"] => ["Bill total: 10.10","Tip percent: 15","Number of people: 1","Tip amount: 1.52","Total with tip: 11.62","1 person pays 11.62"] errors ["","",""]
+["12.25","18","1"] => ["Bill total: 12.25","Tip percent: 18","Number of people: 1","Tip amount: 2.21","Total with tip: 14.46","1 person pays 14.46"] errors ["","",""]
+["0100.5","007","02"] => ["Bill total: 100.50","Tip percent: 7","Number of people: 2","Tip amount: 7.04","Total with tip: 107.54","2 people pay 53.77 each"] errors ["","",""]
+["10.00","0","3"] => ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."] errors ["","",""]
+["1000000.00","100","100"] => ["Bill total: 1000000.00","Tip percent: 100","Number of people: 100","Tip amount: 1000000.00","Total with tip: 2000000.00","100 people pay 20000.00 each"] errors ["","",""]
+["0.01","0","100"] => ["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."] errors ["","",""]
+["0.50","0","1"] => ["Bill total: 0.50","Tip percent: 0","Number of people: 1","Tip amount: 0.00","Total with tip: 0.50","1 person pays 0.50"] errors ["","",""]
+## C1 requests after C2 tests (reloads included): 10
+## C4 states
+incomplete (tip, people typed; bill untouched): {"bill":"","tip":"18","people":"4","be":"","te":"","pe":"","result":[],"active":"people"}
+bill abc, cursor still in bill; tip and people untouched: {"bill":"abc","tip":"","people":"","be":"Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50","te":"","pe":"","result":[],"active":"bill"}
+bill focused then Tab (left empty): {"bill":"","tip":"","people":"","be":"Enter the bill total.","te":"","pe":"","result":[],"active":"tip"}
+bill typed 1 then Backspace: {"bill":"","tip":"","people":"","be":"Enter the bill total.","te":"","pe":"","result":[],"active":"bill"}
+## C4 inputs: bill (tip 18, people 4 typed first; then bill typed; state read with cursor in bill, then after Tab)
+"12.50" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"12,50" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"12" | in field: msg="" result="Bill total: 12.00" [6 lines] | after Tab: msg="" result=["Bill total: 12.00"]
+"12.5" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"  12.50  " | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+200B12.50U+FEFF" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+FF11U+FF12U+FF0EU+FF15U+FF10" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+FF11U+FF12U+FF0CU+FF15U+FF10" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+0661U+0662U+066BU+0665U+0660" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+0661U+0662.U+0665U+0660" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"12." | in field: msg="" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12," | in field: msg="" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"10." | in field: msg="" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"abc" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12a" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"1,000.00" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"1.000,00" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"1,000" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"1e3" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+".5" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+",5" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"$12" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12$" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+20AC12" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12 U+20AC" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"-5" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"-0" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"0" | in field: msg="Enter an amount above 0." result="" | after Tab: msg="Enter an amount above 0." result=[]
+"0.00" | in field: msg="Enter an amount above 0." result="" | after Tab: msg="Enter an amount above 0." result=[]
+"00" | in field: msg="Enter an amount above 0." result="" | after Tab: msg="Enter an amount above 0." result=[]
+"1000000.01" | in field: msg="Enter 1000000.00 or less." result="" | after Tab: msg="Enter 1000000.00 or less." result=[]
+"1000001" | in field: msg="Enter 1000000.00 or less." result="" | after Tab: msg="Enter 1000000.00 or less." result=[]
+"1000000.00" | in field: msg="" result="Bill total: 1000000.00" [6 lines] | after Tab: msg="" result=["Bill total: 1000000.00"]
+"1000000" | in field: msg="" result="Bill total: 1000000.00" [6 lines] | after Tab: msg="" result=["Bill total: 1000000.00"]
+"12.345" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12,345" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"1 000" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12 .50" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"+12" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+200E12.50" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12.50U+200F" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+202D12.50U+202C" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+00AD12.50" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+206612.50U+2069" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+00A012.50" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+000912.50" | in field: msg="" result="Bill total: 12.50" [8 lines] | after Tab: msg="" result=["Bill total: 12.50"]
+"U+2460U+2461" | in field: msg="" result="Bill total: 12.00" [6 lines] | after Tab: msg="" result=["Bill total: 12.00"]
+"U+00B9U+00B2" | in field: msg="" result="Bill total: 12.00" [6 lines] | after Tab: msg="" result=["Bill total: 12.00"]
+"U+06F1U+06F2" | in field: msg="" result="Bill total: 12.00" [6 lines] | after Tab: msg="" result=["Bill total: 12.00"]
+"U+0967U+0968" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"U+1D7CFU+1D7D0" | in field: msg="" result="Bill total: 12.00" [6 lines] | after Tab: msg="" result=["Bill total: 12.00"]
+"U+3251" | in field: msg="" result="Bill total: 21.00" [8 lines] | after Tab: msg="" result=["Bill total: 21.00"]
+"12U+066C345" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12U+060C50" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12U+00B750" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+"12U+239650" | in field: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result="" | after Tab: msg="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" result=[]
+## C4 inputs: tip and people (bill 100.00 typed first, other whole-number field valid)
+tip "18" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 4"]
+tip "0" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 0","Number of people: 4"]
+tip "100" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 100","Number of people: 4"]
+tip "101" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "007" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 7","Number of people: 4"]
+tip "0100" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 100","Number of people: 4"]
+tip "18.0" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "18,5" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "1e1" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "+4" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "4." | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "-1" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "abc" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "18%" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "1 8" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip " 18 " | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 4"]
+tip "U+FF11U+FF18" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 4"]
+tip "U+0661U+0668" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 4"]
+tip "U+2460" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 1","Number of people: 4"]
+tip "1000" | in field: msg="Enter a whole number from 0 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 0 to 100, in digits only." lines=0
+tip "" | in field: msg="" lines=0 | after Tab: msg="Enter the tip percent. Enter 0 for no tip." lines=0
+people "18" | in field: msg="" lines=8 | after Tab: msg="" lines=8 ["Tip percent: 18","Number of people: 18"]
+people "0" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "100" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 100"]
+people "101" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "007" | in field: msg="" lines=8 | after Tab: msg="" lines=8 ["Tip percent: 18","Number of people: 7"]
+people "0100" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 100"]
+people "18.0" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "18,5" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "1e1" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "+4" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "4." | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "-1" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "abc" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "18%" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "1 8" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people " 18 " | in field: msg="" lines=8 | after Tab: msg="" lines=8 ["Tip percent: 18","Number of people: 18"]
+people "U+FF11U+FF18" | in field: msg="" lines=8 | after Tab: msg="" lines=8 ["Tip percent: 18","Number of people: 18"]
+people "U+0661U+0668" | in field: msg="" lines=8 | after Tab: msg="" lines=8 ["Tip percent: 18","Number of people: 18"]
+people "U+2460" | in field: msg="" lines=6 | after Tab: msg="" lines=6 ["Tip percent: 18","Number of people: 1"]
+people "1000" | in field: msg="Enter a whole number from 1 to 100, in digits only." lines=0 | after Tab: msg="Enter a whole number from 1 to 100, in digits only." lines=0
+people "" | in field: msg="" lines=0 | after Tab: msg="Enter the number of people." lines=0
+## C4 wording probes: "has the cursor" and "leaves the field"
+12. typed, text cursor in bill: {"bill":"12.","tip":"18","people":"4","be":"","te":"","pe":"","result":[],"active":"bill"}
+mouse pointer moved off the bill field, text cursor still in bill: {"bill":"12.","tip":"18","people":"4","be":"","te":"","pe":"","result":[],"active":"bill"}
+clicked tip (text cursor left bill): {"bill":"12.","tip":"18","people":"4","be":"Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50","te":"","pe":"","result":[],"active":"tip"}
+mouse pointer over the bill field, text cursor in tip: {"bill":"12.","tip":"18","people":"4","be":"Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50","te":"","pe":"","result":[],"active":"tip"}
+bill clicked, nothing typed, then another tab brought to front: events=["bill focus"] hasFocus=true state={"bill":"","tip":"","people":"","be":"","te":"","pe":"","result":[],"active":"bill"}
+## C5 mutation counts
+bill shows a message; person types 18 in tip: {"bill-error":0,"tip-error":0,"people-error":0,"result":0} {"bill":"abc","tip":"18","people":"","be":"Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50","te":"","pe":"","result":[],"active":"tip"}
+result shows; person types .00 after 100 in bill (result text ends the same; passes through "100."): {"bill-error":0,"tip-error":0,"people-error":0,"result":2} ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"]
+result shows; person types 00 before 18 in tip (0018): {"bill-error":0,"tip-error":0,"people-error":0,"result":0} ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"]
+result shows; person types 0 after 4 in people (40): {"bill-error":0,"tip-error":0,"people-error":0,"result":2} ["Bill total: 100.00","Tip percent: 18","Number of people: 40","Tip amount: 18.00","Total with tip: 118.00","40 people pay 2.95 each"]
+## C5 markup
+{"labels":[{"for":"bill","text":"Bill total, tax included","visible":true},{"for":"tip","text":"Tip percent","visible":true},{"for":"people","text":"Number of people","visible":true}],"inputs":[{"id":"bill","inputmode":"decimal","autocomplete":"off"},{"id":"tip","inputmode":"numeric","autocomplete":"off"},{"id":"people","inputmode":"numeric","autocomplete":"off"}],"errorRoles":["bill-error:alert","tip-error:alert","people-error:alert"],"resultRole":"status"}
+## C5 widths
+360 first-open {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+360 errors {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+360 result-max {"innerWidth":360,"scrollWidth":360,"clientWidth":360,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+768 first-open {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+768 errors {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+768 result-max {"innerWidth":768,"scrollWidth":768,"clientWidth":768,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+1280 first-open {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+1280 errors {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+1280 result-max {"innerWidth":1280,"scrollWidth":1280,"clientWidth":1280,"widerThanWindow":[],"scrollXAfterScrollTo1000":0}
+## C7
+  [console.error] Connecting to 'https://example.com/' violates the following Content Security Policy directive: "default-src 'none'". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.
+  [console.error] Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy.
+fetch('https://example.com') => rejected: TypeError: Failed to fetch
+before reload: {"bill":"100.00","tip":"18","people":"4","be":"","te":"","pe":"","result":["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"],"active":"people"}
+after reload: {"bill":"","tip":"","people":"","be":"","te":"","pe":"","result":[],"active":"BODY"}
+storage after use: {"cookie":"","ls":0,"ss":0}
+## C1 total requests seen on this page in the whole run: 129 ["GET file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html"]
+## C6 JavaScript disabled
+visible text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page."
+guide visible: false | fields visible: false | inputs visible: [false,false,false]

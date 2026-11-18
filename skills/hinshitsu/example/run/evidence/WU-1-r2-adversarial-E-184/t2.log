@@ -1,0 +1,133 @@
+--- A. characters at the ends that a person cannot see (bill; tip 18, people 4)
+LRM U+200E | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+RLM U+200F | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+ALM U+061C | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+soft hyphen U+00AD | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+LRE U+202A | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+PDF U+202C | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+LRI U+2066 | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+PDI U+2069 | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+MVS U+180E | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+CGJ U+034F | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+invisible times U+2062 | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+Hangul filler U+3164 | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+braille blank U+2800 | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+NBSP U+00A0 | leading: RESULT | trailing: RESULT
+tab | leading: RESULT | trailing: RESULT
+ideographic space U+3000 | leading: RESULT | trailing: RESULT
+ZWSP U+200B | leading: RESULT | trailing: RESULT
+ZWJ U+200D | leading: RESULT | trailing: RESULT
+WJ U+2060 | leading: RESULT | trailing: RESULT
+BOM U+FEFF | leading: RESULT | trailing: RESULT
+variation selector U+FE0F | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+NUL | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+DEL U+007F | leading: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" | trailing: message "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+--- A2. Arabic-Indic amount with RLM as a phone keyboard or a copy from right-to-left text gives it
+be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="Enter a whole number from 0 to 100, in digits only." pe="Enter a whole number from 1 to 100, in digits only." result=""
+--- B. characters that are not full-width or Arabic-Indic and that NFKC turns into digits or marks
+tip "5²" 5U+00B2 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 52 | Number of people: 4 | Tip amount: 52.00 | Total with tip: 152.00 | 4 people pay 38.00 each"
+tip "1⁰" 1U+2070 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 10 | Number of people: 4 | Tip amount: 10.00 | Total with tip: 110.00 | 4 people pay 27.50 each"
+tip "①" U+2460 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 1 | Number of people: 4 | Tip amount: 1.00 | Total with tip: 101.00 | 4 people pay 25.25 each"
+tip "⑱" U+2471 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+tip "𝟏𝟖" U+1D7CFU+1D7D6 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+tip "₁₈" U+2081U+2088 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+tip "㊿" U+32BF => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 50 | Number of people: 4 | Tip amount: 50.00 | Total with tip: 150.00 | 4 people pay 37.50 each"
+tip "⒙" U+2499 => be="" te="Enter a whole number from 0 to 100, in digits only." pe="" result=""
+tip "１⁸" U+FF11U+2078 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+people "２²" U+FF12U+00B2 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 22 | Tip amount: 18.00 | Total with tip: 118.00 | 8 people pay 5.37 each | 14 people pay 5.36 each | Your group decides who pays the higher amount."
+people "④" U+2463 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+people "㈩" U+3229 => be="" te="" pe="Enter a whole number from 1 to 100, in digits only." result=""
+people "Ⅳ" U+2163 => be="" te="" pe="Enter a whole number from 1 to 100, in digits only." result=""
+people "½" U+00BD => be="" te="" pe="Enter a whole number from 1 to 100, in digits only." result=""
+people "٤²" U+0664U+00B2 => be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 42 | Tip amount: 18.00 | Total with tip: 118.00 | 40 people pay 2.81 each | 2 people pay 2.80 each | Your group decides who pays the higher amount."
+bill "12․50" 12U+202450 => be="" te="" pe="" result="Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount."
+bill "12﹒50" 12U+FE5250 => be="" te="" pe="" result="Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount."
+bill "12﹐50" 12U+FE5050 => be="" te="" pe="" result="Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount."
+bill "⒓50" U+249350 => be="" te="" pe="" result="Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount."
+bill "1²" 1U+00B2 => be="" te="" pe="" result="Bill total: 12.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.16 | Total with tip: 14.16 | 4 people pay 3.54 each"
+bill "³.⁵" U+00B3.U+2075 => be="" te="" pe="" result="Bill total: 3.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 0.63 | Total with tip: 4.13 | 1 person pays 1.04 | 3 people pay 1.03 each | Your group decides who pays the higher amount."
+bill "12。50" 12U+300250 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+bill "12٬50" 12U+066C50 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+bill "१२.५०" U+0967U+0968.U+096BU+0966 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+bill "߁߂" U+07C1U+07C2 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+bill "12·50" 12U+00B750 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+bill "12⁄50" 12U+204450 => be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+--- C. typing order and focus
+click bill, type nothing | active=bill be="" te="" pe="" result=""
+type 12 | active=bill be="" te="" pe="" result=""
+type . | active=bill be="" te="" pe="" result=""
+Tab to tip | active=tip be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+Shift+Tab back to bill (12. in the field, cursor in it) | active=bill be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="Enter the tip percent. Enter 0 for no tip." pe="" result=""
+type 5 | active=bill be="" te="Enter the tip percent. Enter 0 for no tip." pe="" result=""
+tip 18 | active=tip be="" te="" pe="" result=""
+people 4 | active=people be="" te="" pe="" result="Bill total: 12.50 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.25 | Total with tip: 14.75 | 3 people pay 3.69 each | 1 person pays 3.68 | Your group decides who pays the higher amount."
+bill back to "12." with cursor in bill | active=bill be="" te="" pe="" result=""
+bill "12" | active=bill be="" te="" pe="" result="Bill total: 12.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 2.16 | Total with tip: 14.16 | 4 people pay 3.54 each"
+bill "12," | active=bill be="" te="" pe="" result=""
+script moves focus to tip | active=tip be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+click bill again (12, in field) | active=bill be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+click the heading | active=BODY be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+--- C2. tab through 3 empty fields without typing
+after 4 Tabs | active=BODY be="Enter the bill total." te="Enter the tip percent. Enter 0 for no tip." pe="Enter the number of people." result=""
+--- C3. incomplete: 2 valid fields, third never touched
+bill 10, tip 10 | active=tip be="" te="" pe="" result=""
+--- C4. value set without an input event (script, some password managers and autofill tools)
+values set by script, no event | active=BODY be="" te="" pe="" result=""
+--- C5. paste with a line break and a tab inside
+insert "12\n50" field holds "12 50" be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+insert "12\t50" field holds "12\t50" be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+insert "12\r\n.50" field holds "12 .50" be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+insert "100\n" field holds "100" be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 0 | Number of people: 1 | Tip amount: 0.00 | Total with tip: 100.00 | 1 person pays 100.00"
+--- D. huge input: time for 1 input event
+100000 digits (length 100000) in tip: 0 ms | te="Enter a whole number from 0 to 100, in digits only."
+1000000 digits (length 1000000) in tip: 3 ms | te="Enter a whole number from 0 to 100, in digits only."
+"1" + 20000 spaces + "x" (length 20002) in tip: 105 ms | te="Enter a whole number from 0 to 100, in digits only."
+"1" + 50000 spaces + "x" (length 50002) in tip: 1310 ms | te="Enter a whole number from 0 to 100, in digits only."
+"1" + 100000 spaces + "x" (length 100002) in tip: 5127 ms | te="Enter a whole number from 0 to 100, in digits only."
+"1" + 100000 ZWSP + "x" (length 100002) in tip: 9221 ms | te="Enter a whole number from 0 to 100, in digits only."
+100000 x "1 " (length 200000) in tip: 1 ms | te="Enter a whole number from 0 to 100, in digits only."
+--- E. hostile markup as input
+be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="Enter a whole number from 0 to 100, in digits only." pe="Enter a whole number from 1 to 100, in digits only." result="" | elements inside error paragraphs and result: 0
+--- F. repeated: 300 changes in a row, last value wins
+be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 98 | Number of people: 4 | Tip amount: 98.00 | Total with tip: 198.00 | 4 people pay 49.50 each"
+--- G. C5 mutation counts
+bill abc then Tab {"bill":1,"tip":0,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+type 18 in tip (bill error showing) {"bill":0,"tip":0,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+type 12 in people {"bill":0,"tip":0,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="" result=""
+empty people {"bill":0,"tip":0,"people":1,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="Enter the number of people." result=""
+people x {"bill":0,"tip":0,"people":1,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="Enter a whole number from 1 to 100, in digits only." result=""
+people xyz (same message) {"bill":0,"tip":0,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="" pe="Enter a whole number from 1 to 100, in digits only." result=""
+tip 185 -> tip error {"bill":0,"tip":1,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="Enter a whole number from 0 to 100, in digits only." pe="Enter a whole number from 1 to 100, in digits only." result=""
+tip 1855 (same message) {"bill":0,"tip":0,"people":0,"result":0} be="Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50" te="Enter a whole number from 0 to 100, in digits only." pe="Enter a whole number from 1 to 100, in digits only." result=""
+all valid {"bill":1,"tip":1,"people":1,"result":1} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+bill "100." {"bill":0,"tip":0,"people":0,"result":1} be="" te="" pe="" result=""
+bill "100.0" {"bill":0,"tip":0,"people":0,"result":1} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+bill "100.00" (same result text) {"bill":0,"tip":0,"people":0,"result":0} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+bill "100.00 " (same result text) {"bill":0,"tip":0,"people":0,"result":0} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+tip "018" (same result text) {"bill":0,"tip":0,"people":0,"result":0} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+move focus around, no change of value {"bill":0,"tip":0,"people":0,"result":0} be="" te="" pe="" result="Bill total: 100.00 | Tip percent: 18 | Number of people: 4 | Tip amount: 18.00 | Total with tip: 118.00 | 4 people pay 29.50 each"
+--- H. markup
+{"inputs":[{"id":"bill","type":"text","inputmode":"decimal","autocomplete":"off","label":"Bill total, tax included","labelVisible":true,"describedby":"bill-error"},{"id":"tip","type":"text","inputmode":"numeric","autocomplete":"off","label":"Tip percent","labelVisible":true,"describedby":"tip-error"},{"id":"people","type":"text","inputmode":"numeric","autocomplete":"off","label":"Number of people","labelVisible":true,"describedby":"people-error"}],"alerts":["bill-error:alert","tip-error:alert","people-error:alert"],"result":"status","csp":"<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'\">"}
+--- I. C7
+fetch: blocked: TypeError: Failed to fetch
+img: blocked
+sendBeacon: true
+console: ["Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.","Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy.","Loading the image 'https://example.com/x.png?100.00' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'img-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.","Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked."]
+after reload: ["","",""] be="" te="" pe="" result=""
+after leave and Back: ["","",""] be="" te="" pe="" result=""
+storage: {"cookie":"","ls":0,"ss":0}
+--- J. widths
+360 first {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"wider":[],"scrollXafterScrollTo1000":0}
+360 errors {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"wider":[],"scrollXafterScrollTo1000":0}
+360 result2 {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"wider":[],"scrollXafterScrollTo1000":0}
+360 longinput {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"wider":[],"scrollXafterScrollTo1000":0}
+768 first {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"wider":[],"scrollXafterScrollTo1000":0}
+768 errors {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"wider":[],"scrollXafterScrollTo1000":0}
+768 result2 {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"wider":[],"scrollXafterScrollTo1000":0}
+768 longinput {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"wider":[],"scrollXafterScrollTo1000":0}
+1280 first {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"wider":[],"scrollXafterScrollTo1000":0}
+1280 errors {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"wider":[],"scrollXafterScrollTo1000":0}
+1280 result2 {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"wider":[],"scrollXafterScrollTo1000":0}
+1280 longinput {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"wider":[],"scrollXafterScrollTo1000":0}
+--- K. JavaScript off
+visible text: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page." | guide visible: false | inputs visible: 0 | labels visible: 0
