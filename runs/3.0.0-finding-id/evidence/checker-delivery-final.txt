@@ -1,0 +1,18 @@
+$ python3 scripts/hinshitsu_check.py --stage plan runs/3.0.0-finding-id
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit 0
+$ python3 scripts/hinshitsu_check.py --stage unit runs/3.0.0-finding-id
+hinshitsu_check (unit): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit 0
+$ python3 scripts/hinshitsu_check.py --stage delivery runs/3.0.0-finding-id
+FAIL AUDIT-LOG.md: E-73 is LAUNCH 5; LAUNCH entries exceed the 4 planned, and no ANSWER entry after the last planned LAUNCH raises the number (rule 0.9)
+FAIL audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)
+hinshitsu_check (delivery): 2 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit 1
+$ python3 scripts/hinshitsu_check.py --record runs/3.0.0-finding-id
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+exit 0

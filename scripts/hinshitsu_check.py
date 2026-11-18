@@ -83,6 +83,17 @@ def criteria_ids_of(crit, changes=()):
 
 UTC_TIME = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?Z")
 FINDING_ID = re.compile(r"F-\d+")
+
+
+def finding_id(body):
+    """Return the ID of a FINDING entry, the first word of its ID field, or None where that word is not F-<n>.
+
+    The gauge applies the same test (tests/test_gauge.py compares the 2)."""
+    fid = field(body, "ID")
+    fid = fid.split()[0] if fid else None
+    return fid if fid and FINDING_ID.fullmatch(fid) else None
+
+
 QUOTE = r'["“][^"”\n]+["”]'
 def artifact_bases(folder):
     """The folders an artifact path is tested against: the RUN FOLDER, and each folder above it up to the
@@ -296,13 +307,13 @@ def check(folder, stage):
     findings = {}
     for e in by_type.get("FINDING", []):
         b = e["body"]
-        fid = field(b, "ID")
+        fid = finding_id(b)
         if not fid:
-            err("AUDIT-LOG.md: E-%d FINDING has no ID (rule 15.1)" % e["n"])
-            continue
-        fid = fid.split()[0]
-        if not FINDING_ID.fullmatch(fid):
-            err("AUDIT-LOG.md: E-%d FINDING ID %s is not F-<n> (rule 9.5)" % (e["n"], fid))
+            raw = field(b, "ID")
+            if not raw:
+                err("AUDIT-LOG.md: E-%d FINDING has no ID (rule 15.1)" % e["n"])
+            else:
+                err("AUDIT-LOG.md: E-%d FINDING ID %s is not F-<n> (rule 9.5)" % (e["n"], raw.split()[0]))
             continue
         # An AUDITOR's words are copied whole, so the class word may carry a full stop or a comma.
         cls = [w.strip(".,;:") for w in (field(b, "Class") or "").split()[0:1]]

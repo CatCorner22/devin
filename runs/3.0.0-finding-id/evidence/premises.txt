@@ -1,0 +1,55 @@
++ git rev-parse HEAD
++ local devin_git_subcmd= devin_git_subcmd_idx=0 devin_git_parsed devin_git_rc=0
+++ /mnt/host_share/devin-remote parse-git-command -- rev-parse HEAD
++ devin_git_parsed='rev-parse	1'
++ '[' 0 = 0 ']'
++ IFS='	'
++ read -r devin_git_subcmd devin_git_subcmd_idx
++ case "$devin_git_subcmd_idx" in
++ [[ rev-parse == \c\o\m\m\i\t ]]
++ source /opt/.devin/git_author
+++ export GIT_AUTHOR_NAME=blakereaganlaw
+++ GIT_AUTHOR_NAME=blakereaganlaw
+++ export GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ export GIT_COMMITTER_NAME=blakereaganlaw
+++ GIT_COMMITTER_NAME=blakereaganlaw
+++ export GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ export 'GIT_DEVIN_NAME=Devin AI'
+++ GIT_DEVIN_NAME='Devin AI'
+++ export 'GIT_DEVIN_EMAIL=158243242+devin-ai-integration[bot]@users.noreply.github.com'
+++ GIT_DEVIN_EMAIL='158243242+devin-ai-integration[bot]@users.noreply.github.com'
++ original_git rev-parse HEAD
++ command git rev-parse HEAD
+ada52a0fa6e2a4cf57c959c5ae227a25f62720de
++ return 0
++ cat /tmp/p/AUDIT-LOG.md
+# AUDIT-LOG
+
+### E-1 · t · STAGE · orchestrator
+
+- Stage: S7
+- Event: start
+
+### E-2 · t · FINDING · orchestrator
+
+- ID: F-1.
+- Class: BLOCKER
+
+### E-3 · t · FINDING · orchestrator
+
+- ID: blocker one
+- Class: BLOCKER (d)
++ python3 skills/hinshitsu-gauge/scripts/gauge.py /tmp/p
++ grep -n 'STOPPED\|could not'
+3:STOPPED — blocker open: 2: F-1., blocker one
++ python3 scripts/hinshitsu_check.py /tmp/p
++ grep 'FINDING ID'
+FAIL AUDIT-LOG.md: E-2 FINDING ID F-1. is not F-<n> (rule 9.5)
+FAIL AUDIT-LOG.md: E-3 FINDING ID blocker is not F-<n> (rule 9.5)
++ python3 -m unittest discover -s tests
++ tail -3
+FAIL the files cannot be read: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+lint: 1 failure(s). This script tests form; it does not prove that any rule is sound.
+C<n> names a CRITERION and E-<n> an entry of build-record/AUDIT-LOG.md.

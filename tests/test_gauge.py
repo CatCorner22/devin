@@ -56,6 +56,42 @@ class ReadState(unittest.TestCase):
         st = gauge.read_state(stage(1, "S99", "end") + "Stage: S1\nEvent: end\n")
         self.assertEqual(st["complete"], 0)
 
+    def test_finding_with_a_refused_id_is_unread_and_not_a_blocker(self):
+        for bad in ("- ID: F-1.\n", "- ID: blocker one\n", "- ID:\n", ""):
+            log = stage(1, "S7", "start") + "### E-2 · t · FINDING · auditor\n" + bad + "- Class: BLOCKER\n"
+            st = gauge.read_state(log)
+            self.assertEqual((st["blockers"], st["unread"]), ([], 1), bad)
+
+    def test_finding_with_a_refused_id_is_unread_whatever_its_class(self):
+        log = stage(1, "S7", "start")
+        log += "### E-2 · t · FINDING · auditor\n- ID: F-1.\n- Class: DEFECT\n"
+        log += "### E-3 · t · FINDING · auditor\n- Class: STYLE\n"
+        log += "### E-4 · t · FINDING · auditor\n- ID: F-1\n- Class: DEFECT\n"
+        st = gauge.read_state(log)
+        self.assertEqual((st["blockers"], st["unread"]), ([], 2))
+
+    def test_refused_ids_beside_a_good_blocker_leave_only_the_good_one(self):
+        log = stage(1, "S7", "start")
+        log += "### E-2 · t · FINDING · auditor\n- ID: F-1.\n- Class: BLOCKER\n"
+        log += "### E-3 · t · FINDING · auditor\n- ID: F-2\n- Class: BLOCKER\n"
+        log += "### E-4 · t · FINDING · auditor\n- ID: blocker one\n- Class: BLOCKER (d)\n"
+        st = gauge.read_state(log)
+        self.assertEqual((st["blockers"], st["unread"]), (["F-2"], 2))
+        st = gauge.read_state(log + "### E-5 · t · RESOLUTION · orchestrator\n- Finding: F-2\n- Result: FIXED\n")
+        self.assertEqual((st["blockers"], st["unread"]), ([], 2))
+
+    def test_gauge_and_checker_agree_on_the_finding_id(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import hinshitsu_check
+        for raw in ("F-1", "F-12", "F-3 (local 2)", "F-1.", "blocker one", "f-1", "F-", "F-1a", " F-2",
+                    "F-0", "F-1,", "F- 1", "-F-1", "F-1 F-2", "F--1", "E-1", "F-٣"):
+            log = "### E-1 · t · FINDING · auditor\n- ID: %s\n- Class: BLOCKER\n" % raw
+            accepted = bool(hinshitsu_check.FINDING_ID.fullmatch(raw.split()[0]))
+            self.assertEqual(hinshitsu_check.finding_id(log.split("\n", 1)[1]) is not None, accepted, raw)
+            st = gauge.read_state(log)
+            self.assertEqual(st["blockers"], [raw.strip()] if accepted else [], raw)
+            self.assertEqual(st["unread"], 0 if accepted else 1, raw)
+
 
 class Output(unittest.TestCase):
     def run_script(self, log, *options):
@@ -125,6 +161,34 @@ class Output(unittest.TestCase):
     def test_missing_log_exits_2(self):
         r = subprocess.run([sys.executable, str(SCRIPT), tempfile.mkdtemp()], capture_output=True, text=True)
         self.assertEqual(r.returncode, 2)
+
+    def test_refused_finding_ids_are_counted_and_not_shown_as_stopped(self):
+        log = stage(1, "S7", "start")
+        log += "### E-2 · t · FINDING · auditor\n- ID: F-1.\n- Class: BLOCKER\n"
+        log += "### E-3 · t · FINDING · auditor\n- ID: blocker one\n- Class: BLOCKER\n"
+        log += "### E-4 · t · FINDING · auditor\n- Class: BLOCKER\n"
+        d, r = self.run_script(log)
+        svg = (d / "GAUGE.svg").read_text(encoding="utf-8")
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("3 entries could not be read", r.stdout)
+        for shown in (r.stdout, svg):
+            self.assertNotIn("STOPPED", shown)
+            self.assertNotIn("F-1.", shown)
+            self.assertNotIn("blocker one", shown)
+
+    def test_stopped_line_lists_only_the_blocker_with_a_good_id(self):
+        log = stage(1, "S7", "start")
+        log += "### E-2 · t · FINDING · auditor\n- ID: F-1.\n- Class: BLOCKER\n"
+        log += "### E-3 · t · FINDING · auditor\n- ID: F-2\n- Class: BLOCKER\n"
+        log += "### E-4 · t · FINDING · auditor\n- ID: blocker one\n- Class: BLOCKER\n"
+        d, r = self.run_script(log)
+        svg = (d / "GAUGE.svg").read_text(encoding="utf-8")
+        self.assertIn("STOPPED — blocker open: 1: F-2\n", r.stdout)
+        self.assertIn("2 entries could not be read", r.stdout)
+        self.assertIn("STOPPED — blocker open: 1: F-2<", svg)
+        for shown in (r.stdout, svg):
+            self.assertNotIn("F-1.", shown)
+            self.assertNotIn("blocker one", shown)
 
 
 if __name__ == "__main__":

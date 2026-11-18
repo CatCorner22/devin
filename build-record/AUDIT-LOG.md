@@ -380,3 +380,13 @@ Answer: version 2.2.0, listed in `CHANGELOG.md`. 37 of the 41 bugs are answered 
 ### E-029 · 2026-11-18T21:21Z · LAUNCH · orchestrator
 
 Proof run under version 3.0.0, announced to the USER before its start. 1 fresh session, mode "Ultra", on a real fault in `gauge.py`. Scope: `prompts/round4-proof-run.txt`. Devin session (platform identifier): https://app.devin.ai/sessions/c52d7b821c8a4a36a781ef3045b0a952 . Report: `audits/round4-proof-run.md`. The USER of that run is this session, acting for the owner.
+
+### E-030 · 2026-11-18T22:18Z · CHECK · orchestrator
+
+`audits/round4-proof-run.md`, saved whole: the proof run under version 3.0.0. Its record is `runs/3.0.0-finding-id/`, copied from branch `devin/hinshitsu-run-3.0.0` at `ec9b209`; its code change (commit `1ce96d3`) is merged.
+
+- Status, in the run's words: `DELIVERED — NOT DONE`. 5 SUB-AGENT runs; 4 were planned. 4 DECISION CARDS, 98 log entries, 22 friction items, for a change of 4 files and 102 lines.
+- No AUDITOR found a failed CRITERION in the BUILDER's code in 3 audits. The AUDITORS found 7 faults beside it; 2 were fixed.
+- The rounds did not converge: each re-audit raised a new fault, and 2 AUDITORS classed as BLOCKER a fault that the USER of that run had set aside.
+- `scripts/hinshitsu_log.py` refused a `LAUNCH` entry whose report path holds the entry's own number (friction items 15 and 22): a fault of version 3.0.0.
+- Result: version 3.0.0 did not make DONE reachable. The record-keeping no longer caused the stop; the classing of FINDINGS and the lack of an end to the audit rounds did.

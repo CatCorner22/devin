@@ -28,6 +28,7 @@ EVENTS = ("start", "end", "skipped", "progress")
 STOP = "STOPPED — blocker open"
 NOT_PROOF = "the log's state, not proof of DONE"
 HEADING = re.compile(r"^### E-(\d+) · ([^·]*) · ([A-Z-]+) · (.*)$")
+FINDING_ID = re.compile(r"F-\d+")  # the same form as in scripts/hinshitsu_check.py (rule 9.5)
 
 
 def entries(text):
@@ -80,10 +81,12 @@ def read_state(text):
             if sid == "S7" and u and int(u.group(2)) > 0:
                 units = (min(int(u.group(1)), int(u.group(2))), int(u.group(2)))
         elif kind == "FINDING":
-            if (field(body, "Class") or "").startswith("BLOCKER"):
-                fid = field(body, "ID")
-                if fid and fid not in blockers:
-                    blockers.append(fid)
+            fid = field(body, "ID")
+            if not fid or not FINDING_ID.fullmatch(fid.split()[0]):  # the checker refuses it too
+                unread += 1
+                continue
+            if (field(body, "Class") or "").startswith("BLOCKER") and fid not in blockers:
+                blockers.append(fid)
         elif kind == "RESOLUTION":
             fid = field(body, "Finding")
             if fid:

@@ -1,0 +1,60 @@
++ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-11-18T21:23:04Z
++ echo written-by-a-command
++ cat /tmp/cap.txt
+written-by-a-command
++ git rev-parse HEAD
++ local devin_git_subcmd= devin_git_subcmd_idx=0 devin_git_parsed devin_git_rc=0
+++ /mnt/host_share/devin-remote parse-git-command -- rev-parse HEAD
++ devin_git_parsed='rev-parse	1'
++ '[' 0 = 0 ']'
++ IFS='	'
++ read -r devin_git_subcmd devin_git_subcmd_idx
++ case "$devin_git_subcmd_idx" in
++ [[ rev-parse == \c\o\m\m\i\t ]]
++ source /opt/.devin/git_author
+++ export GIT_AUTHOR_NAME=blakereaganlaw
+++ GIT_AUTHOR_NAME=blakereaganlaw
+++ export GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ export GIT_COMMITTER_NAME=blakereaganlaw
+++ GIT_COMMITTER_NAME=blakereaganlaw
+++ export GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ export 'GIT_DEVIN_NAME=Devin AI'
+++ GIT_DEVIN_NAME='Devin AI'
+++ export 'GIT_DEVIN_EMAIL=158243242+devin-ai-integration[bot]@users.noreply.github.com'
+++ GIT_DEVIN_EMAIL='158243242+devin-ai-integration[bot]@users.noreply.github.com'
++ original_git rev-parse HEAD
++ command git rev-parse HEAD
+30a5c575c0bfcd795e8baaa9033ac806f09ee43d
++ return 0
++ git log --oneline -2
++ local devin_git_subcmd= devin_git_subcmd_idx=0 devin_git_parsed devin_git_rc=0
+++ /mnt/host_share/devin-remote parse-git-command -- log --oneline -2
++ devin_git_parsed='log	1'
++ '[' 0 = 0 ']'
++ IFS='	'
++ read -r devin_git_subcmd devin_git_subcmd_idx
++ case "$devin_git_subcmd_idx" in
++ [[ log == \c\o\m\m\i\t ]]
++ source /opt/.devin/git_author
+++ export GIT_AUTHOR_NAME=blakereaganlaw
+++ GIT_AUTHOR_NAME=blakereaganlaw
+++ export GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ GIT_AUTHOR_EMAIL=blakereaganlaw@gmail.com
+++ export GIT_COMMITTER_NAME=blakereaganlaw
+++ GIT_COMMITTER_NAME=blakereaganlaw
+++ export GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ GIT_COMMITTER_EMAIL=blakereaganlaw@gmail.com
+++ export 'GIT_DEVIN_NAME=Devin AI'
+++ GIT_DEVIN_NAME='Devin AI'
+++ export 'GIT_DEVIN_EMAIL=158243242+devin-ai-integration[bot]@users.noreply.github.com'
+++ GIT_DEVIN_EMAIL='158243242+devin-ai-integration[bot]@users.noreply.github.com'
++ original_git log --oneline -2
++ command git log --oneline -2
+30a5c57 log E-1: LAUNCH of the capability probe
+abfa02c run 3.0.0-finding-id: scope of the capability probe
++ return 0
++ python3 --version
+Python 3.12.16
