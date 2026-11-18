@@ -1,0 +1,28 @@
+.............................................hinshitsu check: test the form of a run's record.
+
+Usage: hinshitsu_check.py [--stage plan|unit|delivery] <run-folder>
+       hinshitsu_check.py --record <run-folder>   (state files against the log, rule 14.6)
+Exit 0 when every check for the stage passes, 1 when any fails, 2 on a usage error.
+Standard library only. Same folder in, same verdict out.
+
+This script tests the shape of the record: that entries, citations, cells and
+files exist and agree with each other. It does not prove that any check ran or
+that any report is true (rule 17.7).
+...............................
+----------------------------------------------------------------------
+Ran 76 tests in 1.150s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+FAIL MINDMAP.md:1: calls F-1 closed; the log holds no closing entry (rule 14.6)
+hinshitsu_check (record): 1 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
