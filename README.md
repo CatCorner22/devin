@@ -88,3 +88,10 @@ To use the example page: open [`skills/hinshitsu/example/index.html`](skills/hin
 | `build-record/` | the record of how this repository was built, with the reviews it received |
 
 See [`TESTING.md`](TESTING.md) for the commands.
+
+## Status
+
+Version 2.0.0. Independent sessions reviewed the finished set and did not pass it; the amendments made in answer are not yet reviewed. Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
+
+No license file exists yet; until the owner adds one, all rights are reserved.
+
