@@ -341,3 +341,12 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Planned SUB-AGENT runs: 3
 - The BUILDER's own run of the tests is in `evidence/builder-run-WU-1.txt`. It supports no `PASS` cell (rule 10.5).
 - `COVERAGE-LEDGER.md` now holds the rows of WU-1 (rule 10.1), and `FRAMEWORK.md` part 6 gives WU-1 the status `in audit`.
+
+### E-31 · 2026-11-18T19:45:59Z · LAUNCH · orchestrator
+
+- Role: correctness auditor (rule 13.1, role 1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-correctness.md`
+- Commit under review: fe82be2
+- SUB-AGENT identifier: 6b750018b2914b0a9b8d30fafc55d59d https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d
+- Report: `audits/WU-1-correctness-E-31.md`

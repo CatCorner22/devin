@@ -9,4 +9,4 @@ Last rewritten: 2026-11-18T19:43:22Z — log entry E-25
 5. **Open FINDINGS:** none
 6. **Artifacts that exist:** `AUDIT-LOG.md`, `FRAMEWORK.md`, `CONNECTIONS.md`, `MINDMAP.md`, `COVERAGE-LEDGER.md`, `SESSION-STATE.md`, `GAUGE.svg`, `FRICTION.md`, `prompts/capability-probe.md`, `evidence/capability-probe.md`, `evidence/capability-commands.txt`, `evidence/existing-implementations.txt`, `evidence/mermaid-flowchart-links.txt`, `evidence/baseline-93311ab.txt`, `evidence/existing-connections-forms.txt`
 7. **Checks actually run:** `evidence/capability-probe.md`, `evidence/capability-commands.txt`, `evidence/existing-implementations.txt`, `evidence/baseline-93311ab.txt`, `evidence/existing-connections-forms.txt`
-8. **Single next action:** start the correctness auditor on WU-1 and write its `LAUNCH` entry
+8. **Single next action:** wait for the report of the correctness auditor (E-31), save it whole, then log its findings
