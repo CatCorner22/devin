@@ -143,3 +143,27 @@ Plan-time lens memos and red-cell attack requested from 5 child Devin sessions. 
 | Lens: structural integrity | 0a254c9f2ac3448a82480a7a57da431d | `prompts/lens-structural-integrity.txt` |
 | Lens: trust and controls | a97b2610d2eb461a9b7db7efe18bbcfc | `prompts/lens-trust-controls.txt` |
 | Red cell (plan time; includes probes on E-005 and E-006) | f6e329e282254fb69cd897a4668abc9a | `prompts/redcell-plan.txt` |
+
+### E-010 · 2026-11-18T15:04Z · CORRECTION · orchestrator
+
+Corrects E-001 to E-009. Raised by: the red cell (`audits/redcell-plan.md` U1, U6, U9, demand 12), the structural-integrity lens (points 2, 4), the trust-and-controls lens (points 3, 4), the minimal-viable-sequence lens (points 5, 6, 7), the recipient-experience lens (point 2).
+
+1. **Times.** E-001 to E-008 were written in 1 batch between 14:53Z and 14:58Z, after the user's message 4 (14:52Z), and first appear in commit `71d5201`. Their stamped times (14:47Z to 14:54Z) are nominal and false. The true order of events: brief received 14:47Z; research; criteria C1 to C10 sent to the user 14:50Z; message 3 (Baby Bird) 14:51Z; message 4 (platform scope) 14:52Z; then E-001 to E-008 written together; E-009 written 14:56Z.
+2. **Order.** D-005 (no Perplexity adapter) was decided before A-002, the assumption under it, was written. Section 4 of the brief requires the reverse.
+3. **Approval.** The user has approved no criterion. E-004 says "frozen"; E-005 and A-004 rely on "no objection". Both are wrong: no reply is not approval. C1 to C11 are `PROPOSED` from this entry until an entry quotes the user's approving words. Nothing in this build is called VERIFIED or DONE before that.
+4. **Role count.** The swarm has 8 roles: the 7 the brief names in section 13, plus the red cell.
+5. **Control from this entry on.** Each log entry is committed to git before the action it describes. An entry cites no ID later than itself. Each sub-agent report is committed alone, unedited, before any action that relies on it.
+
+### E-011 · 2026-11-18T15:04Z · LAUNCH · orchestrator
+
+Completes E-009 with the custody data it lacked. Commit under review by all 5: `24751e2` (red cell and 2 lenses state it; prompts name the branch). Prompts: `prompts/<role>.txt`, sent whole as the session prompt.
+
+| Role | Devin session (platform identifier) | Report | SHA-256 (first 16) |
+|---|---|---|---|
+| Lens: recipient experience | https://app.devin.ai/sessions/a8f933fc8a154265a5dee635fa701add | `memos/lens-recipient-experience.md` | d8eedf90c6f7f7b0 |
+| Lens: minimal viable sequence | https://app.devin.ai/sessions/636a2143dcd649f4a5cfb2abcc81b36d | `memos/lens-minimal-viable-sequence.md` | 902a22ea0bc3d801 |
+| Lens: structural integrity | https://app.devin.ai/sessions/0a254c9f2ac3448a82480a7a57da431d | `memos/lens-structural-integrity.md` | cd9701bcbc45d0a6 |
+| Lens: trust and controls | https://app.devin.ai/sessions/a97b2610d2eb461a9b7db7efe18bbcfc | `memos/lens-trust-controls.md` | b8a186c3551c1f6b |
+| Red cell, plan time | https://app.devin.ai/sessions/f6e329e282254fb69cd897a4668abc9a | `audits/redcell-plan.md` | fa50456c0e709b4f |
+
+Each report is the file the session attached, downloaded and copied byte for byte; each is alone in its own commit. A reader opens the session link and compares the attachment with the file. Red-cell verdict, word for word: "PLAN SURVIVES WITH CHANGES".
