@@ -669,3 +669,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Corrects: E-62
 - What was wrong: E-62 says each row against which the round-2 report raised a FINDING reads `FAIL`. 1 row did not: the branch row `scripts/hinshitsu_check.py:301` "labeled: no failure" read `PASS`, although findings 2 and 3 of that report (F-6, F-7) are against that branch. The ORCHESTRATOR's script matched the row by a text that the row does not hold, and the ORCHESTRATOR did not compare the printed count (6 `FAIL`) with the 7 rows it meant to mark before it wrote E-62. The `Totals` table was wrong by the same 1 cell.
 - What is true: the row now reads `FAIL` F-6, and F-7; the totals are 31 `PASS`, 7 `FAIL`, 342 `N/A`, 0 `UNVERIFIED` (printed by the script that made the change). `python3 scripts/hinshitsu_check.py --record` exits 0 [`evidence/record-check-E-65.txt`]. No AUDITOR found this; the ORCHESTRATOR found it when it read the count.
+
+### E-66 · 2026-11-18T20:18:13Z · COMPACTION · orchestrator
+
+- Reason: WORK UNIT complete (rule 8.2(a)), and before a context compaction of the ORCHESTRATOR's session (rule 8.2(b))
+- `SESSION-STATE.md` rewritten: yes — fields 4 and 8; the other 6 fields stand as rewritten for E-53 and E-61
+- Helper commands on the ORCHESTRATOR's machine, outside the repository: `~/bin/hlog <TYPE> <role>` appends 1 entry from standard input and commits the RUN FOLDER; `~/bin/hlogn` appends with no commit; `~/bin/hgauge` runs the gauge and commits.
