@@ -40,3 +40,16 @@ Append-only. Form: rules 9.4 to 9.8.
 - Stage: S2
 - Event: start
 - Skill read: `skills/hinshitsu-record/SKILL.md`, 10572 bytes, SHA-256 00cd062b132060258187542b28afe9f1b6a8fc5f6a518ebea33bae19e56a463f
+
+### E-6 · 2026-11-18T15:24:24Z · STAGE · orchestrator
+
+- Stage: S2
+- Event: end
+- Artifacts: `FRAMEWORK.md`, `CONNECTIONS.md`, `SESSION-STATE.md`, `MINDMAP.md`, `COVERAGE-LEDGER.md`, `GAUGE.svg`
+- Existing-implementation search (rule 7.5): `grep -ril "split" --include=*.html --include=*.js .` at the repository root printed nothing and exited 1.
+
+### E-7 · 2026-11-18T15:24:24Z · STAGE · orchestrator
+
+- Stage: S3
+- Event: start
+- Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10655 bytes, SHA-256 0017aa800bb70df079ca9f0271d3a1bcbef3b2a15d86de5cdd49dfba5e2f0a65
