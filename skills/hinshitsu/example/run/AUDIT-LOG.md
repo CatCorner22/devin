@@ -2643,3 +2643,681 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-dbc0b19012014182b0a55783957d9bfe (https://app.devin.ai/sessions/dbc0b19012014182b0a55783957d9bfe)
 - Report: `audits/WU-1-r3-adversarial-E-254.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-255 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-139
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION).
+- Where: `skills/hinshitsu/example/run/review/index.html`, line 107: `var cents = parseInt(whole, 10) * 100 + parseInt(m[2] || "0", 10);`
+- Trigger: Open the page. Type `0100.5` as the bill, `007` as the tip, `02` as the people. The result shows "Bill total: 100.05", "Tip amount: 7.00", "Total with tip: 107.05", "1 person pays 53.53", "1 person pays 53.52". C2 requires 100.50. Also: `12.5` and `12,5` show 12.05; `0.5` shows 0.05; `0.1` shows 0.01. With tip 18 and 1 person, 450 of the 500 bills from `0.1` to `50.0` typed with 1 decimal place gave a wrong bill, tip, total and payment. No message shows.
+- Violates: C2 (its 5th named test, and "the bill total with 2 decimal places"); C4 ("an optional decimal mark followed by 1 or 2 digits"); FRAMEWORK part 4, "Text to cents".
+- Raised by: correctness auditor, LAUNCH E-253, `audits/WU-1-r3-correctness-E-253.md`, finding 1
+- Lens: structural integrity
+
+### E-256 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-140
+- Class: BLOCKER (the DELIVERABLE fails a CRITERION; it shows a wrong amount of money).
+- Where: `review/index.html` line 107: `parseInt(m[2] || "0", 10)` adds the digits after the mark as cents, whatever their count.
+- Trigger: Type bill `0100.5`, tip `007`, people `02`. The page shows `Bill total: 100.05`, `Tip percent: 7`, `Number of people: 2`, `Tip amount: 7.00`, `Total with tip: 107.05`, "1 person pays 53.53", "1 person pays 53.52". Also `12.5` → 12.05; `12,5` → 12.05; `0.5` → 0.05; `999999.9` → 999999.09. No message shows. 450 of the 500 one-decimal bills from `0.1` to `50.0` are wrong.
+- Violates: C2 (its 5th test: `0100.5` must show 100.50); C4 ("an optional decimal mark followed by 1 or 2 digits"); C1 through C2.
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 1
+- Lens: structural integrity
+- Same fault as: F-139
+
+### E-257 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-141
+- Class: BLOCKER, by the glossary's part (a), if C4's "a value that fails the formats below shows a message" covers a visible sign; the practical harm is small, because the amount used equals the digits shown.
+- Where: `review/index.html`, line 84 (`\p{Cf}` and `\s` in `IGNORED_AT_ENDS`) and lines 91–92.
+- Trigger: Tip `18`, people `4`. Type U+0600 then `12.50` as the bill: Chrome draws a mark before the number, and the page shows "Bill total: 12.50" and no message. The same with `12.50` then U+06DD (drawn as a box-shaped sign), U+070F then `12.50`, U+08E2 then `12.50`. Type U+1680 then `12.50`: Chrome draws a dash, so the field reads "–12.50", and the page shows a result for 12.50.
+- Violates: C4: only "spaces and invisible characters" at the ends are ignored, and "a negative … bill" gets a message. U+0600 to U+0605, U+06DD, U+070F, U+0890, U+0891, U+08E2, U+110BD and U+110CD are format characters that are visible (I typed 4 of them: U+0600, U+06DD, U+070F, U+08E2). U+1680 is a space in Unicode, so C4's words allow it, but on screen it is a minus sign.
+- Raised by: correctness auditor, LAUNCH E-253, `audits/WU-1-r3-correctness-E-253.md`, finding 2
+- Lens: structural integrity
+
+### E-258 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-142
+- Class: DEFECT.
+- Where: line 84: `\p{Cf}` holds visible marks and `\s` holds U+1680.
+- Trigger: Bill `12.50` followed by U+1680: the field shows `12.50–` and the page shows the result for 12.50. Bill U+0600 then `12.50`: a mark shows before the number; result for 12.50. Bill `12.50` then U+06DD, or U+070F U+0890 then `12.50`: a box shows in the field; result for 12.50. The scan lists as ignored the visible format characters U+0600–0605, U+06DD, U+070F, U+0890–0891, U+08E2, U+110BD and U+110CD. I saw U+1680, U+0600, U+06DD and the U+070F U+0890 pair on screen; I did not view the others. The scan also lists 3,769 unassigned code points as ignored; the 2 that I viewed (U+FFF0, U+2065) drew nothing.
+- Violates: C4 (only spaces and invisible characters are ignored; a value that fails the format gets a message and no result).
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 3
+- Lens: structural integrity
+- Same fault as: F-141
+
+### E-259 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-143
+- Class: DEFECT (a wrong result with no message).
+- Where: `review/index.html`, lines 33, 38 and 43: `maxlength="64"`.
+- Trigger: Tip `18`, people `1`. Paste 60 spaces followed by `1234.56` into the bill field (or type it). Chrome keeps 64 characters, so the field ends in `1234`; the page shows "Bill total: 1234.00" and no message. The same with 60 zeros followed by `1234.56`.
+- Violates: C2 (the result does not show the bill given) and C4 (spaces at either end are ignored; here they change the amount).
+- Raised by: correctness auditor, LAUNCH E-253, `audits/WU-1-r3-correctness-E-253.md`, finding 3
+- Lens: structural integrity
+
+### E-260 · 2026-11-18T18:19:20Z · FINDING · orchestrator
+
+- ID: F-144
+- Class: FRAGILITY (a larger input).
+- Where: lines 33, 38, 43.
+- Trigger: Paste 62 zeros followed by `12345` into the bill field. The field keeps 64 characters and the page shows `Bill total: 12.00`, no message. Paste `12.50`, 59 spaces, `USD`: the page shows the result for 12.50. Paste 64 spaces then `12.50`: "Type the bill total."
+- Violates: C4 in substance (a value the person gave that fails the format gets a result).
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 5
+- Lens: structural integrity
+- Same fault as: F-143
+
+### E-261 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-145
+- Class: FRAGILITY (another browser).
+- Where: `review/index.html`, line 84 (`\p{…}` with the `u` flag), with lines 28–30 and 214–215.
+- Trigger: A browser whose engine does not know `\p{Default_Ignorable_Code_Point}` or `\p{Cf}` (from memory, unchecked: Chrome before 64, Firefox before 78, Safari before 11.1; I did not run them) refuses the whole script. I simulated that in Chrome 156 with a copy outside the repository in which that 1 property name is unknown: the page showed the title "Split the bill" and nothing else — no fields, no guidance and no sentence, because `<noscript>` does not show when JavaScript is on.
+- Violates: No CRITERION in desktop Chrome today; it will fail C1's "its calculator works" and the purpose of C6 on such a browser.
+- Raised by: correctness auditor, LAUNCH E-253, `audits/WU-1-r3-correctness-E-253.md`, finding 4
+- Lens: recipient experience
+
+### E-262 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-146
+- Class: FRAGILITY (another host or another browser).
+- Where: lines 28–30 and 214–215: the JavaScript sentence is inside `<noscript>`, which shows only when scripting is off.
+- Trigger: Serve the same bytes with the response header `Content-Security-Policy: script-src 'self'` (a common host setting). Body text: "Split the bill" and nothing else: no sentence, no guidance, no field. A browser that cannot parse line 84 (`\p{…}` with the `u` flag) would fail the same way; I did not run one.
+- Violates: C6 in substance (no sentence tells the person why there is no calculator); C1's `file://` test is not affected.
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 6
+- Lens: recipient experience
+- Same fault as: F-145
+
+### E-263 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-147
+- Class: STYLE.
+- Where: `review/index.html`, line 103.
+- Trigger: Type `12.345`, `.5` or (then Tab) `10.` as the bill. Each shows "Type the amount in digits only, such as 12.50 or 12,50. Leave out currency signs and thousands separators." The person typed digits only and no sign or separator; the message does not say "at most 2 digits after the decimal mark" or "a digit before the decimal mark".
+- Violates: Nothing outright; it bears on C4's "the message names what to type", which the example `12.50` meets.
+- Raised by: correctness auditor, LAUNCH E-253, `audits/WU-1-r3-correctness-E-253.md`, finding 5
+- Lens: recipient experience
+
+### E-264 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-148
+- Class: STYLE.
+- Where: line 103.
+- Trigger: Bill `12.505`, or `12.` then Tab. The message says "digits only" and "Leave out currency signs and thousands separators"; the person typed digits only.
+- Violates: C4 is met by its letter ("such as 12.50"); no CRITERION.
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 7
+- Lens: recipient experience
+- Same fault as: F-147
+
+### E-265 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-149
+- Class: BLOCKER (the DELIVERABLE fails a sentence of C4). If the ORCHESTRATOR reads "invisible characters" as leaving out control characters, the class is DEFECT.
+- Where: line 84, `IGNORED_AT_ENDS`: it has `\s`, `\p{Cf}` and `\p{Default_Ignorable_Code_Point}`, and not `\p{Cc}`.
+- Trigger: Copy `12.50` followed by U+0085 (also U+0000, U+0001, U+001F, U+007F, U+009F) and paste it into the bill field with Ctrl+V, tip `18`, people `4`. The field shows `12.50`; the page shows "Type the amount in digits only…" and no result. The scan finds 60 such code points: U+0000–0008, U+000E–001F, U+007F–009F.
+- Violates: C4 ("Spaces and invisible characters at either end are ignored").
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 2
+- Lens: structural integrity
+
+### E-266 · 2026-11-18T18:19:21Z · FINDING · orchestrator
+
+- ID: F-150
+- Class: DEFECT (the result is for another number than the field displays). C4 as written requires this behaviour, so the fix needs the USER's decision on C4.
+- Where: line 84 (`\p{Cf}` holds the 2 override characters U+202D and U+202E).
+- Trigger: Put U+202E then `05.21` in the bill field (paste), tip `18`, people `4`. The field displays `12.50`. The result reads `Bill total: 5.21`, `Tip amount: 0.94`. Screenshot `rlo.png`.
+- Violates: C2 in substance (the result is not for the bill the person sees); no CRITERION by its letter.
+- Raised by: adversarial auditor, LAUNCH E-254, `audits/WU-1-r3-adversarial-E-254.md`, finding 4
+- Lens: structural integrity
+
+### E-267 · 2026-11-18T18:20:28Z · CHECK · orchestrator
+
+- Check: the seeded defect of audit round 3 (rule 13.6)
+- Seed: `audits/WU-1-r3-seed-E-252.md`; in the review copy a bill with 1 decimal digit was read as hundredths (`12.5` became 12.05)
+- Result: both required roles found it. Correctness: finding 1 of `audits/WU-1-r3-correctness-E-253.md` (F-139). Adversarial: finding 1 of `audits/WU-1-r3-adversarial-E-254.md` (F-140).
+- The round counts. The defect was in `review/index.html` only; `review/index.html` is again a byte copy of `index.html`.
+
+### E-268 · 2026-11-18T18:20:28Z · CHECK · orchestrator
+
+- Check: BUILDER change after audit round 3, not re-audited
+- Change: `maxlength="64"` removed from the 3 fields of `index.html`. Both AUDITORS of round 3 proposed this (F-143, F-144) and measured the reading code without the limit: 1 `input` event on 1,000,000 characters took 31.5 ms (`audits/WU-1-r3-correctness-E-253.md`, trigger 5).
+- SHA-256 of `index.html` after the change: 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5 (`sha256sum` output)
+- State: UNVERIFIED by an AUDITOR. F-143 and F-144 stay open; the delivery report says so. No further audit round runs on WORK UNIT WU-1: the USER asked on 2026-11-18 to stop looping on the page.
+
+### E-269 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-21
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 1 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-seed-E-103.md`
+
+### E-270 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-22
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 1 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-seed-E-103.md`
+
+### E-271 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-81
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 2 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-r2-seed-E-182.md`
+
+### E-272 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-82
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 2 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-r2-seed-E-182.md`
+
+### E-273 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-139
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 3 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-r3-seed-E-252.md`
+
+### E-274 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-140
+- Result: WITHDRAWN
+- Change: none in `index.html`; the fault was the seeded defect of round 3 and existed in `review/index.html` only
+- Evidence: `audits/WU-1-r3-seed-E-252.md`
+
+### E-275 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-83
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-276 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-84
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-277 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-85
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-278 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-86
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-279 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-87
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-280 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-88
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-281 · 2026-11-18T18:20:28Z · RESOLUTION · orchestrator
+
+- Finding: F-89
+- Result: FIXED
+- Change: E-250: `plain` maps only full-width, Arabic-Indic and extended Arabic-Indic digits and 3 decimal marks; NFKC is gone
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 1: DOES NOT REPRODUCE
+
+### E-282 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-91
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-283 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-92
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-284 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-93
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-285 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-94
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-286 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-95
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-287 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-96
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-288 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-97
+- Result: FIXED
+- Change: E-250: format characters and default-ignorable characters at the ends are ignored
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 2: DOES NOT REPRODUCE. Round 3 raised further characters as new FINDINGS F-141, F-142, F-149, F-150, which are open
+
+### E-289 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-99
+- Result: FIXED
+- Change: E-250: a `focus` listener re-reads the field
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 3: DOES NOT REPRODUCE
+
+### E-290 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-100
+- Result: FIXED
+- Change: E-250: a `focus` listener re-reads the field
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 3: DOES NOT REPRODUCE
+
+### E-291 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-101
+- Result: FIXED
+- Change: E-250: a `focus` listener re-reads the field
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 3: DOES NOT REPRODUCE
+
+### E-292 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-110
+- Result: FIXED
+- Change: E-250: a blur that leaves the field as the active element does not mark it
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 4: DOES NOT REPRODUCE
+
+### E-293 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-111
+- Result: FIXED
+- Change: E-250: the ends are trimmed by a loop, not by a pattern that retries
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 5: DOES NOT REPRODUCE
+
+### E-294 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-23
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-295 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-24
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-296 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-25
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-297 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-26
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-298 · 2026-11-18T18:20:29Z · RESOLUTION · orchestrator
+
+- Finding: F-27
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-299 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-28
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-300 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-29
+- Result: FIXED
+- Change: E-178: with JavaScript off only the heading and the notice show
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 6: DOES NOT REPRODUCE
+
+### E-301 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-30
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-302 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-31
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-303 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-32
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-304 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-33
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-305 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-34
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-306 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-35
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-307 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-37
+- Result: FIXED
+- Change: E-178: the sentence reads "Your group decides who pays the higher amount."
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 7: DOES NOT REPRODUCE
+
+### E-308 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-39
+- Result: FIXED
+- Change: E-178: a message region is written only when its text changes
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 8: DOES NOT REPRODUCE
+
+### E-309 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-40
+- Result: FIXED
+- Change: E-178: a message region is written only when its text changes
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 8: DOES NOT REPRODUCE
+
+### E-310 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-42
+- Result: FIXED
+- Change: E-178: a message region is written only when its text changes
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 8: DOES NOT REPRODUCE
+
+### E-311 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-47
+- Result: FIXED
+- Change: E-178, on the USER's answer in E-173: a comma is a decimal mark
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 9: DOES NOT REPRODUCE
+
+### E-312 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-48
+- Result: FIXED
+- Change: E-178, on the USER's answer in E-173: a comma is a decimal mark
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 9: DOES NOT REPRODUCE
+
+### E-313 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-53
+- Result: FIXED
+- Change: E-178, on the USER's answer in E-173: a comma is a decimal mark
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 9: DOES NOT REPRODUCE
+
+### E-314 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-105
+- Result: FIXED
+- Change: E-250: the script runs inside a function; `splitBill` is the only name on `window`
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 10: DOES NOT REPRODUCE
+
+### E-315 · 2026-11-18T18:20:30Z · RESOLUTION · orchestrator
+
+- Finding: F-106
+- Result: FIXED
+- Change: E-250: the script runs inside a function; `splitBill` is the only name on `window`
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 10: DOES NOT REPRODUCE
+
+### E-316 · 2026-11-18T18:20:31Z · RESOLUTION · orchestrator
+
+- Finding: F-107
+- Result: FIXED
+- Change: E-250: the script runs inside a function; `splitBill` is the only name on `window`
+- Evidence: `audits/WU-1-r3-correctness-E-253.md` and `audits/WU-1-r3-adversarial-E-254.md`, trigger 10: DOES NOT REPRODUCE
+
+### E-317 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-44
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. `FRAMEWORK.md` part 4 names `window.splitBill` as the contract that the AUDITORS call; it stays.
+
+### E-318 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-45
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. `FRAMEWORK.md` part 4 names `window.splitBill` as the contract that the AUDITORS call; it stays.
+
+### E-319 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-46
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. `FRAMEWORK.md` part 4 names `window.splitBill` as the contract that the AUDITORS call; it stays.
+
+### E-320 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-36
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-321 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-72
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-322 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-76
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-323 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-77
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-324 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-79
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-325 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-80
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-326 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-134
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-327 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-135
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-328 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-136
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. It concerns the wording of the CRITERIA or of E-25. The wording is the USER's to approve; the delivery report lists the open wording FINDINGS as 1 decision. No change made.
+
+### E-329 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-54
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-330 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-56
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-331 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-57
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-332 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-58
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-333 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-59
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-334 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-60
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-335 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-61
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-336 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-62
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-337 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-63
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-338 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-104
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-339 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-112
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-340 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-113
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-341 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-114
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-342 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-115
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-343 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-121
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-344 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-147
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
+
+### E-345 · 2026-11-18T18:20:31Z · OVERRULE · orchestrator
+
+- Finding: F-148
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: STYLE; rule 15.5 lets the ORCHESTRATOR decide. No fix is claimed. Where the page changes of E-178 or E-250 touched the same lines, no AUDITOR was asked to confirm it.
