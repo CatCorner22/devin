@@ -109,3 +109,22 @@ Heading of every entry: `### E-<n> · <UTC time> · <TYPE> · <role>`
 **VOC-ASSUMED**
 - VA1. RECIPIENT 2 writes labelled thick and dotted links in the forms `==>|text|`, `== text ==>`, `-.->|text|` and `-. text .->` — guess: a fix that fails `A ==> B` must pass these 4 labelled forms (C5). No record shows any run that used them.
 - VA2. RECIPIENT 2 writes at most 1 link on a line — guess: the checker keeps testing the first link on each line, as it does today (G2, G12).
+
+### E-10 · 2026-11-18T19:34:48Z · GAP · orchestrator
+
+| ID | Gap | Recommended answer | Reason in plain words | Cost | Who decides | Status |
+|---|---|---|---|---|---|---|
+| G1 | What happens on error: no gap — the script already prints a message and exits 2 when it cannot read a file, and this change does not touch that path | — | — | none | AGENT | no gap |
+| G2 | Empty, huge and invalid input: the request does not say what to do with a line that is not an edge, an empty file, or an arrow inside a node's text or in the prose outside the Mermaid block | Keep today's scope: scan the whole file, test a line only when it starts with a node name, pass an empty file | The request is about 3 arrow forms; changing what counts as an edge line can make existing records fail | none | AGENT | Assumed |
+| G3 | Small screens and other devices: no gap — the DELIVERABLE is a command-line script and its tests | — | — | none | AGENT | no gap |
+| G4 | Who may use it and who must not: no gap — the repository is public and the script has no access control | — | — | none | AGENT | no gap |
+| G5 | Secrets and private data: no gap — the edge test reads only the text of `CONNECTIONS.md` and prints 2 node names | — | — | none | AGENT | no gap |
+| G6 | Backup and undo: the request does not say how to undo the fix | Put the change to the script and tests in commits on the new branch only; `git revert <commit>` undoes it | 1 command restores the old test | none | AGENT | Assumed |
+| G7 | Cost to run: no gap for the script — 1 more pattern match per line. This run plans 3 SUB-AGENT runs (E-4) | — | — | 3 SUB-AGENT runs | AGENT | no gap |
+| G8 | Upkeep and who maintains it: Mermaid adds link forms over time | Name each tested form in a test, and list in the delivery report the forms the checker does not test | The next maintainer sees what is covered without reading the pattern | about 10 lines of tests | AGENT | Assumed |
+| G9 | What the RECIPIENT sees when it breaks: today's message always prints `edge A --> B`, whatever arrow was written | Print the arrow as written, for example `CONNECTIONS.md: edge A ==> B has no label (rule 9.3)`, and keep the words `has no label` | The reader finds the line faster when the message shows the arrow they typed | none | AGENT | Assumed |
+| G10 | Licenses and legal terms: no gap — no new dependency; the Mermaid documentation was read, and an excerpt is kept only as EVIDENCE | — | — | none | AGENT | no gap |
+| G11 | How the RECIPIENT gets it and opens it: the branch, with no pull request | As the USER wrote | — | none | USER | Answered: "Work on a new branch `devin/hinshitsu-run-2.1.0`. Push that branch. Do not push to `main` and do not open a pull request." |
+| G12 | Other Mermaid link forms that the request does not name: open links (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way arrows (`<-->`), several links on 1 line (`A --> B --> C`, `A & B --> C`), invisible links (`~~~`), links with an ID (`A e1@--> B`) | Leave them out of this fix and list them in the delivery report as forms the checker does not test | The USER named 3 forms; each further form changes which existing files fail, which is the USER's call | none if left out; if included, about 60 more lines and a larger audit | USER | Asked |
+| G13 | Labelled thick and dotted links (`==>|text|`, `== text ==>`, `-.->|text|`, `-. text .->`): the request does not say they must keep passing | Make them pass, with tests (C5) | A fix that fails every thick or dotted link, labelled or not, would trade 1 wrong verdict for another | about 10 lines | AGENT | Assumed |
+| G14 | Changelog and version: the request does not say whether to add a `CHANGELOG.md` line or raise the version | Add none | `CHANGELOG.md` line 3 says it records amendments of a skill; this change amends no skill | none | AGENT | Assumed |
