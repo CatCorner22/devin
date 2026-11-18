@@ -73,6 +73,8 @@ The repository is a plugin. `plugin.json` at the root is the manifest in the Age
 
 [`skills/hinshitsu/EXAMPLE.md`](skills/hinshitsu/EXAMPLE.md) walks through a real run: a 1-file bill-splitting page taken through the stages, with the sub-agents' reports as they came back, including what they caught the orchestrator doing wrong.
 
+To use the example page: open [`skills/hinshitsu/example/index.html`](skills/hinshitsu/example/index.html) on GitHub, select "Download raw file", then open the downloaded file in a browser. On GitHub itself the file shows as source text, not as a page.
+
 ## Repository layout
 
 | Path | Holds |

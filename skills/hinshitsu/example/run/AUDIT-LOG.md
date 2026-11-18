@@ -3365,3 +3365,37 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Report: `audits/S9-red-cell-E-350.md`
 - Launched while STAGE S8 runs, to save time: the attack reads the record and the page, and does not depend on the report of E-349. The `STAGE` entries for S9 follow when S8 ends.
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-351 · 2026-11-18T18:31:28Z · FINDING · orchestrator
+
+- ID: F-151
+- Class: DEFECT
+- Where: `README.md`, section "Worked example" (line 74), link `skills/hinshitsu/EXAMPLE.md`
+- Trigger: a RECIPIENT follows the README's only link to the worked example; at commit 6c94e4c the file does not exist and GitHub returns 404
+- Violates: rule 12.2
+- Raised by: the AUDITOR for recipient-side verification and stability, LAUNCH E-349, finding F-1 of `audits/S8-recipient-side-stability-E-349.md`
+- Lens: recipient experience
+
+### E-352 · 2026-11-18T18:31:28Z · FINDING · orchestrator
+
+- ID: F-152
+- Class: DEFECT
+- Where: `README.md`, whole file
+- Trigger: a RECIPIENT wants to use the page; the README has no step that says to download `index.html` and open it in a browser
+- Violates: rule 12.2
+- Raised by: the AUDITOR for recipient-side verification and stability, LAUNCH E-349, finding F-2 of `audits/S8-recipient-side-stability-E-349.md`
+- Lens: recipient experience
+
+### E-353 · 2026-11-18T18:31:28Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: end
+- Artifacts: `audits/S8-recipient-side-stability-E-349.md`, `evidence/S8-recipient-side-stability-E-349/` (30 files), `COVERAGE-LEDGER.md`
+- Result: the 5 tasks and each stability check passed in 2 runs on the file obtained as a RECIPIENT obtains it; 2 FINDINGS against the README (F-151, F-152). A real phone, a screen reader and Firefox were not run: UNVERIFIED.
+- Answer to F-151 and F-152, not yet seen by an AUDITOR: `skills/hinshitsu/EXAMPLE.md` now exists; the README states how to download and open the page.
+
+### E-354 · 2026-11-18T18:31:28Z · STAGE · orchestrator
+
+- Stage: S9
+- Event: start
+- Skill read: `skills/hinshitsu-challenge/SKILL.md`, 8539 bytes, SHA-256 462b904131901066378fbc70fc1a7644cde9c8f5d4c722b6a9468dd6f925bf22

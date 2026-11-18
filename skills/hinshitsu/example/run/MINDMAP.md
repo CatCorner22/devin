@@ -135,6 +135,8 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
       - F-148 The bill message does not name the decimal rule, round 3 (STYLE, overruled)
       - F-149 Invisible control characters at an end are not ignored, round 3 (BLOCKER, open)
       - F-150 With U+202E in front, the field shows 12.50 and the page c, round 3 (DEFECT, open)
+      - F-151 The README links to EXAMPLE.md, which did not exist, S8 (DEFECT, open)
+      - F-152 The README has no step to download and open the page, S8 (DEFECT, open)
     - C1 1 file, works from disk
       - D-8 1 file, policy tag, published with GitHub Pages after its audits
         - D-6 superseded
