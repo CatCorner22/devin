@@ -8,12 +8,17 @@ Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`).
   - **C1** `A ==> B` fails with `no label`
     - **WU-1** the unlabeled-edge test in `scripts/hinshitsu_check.py` and its tests in `tests/test_check.py`
       - **D-1** test the first arrow link on each line; 3 link kinds; 2 label forms
-        - **F-1** DEFECT — a second link on a line, or `--x`, `--o`, counts as the label of a later arrow — open
-        - **F-2** DEFECT — a label in quotation marks or brackets between the halves of a link fails as no label — open
+        - **F-1** DEFECT — a second link on a line, or `--x`, `--o`, counts as the label of a later arrow — FIXED (E-50)
+        - **F-2** DEFECT — a label in quotation marks or brackets between the halves of a link fails as no label — FIXED (E-51)
         - **F-3** DEFECT — the second link on a line is not tested, and 1 more unlabeled edge passes — overruled by the USER (E-38)
         - **F-4** FRAGILITY — prose lines and `.->` are read as edges — open
       - **D-2** the failure message names the arrow as written
       - **D-3** amend D-1: edges only inside the `mermaid` fence; stricter label test; placeholder for quoted text; bare `.->` is no link
+        - **F-5** DEFECT — the second arrow on a line is not tested after a labelled thick, dotted or between-dashes link — open
+        - **F-6** DEFECT — an earlier dotted link written `.-` counts as the label of a later dotted arrow — open
+        - **F-7** DEFECT — `--oB`, `--xB`, a flag-shaped node, a `]` inside quoted text and an empty quoted label count as a label — open
+        - **F-8** FRAGILITY — a second diagram in a `~~~mermaid` or spaced fence is not read — open
+        - **F-9** STYLE — the message for `A ---> B` now shows the arrow as written — open
   - **C2** `C -.-> D` fails with `no label`
   - **C3** `A -- reads --> B` passes
   - **C4** the 2 verdicts of commit 93311ab stay
@@ -37,8 +42,13 @@ graph TD
   WU1 --> D1["D-1 first arrow link on each line"]
   WU1 --> D2["D-2 message names the arrow"]
   WU1 --> D3["D-3 amend D-1: fence, stricter label test"]
-  D1 --> F1["F-1 DEFECT: earlier link counts as a label (open)"]
-  D1 --> F2["F-2 DEFECT: quoted label fails (open)"]
+  D3 --> F5["F-5 DEFECT: second arrow after a labelled link (open)"]
+  D3 --> F6["F-6 DEFECT: dotted earlier link counts as a label (open)"]
+  D3 --> F7["F-7 DEFECT: circle end, flag node, bracket in quotes (open)"]
+  D3 --> F8["F-8 FRAGILITY: other mermaid fences not read (open)"]
+  D3 --> F9["F-9 STYLE: message shows the arrow as written (open)"]
+  D1 --> F1["F-1 DEFECT: earlier link counts as a label (FIXED)"]
+  D1 --> F2["F-2 DEFECT: quoted label fails (FIXED)"]
   D1 --> F3["F-3 DEFECT: second link on a line not tested (overruled by the USER)"]
   D1 --> F4["F-4 FRAGILITY: prose lines read as edges (open)"]
 ```
@@ -50,4 +60,4 @@ graph TD
 | CRITERIA | 7 | 7 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 3 | 3 |
-| FINDINGS | 4 | 4 |
+| FINDINGS | 9 | 9 |

@@ -491,3 +491,83 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Commit under review: 5099f2a
 - SUB-AGENT identifier: cecdcf81310d47498b7a6dfc923e59b9 https://app.devin.ai/sessions/cecdcf81310d47498b7a6dfc923e59b9
 - Report: `audits/WU-1-r2-correctness-E-44.md`
+
+### E-45 · 2026-11-18T20:12:50Z · FINDING · auditor: correctness
+
+- ID: F-5
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` line 30 (`EDGE_RE`, which tests only the first arrow of a line) with lines 299-301.
+- Trigger: fixture lines `A == reads ==> B --> C` and `A -. reads .-> B --> C`. In each, the edge into `C` has no label. The script of 93311ab returns `CONNECTIONS.md: edge A --> C has no label (rule 9.3)` and `main()` returns 1. The script of 5099f2a returns no failure and `main()` returns 0. `A .-> B --> C` gives the same 2 results: line 301 drops the bare `.->` and nothing reads the `-->` after it. (`A -- reads --> B --> C` also passes now; 93311ab failed it, but for the first arrow.) The comment on lines 28-29 states that later links are not tested. Before this change that limit applied only after a `|label|`; it now also applies after each labeled thick, dotted and between-dashes link.
+- Violates: rule 9.3 as the script enforces it (an edge with no label passes); C4 in spirit only: C4 names 2 lines and 2 folders, and those pass.
+- Raised by: correctness auditor (round 2), LAUNCH E-44, `audits/WU-1-r2-correctness-E-44.md`, finding 1
+- Lens: structural integrity
+- Forward work stopped: no
+
+### E-46 · 2026-11-18T20:12:50Z · FINDING · auditor: correctness
+
+- ID: F-6
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` lines 34-35, the dotted entry of `LABEL_OPEN_RE`: the text after the opener may not hold `--`, `==` or `-.`, but may hold `.-`.
+- Trigger: fixture line `A -. reads .- B -.-> C`. The edge into `C` has no label; `reads` labels the earlier link. The script of 5099f2a returns no failure and `main()` returns 0. This is F-1 for the dotted form. The other 2 forms are right: `A == reads === B ==> C` returns `edge A ==> C has no label`, and `A -.- B -.-> C` returns `edge A -.-> C has no label`.
+- Violates: rule 9.3 as the script enforces it; C2's purpose (an unlabeled dotted arrow fails). C2's own line passes.
+- Raised by: correctness auditor (round 2), LAUNCH E-44, `audits/WU-1-r2-correctness-E-44.md`, finding 2
+- Lens: structural integrity
+- Forward work stopped: no
+
+### E-47 · 2026-11-18T20:12:50Z · FINDING · auditor: correctness
+
+- ID: F-7
+- Class: DEFECT
+- Where: `scripts/hinshitsu_check.py` line 31 (`NODE_TEXT_RE`) and lines 34-35 (`(?![-=.>]|[xo]\s)`).
+- Trigger: 4 fixture lines, each with an unlabeled `-->`. The script of 93311ab returns a `no label` failure and `main()` returns 1 on each; the script of 5099f2a returns no failure and `main()` returns 0 on each. - `A --oB --> C` and `A --xB --> C`: the circle or cross end counts as a label opener when no space follows `o` or `x`. UNVERIFIED: that Mermaid reads `--oB` as a circle end. I did not run Mermaid; no Mermaid is installed here and the scope names no renderer. - `A>a -- b] --> B`: the flag-shaped node `>text]` is not removed, so `--` inside the node text counts as a label opener. - `A["a ] -- b"] --> B`: the bracket alternative of `NODE_TEXT_RE` matches from `[` to the `]` inside the quotation marks, so the rest of the quoted text stays and its `--` counts as a label opener. - Also `A -- "" --> B` passes: an empty quoted label counts as a label.
+- Violates: rule 9.3 as the script enforces it. No CRITERION names these lines.
+- Raised by: correctness auditor (round 2), LAUNCH E-44, `audits/WU-1-r2-correctness-E-44.md`, finding 3
+- Lens: structural integrity
+- Forward work stopped: no
+
+### E-48 · 2026-11-18T20:12:50Z · FINDING · auditor: correctness
+
+- ID: F-8
+- Class: FRAGILITY
+- Where: `scripts/hinshitsu_check.py` line 31 (`MERMAID_RE`) and line 296.
+- Trigger: the script works on the 2 folders today. It fails on a `CONNECTIONS.md` that gains a second diagram in a fence that `MERMAID_RE` does not match, next to a block it does match. A file with a ```` ```mermaid ```` block that passes, followed by a `~~~mermaid` block or a ```` ``` mermaid ```` block (1 space) that holds `C --> D`: 93311ab returns `CONNECTIONS.md: edge C --> D has no label (rule 9.3)` and `main()` returns 1; 5099f2a returns no failure and `main()` returns 0. With the `~~~mermaid` block alone the script reads the whole file and reports the edge.
+- Violates: rule 9.3 as the script enforces it. No CRITERION asks for the block limit; the BUILDER added it to answer F-4, and `test_text_outside_the_mermaid_block_is_not_read` fixes it in place.
+- Raised by: correctness auditor (round 2), LAUNCH E-44, `audits/WU-1-r2-correctness-E-44.md`, finding 5
+- Lens: trust and controls
+- Forward work stopped: no
+
+### E-49 · 2026-11-18T20:12:50Z · FINDING · auditor: correctness
+
+- ID: F-9
+- Class: STYLE
+- Where: `scripts/hinshitsu_check.py` line 302.
+- Trigger: fixture line `A ---> B`. 93311ab returns `CONNECTIONS.md: edge A --> B has no label (rule 9.3)`; 5099f2a returns `CONNECTIONS.md: edge A ---> B has no label (rule 9.3)`. The verdict and the exit code are the same; the message now shows the arrow as written.
+- Violates: nothing; C4 compares `FAIL` lines on 2 folders only, and they are the same.
+- Raised by: correctness auditor (round 2), LAUNCH E-44, `audits/WU-1-r2-correctness-E-44.md`, finding 6
+- Lens: recipient experience
+- Forward work stopped: no
+
+### E-50 · 2026-11-18T20:12:50Z · RESOLUTION · orchestrator
+
+- Finding: F-1
+- Result: FIXED
+- Change: commit 5099f2a (`scripts/hinshitsu_check.py` lines 28-36 and 296-302, D-3)
+- Re-audit: `audits/WU-1-r2-correctness-E-44.md` by the round-2 correctness auditor, cecdcf81310d47498b7a6dfc923e59b9, which did not raise F-1: "F-1 does not reproduce on its 3 lines; F-2 does not reproduce on its 5 lines" (`evidence/WU-1-r2-correctness-E-44/F-1.txt`)
+
+### E-51 · 2026-11-18T20:12:50Z · RESOLUTION · orchestrator
+
+- Finding: F-2
+- Result: FIXED
+- Change: commit 5099f2a (`scripts/hinshitsu_check.py` lines 28-36 and 296-302, D-3)
+- Re-audit: `audits/WU-1-r2-correctness-E-44.md` by the round-2 correctness auditor, cecdcf81310d47498b7a6dfc923e59b9, which did not raise F-2: "F-1 does not reproduce on its 3 lines; F-2 does not reproduce on its 5 lines" (`evidence/WU-1-r2-correctness-E-44/F-2.txt`)
+
+### E-52 · 2026-11-18T20:12:50Z · CHECK · orchestrator
+
+- What: the round-2 report (E-44) on the 7 CRITERIA and on F-4. It states: "C1, C2, C3, C4, C5, C6 and C7 each pass; every test the CRITERIA name gave the required result. No finding is a BLOCKER." Its finding 4 is the re-run of F-4: "reproduces in part" — a prose line that holds `==>` inside the mermaid block, or in a file with no mermaid block, still fails; the other 3 parts of F-4 do not reproduce. F-4 therefore stays open, and no new FINDING entry is written for report finding 4.
+- Report findings 1, 2, 3, 5 and 6 are logged as F-5 to F-9 (E-45 to E-49). F-9 is STYLE.
+- SUB-AGENT runs: 3 `LAUNCH` entries (E-1, E-31, E-44) of the 4 the USER allowed (E-37). The 1 run left is the final AUDITOR; a further re-audit needs the USER's answer on a new card.
+
+### E-53 · 2026-11-18T20:13:20Z · COMPACTION · orchestrator
+
+- Reason: before a context compaction of the ORCHESTRATOR's session (rule 8.2(b)); 25 log entries have also passed since the last full rewrite (rule 8.2(c))
+- `SESSION-STATE.md` rewritten: yes — all 8 fields
