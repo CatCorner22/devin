@@ -30,12 +30,15 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
     - F-1 the request was called the USER's words (BLOCKER, FIXED)
   - Record
     - F-6 2 PREMISES were checkable and left unchecked (BLOCKER, FIXED)
-    - F-7 state files were behind the log (BLOCKER, open after 3 rounds; fourth fix made, not re-audited)
+    - F-7 state files were behind the log (BLOCKER, FIXED)
     - F-8 a PREMISE cited EVIDENCE it did not have (DEFECT, FIXED)
     - F-9 2 evidence files held no command (DEFECT, FIXED)
     - F-12 gaps called answered with no answer (DEFECT, FIXED)
     - F-13 the session state left out 2 evidence files (DEFECT, FIXED)
-    - F-14 a saved scope differed from the scope sent (DEFECT, open)
+    - F-14 a saved scope differed from the scope sent (DEFECT, FIXED)
+    - F-15 an entry named a commit that does not exist (BLOCKER, corrected, not re-audited)
+    - F-16 a card lacked 1 of 3 required choices (DEFECT, open)
+    - F-17 a reversal had no entry of that type (DEFECT, entry written, not re-audited)
 
 ```mermaid
 graph TD
@@ -75,4 +78,7 @@ graph TD
   D8 --> D6[D-6 superseded]
   D6 --> D3[D-3 superseded]
   REC --> F14[F-14 DEFECT]
+  REC --> F15[F-15 BLOCKER]
+  REC --> F16[F-16 DEFECT]
+  REC --> F17[F-17 DEFECT]
 ```

@@ -771,3 +771,60 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-c905051c07434e13b20f42b4f5068337 (https://app.devin.ai/sessions/c905051c07434e13b20f42b4f5068337)
 - Report: `audits/plan-reaudit-E-71.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-72 · 2026-11-18T16:08:37Z · RESOLUTION · orchestrator
+
+- Finding: F-7
+- Result: FIXED
+- Change: the record files at commits 04371dc and 949c89c
+- Re-audit: `audits/plan-reaudit-E-71.md` (LAUNCH E-71), row F-7: NO LONGER REPRODUCES
+
+### E-73 · 2026-11-18T16:08:37Z · RESOLUTION · orchestrator
+
+- Finding: F-14
+- Result: FIXED
+- Change: the record files at commits 04371dc and 949c89c
+- Re-audit: `audits/plan-reaudit-E-71.md` (LAUNCH E-71), row F-14: NO LONGER REPRODUCES
+
+### E-74 · 2026-11-18T16:08:38Z · FINDING · orchestrator
+
+- ID: F-15
+- Class: BLOCKER
+- Where: `AUDIT-LOG.md` E-67
+- Trigger: `git cat-file -t 75fd0ba` prints "Not a valid object name"; E-67 says "The file at commit 75fd0ba and later equals the scope sent"; `git log -- prompts/plan-reaudit-round3.md` shows the commit is a9c6923
+- Violates: BLOCKER (d), a false statement in an artifact; rule 1.8
+- Raised by: fourth re-audit, LAUNCH E-71, `audits/plan-reaudit-E-71.md`, finding N-1
+- Lens: trust and controls
+
+### E-75 · 2026-11-18T16:08:38Z · FINDING · orchestrator
+
+- ID: F-16
+- Class: DEFECT
+- Where: E-69, the card
+- Trigger: count the choices: the card offers 2; "change a CRITERION" is absent
+- Violates: rule 14.5
+- Raised by: fourth re-audit, LAUNCH E-71, `audits/plan-reaudit-E-71.md`, finding N-2
+- Lens: trust and controls
+
+### E-76 · 2026-11-18T16:08:38Z · FINDING · orchestrator
+
+- ID: F-17
+- Class: DEFECT
+- Where: E-68
+- Trigger: `grep -c REVERSAL AUDIT-LOG.md` prints 0; D-8 reverses D-6 from "not hosted" to "published" in a `DECISION` entry
+- Violates: rule 8.4
+- Raised by: fourth re-audit, LAUNCH E-71, `audits/plan-reaudit-E-71.md`, finding N-3
+- Lens: trust and controls
+
+### E-77 · 2026-11-18T16:08:38Z · CORRECTION · orchestrator
+
+- Corrects: E-67 and E-69.
+- 1. E-67 names commit 75fd0ba. No such commit exists. The ORCHESTRATOR wrote a commit ID from memory and did not copy it from a command. The commit that changed `prompts/plan-reaudit-round3.md` is a9c6923 (`git log --oneline -- skills/hinshitsu/example/run/prompts/plan-reaudit-round3.md`, first line: "a9c6923 example run: third re-audit scope names the commit under review").
+- 2. The card in E-69 offered 2 choices. Rule 14.5 requires 3. The missing choice was to change a CRITERION. The USER answered that card (E-70) without seeing it.
+
+### E-78 · 2026-11-18T16:08:38Z · REVERSAL · orchestrator
+
+- Reverses: D-6 (E-37), "not hosted"
+- New decision: D-8 (E-68), "published with GitHub Pages after it passes its audits"
+- Justification: the USER chose hosting in E-64 ("3.  A."). D-6 was a working assumption stated as such.
+- Written late: E-68 made the reversal in a `DECISION` entry with no `REVERSAL` entry (F-17).
