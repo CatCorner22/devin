@@ -35,7 +35,7 @@ def good_run():
         add("STAGE", "- Stage: S%d\n- Event: end\n- Artifacts: `AUDIT-LOG.md`" % i)
     add("STAGE", "- Stage: S5\n- Event: skipped — fixture")
     add("STAGE", "- Stage: S6\n- Event: start\n- SHA-256 %s" % SHA)
-    add("CRITERIA", '- C1. It works. Test: run it.\n- State: FROZEN\n- Approval: "approve all" (t)')
+    add("CRITERIA", '- C1. It works. Test: run it.\n- Status: FROZEN\n- Approval: "approve all" (t)')
     add("STAGE", "- Stage: S6\n- Event: end")
     add("STAGE", "- Stage: S7\n- Event: start\n- SHA-256 %s" % SHA)
     n = len(e) + 1
@@ -103,7 +103,7 @@ class Check(unittest.TestCase):
 
     def test_proposed_criteria_fail_at_unit(self):
         d = good_run()
-        edit(d, "AUDIT-LOG.md", "- State: FROZEN", "- State: PROPOSED")
+        edit(d, "AUDIT-LOG.md", "- Status: FROZEN", "- Status: PROPOSED")
         self.assertEqual(hcheck.check(d, "plan"), [])
         self.assertFails(d, "not FROZEN", "unit")
 

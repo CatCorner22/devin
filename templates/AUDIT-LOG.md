@@ -79,7 +79,7 @@ Sent to: <each LENS, the RED CELL, the USER — with the message or prompt path>
 ### E-8 · <UTC time> · CRITERIA · orchestrator
 
 - C1. <what the DELIVERABLE does or contains>. Test: <command, browser step, or reading by a named AUDITOR role>.
-- State: <PROPOSED | FROZEN>
+- Status: <PROPOSED | FROZEN>
 - Approval: "<the USER's approving message, quoted>" (<time>) — or `approval: pending`
 
 ### E-9 · <UTC time> · DECISION · orchestrator
