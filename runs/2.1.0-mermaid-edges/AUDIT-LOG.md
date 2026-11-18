@@ -825,3 +825,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Word count taken before this entry: the decision holds 120 words [`evidence/card-4-word-count.txt`]. The same text is in `evidence/card-4-as-sent.md`.
 - Runs used: 4 `LAUNCH` entries (E-1, E-31, E-44, E-72) of the 4 the USER allowed (E-37). Rule 14.5 does not apply by its words (this is the first round on these BLOCKERS); the card is sent under rule 0.9, since a re-audit needs a fifth run.
 - Working assumption while the card is open (rule 23.5): none acted on. No SUB-AGENT run and no `DELIVERY` entry before the `ANSWER` entry.
+
+### E-82 · 2026-11-18T20:34:15Z · CORRECTION · orchestrator
+
+- Corrects: E-80
+- What was wrong: E-80 cites `evidence/record-check-E-80.txt` as the check of rule 14.6(b). The ORCHESTRATOR ran that command before it wrote E-80, and did not change `MINDMAP.md`, which still called F-14 open on 2 lines. Run after E-80, the same command printed 2 failures and exited 1. The card of E-81 was committed and pushed in that state. The ORCHESTRATOR found this from the output of the command it ran after E-81; no AUDITOR found it.
+- What is true: `MINDMAP.md` now marks F-14 FIXED on both lines, and the command, run after that change, prints 0 failures and exits 0 [`evidence/record-check-E-82.txt`]. The result of E-80 (`FIXED`, record fault) stands on that file.

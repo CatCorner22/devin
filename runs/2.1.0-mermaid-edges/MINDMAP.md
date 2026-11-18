@@ -23,7 +23,7 @@ Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`).
         - **F-11** DEFECT, BLOCKER under rule 17.4 — the report names E-5 as marked late; it is E-3 — open
         - **F-12** DEFECT, BLOCKER under rule 17.4 — check 2 of the report promises the same text; the run's last message is shorter than the saved report — open
         - **F-13** FRAGILITY, BLOCKER under rule 17.4 — 9 output files of E-44 record the command with no quotes — open
-        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date — open
+        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date — FIXED as a record fault (E-80)
         - **F-15** STYLE — some output files hold no command line or no exit code — open
   - **C2** `C -.-> D` fails with `no label`
   - **C3** `A -- reads --> B` passes
@@ -57,7 +57,7 @@ graph TD
   REC --> F11["F-11 report names the wrong late entry (open)"]
   REC --> F12["F-12 check 2 promises the same text (open)"]
   REC --> F13["F-13 saved commands have no quotes (open)"]
-  REC --> F14["F-14 session state out of date (open)"]
+  REC --> F14["F-14 session state out of date (FIXED)"]
   REC --> F15["F-15 output files lack command or exit code (open)"]
   D1 --> F1["F-1 DEFECT: earlier link counts as a label (FIXED)"]
   D1 --> F2["F-2 DEFECT: quoted label fails (FIXED)"]
