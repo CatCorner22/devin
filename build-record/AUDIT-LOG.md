@@ -309,3 +309,13 @@ Round 2 of the post-build review, ordered by the USER in E-019. Commit under rev
 |---|---|---|---|
 | Red cell, amended skill set | `prompts/round2-red-cell.txt` | https://app.devin.ai/sessions/21ae0aafc0e042959d10663b893dc90c | `audits/round2-red-cell.md` |
 | Auditor, C1 to C15 and re-run of earlier findings | `prompts/round2-auditor.txt` | https://app.devin.ai/sessions/af090f986d3e46d396185fea82377935 | `audits/round2-auditor.md` |
+
+### E-021 · 2026-11-18T19:03Z · CORRECTION · orchestrator
+
+- Corrects E-020. The 2 sessions of E-020 ran on the mode "Fusion". The USER then wrote, 2026-11-18 14:03 EST: "Ultra mode.  This is critical work.  And it should save me money over the long term.  Please keep going." The ORCHESTRATOR terminated both about 2 minutes after their start; neither had reported. No report of theirs exists or was read.
+- The same 2 scopes, unchanged, were started again on the mode "Ultra", on the same commit `874ffb27d26f9eac7eaabf6b580dbed37e6080a1`. The restart was made for the USER's instruction on the mode, not to obtain a different result (rule 1.7).
+
+| Role | Scope | Devin session (platform identifier) | Report |
+|---|---|---|---|
+| Red cell, amended skill set | `prompts/round2-red-cell.txt` | https://app.devin.ai/sessions/b4cda1b3418a42b5a523cacbfebe2070 | `audits/round2-red-cell.md` |
+| Auditor, C1 to C15 and re-run of earlier findings | `prompts/round2-auditor.txt` | https://app.devin.ai/sessions/b2f609ee7df940a2911efd2d9cbe6ce5 | `audits/round2-auditor.md` |
