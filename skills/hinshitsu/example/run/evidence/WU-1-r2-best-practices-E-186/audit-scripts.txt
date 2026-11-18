@@ -1,0 +1,287 @@
+===== common.js =====
+const { chromium } = require('/home/ubuntu/pwtools/node_modules/playwright');
+const FILE = 'file:///home/ubuntu/repos/devin/skills/hinshitsu/example/index.html';
+async function launch(opts = {}) {
+  const browser = await chromium.launch({ executablePath: '/opt/.devin/chrome/chrome/linux-156.0.8078.47/chrome-linux64/chrome', headless: process.env.HEADLESS === '1', env: { ...process.env, DISPLAY: ':0' } });
+  const context = await browser.newContext(Object.assign({ viewport: { width: 1280, height: 800 } }, opts));
+  const page = await context.newPage();
+  return { browser, context, page };
+}
+async function read(page) {
+  return page.evaluate(() => ({
+    result: Array.from(document.querySelectorAll('#result p')).map(p => p.textContent),
+    resultText: document.getElementById('result').textContent,
+    errors: ['bill', 'tip', 'people'].map(n => document.getElementById(n + '-error').textContent),
+    invalid: ['bill', 'tip', 'people'].map(n => document.getElementById(n).getAttribute('aria-invalid')),
+  }));
+}
+module.exports = { launch, read, FILE };
+
+===== c1c2.js =====
+const { launch, read, FILE } = require('./common');
+(async () => {
+  const { browser, context, page } = await launch();
+  const reqs = []; const cons = [];
+  page.on('request', r => reqs.push(r.method() + ' ' + r.url()));
+  page.on('console', m => cons.push(m.type() + ': ' + m.text()));
+  page.on('pageerror', e => cons.push('pageerror: ' + e.message));
+  const cdp = await context.newCDPSession(page);
+  await cdp.send('Network.enable'); const cdpReqs = [];
+  cdp.on('Network.requestWillBeSent', e => cdpReqs.push(e.request.url));
+  await page.goto(FILE); await page.waitForTimeout(1500);
+  console.log('UA', await page.evaluate(() => navigator.userAgent));
+  console.log('C1 playwright requests:', reqs.length, JSON.stringify(reqs));
+  console.log('C1 CDP requestWillBeSent:', cdpReqs.length, JSON.stringify(cdpReqs));
+  console.log('C1 performance resource entries:', await page.evaluate(() => performance.getEntriesByType('resource').length));
+  console.log('console at load:', JSON.stringify(cons));
+  console.log('first open:', JSON.stringify(await page.evaluate(() => ({
+    values: ['bill','tip','people'].map(n => document.getElementById(n).value),
+    visibleText: document.body.innerText,
+    guideHidden: document.getElementById('guide').hidden, fieldsHidden: document.getElementById('fields').hidden,
+    active: document.activeElement.tagName }))), JSON.stringify(await read(page)));
+  const cases = [['100.00','18','4'],['0.30','15','1'],['10.10','15','1'],['12.25','18','1'],['0100.5','007','02'],['10.00','0','3'],['1000000.00','100','100'],['0.01','0','100']];
+  for (const c of cases) {
+    for (const [i, n] of ['bill','tip','people'].entries()) {
+      await page.click('#' + n); await page.keyboard.press('Control+a'); await page.keyboard.press('Delete');
+      await page.keyboard.type(c[i]);
+    }
+    const r = await read(page);
+    console.log('C2 typed', JSON.stringify(c), '=>', JSON.stringify(r.result), 'errors', JSON.stringify(r.errors));
+  }
+  console.log('console at end:', JSON.stringify(cons));
+  await browser.close();
+})();
+
+===== c3.js =====
+const { launch, FILE } = require('./common');
+// The auditor's own arithmetic: BigInt, half-up by comparing the remainder, payments built one person at a time.
+function expect(billText, tip, people) {
+  const [w, f = ''] = billText.split('.');
+  const bill = BigInt(w) * 100n + BigInt((f + '00').slice(0, 2));
+  const prod = bill * BigInt(tip);
+  let tipC = prod / 100n; if (prod % 100n >= 50n) tipC += 1n;
+  const total = bill + tipC;
+  const pays = []; let left = total;
+  for (let i = 0; i < people; i++) { const share = left / BigInt(people - i); pays.push(share); left -= share; }
+  pays.sort((a, b) => (a < b ? 1 : a > b ? -1 : 0));
+  return { bill, tipC, total, pays };
+}
+const fmt = c => { const s = c.toString().padStart(3, '0'); return s.slice(0, -2) + '.' + s.slice(-2); };
+function expectedLines(billText, tip, people) {
+  const e = expect(billText, tip, people);
+  const lines = ['Bill total: ' + fmt(e.bill), 'Tip percent: ' + tip, 'Number of people: ' + people, 'Tip amount: ' + fmt(e.tipC), 'Total with tip: ' + fmt(e.total)];
+  const groups = []; for (const p of e.pays) { const g = groups[groups.length - 1]; if (g && g.c === p) g.n++; else groups.push({ c: p, n: 1 }); }
+  for (const g of groups) lines.push(g.n === 1 ? '1 person pays ' + fmt(g.c) : g.n + ' people pay ' + fmt(g.c) + ' each');
+  if (groups.length === 2) lines.push('Your group decides who pays the higher amount.');
+  const sum = e.pays.reduce((a, b) => a + b, 0n);
+  if (sum !== e.total || e.pays[0] - e.pays[e.pays.length - 1] > 1n || groups.length > 2) throw new Error('auditor code self-check failed');
+  return lines;
+}
+(async () => {
+  const { browser, page } = await launch();
+  await page.goto(FILE);
+  const cur = {}; let n = 0, bad = 0; const fails = [];
+  async function run(b, t, p) {
+    const vals = { bill: b, tip: String(t), people: String(p) };
+    for (const k of ['bill', 'tip', 'people']) if (cur[k] !== vals[k]) { await page.fill('#' + k, vals[k]); cur[k] = vals[k]; }
+    const got = await page.evaluate(() => Array.from(document.querySelectorAll('#result p')).map(x => x.textContent));
+    const whole = await page.evaluate(() => document.getElementById('result').textContent);
+    const want = expectedLines(b, Number(t), Number(p));
+    // page's own payments: sum and spread, read from its text
+    let ok = JSON.stringify(got) === JSON.stringify(want) && whole === want.join('');
+    n++; if (!ok) { bad++; if (fails.length < 20) fails.push({ b, t, p, got, want }); }
+  }
+  const cents = c => Math.floor(c / 100) + '.' + String(c % 100).padStart(2, '0');
+  let a = 0;
+  for (const t of [0, 15, 18, 20]) for (let c = 1; c <= 5000; c++) await run(cents(c), t, 1);
+  console.log('sweep A (bills 0.01-50.00 x tips 0,15,18,20 x 1 person): cases', n - a, 'mismatches', bad); a = n; const badA = bad;
+  for (let p = 1; p <= 12; p++) for (let c = 1; c <= 500; c++) await run(cents(c), 18, p);
+  console.log('sweep B (bills 0.01-5.00 x 1-12 people x tip 18): cases', n - a, 'mismatches', bad - badA); a = n; const badB = bad;
+  for (const s of [['10.00', '0', '3'], ['1000000.00', '100', '100'], ['0.01', '0', '100']]) {
+    await run(...s);
+    console.log('spot', JSON.stringify(s), JSON.stringify(await page.evaluate(() => Array.from(document.querySelectorAll('#result p')).map(x => x.textContent))));
+  }
+  console.log('spot cases', n - a, 'mismatches', bad - badB);
+  console.log('total cases', n, 'total mismatches', bad, JSON.stringify(fails));
+  await browser.close();
+})();
+
+===== c4.js =====
+const { launch, read, FILE } = require('./common');
+const legend = [];
+const esc = s => JSON.stringify(s).replace(/[^\x20-\x7e]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+(async () => {
+  const { browser, page } = await launch();
+  const valid = { bill: '100.00', tip: '18', people: '4' };
+  async function put(name, text) {
+    await page.click('#' + name);
+    if (/^[\x20-\x7e]*$/.test(text)) await page.keyboard.type(text); else await page.keyboard.insertText(text);
+  }
+  async function probe(name, text, note) {
+    await page.goto(FILE);
+    for (const k of Object.keys(valid)) if (k !== name) await put(k, valid[k]);
+    await put(name, text);
+    const a = await read(page);
+    await page.keyboard.press('Tab'); await page.click('h1');
+    const b = await read(page);
+    const i = ['bill', 'tip', 'people'].indexOf(name);
+    const other = b.errors.filter((e, j) => j !== i && e).length;
+    const code = m => { if (!m) return '-'; if (!legend.includes(m)) legend.push(m); return 'M' + (legend.indexOf(m) + 1); };
+    const res = r => r.result.length ? r.result.slice(0, 3).map(x => x.split(': ')[1]).join('/') + ' => ' + r.result.slice(3).join('; ') : 'none';
+    console.log(`${name} ${esc(text)}${note ? ' [' + note + ']' : ''} | focused: msg ${code(a.errors[i])}, result ${res(a)} | left: msg ${code(b.errors[i])}, aria-invalid ${b.invalid[i]}, result ${JSON.stringify(res(b)) === JSON.stringify(res(a)) ? 'same' : res(b)}${other ? ' OTHER-FIELD-MESSAGES=' + other : ''}`);
+  }
+  console.log('== first open'); await page.goto(FILE); console.log(JSON.stringify(await read(page)), JSON.stringify(await page.evaluate(() => document.body.innerText)));
+  console.log('== incomplete: bill typed, focus still in bill, tip and people untouched'); await put('bill', '12.50'); console.log(JSON.stringify(await read(page)));
+  console.log('== tab into tip (bill left), nothing typed in tip'); await page.keyboard.press('Tab'); console.log(JSON.stringify(await read(page)));
+  console.log('== tab into people (tip left empty)'); await page.keyboard.press('Tab'); console.log(JSON.stringify(await read(page)));
+  console.log('== tab out of people (people left empty)'); await page.keyboard.press('Tab'); console.log(JSON.stringify(await read(page)));
+  console.log('== type then delete in bill, still focused'); await page.goto(FILE); await put('bill', '5'); await page.keyboard.press('Backspace'); console.log(JSON.stringify(await read(page)));
+  console.log('== result recomputed on every change: 100.00/18/4 then people 4 -> 3 -> 30'); await page.goto(FILE);
+  await put('bill', '100.00'); await put('tip', '18'); await put('people', '4'); console.log(JSON.stringify((await read(page)).result));
+  await page.keyboard.press('Backspace'); console.log('people empty:', JSON.stringify(await read(page)));
+  await page.keyboard.type('3'); console.log(JSON.stringify((await read(page)).result));
+  await page.keyboard.type('0'); console.log(JSON.stringify((await read(page)).result));
+  console.log('== C4 bill inputs');
+  for (const t of ['12.50', '12,50', ' 12.50 ', '\u200b12.50\ufeff', '\uff11\uff12\uff0e\uff15\uff10', '\uff11\uff12\uff0c\uff15\uff10', '\u0661\u0662\u066b\u0665\u0660', '\u06f1\u06f2.\u06f5\u06f0', '12.', '12,', '10.', 'abc', '12a', '1,000.00', '1.000,00', '1e3', '.5', ',5', '$12.50', '12.50\u20ac', '\u00a312', '-5', '-0.01', '0', '0.00', '0,0', '1000000.00', '1000000.01', '1000001', '99999999', '1.234', '12,345', '1 000', '12.5.0', '+5', '0x10', '1000000', '0.01', '00000001000000.00'])
+    await probe('bill', t);
+  console.log('== C4 tip inputs');
+  for (const t of ['0', '100', '007', '\uff11\uff18', '\u0661\u0668', ' 18 ', '101', '-1', '18.0', '18,5', '1e1', '+4', '4.', 'abc', '18%', '1000', '0000000000000000000018'])
+    await probe('tip', t);
+  console.log('== C4 people inputs');
+  for (const t of ['1', '100', '02', '\u0664', '\u06f4', '0', '101', '-1', '18.0', '18,5', '1e1', '+4', '4.', '1.5', 'four', '00'])
+    await probe('people', t);
+  console.log('== extra probes: invisible characters at an end (C4: "ignored")');
+  for (const [t, n] of [['\u200e12.50', 'LRM U+200E at start'], ['12.50\u200f', 'RLM U+200F at end'], ['\u061c\u0661\u0662', 'ALM U+061C at start'], ['\u202a12.50\u202c', 'LRE..PDF U+202A/U+202C'], ['\u206612.50\u2069', 'LRI..PDI U+2066/U+2069'], ['\u00ad12.50', 'soft hyphen U+00AD'], ['12.50\u180e', 'MVS U+180E'], ['\u00a012.50\u00a0', 'no-break space U+00A0'], ['\u300012.50', 'ideographic space U+3000'], ['12.50\u200d', 'ZWJ U+200D'], ['\u206012.50', 'WJ U+2060']])
+    await probe('bill', t, n);
+  console.log('== extra probes: characters that are neither plain, full-width nor Arabic-Indic digits or marks');
+  for (const [f, t, n] of [['people', '\u2461', 'circled digit two'], ['people', '\u00b2', 'superscript two'], ['people', '\ud835\udfd2', 'mathematical bold digit four'], ['tip', '\u32bf', 'circled number fifty'], ['tip', '\u2081\u2085', 'subscript one five'], ['people', '\u246b', 'circled number twelve'], ['bill', '12\u202450', 'one dot leader U+2024 as mark'], ['bill', '12\ufe5250', 'small full stop U+FE52'], ['bill', '12\ufe5050', 'small comma U+FE50'], ['bill', '\u2488', 'digit one full stop U+2488'], ['bill', '\u2488\u2075', 'U+2488 then superscript five'], ['people', '\u0967', 'Devanagari digit one'], ['bill', '1\u066c000', 'Arabic thousands separator'], ['bill', '12\u060c50', 'Arabic comma U+060C'], ['people', '\u2163', 'Roman numeral four'], ['people', '\u3285', 'circled ideograph six']])
+    await probe(f, t, n);
+  console.log('== "12." in bill, then window loses focus (page.evaluate blur of window not possible); Enter key pressed in bill');
+  await page.goto(FILE); await put('tip', '18'); await put('people', '4'); await put('bill', '12.'); await page.keyboard.press('Enter'); console.log(JSON.stringify(await read(page)));
+  console.log('== message legend'); legend.forEach((m, i) => console.log('M' + (i + 1) + ' = ' + m));
+  await browser.close();
+})();
+
+===== c567.js =====
+const { launch, read, FILE } = require('./common');
+const fs = require('fs');
+async function shot(page, o) { if (process.env.HEADLESS !== '1') return; for (let i = 0; i < 6; i++) { try { await page.bringToFront(); await shot(page, o); return; } catch (e) { await page.waitForTimeout(700); } } console.log('SCREENSHOT FAILED', o.path); }
+(async () => {
+  // ---- C5 widths
+  for (const w of [320, 360, 768, 1280]) {
+    const { browser, page } = await launch({ viewport: { width: w, height: 800 } });
+    await page.goto(FILE);
+    const measure = () => page.evaluate(() => {
+      const de = document.documentElement; const wide = [];
+      document.querySelectorAll('*').forEach(e => { const r = e.getBoundingClientRect(); if (r.right > innerWidth + 0.5 || r.left < -0.5 || r.width > innerWidth + 0.5) wide.push(e.tagName + '#' + e.id + ' ' + r.left + '..' + r.right); });
+      window.scrollTo(1000, 0); const sx = window.scrollX; window.scrollTo(0, 0);
+      return { innerWidth, scrollWidth: de.scrollWidth, clientWidth: de.clientWidth, bodyScrollWidth: document.body.scrollWidth, scrollXAfterScrollTo1000: sx, tooWide: wide };
+    });
+    console.log('C5 width', w, 'first open', JSON.stringify(await measure()));
+    await shot(page, { path: `w${w}-first.png`, fullPage: true });
+    await page.fill('#bill', '1,000.00'); await page.fill('#tip', '18.0'); await page.fill('#people', '0'); await page.click('h1');
+    console.log('C5 width', w, 'errors   ', JSON.stringify(await measure()));
+    await shot(page, { path: `w${w}-errors.png`, fullPage: true });
+    await page.fill('#bill', '1000000.00'); await page.fill('#tip', '100'); await page.fill('#people', '99'); await page.click('h1');
+    console.log('C5 width', w, 'result   ', JSON.stringify(await measure()), JSON.stringify((await read(page)).result));
+    await shot(page, { path: `w${w}-result.png`, fullPage: true });
+    await browser.close();
+  }
+  // ---- C5 markup + mutation counts
+  {
+    const { browser, page } = await launch();
+    await page.goto(FILE);
+    console.log('C5 markup', JSON.stringify(await page.evaluate(() => ({
+      labels: ['bill', 'tip', 'people'].map(n => { const l = document.querySelector('label[for=' + n + ']'); const r = l.getBoundingClientRect(); return { for: n, text: l.textContent, visible: r.width > 0 && r.height > 0 && getComputedStyle(l).visibility === 'visible', accessibleLabelCount: document.getElementById(n).labels.length }; }),
+      inputs: ['bill', 'tip', 'people'].map(n => { const e = document.getElementById(n); return { id: n, type: e.type, inputmode: e.getAttribute('inputmode'), autocomplete: e.getAttribute('autocomplete'), describedby: e.getAttribute('aria-describedby'), height: e.getBoundingClientRect().height, fontSize: getComputedStyle(e).fontSize }; }),
+      errorRoles: ['bill', 'tip', 'people'].map(n => document.getElementById(n + '-error').getAttribute('role')),
+      resultRole: document.getElementById('result').getAttribute('role'), resultLive: document.getElementById('result').getAttribute('aria-live'),
+      lang: document.documentElement.lang, title: document.title, charset: document.characterSet, compat: document.compatMode, h1: document.querySelectorAll('h1').length, main: document.querySelectorAll('main').length,
+    }))));
+    await page.evaluate(() => {
+      window.__m = { 'bill-error': 0, 'tip-error': 0, 'people-error': 0, result: 0 };
+      for (const id of Object.keys(window.__m)) new MutationObserver(recs => { window.__m[id] += recs.length; }).observe(document.getElementById(id), { childList: true, characterData: true, subtree: true, attributes: true });
+    });
+    const m = async label => { console.log('C5 mutations', label, JSON.stringify(await page.evaluate(() => { const c = Object.assign({}, window.__m); for (const k in window.__m) window.__m[k] = 0; return c; }))); };
+    await page.click('#bill'); await page.keyboard.type('abc'); await page.keyboard.press('Tab'); await m('setup: bill "abc" typed and left (bill-error written once expected)');
+    await page.keyboard.type('18'); await m('typing "18" in tip while the bill message shows (expected 0 everywhere)');
+    await page.keyboard.press('Tab'); await page.keyboard.type('4'); await m('typing "4" in people while the bill message shows (expected 0 everywhere)');
+    await page.click('#bill'); await page.keyboard.press('Control+a'); await page.keyboard.type('100.00'); await m('setup: bill corrected to 100.00 (bill-error and result change expected)');
+    await page.click('#tip'); await page.keyboard.press('Home'); await page.keyboard.type('0'); await m('tip "18" -> "018": same result text (expected 0 everywhere)');
+    await page.click('#people'); await page.keyboard.press('Home'); await page.keyboard.type('0'); await m('people "4" -> "04": same result text (expected 0 everywhere)');
+    await page.click('#bill'); await page.keyboard.press('End'); await page.keyboard.press('Backspace'); await m('bill "100.00" -> "100.0": same result text (expected 0 everywhere)');
+    await page.click('h1'); await page.click('#tip'); await page.click('h1'); await m('focus and blur with no change (expected 0 everywhere)');
+    console.log('state', JSON.stringify(await read(page)));
+    // contrast
+    console.log('colours', JSON.stringify(await page.evaluate(() => { const g = (s) => getComputedStyle(document.querySelector(s)); return { body: g('body').color, bg: g('body').backgroundColor, error: g('.error').color, inputBorder: g('input').borderTopColor, inputOutlineFocus: (document.getElementById('bill').focus(), g('#bill').outline) }; })));
+    await browser.close();
+  }
+  // ---- C6 JavaScript off
+  {
+    const { browser, page } = await launch({ javaScriptEnabled: false, viewport: { width: 768, height: 600 } });
+    await page.goto(FILE); await page.waitForTimeout(500);
+    await shot(page, { path: 'c6-js-off.png' });
+    const cdp = await page.context().newCDPSession(page);
+    const doc = await cdp.send('DOM.getDocument', { depth: -1 });
+    const vis = async sel => { const { nodeId } = await cdp.send('DOM.querySelector', { nodeId: doc.root.nodeId, selector: sel }); try { const b = await cdp.send('DOM.getBoxModel', { nodeId }); return 'box ' + b.model.width + 'x' + b.model.height; } catch (e) { return 'no box (not rendered)'; } };
+    for (const s of ['h1', 'noscript p', '#guide', '#fields', '#bill', '#tip', '#people', 'label[for=bill]']) console.log('C6 JS off', s, '=>', await vis(s));
+    await browser.close();
+  }
+  // ---- C7
+  {
+    const { browser, page } = await launch();
+    const cons = []; page.on('console', m => cons.push(m.type() + ': ' + m.text())); const reqs = []; page.on('request', r => reqs.push(r.url())); page.on('requestfailed', r => reqs.push('FAILED ' + r.url() + ' ' + (r.failure() || {}).errorText));
+    await page.goto(FILE);
+    console.log('C7 meta tag in DOM:', await page.evaluate(() => document.querySelector('meta[http-equiv]').outerHTML));
+    const res = await page.evaluate(() => new Promise(done => {
+      const v = []; document.addEventListener('securitypolicyviolation', e => v.push(e.violatedDirective + ' blocked ' + e.blockedURI));
+      fetch('https://example.com').then(r => done({ outcome: 'FETCH SUCCEEDED ' + r.status, v }), e => setTimeout(() => done({ outcome: 'rejected: ' + e, v }), 200));
+    }));
+    console.log('C7 fetch:', JSON.stringify(res)); console.log('C7 console:', JSON.stringify(cons)); console.log('C7 requests seen:', JSON.stringify(reqs));
+    const other = await page.evaluate(() => new Promise(done => { const v = []; document.addEventListener('securitypolicyviolation', e => v.push(e.violatedDirective + ' blocked ' + e.blockedURI));
+      const i = new Image(); i.src = 'https://example.com/x.png'; navigator.sendBeacon && navigator.sendBeacon('https://example.com/b', 'x');
+      const f = document.createElement('form'); f.action = 'https://example.com/'; f.method = 'post'; document.body.appendChild(f);
+      setTimeout(() => { f.remove(); done(v); }, 500); }));
+    console.log('C7 extra (img, sendBeacon) violations:', JSON.stringify(other));
+    console.log('C7 storage after use:', JSON.stringify(await page.evaluate(async () => ({ cookie: document.cookie, local: (() => { try { return localStorage.length; } catch (e) { return String(e); } })(), session: (() => { try { return sessionStorage.length; } catch (e) { return String(e); } })() }))));
+    await page.click('#bill'); await page.keyboard.type('100.00'); await page.click('#tip'); await page.keyboard.type('18'); await page.click('#people'); await page.keyboard.type('4');
+    console.log('C7 before reload:', JSON.stringify(await page.evaluate(() => ['bill', 'tip', 'people'].map(n => document.getElementById(n).value))));
+    await page.reload(); await page.waitForTimeout(500);
+    console.log('C7 after reload:', JSON.stringify(await page.evaluate(() => ['bill', 'tip', 'people'].map(n => document.getElementById(n).value))), JSON.stringify(await read(page)));
+    await page.click('#bill'); await page.keyboard.type('55'); await page.goto('about:blank'); await page.goBack(); await page.waitForTimeout(500);
+    console.log('C7 after away-and-back:', JSON.stringify(await page.evaluate(() => ['bill', 'tip', 'people'].map(n => document.getElementById(n).value))), JSON.stringify(await read(page)));
+    await browser.close();
+  }
+})();
+
+===== shots.js =====
+const { launch, FILE } = require('./common');
+const fs = require('fs');
+(async () => {
+  for (const w of [360, 768, 1280]) {
+    const { browser, context, page } = await launch({ viewport: { width: w, height: 900 } });
+    const cdp = await context.newCDPSession(page);
+    const shot = async name => { const t = Date.now(); const r = await Promise.race([cdp.send('Page.captureScreenshot', { format: 'png' }), new Promise(r => setTimeout(() => r(null), 15000))]); if (r) { fs.writeFileSync(name, Buffer.from(r.data, 'base64')); console.log('saved', name, Date.now() - t, 'ms'); } else console.log('TIMEOUT', name); };
+    await page.goto(FILE); await shot(`w${w}-first.png`);
+    await page.fill('#bill', '1,000.00'); await page.fill('#tip', '18.0'); await page.fill('#people', '0'); await page.click('h1'); await shot(`w${w}-errors.png`);
+    await page.fill('#bill', '1000000.00'); await page.fill('#tip', '100'); await page.fill('#people', '99'); await page.click('h1'); await shot(`w${w}-result.png`);
+    await browser.close();
+  }
+})();
+
+===== misc.js =====
+const { launch, FILE } = require('./common');
+(async () => {
+  const { browser, page } = await launch();
+  await page.goto(FILE);
+  console.log(JSON.stringify(await page.evaluate(() => ({
+    globals: ['splitBill', 'plain', 'readAmount', 'readWhole', 'money', 'payLine', 'fields', 'resultBox', 'shownResult', 'showResult', 'update', 'MAX_BILL_CENTS', 'MAX_TIP_PERCENT', 'MAX_PEOPLE'].filter(n => Object.prototype.hasOwnProperty.call(window, n)),
+    splitBillDescriptor: Object.getOwnPropertyDescriptor(window, 'splitBill') && { writable: Object.getOwnPropertyDescriptor(window, 'splitBill').writable, configurable: Object.getOwnPropertyDescriptor(window, 'splitBill').configurable },
+    nfkc: ['\u00b2', '\u2461', '\u32bf', '\u2024', '\ufe52', '\u2488', '\u200e', '\u00ad'].map(c => 'U+' + c.codePointAt(0).toString(16).toUpperCase() + ' -> ' + JSON.stringify(plain(c))),
+    unicode: /\p{Cf}/u.test('\u200e') && /\p{Cf}/u.test('\u200b') && /\p{Cf}/u.test('\ufeff') && /\p{Cf}/u.test('\u2060') && /\p{Cf}/u.test('\u00ad') && /\p{Cf}/u.test('\u061c') && /\p{Cf}/u.test('\u202a') && /\p{Cf}/u.test('\u2066'),
+  }))));
+  const lum = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  for (const [n, h] of [['body text #1a1a1a', '#1a1a1a'], ['error text and invalid border #a40000', '#a40000'], ['input border #555555', '#555555']]) console.log('contrast on #ffffff:', n, (1.05 / (lum(h) + 0.05)).toFixed(2) + ':1');
+  await browser.close();
+})();
+
