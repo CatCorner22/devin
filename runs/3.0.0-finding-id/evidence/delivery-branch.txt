@@ -1,0 +1,9 @@
+$ git ls-remote origin main devin/hinshitsu-run-3.0.0
+dfdb425988c6481fb70621907291186f134ae046	refs/heads/devin/hinshitsu-run-3.0.0
+a3717b175f15c9356edcbd3c371f4a2e0731e56f	refs/heads/main
+$ gh pr list --repo CatCorner22/devin --head devin/hinshitsu-run-3.0.0 --state all
+exit 0
+$ git log --oneline a3717b1..1ce96d3 -- skills tests scripts
+1ce96d3 gauge skill: rules 24.2 and 24.3 state what the script does with a refused FINDING ID (fix of F-5)
+894fd4f checker: 1 function finding_id for the FINDING ID test; the gauge agreement test calls it (fix of F-3)
+e2b7190 gauge: a FINDING whose ID the checker refuses is counted as unread and left out of the STOPPED line; 6 tests

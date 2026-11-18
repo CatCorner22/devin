@@ -13,6 +13,8 @@ graph LR
   TG -->|STOPPED line and unread line| T["tests/test_gauge.py"]
   SG -->|GAUGE.svg text| T
   RS -->|state dict| T
+  FID["scripts/hinshitsu_check.py finding_id"] -->|the accepted ID or None, for the agreement test| T
+  RS -->|what the script reads and shows| SK["skills/hinshitsu-gauge/SKILL.md rules 24.2 and 24.3"]
 ```
 
 ## Edge list
@@ -26,10 +28,12 @@ graph LR
 | gauge.py text_gauge | tests/test_gauge.py | STOPPED line and unread line | a test of `tests/test_gauge.py` fails |
 | gauge.py svg_gauge | tests/test_gauge.py | GAUGE.svg text | a test of `tests/test_gauge.py` fails |
 | gauge.py read_state | tests/test_gauge.py | state dict | a test of `tests/test_gauge.py` fails |
+| scripts/hinshitsu_check.py finding_id | tests/test_gauge.py | the accepted ID or None, for the agreement test | the checker picks the ID out of the field in another way than `finding_id` does (F-7) |
+| gauge.py read_state | skills/hinshitsu-gauge/SKILL.md rules 24.2 and 24.3 | what the script reads and shows | a sentence of rule 24.2 or 24.3 is false of the script (F-5, F-9) |
 
 ## Nodes outside the DELIVERABLE
 
 | Node | Kind | Version or date checked |
 |---|---|---|
 | Python 3 standard library | library | version in `evidence/capability-commands.txt` |
-| `scripts/hinshitsu_check.py` | script of this repository, not changed by this run | commit a3717b1 |
+| `scripts/hinshitsu_check.py`, other than `finding_id` and lines 306 to 317 | script of this repository; those lines were changed by this run (fix of F-3, commit 894fd4f) | commit 1ce96d3 |

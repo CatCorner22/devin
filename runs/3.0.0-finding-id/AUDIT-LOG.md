@@ -652,3 +652,80 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 > hinshitsu gauge  [############............] 50%  6 of 12 stages complete (the log's state, not proof of DONE)
 > STOPPED — blocker open: 1: F-9
 > — end of card —
+
+### E-62 · 2026-11-18T22:00:49Z · ANSWER · orchestrator
+
+The USER's message, word for word, sent 2026-11-18 17:00 EST (22:00 UTC), message `event-01a1f0ad1e157d0c98abe077dcf55b6e`, in answer to the card of E-61:
+
+> Decision 1: end. Decision 2: set aside. Run the final check as the 5th and last session, then send the final message. No further cards.
+
+- Effect: decision 1 — the USER ends the run (rule 14.3, exit (c)); F-9 stays open and the delivery report lists it; the Status is `DELIVERED — NOT DONE`. Decision 2 — the USER overrules F-10. The final AUDITOR runs as the 5th and last SUB-AGENT; no further card is sent.
+
+### E-63 · 2026-11-18T22:00:49Z · OVERRULE · orchestrator
+
+- Finding: F-10 (FRAGILITY)
+- Result: OVERRULED
+- By: USER — "Decision 2: set aside." (E-62; decision 2 of the card in E-61)
+- Reason: the USER ended the run; no work on the DELIVERABLE goes on while F-9 is open. S12 proposes the test. The delivery report lists it.
+
+### E-64 · 2026-11-18T22:01:52Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: progress
+- Work units: 1 of 1
+- Note: WU-1 ended its audit by the USER's decision to end the run (E-62; rule 14.3, exit (c)) with the BLOCKER F-9 open. 3 audit rounds ran: E-29, E-41, E-55.
+
+### E-65 · 2026-11-18T22:01:52Z · STAGE · orchestrator
+
+- Stage: S7
+- Event: end
+- Artifacts: `audits/WU-1-correctness_E-29.md`, `audits/WU-1-r2-correctness_E-41.md`, `audits/WU-1-r3-correctness_E-55.md`, `prompts/WU-1-correctness.md`, `prompts/WU-1-r2-correctness.md`, `prompts/WU-1-r3-correctness.md`, `COVERAGE-LEDGER.md` (the COR column); commits eda8e66, 894fd4f and 1ce96d3 on the branch
+- Note: F-9 (BLOCKER) is open; the STAGE ends by the USER's direction in E-62.
+
+### E-66 · 2026-11-18T22:01:52Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: start
+- Skill read: `skills/hinshitsu-audit/SKILL.md`, 14245 bytes, SHA-256 df3125ef59a5034dbf3dbe78dc9913046489d8103696e7ef50c2c4112de8cb7b
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- Note: the skill was read whole at the start of S7 (E-23); its hash is taken again and is equal
+
+### E-67 · 2026-11-18T22:01:53Z · CHECK · orchestrator
+
+S8 (sections 11 and 12). Rules 11.2 and 12.1 give each check to an AUDITOR, never the BUILDER. In this CORE run the only AUDITORS are the correctness auditor and the final AUDITOR (rule 0.5), and the USER allowed 5 SUB-AGENT runs, the last for the final AUDITOR (E-49, E-62). No AUDITOR performed recipient-side verification or the 4 stability checks as such. The RSV and STAB cells of `COVERAGE-LEDGER.md` read `N/A — CORE`, and the delivery report lists both as UNVERIFIED. What the 3 correctness reports do show, each from its own fresh clone: the gauge script ran on logs and the test suite ran (`audits/WU-1-r3-correctness_E-55.md`, heading Commands and output). See `FRICTION.md` item 19.
+
+### E-68 · 2026-11-18T22:01:53Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: end
+- Artifacts: `COVERAGE-LEDGER.md` (the RSV and STAB columns, `N/A — CORE`)
+
+### E-69 · 2026-11-18T22:01:53Z · STAGE · orchestrator
+
+- Stage: S9
+- Event: skipped — CORE (E-4; kept by the WAIVER of E-50): no RED CELL attack and no premortem before delivery
+
+### E-70 · 2026-11-18T22:01:53Z · STAGE · orchestrator
+
+- Stage: S10
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 9614 bytes, SHA-256 f9b51a3182e6c18035971ca7efaa0f617d8006767008766a35d8a01bf1d61357
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-71 · 2026-11-18T22:02:43Z · CORRECTION · orchestrator
+
+Corrects E-21: the entry gives the USER's approval in a sentence and lacks the field line `- Approval:` that `templates/AUDIT-LOG.md` shows and that `scripts/hinshitsu_check.py --stage unit` tests (rule 3.4). The ORCHESTRATOR's error; it did not run the stage `unit` check before the WORK UNIT's audit. The CRITERIA entry that follows repeats E-21 word for word and adds that line. No CRITERION changes; this is not a CRITERIA-CHANGE. The scopes and reports that cite E-21 stay true.
+
+### E-72 · 2026-11-18T22:02:43Z · CRITERIA · orchestrator
+
+- Status: FROZEN
+- Approval: "Decision 1: I approve C1 to C6. Decision 2: yes. Decision 3: yes." (2026-11-18 16:27 EST, 21:27 UTC; quoted in E-20)
+- Repeats: E-21, word for word, with the field line above added (see the CORRECTION entry before this one)
+
+A "refused ID" means: the entry has no `- ID:` line, or the line is empty, or the first word of the ID field does not fully match `F-<digits>`. This is the test in `scripts/hinshitsu_check.py`, lines 299 to 306.
+- C1: `gauge.py` counts each FINDING entry with a refused ID, whatever its class, as 1 entry it could not read. Test: `python3 -m unittest tests.test_gauge -v` — tests in which a log with the IDs `F-1.` and `blocker one` (and 1 with no ID line) gives `unread` equal to the number of such entries, and the text gauge prints "<n> entries could not be read".
+- C2: a FINDING entry with a refused ID does not appear in the `STOPPED — blocker open` line of the text gauge nor in `GAUGE.svg`, and a log whose only BLOCKERS have refused IDs prints no STOPPED line. Test: `python3 -m unittest tests.test_gauge -v` — tests that run the script on such a log and read both outputs.
+- C3: the gauge and the checker agree: for each ID field in a list that holds at least `F-1`, `F-12`, `F-3 (local 2)`, `F-1.`, `blocker one`, `f-1`, `F-`, `F-1a` and ` F-2`, the gauge lists the BLOCKER when, and only when, `hinshitsu_check.FINDING_ID` fully matches the first word. Test: `python3 -m unittest tests.test_gauge -v` — 1 test that imports both modules and compares them on the list.
+- C4: nothing else changes: a BLOCKER with an ID of the form `F-<n>` is shown and is cleared by its RESOLUTION as before; every test that passed at commit a3717b1 passes; `gauge.py` imports only the standard library. Test: `python3 -m unittest discover -s tests` exits 0 and `python3 scripts/lint.py` prints 0 failures; `git diff a3717b1 -- tests/test_gauge.py` removes or changes no existing test line.
+- C5: `tests/test_gauge.py` holds the new tests named in C1 to C3, and each of them fails when run against `gauge.py` of commit a3717b1. Test: the correctness auditor checks out `gauge.py` of a3717b1 beside the new tests and saves the failing output under `evidence/`.
+- C6: the change is on the branch `devin/hinshitsu-run-3.0.0` only; `main` on GitHub stays at a3717b1 and no pull request exists. Test: `git ls-remote origin main` and `gh pr list --head devin/hinshitsu-run-3.0.0 --state all`.

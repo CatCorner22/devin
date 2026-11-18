@@ -4,7 +4,7 @@
 
 - **Goal:** "Make `skills/hinshitsu-gauge/scripts/gauge.py` count such an entry among the entries it could not read, and leave it out of the STOPPED line, with tests."
   - **C1** a FINDING entry with a refused ID is counted as unread
-    - **WU-1** `gauge.py` FINDING branch of `read_state`, with tests
+    - **WU-1** `gauge.py` FINDING branch of `read_state`, with tests; `finding_id` in `scripts/hinshitsu_check.py`; rules 24.2 and 24.3 in `skills/hinshitsu-gauge/SKILL.md`
       - **D-1** test the first word of the ID field against `F-\d+`, as the checker does
   - **C2** such an entry is left out of the STOPPED line and of `GAUGE.svg` (built in WU-1)
   - **C3** the gauge and the checker agree on the ID (built in WU-1)
@@ -25,6 +25,17 @@ graph TD
   G --> C6["C6 branch only"]
   C1 --> WU1["WU-1 gauge.py read_state and tests"]
   WU1 --> D1["D-1 first word of the ID matches F-digits"]
+  WU1 --> F1["F-1 DEFECT"]
+  WU1 --> F2["F-2 DEFECT"]
+  WU1 --> F3["F-3 FRAGILITY"]
+  WU1 --> F4["F-4 STYLE"]
+  WU1 --> F5["F-5 BLOCKER"]
+  WU1 --> F6["F-6 DEFECT"]
+  WU1 --> F7["F-7 FRAGILITY"]
+  WU1 --> F8["F-8 STYLE"]
+  WU1 --> F9["F-9 BLOCKER, open"]
+  WU1 --> F10["F-10 FRAGILITY"]
+  WU1 --> F11["F-11 STYLE"]
 ```
 
 ## Node check
@@ -34,7 +45,7 @@ graph TD
 | CRITERIA | 6 | 6 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 1 | 1 |
-| FINDINGS | 0 | 0 |
+| FINDINGS | 11 | 11 (the list is the block "FINDINGS, from the log"; the diagram holds 1 node each) |
 
 ## FINDINGS, from the log
 
@@ -49,6 +60,6 @@ Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
 - F-7 `scripts/hinshitsu_check.py` line 310 (the only call of `finding_id`) and lines 540 to 541 (`check_record` applies the same test by hand); `tests/test_gauge.py` line 90; `tests/test_check.py` line 467. (FRAGILITY, OVERRULED by E-52)
 - F-8 `skills/hinshitsu-gauge/scripts/gauge.py` line 137. (STYLE, OVERRULED by E-47)
 - F-9 `skills/hinshitsu-gauge/SKILL.md`, section 24, item 3 (line 16): "shows `STOPPED — blocker open` with the count of open BLOCKERS and the first 4 FINDING IDs". `skills/hinshitsu-gauge/scripts/gauge.py`, lines 88 and 89. (BLOCKER, open)
-- F-10 `tests/test_gauge.py`, lines 156 to 159 (`test_svg_is_well_formed_and_escapes`), with `gauge.py` lines 85 to 87 and 144 to 145. (FRAGILITY, open)
+- F-10 `tests/test_gauge.py`, lines 156 to 159 (`test_svg_is_well_formed_and_escapes`), with `gauge.py` lines 85 to 87 and 144 to 145. (FRAGILITY, OVERRULED by E-63)
 - F-11 `skills/hinshitsu-gauge/scripts/gauge.py`, line 137. (STYLE, OVERRULED by E-60)
 <!-- from the log: end -->

@@ -23,7 +23,7 @@ See the newest `CRITERIA` entry of `AUDIT-LOG.md`, named in the block at the end
 |---|---|---|
 | `AUDIT-LOG.md` `FINDING` entry | `gauge.py` `read_state` | lines `- ID: F-<n>` and `- Class: <class>` |
 | `gauge.py` `read_state` | `text_gauge`, `svg_gauge` | a dict with `blockers` (IDs of open BLOCKERS) and `unread` (count of entries not read) |
-| `scripts/hinshitsu_check.py` (line 85 and lines 299 to 306) | `gauge.py` | the test of a FINDING ID that the gauge must agree with: the first word of the ID field fully matches `F-\d+` |
+| `scripts/hinshitsu_check.py` (line 85 and `finding_id`, lines 88 to 94; at a3717b1 lines 299 to 306) | `gauge.py` | the test of a FINDING ID that the gauge must agree with: the first word of the ID field fully matches `F-\d+` |
 | `gauge.py` | `tests/test_gauge.py` | `read_state(text)`, the printed text gauge, `GAUGE.svg` |
 
 ## 5. File ownership
@@ -32,13 +32,15 @@ See the newest `CRITERIA` entry of `AUDIT-LOG.md`, named in the block at the end
 |---|---|---|
 | `skills/hinshitsu-gauge/scripts/gauge.py` | ORCHESTRATOR as BUILDER (rule 1.4) | correctness auditor; final AUDITOR |
 | `tests/test_gauge.py` | ORCHESTRATOR as BUILDER | correctness auditor; final AUDITOR |
+| `scripts/hinshitsu_check.py`, `finding_id` and lines 306 to 317 (from E-39) | ORCHESTRATOR as BUILDER | correctness auditor; final AUDITOR |
+| `skills/hinshitsu-gauge/SKILL.md`, rules 24.2 and 24.3 (from E-53; the USER lifted "do not repair a rule" for 2 sentences, E-49) | ORCHESTRATOR as BUILDER | correctness auditor; final AUDITOR |
 | `runs/3.0.0-finding-id/**` | ORCHESTRATOR | final AUDITOR |
 
 ## 6. WORK UNITS
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py` | in audit | N/A — CORE | `audits/WU-1-*.md` |
+| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py`; `finding_id` in `scripts/hinshitsu_check.py`; rules 24.2 and 24.3 of the gauge skill | audit ended by the USER with 1 BLOCKER open (E-62, E-64) | N/A — CORE | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 
@@ -52,5 +54,5 @@ Command and output: `evidence/existing-implementations.txt`.
 
 <!-- from the log: start -->
 Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
-- Newest CRITERIA entry: E-21 (FROZEN)
+- Newest CRITERIA entry: E-72 (FROZEN)
 <!-- from the log: end -->

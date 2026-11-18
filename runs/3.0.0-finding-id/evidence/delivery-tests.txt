@@ -1,0 +1,45 @@
+$ git rev-parse HEAD; git diff --stat a3717b1 HEAD -- . ":!runs"
+dfdb425988c6481fb70621907291186f134ae046
+ scripts/hinshitsu_check.py              | 23 ++++++++----
+ skills/hinshitsu-gauge/SKILL.md         |  4 +--
+ skills/hinshitsu-gauge/scripts/gauge.py | 11 +++---
+ tests/test_gauge.py                     | 64 +++++++++++++++++++++++++++++++++
+ 4 files changed, 90 insertions(+), 12 deletions(-)
+$ python3 -m unittest discover -s tests
+....................................................................................hinshitsu check: test the form of a run's record.
+
+Usage: hinshitsu_check.py [--stage plan|unit|delivery] <run-folder>
+       hinshitsu_check.py --record <run-folder>   (state files against the log, rule 14.6)
+Exit 0 when every check for the stage passes, 1 when any fails, 2 on a usage error.
+Standard library only. Same folder in, same verdict out.
+
+This script tests the shape of the record: that entries, citations, cells and
+files exist and agree with each other. It does not prove that any check ran or
+that any report is true (rule 17.7).
+...........................................hinshitsu lint: check the form of the skills, glossary, templates and adapters.
+
+Usage: lint.py [repo-root]
+Exit 0 when every check passes, 1 when any fails, 2 on a usage error. Standard library only.
+This script tests form. It does not prove that any rule is sound.
+...................................
+----------------------------------------------------------------------
+Ran 162 tests in 3.295s
+
+OK
+FAIL CONNECTIONS.md: edge A ==> B has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+FAIL CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)
+hinshitsu_check (plan): 1 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (plan): 0 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+FAIL MINDMAP.md:1: calls F-1 closed; the log holds no closing entry (rule 14.6)
+hinshitsu_check (record): 1 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+FAIL the files cannot be read: UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 0: invalid start byte
+lint: 1 failure(s). This script tests form; it does not prove that any rule is sound.
+C<n> names a CRITERION and E-<n> an entry of build-record/AUDIT-LOG.md.
+exit 0

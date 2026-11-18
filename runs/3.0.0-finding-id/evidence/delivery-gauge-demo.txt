@@ -1,0 +1,23 @@
+$ cat AUDIT-LOG.md   (a log made for this check, in a temporary folder)
+### E-1 · t · STAGE · orchestrator
+- Stage: S7
+- Event: start
+### E-2 · t · FINDING · auditor
+- ID: F-1.
+- Class: BLOCKER
+### E-3 · t · FINDING · auditor
+- ID: blocker one
+- Class: BLOCKER
+### E-4 · t · FINDING · auditor
+- ID: F-2
+- Class: BLOCKER
+$ python3 skills/hinshitsu-gauge/scripts/gauge.py <that folder> | head -4   (commit 1ce96d3)
+hinshitsu gauge  [........................] 0%  0 of 12 stages complete (the log's state, not proof of DONE)
+Now: S7 Build and audit  -> skill: hinshitsu-audit
+STOPPED — blocker open: 1: F-2
+2 entries could not be read (rule 9.4, rule 0.7); the gauge leaves them out.
+$ git show a3717b1:skills/hinshitsu-gauge/scripts/gauge.py > old_gauge.py; python3 old_gauge.py <that folder> | head -4
+hinshitsu gauge  [........................] 0%  0 of 12 stages complete (the log's state, not proof of DONE)
+Now: S7 Build and audit  -> skill: hinshitsu-audit
+STOPPED — blocker open: 3: F-1., blocker one, F-2
+  [ ] S1  Capability and tier            hinshitsu
