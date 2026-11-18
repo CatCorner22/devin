@@ -1027,3 +1027,11 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - WORK UNIT: WU-1
 - TIER: FULL
 - Reason: 1 file, about 190 lines; more than the 100 changed lines that `CORE` allows (rule 0.5).
+
+### E-102 · 2026-11-18T16:26:21Z · CHECK · orchestrator
+
+- What: the BUILDER's own run of WU-1 before the swarm. It supports no `PASS` cell (rule 10.5).
+- BUILDER of WU-1: the ORCHESTRATOR's session. No SUB-AGENT built any part of it.
+- File: `skills/hinshitsu/example/index.html`, 167 lines, SHA-256 11570cbe2cd97be8cb70a31f50aa15a63346cb9ad6f435e22f4fd0b69c3b8184 (`sha256sum`), commit 1c8f220.
+- Ledger: 41 rows added to `COVERAGE-LEDGER.md` (8 CRITERIA, 1 file, 10 functions, 22 branches).
+- Copy for the planted defect (rule 16.7): `review/index.html`, identical to the file above at this entry.
