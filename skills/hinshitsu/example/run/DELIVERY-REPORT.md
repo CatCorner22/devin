@@ -10,17 +10,17 @@ Form required by section 19 (`skills/hinshitsu-delivery/SKILL.md`). Every claim 
 
 1. Open https://github.com/CatCorner22/devin/blob/main/skills/hinshitsu/example/index.html , select "Download raw file", and open the downloaded file in a browser. Type 100.00 as the bill, 18 as the tip and 4 as the people. You see: "Tip amount: 18.00", "Total with tip: 118.00", "4 people pay 29.50 each" [`evidence/S8-recipient-side-stability-E-349/a-100-18-4.png`].
 2. Open https://app.devin.ai/sessions/bfe8098018b340c2aa0841918b20adb7 (the RED CELL run that raised the 7 newest BLOCKERS) and compare its last message with `audits/S9-red-cell-E-350.md`. You see: the same text, with the verdict "PLAN SURVIVES WITH CHANGES".
-3. The final AUDITOR has not run yet; this draft is what it audits. This line is replaced when its report is saved.
+3. Open https://app.devin.ai/sessions/a4c43f24dbdb441dacae8aa26d632068 (the final AUDITOR's run) and compare it with `audits/final-audit-E-374.md`. You see: the same text, and the words `not passed` in its last line.
 
 The checker script tests the shape of the record; it does not prove that any check ran.
 
 ## Summary
 
-**What you got.** One web page that splits a restaurant bill with a tip, and the full record of how it was planned, attacked, built and audited [`FRAMEWORK.md`; `AUDIT-LOG.md`].
+**What you got.** One web page that splits a restaurant bill with a tip, and the record of how it was planned, built and audited [`FRAMEWORK.md`; `AUDIT-LOG.md`].
 
-**What was proven.** The arithmetic is right: independent sessions ran thousands of cases with 0 wrong amounts [`audits/WU-1-r3-correctness-E-253.md`]. A fresh session downloaded the delivered file and completed 5 tasks, 2 times [`audits/S8-recipient-side-stability-E-349.md`]. Each audit round was real: a hidden defect was planted 3 times and found each time [E-171, E-249, E-267].
+**What was proven.** The page works in Chrome on a computer: an independent session ran all 7 page rules on the delivered file, about 26,000 typed cases, 0 wrong [`audits/final-audit-E-374.md`]. A second session downloaded the file and completed 5 tasks twice [`audits/S8-recipient-side-stability-E-349.md`]. A hidden defect was planted 3 times and found each time [E-171, E-249, E-267].
 
-**What was not proven.** Use on a phone, with a screen reader, or in a browser other than Chrome. The page is not published. The length limit was removed after the last audit round; only the fresh session above ran the page after that. 62 faults remain open; 15 stop the work from counting as done.
+**What was not proven.** Use on a phone, with a screen reader, or in a browser other than Chrome. The page is not published. Nobody has timed your 3 checks. The record did not pass its final audit: 68 faults are open, most in my bookkeeping or the wording of the rules; 15 block "done".
 
 **What you need to decide next.** (1) Publish the page: Settings, Pages, branch `main`, Save. If you do nothing, it stays unpublished. (2) Approve or change the wording of the 8 rules; 29 faults were set aside by me on reasons an independent session rejected. (3) Approve the 6 proposed changes to the skills, or none.
 
@@ -28,8 +28,8 @@ You may stop reading here.
 
 ## Status
 
-DELIVERED — NOT DONE: part 1 (no CRITERION has a ledger row with every required cell `PASS`; rows C1 to C8 hold `FAIL` or `UNVERIFIED` cells [`COVERAGE-LEDGER.md`]); part 2 (15 BLOCKERS open); part 3 (38 DEFECTS and 9 FRAGILITIES open, and 29 overrules made by the ORCHESTRATOR, not by the USER [E-363]); part 6 (the audit of the audit has not run); part 7 (`scripts/hinshitsu_check.py --stage delivery` is run by the final AUDITOR; its output is in that report).
-TIER: FULL [E-3, E-101, E-179]. Mode: SWARM [E-1]. SUB-AGENT runs: 32 [`AUDIT-LOG.md`, `LAUNCH` entries].
+DELIVERED — NOT DONE: part 1 (C1 to C7 passed on the delivered file in desktop Chrome [`audits/final-audit-E-374.md`], yet rows C1 to C8 still hold `FAIL` or `UNVERIFIED` cells for other roles [`COVERAGE-LEDGER.md`]); part 2 (15 BLOCKERS open); part 3 (43 DEFECTS and 9 FRAGILITIES open, and 29 overrules made by the ORCHESTRATOR, not by the USER [E-363]); part 6 (the audit of the audit ended `not passed` [`audits/final-audit-E-374.md`]); part 7 is met only in form: the exit code of the checker is in `evidence/checker-delivery-final.txt`.
+TIER: FULL [E-3, E-101, E-179]. Mode: SWARM [E-1]. SUB-AGENT runs: 33 [`AUDIT-LOG.md`, `LAUNCH` entries].
 
 ### Open FINDINGS
 
@@ -97,8 +97,14 @@ TIER: FULL [E-3, E-101, E-179]. Mode: SWARM [E-1]. SUB-AGENT runs: 32 [`AUDIT-LO
 | F-157 | BLOCKER | E-359 | 9 wording FINDINGS are closed and also promised to the USE |
 | F-158 | BLOCKER | E-360 | The stock reason of 17 overrules is false for 2 and unwritten for 15 |
 | F-159 | BLOCKER | E-361 | EXAMPLE.md did not exist at the commit under review, and |
+| F-160 | DEFECT | E-375 | The delivery-stage checker printed 3 failures on the draft |
+| F-161 | DEFECT | E-376 | The maps name 2 and 1 of the page's 9 functions, and a publi |
+| F-162 | DEFECT | E-377 | The mind map says  has 3 states |
+| F-163 | DEFECT | E-378 | says 1 last audit round ran; 2 ran after the USER's message |
+| F-164 | DEFECT | E-379 | On branch main the README links to EXAMPLE.md, which is abse |
+| F-165 | STYLE | E-380 | Cited paths use 3 different base folders |
 
-Answers given after the last audit, which no AUDITOR had confirmed when this report was drafted: F-151 and F-159 (`skills/hinshitsu/EXAMPLE.md` now exists), F-152 (the README states how to open the page), F-154 (E-362 quotes the USER), F-156 to F-158 (E-363). They stay open.
+The final AUDITOR confirmed these answers as true: F-151 and F-159 (`skills/hinshitsu/EXAMPLE.md` exists), F-152 (the README states how to open the page), F-154 (E-362 quotes the USER; the missing card is not cured), F-156 to F-158 (E-363) [`audits/final-audit-E-374.md`, part (k)]. No `RESOLUTION` entry was written for them, so they stay in the open list. F-160 to F-165 were answered after the final audit; no AUDITOR has seen those answers [E-381].
 
 ### Overruled by the ORCHESTRATOR; the RED CELL found the reasons unsupported [E-363; `audits/S9-red-cell-E-350.md`]
 
@@ -163,7 +169,7 @@ No LENS memo was written after the build: the post-build review ran as the recip
 - Pre-delivery attack: "PLAN SURVIVES WITH CHANGES" [`audits/S9-red-cell-E-350.md`].
 - Premortem: a link shows source code (F-155); the hash in the report differs from the audited file (F-153); open BLOCKERS shipped on a chat message, not on a card (F-154) [`audits/S9-red-cell-E-350.md`].
 - Probes: E-190, trigger: the CRITERIA change of E-174; result: the card's sentence "remove nothing you asked for" was false, 2 approved phrases were gone [`audits/WU-1-r2-red-cell-probe-E-190.md`].
-- The 6 changes the pre-delivery attack demanded: (1) an AUDITOR runs the CRITERIA on the delivered file: asked of the final AUDITOR; (2) both hashes printed: done above; (3) the USER's stop message quoted: E-362; (4) reopen 12 overruled FINDINGS and rewrite 17 reasons: the log is append-only, so E-363 states what they are worth and this report lists all 29 as open for the USER; (5) the first lines of this report: done; (6) `EXAMPLE.md`: added.
+- The 6 changes the pre-delivery attack demanded: (1) an AUDITOR runs the CRITERIA on the delivered file: done, C1 to C7 passed [`audits/final-audit-E-374.md`]; (2) both hashes printed: done above; (3) the USER's stop message quoted: E-362; (4) reopen 12 overruled FINDINGS and rewrite 17 reasons: the log is append-only, so E-363 states what they are worth and this report lists all 29 as open for the USER; (5) the first lines of this report: done; (6) `EXAMPLE.md`: added.
 
 ## Swarm verdict
 
@@ -197,12 +203,13 @@ No LENS memo was written after the build: the post-build review ran as the recip
 | WU-1 | adversarial, audit round 3 | E-254 | 2 | 2 | 2 | 1 | OVERRULED 1, WITHDRAWN 1, open 5 | `audits/WU-1-r3-adversarial-E-254.md` |
 | WU-1 | AUDITOR for recipient-side verification and stability | E-349 | 0 | 2 | 0 | 0 | open 2 | `audits/S8-recipient-side-stability-E-349.md` |
 | record | RED CELL, full attack before delivery with premortem | E-350 | 7 | 0 | 0 | 0 | open 7 | `audits/S9-red-cell-E-350.md` |
+| record | final AUDITOR, the audit of the audit | E-374 | 0 | 5 | 0 | 1 | open 6 | `audits/final-audit-E-374.md` |
 
 Planted defect (rule 16.7): round 1, `audits/WU-1-seed-E-103.md`, found by correctness and adversarial [E-171]; round 2, `audits/WU-1-r2-seed-E-182.md`, found by both [E-249]; round 3, `audits/WU-1-r3-seed-E-252.md`, found by both [E-267].
 
 ## Coverage ledger
 
-PASS 58 · FAIL 8 · N/A 320 · UNVERIFIED 104 · empty 0 [`COVERAGE-LEDGER.md`]
+PASS 64 · FAIL 8 · N/A 320 · UNVERIFIED 98 · empty 0 [`COVERAGE-LEDGER.md`]
 
 UNVERIFIED rows: C1 (CRITERION), C2 (CRITERION), C3 (CRITERION), C4 (CRITERION), C5 (CRITERION), C6 (CRITERION), C7 (CRITERION), C8 (CRITERION), `index.html` (file), `splitBill` (function), `readAmount` (function), `readWhole` (function), `money` (function), `payLine` (function), `showResult` (function), `update` (function), `input` and `blur` listeners (function), `pageshow` listener (function), `splitBill`: `payOneMore > 0` (branch), `plain`: Arabic-Indic and full-width characters replaced (branch), `readAmount`: empty text (branch), `readAmount`: digits and a decimal mark while typing (`waiting`) (branch), `readAmount`: text fails the pattern (branch), `readAmount`: more whole digits than the maximum has (branch), `readAmount`: 0 cents (branch), `readAmount`: above the maximum (branch), `readAmount`: valid return, dot or comma (branch), `readWhole`: empty text (branch), `readWhole`: not digits only (branch), `readWhole`: too many digits (branch), `readWhole`: out of range (branch), `readWhole`: valid return (branch), `money`: `rest < 10` (branch), `payLine`: `count === 1` (branch), `payLine`: more than 1 (branch), `showResult`: no lines, result emptied (branch), `showResult`: a line with a `className` (branch), `update`: error shown only when touched (branch), `update`: `aria-invalid` set or removed (branch), `update`: an error or `waiting` sets `allValid` false (branch), `update`: early return with no result (branch), `update`: 2 groups add the sentence (branch). Reasons are in each cell: a role that did not run in round 3, a CRITERION that the S8 tasks did not test, or the change after round 3 [`COVERAGE-LEDGER.md`].
 
@@ -212,7 +219,7 @@ UNVERIFIED rows: C1 (CRITERION), C2 (CRITERION), C3 (CRITERION), C4 (CRITERION),
 
 ## Audit log
 
-`AUDIT-LOG.md` — 373 entries
+`AUDIT-LOG.md` — 383 entries
 
 ## LESSONS
 

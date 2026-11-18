@@ -5,6 +5,7 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
 - Goal: a real small deliverable that shows the skill set running (V1)
   - Task chosen: a page that splits a restaurant bill, tip added (T1)
     - WU-1 `index.html`, the whole page (built, E-102; audit round 1 reported, E-171)
+      - functions: `splitBill`, `plainChar`, `plain`, `readAmount`, `readWhole`, `money`, `payLine`, `showResult`, `update`
       - F-21 The bill field accepts 10 (BLOCKER, WITHDRAWN)
       - F-22 The bill field accepts 10. and shows a result (BLOCKER, WITHDRAWN)
       - F-23 With JavaScript off, the page still says "The split shows be (BLOCKER, FIXED)
@@ -144,8 +145,14 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
       - F-157 9 wording FINDINGS are closed and also promised to the USE, S9 (BLOCKER, open)
       - F-158 The stock reason of 17 overrules is false for 2 and unwritten for 15, S9 (BLOCKER, open)
       - F-159 EXAMPLE.md did not exist at the commit under review, and, S9 (BLOCKER, open)
+      - F-160 The delivery-stage checker printed 3 failures on the draft, S10 (DEFECT, open)
+      - F-161 The maps name 2 and 1 of the page's 9 functions, and a publi, S10 (DEFECT, open)
+      - F-162 The mind map says  has 3 states, S10 (DEFECT, open)
+      - F-163 says 1 last audit round ran; 2 ran after the USER's message, S10 (DEFECT, open)
+      - F-164 On branch main the README links to EXAMPLE.md, which is abse, S10 (DEFECT, open)
+      - F-165 Cited paths use 3 different base folders, S10 (STYLE, open)
     - C1 1 file, works from disk
-      - D-8 1 file, policy tag, published with GitHub Pages after its audits
+      - D-8 1 file, policy tag, GitHub Pages approved by the USER, not turned on
         - D-6 superseded
           - D-3 superseded
     - C2 tip, total and payments shown; half a cent rounds up
@@ -158,7 +165,7 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
     - C3 payments sum to the total; tested through the page's own fields
       - F-5 the test ran a function, not the page (BLOCKER, FIXED)
       - F-11 a spot case was written with a comma (STYLE, FIXED)
-    - C4 3 states; what counts as an amount and as a whole number
+    - C4 4 states; what counts as an amount and as a whole number
       - F-4 `12,50` had no defined result (BLOCKER, FIXED)
       - F-10 no text rule for a whole number (DEFECT, FIXED)
     - C5 3 widths, labels, announced regions, keypad hints
@@ -194,7 +201,7 @@ graph TD
   T1 --> C5[C5 widths, labels, keypad]
   T1 --> C6[C6 no-JavaScript sentence]
   T1 --> C7[C7 stores and sends nothing]
-  C1 --> D8[D-8 one file, policy tag, published after audits]
+  C1 --> D8[D-8 one file, policy tag, Pages approved, not turned on]
   C7 --> D8
   C2 --> D4[D-4 even split, whole-number tip]
   C4 --> D9[D-9 dot or comma as decimal mark]

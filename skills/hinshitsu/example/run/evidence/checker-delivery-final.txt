@@ -1,0 +1,11 @@
+FAIL AUDIT-LOG.md: E-382 names artifact index.html, which does not exist (rule 0.7)
+FAIL AUDIT-LOG.md: stage S11 has no end or skipped entry (rule 0.7)
+FAIL DELIVERY-REPORT.md: open FINDING F-160 is not listed (rule 15.6)
+FAIL DELIVERY-REPORT.md: open FINDING F-161 is not listed (rule 15.6)
+FAIL DELIVERY-REPORT.md: open FINDING F-162 is not listed (rule 15.6)
+FAIL DELIVERY-REPORT.md: open FINDING F-163 is not listed (rule 15.6)
+FAIL DELIVERY-REPORT.md: open FINDING F-164 is not listed (rule 15.6)
+FAIL DELIVERY-REPORT.md: open FINDING F-165 is not listed (rule 15.6)
+hinshitsu_check (delivery): 8 failure(s).
+This script tests the shape of the record. It does not prove that any check ran.
+exit=1

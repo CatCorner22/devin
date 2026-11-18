@@ -131,8 +131,11 @@ def check(folder, stage):
         if ev == "end" and state.get(sid) != "start":
             err("AUDIT-LOG.md: E-%d ends %s with no start entry (rule 0.7)" % (e["n"], sid))
         if ev == "end":
-            for path in re.findall(r"`([^`\s]+\.[A-Za-z0-9]+)`", e["body"]):
-                if not (folder / path).exists() and not Path(path).exists():
+            # Only the Artifacts field names files to test; other fields may quote text that looks like a path.
+            # A path is tested against the RUN FOLDER and against each folder above it, never against the working directory.
+            for path in re.findall(r"`([^`\s]+\.[A-Za-z0-9]+)`", field(e["body"], "Artifacts") or ""):
+                bases = [folder.resolve()] + list(folder.resolve().parents)
+                if not any((b / path).exists() for b in bases):
                     err("AUDIT-LOG.md: E-%d names artifact %s, which does not exist (rule 0.7)" % (e["n"], path))
         if ev != "progress":
             state[sid] = ev

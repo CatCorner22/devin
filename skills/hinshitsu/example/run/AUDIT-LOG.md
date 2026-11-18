@@ -3563,3 +3563,91 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - SUB-AGENT identifier: devin-a4c43f24dbdb441dacae8aa26d632068 (https://app.devin.ai/sessions/a4c43f24dbdb441dacae8aa26d632068)
 - Report: `audits/final-audit-E-374.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-375 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-160
+- Class: DEFECT
+- Title: The delivery-stage checker printed 3 failures on the draft
+- Where: `AUDIT-LOG.md`, `audits/`
+- Trigger: run `python3 scripts/hinshitsu_check.py --stage delivery` on the RUN FOLDER at commit 39da118
+- Violates: rules 0.7 and 17.4
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 1 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-376 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-161
+- Class: DEFECT
+- Title: The maps name 2 and 1 of the page's 9 functions, and a published page that does not exist
+- Where: `MINDMAP.md`, `CONNECTIONS.md`
+- Trigger: search each file for the page's 9 function names
+- Violates: rule 17.4(d)
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 2 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-377 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-162
+- Class: DEFECT
+- Title: The mind map says C4 has 3 states
+- Where: `MINDMAP.md`, the line for C4
+- Trigger: read C4 in E-175, which names 4 states
+- Violates: rule 9.2
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 3 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-378 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-163
+- Class: DEFECT
+- Title: E-362 says 1 last audit round ran; 2 ran after the USER's message
+- Where: E-362
+- Trigger: compare the time of the USER's message (17:09Z) with the `LAUNCH` entries of round 2 (E-183 to E-190) and round 3 (E-252 to E-254)
+- Violates: glossary ASSERTED
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 4 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-379 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-164
+- Class: DEFECT
+- Title: On branch main the README links to EXAMPLE.md, which is absent there
+- Where: `README.md` on `main`
+- Trigger: open the link on `main`: 404
+- Violates: rule 12.2
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 5 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-380 · 2026-11-18T18:53:37Z · FINDING · orchestrator
+
+- ID: F-165
+- Class: STYLE
+- Title: Cited paths use 3 different base folders
+- Where: `DELIVERY-REPORT.md`, `COVERAGE-LEDGER.md`
+- Trigger: follow each cited path from 1 folder
+- Violates: rule 17.1
+- Raised by: the final AUDITOR, LAUNCH E-374, finding 6 of `audits/final-audit-E-374.md`
+- Lens: trust controls
+
+### E-381 · 2026-11-18T18:53:37Z · CORRECTION · orchestrator
+
+- Source: the final AUDITOR, `audits/final-audit-E-374.md`, finding 4 (F-163).
+- Corrects E-362: the words "1 last audit round runs" report the ORCHESTRATOR's reply. The record shows that 2 audit rounds ran after the USER's message of 17:09Z: round 2 (E-183 to E-190) and round 3 (E-252 to E-254). The reply promised 1; the ORCHESTRATOR ran 2, because round 2 found a fault in the page (F-83). The USER was told of the extra round in the session chat before it ran.
+
+### E-382 · 2026-11-18T18:54:00Z · STAGE · orchestrator
+
+- Stage: S10
+- Event: end
+- Artifacts: `audits/final-audit-E-374.md`, `evidence/final-audit-E-374/` (13 files), `COVERAGE-LEDGER.md`, `MINDMAP.md`, `CONNECTIONS.md`
+- Last line of the report, word for word: "Commit 39da118192bc39b6491601a63e902e342fc7c045; `index.html` SHA-256 32964a18b797edaf860fba7bb290c2bb493f72939bd5e5bab28e90efc1cdc7a5 — not passed"
+- The final AUDITOR ran C1 to C7 on the delivered file in desktop Chrome: each passed. A phone, a screen reader, Firefox and C8: UNVERIFIED.
+- 6 FINDINGS: F-160 to F-165 (E-375 to E-380). Answers, seen by no AUDITOR: the maps now name the 9 functions and no published page; C4 reads 4 states; E-381 corrects E-362. F-160 and F-164 are answered when the run ends and branch `main` receives this commit.
+- Not re-run by the final AUDITOR (its finding 7): the command of E-348, the 3 planted-defect comparisons, 15 evidence files; 3 of 32 SUB-AGENT runs were opened.
+- The audit of the audit did not pass. No second run of it is made: the run ends `DELIVERED — NOT DONE`.
+
+### E-383 · 2026-11-18T18:54:00Z · STAGE · orchestrator
+
+- Stage: S11
+- Event: start
+- Skill read: `skills/hinshitsu-delivery/SKILL.md`, 8750 bytes, SHA-256 857371b0d618ea4416d0e4ee1e85d79b0f418855c2ea3afe1eb2d39efea79f10

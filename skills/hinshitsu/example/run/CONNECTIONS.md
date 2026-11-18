@@ -20,8 +20,8 @@ graph LR
   N15[seed report] -->|is compared with the reports in| N16[CHECK entry]
   N16[CHECK entry] -->|voids or admits| N9[AUDITOR reports]
   N17[scopes in prompts/] -->|start| N9[AUDITOR reports]
-  N9[AUDITOR reports] -->|must pass before| N18[published page]
-  N8[index.html] -->|is served as| N18[published page]
+  N9[AUDITOR reports] -->|must pass before| N18[index.html downloaded by a RECIPIENT]
+  N8[index.html] -->|is downloaded as| N18[index.html downloaded by a RECIPIENT]
   N7[USER approval] -->|permits| N19[CRITERIA-CHANGE entry]
   N19[CRITERIA-CHANGE entry] -->|replaces the text of| N3[CRITERIA entry]
   N19[CRITERIA-CHANGE entry] -->|triggers| N20[RED CELL probe report]
@@ -44,6 +44,9 @@ graph LR
 | USER approval | CRITERIA entry | freezes | the entry is FROZEN with no quoted approval |
 | CRITERIA entry | index.html | defines what to build | the page fails a CRITERION |
 | DECISION entries | index.html | set the function contract | the page's fields bypass splitBill |
+| index.html: update | index.html: readAmount, readWhole, splitBill, showResult | calls on each input event | a field's value reaches the result without its check |
+| index.html: readAmount, readWhole | index.html: plain, plainChar | call to map and trim the typed text | a look-alike character is read as a digit |
+| index.html: showResult | index.html: money, payLine | calls to write each line | a line shows an amount in the wrong form |
 | CRITERIA entry | AUDITOR reports | is quoted in each scope | a scope words a CRITERION differently |
 | index.html | AUDITOR reports | is examined by, at a stated SHA-256 | the file's SHA-256 differs from the scope's |
 | index.html | review copy | is copied before each audit round to | the copy differs from the page before the seeder changes it |
@@ -52,8 +55,8 @@ graph LR
 | seed report | CHECK entry | is compared with the reports in | a round has no `CHECK` entry |
 | CHECK entry | AUDITOR reports | voids or admits | a report that missed the planted defect fills a ledger cell |
 | scopes in prompts/ | AUDITOR reports | start | a saved scope differs from the scope sent |
-| AUDITOR reports | published page | must pass before | the page is published with an open BLOCKER |
-| index.html | published page | is served as | the served file's SHA-256 differs from the audited one |
+| AUDITOR reports | index.html downloaded by a RECIPIENT | must pass before | the file is handed over with an open BLOCKER |
+| index.html | index.html downloaded by a RECIPIENT | is downloaded as | the downloaded file's SHA-256 differs from the audited one |
 | USER approval | CRITERIA-CHANGE entry | permits | the entry quotes no approval, or the card behind the approval misstates the change |
 | CRITERIA-CHANGE entry | CRITERIA entry | replaces the text of | the CRITERIA entry differs from the new text |
 | CRITERIA-CHANGE entry | RED CELL probe report | triggers | a change has no probe report |
