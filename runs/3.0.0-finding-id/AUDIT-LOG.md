@@ -228,3 +228,23 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 - Event: start
 - Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
 - Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-20 · 2026-11-18T21:27:40Z · ANSWER · orchestrator
+
+The USER's message, word for word, sent 2026-11-18 16:27 EST (21:27 UTC), message `event-01a1f08eb29f7f2a9dd42897f6c51d8c`, in answer to the card of E-16:
+
+> Decision 1: I approve C1 to C6. Decision 2: yes. Decision 3: yes.
+
+### E-21 · 2026-11-18T21:27:40Z · CRITERIA · orchestrator
+
+- Status: FROZEN
+
+The USER approved in the message of 2026-11-18 16:27 EST (21:27 UTC), quoted in E-20: "Decision 1: I approve C1 to C6. Decision 2: yes. Decision 3: yes."
+
+A "refused ID" means: the entry has no `- ID:` line, or the line is empty, or the first word of the ID field does not fully match `F-<digits>`. This is the test in `scripts/hinshitsu_check.py`, lines 299 to 306.
+- C1: `gauge.py` counts each FINDING entry with a refused ID, whatever its class, as 1 entry it could not read. Test: `python3 -m unittest tests.test_gauge -v` — tests in which a log with the IDs `F-1.` and `blocker one` (and 1 with no ID line) gives `unread` equal to the number of such entries, and the text gauge prints "<n> entries could not be read".
+- C2: a FINDING entry with a refused ID does not appear in the `STOPPED — blocker open` line of the text gauge nor in `GAUGE.svg`, and a log whose only BLOCKERS have refused IDs prints no STOPPED line. Test: `python3 -m unittest tests.test_gauge -v` — tests that run the script on such a log and read both outputs.
+- C3: the gauge and the checker agree: for each ID field in a list that holds at least `F-1`, `F-12`, `F-3 (local 2)`, `F-1.`, `blocker one`, `f-1`, `F-`, `F-1a` and ` F-2`, the gauge lists the BLOCKER when, and only when, `hinshitsu_check.FINDING_ID` fully matches the first word. Test: `python3 -m unittest tests.test_gauge -v` — 1 test that imports both modules and compares them on the list.
+- C4: nothing else changes: a BLOCKER with an ID of the form `F-<n>` is shown and is cleared by its RESOLUTION as before; every test that passed at commit a3717b1 passes; `gauge.py` imports only the standard library. Test: `python3 -m unittest discover -s tests` exits 0 and `python3 scripts/lint.py` prints 0 failures; `git diff a3717b1 -- tests/test_gauge.py` removes or changes no existing test line.
+- C5: `tests/test_gauge.py` holds the new tests named in C1 to C3, and each of them fails when run against `gauge.py` of commit a3717b1. Test: the correctness auditor checks out `gauge.py` of a3717b1 beside the new tests and saves the failing output under `evidence/`.
+- C6: the change is on the branch `devin/hinshitsu-run-3.0.0` only; `main` on GitHub stays at a3717b1 and no pull request exists. Test: `git ls-remote origin main` and `gh pr list --head devin/hinshitsu-run-3.0.0 --state all`.

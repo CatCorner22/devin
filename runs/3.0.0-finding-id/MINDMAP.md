@@ -3,22 +3,33 @@
 ## Hierarchy
 
 - **Goal:** "Make `skills/hinshitsu-gauge/scripts/gauge.py` count such an entry among the entries it could not read, and leave it out of the STOPPED line, with tests."
-  - CRITERIA: none written yet
+  - **C1** a FINDING entry with a refused ID is counted as unread
     - **WU-1** `gauge.py` FINDING branch of `read_state`, with tests
+  - **C2** such an entry is left out of the STOPPED line and of `GAUGE.svg` (built in WU-1)
+  - **C3** the gauge and the checker agree on the ID (built in WU-1)
+  - **C4** nothing else changes (built in WU-1)
+  - **C5** new tests that fail on the old `gauge.py` (built in WU-1)
+  - **C6** the change is on the branch only (built in WU-1)
 
 ## Diagram
 
 ```mermaid
 graph TD
   G["Goal: gauge counts a FINDING with a bad ID as unread"]
-  G --> WU1["WU-1 gauge.py read_state and tests"]
+  G --> C1["C1 refused ID counted as unread"]
+  G --> C2["C2 left out of STOPPED and SVG"]
+  G --> C3["C3 gauge and checker agree"]
+  G --> C4["C4 nothing else changes"]
+  G --> C5["C5 tests fail on old gauge"]
+  G --> C6["C6 branch only"]
+  C1 --> WU1["WU-1 gauge.py read_state and tests"]
 ```
 
 ## Node check
 
 | Kind | Count in `AUDIT-LOG.md` | Count in this map |
 |---|---|---|
-| CRITERIA | 0 | 0 |
+| CRITERIA | 6 | 6 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 0 | 0 |
 | FINDINGS | 0 | 0 |
