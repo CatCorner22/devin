@@ -55,7 +55,7 @@ Rows for WU-1 as built at commit 5099f2a, written before its re-audit (rule 10.1
 | `scripts/hinshitsu_check.py:299` kind: thick | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
 | `scripts/hinshitsu_check.py:299` kind: dotted | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
 | `scripts/hinshitsu_check.py:299` kind: arrow | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
-| `scripts/hinshitsu_check.py:301` labeled: no failure | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
+| `scripts/hinshitsu_check.py:301` labeled: no failure | `FAIL` F-6, and F-7 — overruled by the USER (E-55) | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
 | `scripts/hinshitsu_check.py:301` not labeled, arrow starts with a dot: no failure | `FAIL` F-5 — overruled by the USER (E-55) | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
 | `scripts/hinshitsu_check.py:301` not labeled, any other arrow: failure | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
 | `tests/test_check.py:229` loop over the 4 labelled lines | `PASS` `audits/WU-1-r2-correctness-E-44.md` | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — CORE | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row | `N/A` — covered at file row |
@@ -68,6 +68,6 @@ Rows for WU-1 as built at commit 5099f2a, written before its re-audit (rule 10.1
 
 | PASS | FAIL | N/A | UNVERIFIED | Empty |
 |---|---|---|---|---|
-| 32 | 6 | 342 | 0 | 0 |
+| 31 | 7 | 342 | 0 | 0 |
 
 Each `FAIL` cell names a FINDING that the USER overruled (E-38, E-56 to E-61); none is open.
