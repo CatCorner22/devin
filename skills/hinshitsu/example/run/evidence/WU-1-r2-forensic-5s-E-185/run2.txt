@@ -1,0 +1,132 @@
+browser 156.0.8078.47
+C1 requests: 1 ["GET file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html"]
+console on load: [] pageerrors: []
+names from the script that are own properties of window: MAX_BILL_CENTS MAX_TIP_PERCENT MAX_PEOPLE splitBill plain readAmount readWhole money payLine fields resultBox shownResult showResult update
+C4 first open: {"vals":["","",""],"errs":["","",""],"inv":[null,null,null],"res":[],"resText":"","guide":"Type the bill total, the tip percent and the number of people.","fieldsHidden":false,"active":"BODY"}
+--- C2 tests (typed key by key)
+["100.00","18","4"] => ["Bill total: 100.00","Tip percent: 18","Number of people: 4","Tip amount: 18.00","Total with tip: 118.00","4 people pay 29.50 each"] errs ["","",""] MATCH
+["0.30","15","1"] => ["Bill total: 0.30","Tip percent: 15","Number of people: 1","Tip amount: 0.05","Total with tip: 0.35","1 person pays 0.35"] errs ["","",""] MATCH
+["10.10","15","1"] => ["Bill total: 10.10","Tip percent: 15","Number of people: 1","Tip amount: 1.52","Total with tip: 11.62","1 person pays 11.62"] errs ["","",""] MATCH
+["12.25","18","1"] => ["Bill total: 12.25","Tip percent: 18","Number of people: 1","Tip amount: 2.21","Total with tip: 14.46","1 person pays 14.46"] errs ["","",""] MATCH
+["0100.5","007","02"] => ["Bill total: 100.50","Tip percent: 7","Number of people: 2","Tip amount: 7.04","Total with tip: 107.54","2 people pay 53.77 each"] errs ["","",""] MATCH
+["10.00","0","3"] => ["Bill total: 10.00","Tip percent: 0","Number of people: 3","Tip amount: 0.00","Total with tip: 10.00","1 person pays 3.34","2 people pay 3.33 each","Your group decides who pays the higher amount."] errs ["","",""] MATCH
+["1000000.00","100","100"] => ["Bill total: 1000000.00","Tip percent: 100","Number of people: 100","Tip amount: 1000000.00","Total with tip: 2000000.00","100 people pay 20000.00 each"] errs ["","",""] MATCH
+["0.01","0","100"] => ["Bill total: 0.01","Tip percent: 0","Number of people: 100","Tip amount: 0.00","Total with tip: 0.01","1 person pays 0.01","99 people pay 0.00 each","Your group decides who pays the higher amount."] errs ["","",""] MATCH
+--- C3 sweep
+sweep A cases 20000 mismatches 0
+sweep B cases 6000 mismatches 0 seconds 145
+--- C4 inputs (typed, then field left)
+bill "" | with cursor: msg M1, result lines 0 | after leaving: msg M1, result lines 0
+bill "abc" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "1,000.00" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "1.000,00" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "1e3" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "10." | with cursor: msg -, result lines 0 | after leaving: msg M2, result lines 0
+bill "12." | with cursor: msg -, result lines 0 | after leaving: msg M2, result lines 0
+bill "12," | with cursor: msg -, result lines 0 | after leaving: msg M2, result lines 0
+bill ".5" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "$5" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+0035 U+20AC) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "-5" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "0" | with cursor: msg M3, result lines 0 | after leaving: msg M3, result lines 0
+bill "0.00" | with cursor: msg M3, result lines 0 | after leaving: msg M3, result lines 0
+bill "1000000.01" | with cursor: msg M4, result lines 0 | after leaving: msg M4, result lines 0
+bill "10000000" | with cursor: msg M4, result lines 0 | after leaving: msg M4, result lines 0
+bill "1.234" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "12.50" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill "12,50" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill " 12.50 " | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+200B U+0031 U+0032 U+002E U+0035 U+0030 U+FEFF) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+FF11 U+FF12 U+FF0E U+FF15 U+FF10) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+FF11 U+FF12 U+FF0C U+FF15 U+FF10) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+0661 U+0662 U+066B U+0665 U+0660) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+0661 U+0662 U+002E U+0665 U+0660) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+06F1 U+06F2 U+066B U+06F5 U+06F0) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+200E U+0031 U+0032 U+002E U+0035 U+0030) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+0031 U+0032 U+002E U+0035 U+0030 U+200F) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+202A U+0031 U+0032 U+002E U+0035 U+0030 U+202C) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+00AD U+0031 U+0032 U+002E U+0035 U+0030) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+00A0 U+0031 U+0032 U+002E U+0035 U+0030 U+00A0) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+2460 U+2461) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.00
+bill  (U+0031 U+00B2 U+002E U+0035) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+2488 U+0035) | with cursor: msg -, result lines 8 | after leaving: msg -, result lines 8, shows 1.50
+bill  (U+1D7CF U+1D7D0) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.00
+bill  (U+0031 U+0032 U+2024 U+0035) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 12.50
+bill  (U+0967 U+0968) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill "1 2" | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+bill  (U+0031 U+066C U+0030 U+0030 U+0030) | with cursor: msg M2, result lines 0 | after leaving: msg M2, result lines 0
+tip "" | with cursor: msg M5, result lines 0 | after leaving: msg M5, result lines 0
+tip "18.0" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "18,5" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "1e1" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "+4" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "4." | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "101" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "-1" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "x" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "0" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 0
+tip "100" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 100
+tip  (U+FF10 U+FF10 U+FF17) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 7
+tip  (U+0667) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 7
+tip " 7 " | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 7
+tip  (U+00B2) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 2
+tip  (U+2466) | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 7
+tip  (U+200E U+0037) | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+tip "00000000000000000000100" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 100
+tip "1000" | with cursor: msg M6, result lines 0 | after leaving: msg M6, result lines 0
+people "" | with cursor: msg M7, result lines 0 | after leaving: msg M7, result lines 0
+people "0" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "101" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "18.0" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "18,5" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "1e1" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "+4" | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "4." | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+people "1" | with cursor: msg -, result lines 6 | after leaving: msg -, result lines 6, shows 1
+people "100" | with cursor: msg -, result lines 8 | after leaving: msg -, result lines 8, shows 100
+people  (U+0664) | with cursor: msg -, result lines 8 | after leaving: msg -, result lines 8, shows 4
+people  (U+FF14) | with cursor: msg -, result lines 8 | after leaving: msg -, result lines 8, shows 4
+people  (U+200F U+0034) | with cursor: msg M8, result lines 0 | after leaving: msg M8, result lines 0
+legend:
+  M1 = "Enter the bill total."
+  M2 = "Enter an amount above 0, in digits. A decimal mark needs 1 digit or more before it and 1 or 2 digits after it. Example: 12.50"
+  M3 = "Enter an amount above 0."
+  M4 = "Enter 1000000.00 or less."
+  M5 = "Enter the tip percent. Enter 0 for no tip."
+  M6 = "Enter a whole number from 0 to 100, in digits only."
+  M7 = "Enter the number of people."
+  M8 = "Enter a whole number from 1 to 100, in digits only."
+--- C4 incomplete: untouched empties, typed only bill
+{"vals":["10","",""],"errs":["","",""],"inv":[null,null,null],"res":[],"resText":"","guide":"Type the bill total, the tip percent and the number of people.","fieldsHidden":false,"active":"bill"}
+--- C4 recompute on every change
+["Bill total: 10.00","Tip percent: 1","Number of people: 3","Tip amount: 0.10","Total with tip: 10.10","2 people pay 3.37 each","1 person pays 3.36","Your group decides who pays the higher amount."]
+["Bill total: 10.00","Tip percent: 51","Number of people: 3","Tip amount: 5.10","Total with tip: 15.10","1 person pays 5.04","2 people pay 5.03 each","Your group decides who pays the higher amount."]
+{"vals":["10","1","3"],"errs":["","",""],"inv":[null,null,null],"res":["Bill total: 10.00","Tip percent: 1","Number of people: 3","Tip amount: 0.10","Total with tip: 10.10","2 people pay 3.37 each","1 person pays 3.36","Your group decides who pays the higher amount."],"resText":"Bill total: 10.00Tip percent: 1Number of people: 3Tip amount: 0.10Total with tip: 10.102 people pay 3.37 each1 person pays 3.36Your group decides who pays the higher amount.","guide":"Type the bill total, the tip percent and the number of people.","fieldsHidden":false,"active":"tip"}
+--- C5 widths
+360 first {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"overflowing":0,"maxRight":344} scrollX after scrollTo(500,0): 0
+360 error {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"overflowing":0,"maxRight":344} scrollX after scrollTo(500,0): 0
+360 result {"innerWidth":360,"clientWidth":360,"scrollWidth":360,"bodyScrollWidth":360,"overflowing":0,"maxRight":344} scrollX after scrollTo(500,0): 0
+768 first {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"overflowing":0,"maxRight":624} scrollX after scrollTo(500,0): 0
+768 error {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"overflowing":0,"maxRight":624} scrollX after scrollTo(500,0): 0
+768 result {"innerWidth":768,"clientWidth":768,"scrollWidth":768,"bodyScrollWidth":768,"overflowing":0,"maxRight":624} scrollX after scrollTo(500,0): 0
+1280 first {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"overflowing":0,"maxRight":880} scrollX after scrollTo(500,0): 0
+1280 error {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"overflowing":0,"maxRight":880} scrollX after scrollTo(500,0): 0
+1280 result {"innerWidth":1280,"clientWidth":1280,"scrollWidth":1280,"bodyScrollWidth":1280,"overflowing":0,"maxRight":880} scrollX after scrollTo(500,0): 0
+--- C5 markup
+{"labels":[["bill","Bill total, tax included",true],["tip","Tip percent",true],["people","Number of people",true]],"inputs":[["bill","text","decimal","off","bill-error"],["tip","text","numeric","off","tip-error"],["people","text","numeric","off","people-error"]],"alerts":[["bill-error","alert"],["tip-error","alert"],["people-error","alert"]],"result":["status","polite"],"csp":"<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'\">"}
+--- C5 mutation counts
+errors on tip+people shown; typed 123.45 in bill: {"bill":0,"tip":0,"people":0,"result":0} ["","Enter a whole number from 0 to 100, in digits only.","Enter a whole number from 1 to 100, in digits only."]
+result shown; typed spaces after bill and tip, moved focus: {"bill":0,"tip":0,"people":0,"result":0} ["   10","15 ","2"]
+people error shown; edited tip: {"bill":0,"tip":0,"people":0,"result":0}
+--- C7
+fetch: BLOCKED: TypeError: Failed to fetch
+console after fetch: ["error: Connecting to 'https://example.com/' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.","error: Fetch API cannot load https://example.com/. Refused to connect because it violates the document's Content Security Policy."]
+before reload ["12.50","18","4"]
+after reload {"vals":["","",""],"errs":["","",""],"inv":[null,null,null],"res":[],"resText":"","guide":"Type the bill total, the tip percent and the number of people.","fieldsHidden":false,"active":"BODY"}
+after back {"vals":["","",""],"errs":["","",""],"inv":[null,null,null],"res":[],"resText":"","guide":"Type the bill total, the tip percent and the number of people.","fieldsHidden":false,"active":"BODY"}
+storage: {"cookie":"","ls":0,"ss":0}
+requests seen on the page object over the whole run: 83 ; distinct: ["GET file:///home/ubuntu/audit/devin/skills/hinshitsu/example/index.html"]
+pageerrors: []
+--- C6 JavaScript off
+body innerText: "Split the bill\n\nThis calculator needs JavaScript. Turn JavaScript on in your browser, then reload this page."
+guide visible: false fields visible: false inputs visible: 0 result box height: {"x":400,"y":132,"width":480,"height":0}
