@@ -60,3 +60,10 @@ Append-only (rule 9.6). Written by `scripts/hinshitsu_log.py`.
 - Stage: S2
 - Event: end
 - Artifacts: `FRAMEWORK.md`, `CONNECTIONS.md`, `MINDMAP.md`, `COVERAGE-LEDGER.md`, `SESSION-STATE.md`, `evidence/existing-implementations.txt`
+
+### E-8 · 2026-11-18T21:24:15Z · STAGE · orchestrator
+
+- Stage: S3
+- Event: start
+- Skill read: `skills/hinshitsu-baby-bird-plan/SKILL.md`, 10801 bytes, SHA-256 d1309fa10bcd001dfdaca6522b38d62ef0ee2dd24b1f4d7ded60a3c4435c980b
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
