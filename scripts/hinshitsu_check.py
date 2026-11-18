@@ -25,6 +25,16 @@ REPORT_HEADINGS = ["Check it yourself in 5 minutes", "Summary", "Status", "Voice
 BANNED_RE = re.compile(
     r"(?<![A-Za-z])(should|shall|appropriate|reasonable|proper|adequate|ensure|try to|as needed|"
     r"if possible|generally|typically)(?![A-Za-z])", re.I)
+# The first arrow link on a line that starts with a node name: arrow (-->), thick arrow (==>) or
+# dotted arrow (-.->), of any length, with no |label| after it.
+EDGE_RE = re.compile(r"^\s*(\w+)([^\n|]*?)(--+>|==+>|-?\.+->)(?!\|)\s*(\w+)", re.M)
+NODE_TEXT_RE = re.compile(r'"[^"\n]*"|\[[^\]\n]*\]|\([^)\n]*\)|\{[^}\n]*\}')
+# A label written between the 2 halves of a link: -- text -->, == text ==>, -. text .->
+LABEL_OPEN_RE = {
+    "-": re.compile(r"(?<![-=.])--(?![-=.>])\s*\S"),
+    "=": re.compile(r"(?<![-=.])==(?![-=.>])\s*\S"),
+    ".": re.compile(r"(?<![-=.])-\.(?![-=.>])\s*\S"),
+}
 STAGE_FILES = {
     "plan": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md"],
     "unit": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
@@ -284,8 +294,11 @@ def check(folder, stage):
     p = folder / "CONNECTIONS.md"
     if p.is_file():
         text = p.read_text(encoding="utf-8")
-        for m in re.finditer(r"^\s*(\w+)[^\n|]*?--+>(?!\|)\s*(\w+)", text, re.M):
-            err("CONNECTIONS.md: edge %s --> %s has no label (rule 9.3)" % (m.group(1), m.group(2)))
+        for m in EDGE_RE.finditer(text):
+            src, before, arrow, dst = m.groups()
+            kind = "=" if "=" in arrow else "." if "." in arrow else "-"
+            if not LABEL_OPEN_RE[kind].search(NODE_TEXT_RE.sub("", before)):
+                err("CONNECTIONS.md: edge %s %s %s has no label (rule 9.3)" % (src, arrow, dst))
 
     if stage == "plan":
         return errors

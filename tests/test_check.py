@@ -102,6 +102,12 @@ def edit(d, name, old, new):
     p.write_text(text.replace(old, new, 1), encoding="utf-8")
 
 
+def edge_run(line):
+    d = good_run()
+    edit(d, "CONNECTIONS.md", "A -->|reads| B", line)
+    return d
+
+
 class Check(unittest.TestCase):
     def assertFails(self, d, fragment, stage="delivery"):
         errors = hcheck.check(d, stage)
@@ -209,6 +215,25 @@ class Check(unittest.TestCase):
         d = good_run()
         edit(d, "CONNECTIONS.md", "A -->|reads| B", "A --> B")
         self.assertFails(d, "no label", "plan")
+
+    def test_unlabeled_thick_edge_fails(self):
+        self.assertIn("CONNECTIONS.md: edge A ==> B has no label (rule 9.3)", hcheck.check(edge_run("A ==> B"), "plan"))
+
+    def test_unlabeled_dotted_edge_fails(self):
+        self.assertIn("CONNECTIONS.md: edge C -.-> D has no label (rule 9.3)", hcheck.check(edge_run("C -.-> D"), "plan"))
+
+    def test_edge_with_label_between_dashes_passes(self):
+        self.assertFalse(any("no label" in x for x in hcheck.check(edge_run("A -- reads --> B"), "plan")))
+
+    def test_labeled_thick_and_dotted_edges_pass(self):
+        for line in ("A ==>|reads| B", "A == reads ==> B", "C -.->|reads| D", "C -. reads .-> D"):
+            with self.subTest(line=line):
+                self.assertFalse(any("no label" in x for x in hcheck.check(edge_run(line), "plan")))
+
+    def test_edge_forms_set_the_exit_code(self):
+        for line, code in (("A ==> B", 1), ("C -.-> D", 1), ("A -- reads --> B", 0)):
+            with self.subTest(line=line):
+                self.assertEqual(hcheck.main(["x", "--stage", "plan", str(edge_run(line))]), code)
 
     def test_banned_word_fails_and_quoted_one_passes(self):
         d = good_run()
