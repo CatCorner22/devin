@@ -10,7 +10,7 @@ See the newest `CRITERIA` entry of `AUDIT-LOG.md`, named in the block at the end
 
 | ID | Decision | Log entry |
 |---|---|---|
-| (none yet) | | |
+| D-1 | `read_state` reads a FINDING entry only when the first word of its ID field fully matches `F-\d+` (a copy of the checker's pattern); any other FINDING entry adds 1 to `unread` | E-25 |
 
 ## 3. Naming conventions
 
@@ -38,7 +38,7 @@ See the newest `CRITERIA` entry of `AUDIT-LOG.md`, named in the block at the end
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py` | pending | N/A — CORE | `audits/WU-1-*.md` |
+| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py` | building | N/A — CORE | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 

@@ -261,3 +261,26 @@ A "refused ID" means: the entry has no `- ID:` line, or the line is empty, or th
 - Event: start
 - Skill read: `skills/hinshitsu-audit/SKILL.md`, 14245 bytes, SHA-256 df3125ef59a5034dbf3dbe78dc9913046489d8103696e7ef50c2c4112de8cb7b
 - Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+
+### E-24 · 2026-11-18T21:28:24Z · CHECK · orchestrator
+
+Before WU-1 (rule 7.3). WU-1 rests on these parts of `FRAMEWORK.md`: part 1 (CRITERIA, E-21); part 3 (naming of tests); part 4 (the contract of `read_state` with `text_gauge` and `svg_gauge`, and the checker's test of a FINDING ID); part 5 (ownership of `gauge.py` and `tests/test_gauge.py`); part 7 (the search that found `FINDING_ID` in `scripts/hinshitsu_check.py:85`). `grep -n 'DECISION' AUDIT-LOG.md` finds no earlier `DECISION` entry (rule 8.4).
+
+### E-25 · 2026-11-18T21:28:24Z · DECISION · orchestrator
+
+- ID: D-1
+- Decision: in `read_state`, a FINDING entry is read only when the first word of its ID field fully matches a module-level pattern `FINDING_ID = re.compile(r"F-\d+")`, a copy of the checker's. An entry with no ID field, an empty one, or a first word that does not match adds 1 to `unread` and is skipped, whatever its class. An entry that passes is handled as before: the whole ID field is kept in `blockers`.
+- Rests on: A-1, A-2, A-3, A-4 (E-13); the USER's answers in E-20.
+- Reason: 1 test, the same as the checker's (gap G4, CRITERION C3); the smallest change that meets C1 and C2 and leaves the rest of `read_state` as it is (C4).
+- Rejected: (a) import `FINDING_ID` from `scripts/hinshitsu_check.py` — `gauge.py` ships inside the skill folder and imports nothing from `scripts/` (A-3). (b) test the whole ID field with a full match — refuses `F-3 (local 2)`, which the checker accepts (gap G3). (c) keep only the first word in `blockers` — changes what the STOPPED line prints for an accepted ID (C4).
+
+### E-26 · 2026-11-18T21:28:25Z · TRACE · orchestrator
+
+Change: the FINDING branch of `read_state` in `skills/hinshitsu-gauge/scripts/gauge.py`, and new tests in `tests/test_gauge.py`.
+- **forward:** `read_state` points to `text_gauge`, `svg_gauge` and `tests/test_gauge.py`. The dict keeps its keys and types; `blockers` holds fewer IDs and `unread` a larger count for a log with a refused ID; no edge breaks. Existing tests use the IDs `F-1`, `F-2`, which pass the new test.
+- **backward:** rests on A-1 to A-4 (E-13), D-1 (E-25) and the contract "checker's test of a FINDING ID" in `FRAMEWORK.md` part 4; the change violates none.
+- **lateral:** no other WORK UNIT exists.
+
+### E-27 · 2026-11-18T21:28:25Z · ROLLBACK · orchestrator
+
+Not an action of section 18; written for the record of the push. Action: `git push origin devin/hinshitsu-run-3.0.0` (a new branch, not default and not shared). Undo: `git push origin --delete devin/hinshitsu-run-3.0.0`; not tested.
