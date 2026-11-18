@@ -828,3 +828,17 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - New decision: D-8 (E-68), "published with GitHub Pages after it passes its audits"
 - Justification: the USER chose hosting in E-64 ("3.  A."). D-6 was a working assumption stated as such.
 - Written late: E-68 made the reversal in a `DECISION` entry with no `REVERSAL` entry (F-17).
+
+### E-79 · 2026-11-18T16:08:56Z · CARD · orchestrator
+
+- Sent to: the USER, in the session chat
+- Why now: F-15 (a BLOCKER) is open and 4 fix-and-re-audit rounds have run on this WORK UNIT; rule 14.5 bars a fifth round without the USER's answer.
+- Working assumption while the card is open: A. No re-audit, freeze or build happens before an ANSWER entry.
+- Card, word for word:
+
+> **A fifth check round?** The fourth check closed the lagging-files fault. It found a new one that stops the line: in one log entry I wrote a save ID from memory, and no save with that ID exists. I have logged a correction with the real ID, copied from the command that prints it. Nobody independent has confirmed the correction.
+> Recommended: A, because the correction is 1 line and 1 session can confirm it.
+> - A: 1 more independent session checks it. About 5 minutes. You get a clean record, then the page.
+> - B: change a rule for the example: a wrong ID in the log, once corrected in the log, no longer stops the line. You get the page sooner; you give up the independent check of this correction.
+> - C: stop the example here, marked "delivered, not done". You get no page.
+> Reply "A", "B" or "C".
