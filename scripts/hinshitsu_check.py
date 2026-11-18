@@ -1,0 +1,359 @@
+#!/usr/bin/env python3
+"""hinshitsu check: test the form of a run's record.
+
+Usage: hinshitsu_check.py [--stage plan|unit|delivery] <run-folder>
+Exit 0 when every check for the stage passes, 1 when any fails, 2 on a usage error.
+Standard library only. Same folder in, same verdict out.
+
+This script tests the shape of the record: that entries, citations, cells and
+files exist and agree with each other. It does not prove that any check ran or
+that any report is true (rule 17.7).
+"""
+import re
+import sys
+from pathlib import Path
+
+TYPES = set("""CAPABILITY TIER STAGE VOC GAP ASSUMPTION CRITERIA CRITERIA-CHANGE CARD ANSWER
+RECONCILIATION DECISION TRACE LAUNCH FINDING RESOLUTION OVERRULE PROBE CHECK COMPACTION REVERSAL
+ABANDONED ROLLBACK WAIVER CORRECTION DELIVERY LESSON""".split())
+HEADING = re.compile(r"^### E-(\d+) · ([^·]*) · ([A-Z-]+) · (.*)$")
+CLASSES = ("BLOCKER", "DEFECT", "FRAGILITY", "STYLE")
+REPORT_HEADINGS = ["Check it yourself in 5 minutes", "Summary", "Status", "Voice of the Customer",
+                   "Gaps filled", "Lens reconciliation", "Red-cell verdict", "Swarm verdict",
+                   "Coverage ledger", "Maps", "Audit log", "LESSONS"]
+BANNED_RE = re.compile(
+    r"(?<![A-Za-z])(should|shall|appropriate|reasonable|proper|adequate|ensure|try to|as needed|"
+    r"if possible|generally|typically)(?![A-Za-z])", re.I)
+STAGE_FILES = {
+    "plan": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md"],
+    "unit": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
+             "COVERAGE-LEDGER.md"],
+    "delivery": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
+                 "COVERAGE-LEDGER.md", "DELIVERY-REPORT.md", "GAUGE.svg"],
+}
+
+
+def parse_log(text):
+    out, cur = [], None
+    for line in text.splitlines():
+        m = HEADING.match(line)
+        if m:
+            cur = {"n": int(m.group(1)), "time": m.group(2).strip(), "type": m.group(3),
+                   "role": m.group(4).strip(), "lines": []}
+            out.append(cur)
+        elif line.startswith("### "):
+            out.append({"n": None, "type": None, "bad": line, "lines": []})
+            cur = out[-1]
+        elif cur is not None:
+            cur["lines"].append(line)
+    for e in out:
+        e["body"] = "\n".join(e["lines"])
+    return out
+
+
+def field(body, name):
+    m = re.search(r"^- %s:\s*(.+)$" % re.escape(name), body, re.M)
+    return m.group(1).strip() if m else None
+
+
+def strip_quotes(text):
+    text = re.sub(r"```.*?```", " ", text, flags=re.S)
+    text = re.sub(r"^\s*>.*$", " ", text, flags=re.M)
+    text = re.sub(r'"[^"\n]*"', " ", text)
+    return re.sub(r"“[^”\n]*”", " ", text)
+
+
+def check(folder, stage):
+    folder = Path(folder)
+    errors = []
+    err = errors.append
+    for name in STAGE_FILES[stage]:
+        if not (folder / name).is_file():
+            err("%s: file is missing (rules 7.1, 8.1, 9.1, 10.1, 19.1, 24.1)" % name)
+    log_path = folder / "AUDIT-LOG.md"
+    if not log_path.is_file():
+        return errors
+    log = parse_log(log_path.read_text(encoding="utf-8"))
+
+    # --- log form (rules 9.4, 9.6) ---
+    expected = 1
+    for e in log:
+        if e["n"] is None:
+            err("AUDIT-LOG.md: heading %r does not follow rule 9.4" % e["bad"])
+            continue
+        if e["n"] != expected:
+            err("AUDIT-LOG.md: entry E-%d where E-%d belongs (rule 9.4)" % (e["n"], expected))
+        expected = e["n"] + 1
+        if e["type"] not in TYPES:
+            err("AUDIT-LOG.md: E-%d has unknown type %s (rule 9.4)" % (e["n"], e["type"]))
+        if not e["time"]:
+            err("AUDIT-LOG.md: E-%d has no time and no `no clock` (rule 0.6)" % e["n"])
+        for ref in re.findall(r"\bE-(\d+)\b", e["body"]):
+            if int(ref) > e["n"]:
+                err("AUDIT-LOG.md: E-%d cites later entry E-%s (rule 9.6)" % (e["n"], ref))
+    entries = [e for e in log if e["n"] is not None]
+    by_type = {}
+    for e in entries:
+        by_type.setdefault(e["type"], []).append(e)
+
+    if not entries or entries[0]["type"] != "CAPABILITY":
+        err("AUDIT-LOG.md: first entry is not CAPABILITY (rule 0.1)")
+    else:
+        cap = entries[0]["body"]
+        for part in range(1, 6):
+            if not re.search(r"SWARM-CAPABLE part %d[^\n]*:\s*(yes|no)\b" % part, cap):
+                err("AUDIT-LOG.md: E-1 does not answer SWARM-CAPABLE part %d (rule 0.1)" % part)
+        mode = field(cap, "Mode") or ""
+        if not mode.startswith(("SWARM", "DEGRADED")):
+            err("AUDIT-LOG.md: E-1 states no mode (rule 0.1)")
+        if mode.startswith("SWARM") and re.search(r"SWARM-CAPABLE part \d[^\n]*:\s*no\b", cap):
+            err("AUDIT-LOG.md: E-1 says SWARM with a part answered no (rule 0.3)")
+        if mode.startswith("SWARM") and not (folder / "evidence/capability-probe.md").is_file():
+            err("evidence/capability-probe.md: missing (rule 0.2)")
+    if "TIER" not in by_type:
+        err("AUDIT-LOG.md: no TIER entry (rule 0.5)")
+    for t in ("VOC", "GAP", "ASSUMPTION", "CRITERIA"):
+        if t not in by_type:
+            err("AUDIT-LOG.md: no %s entry (sections 2, 3, 4, 23)" % t)
+
+    # --- stages (rule 0.7) ---
+    state = {}
+    for e in by_type.get("STAGE", []):
+        m = re.match(r"(S\d+)\b", field(e["body"], "Stage") or "")
+        ev = (field(e["body"], "Event") or "").split()[0:1]
+        if not m or not ev or ev[0] not in ("start", "end", "progress", "skipped"):
+            err("AUDIT-LOG.md: E-%d STAGE entry lacks Stage or Event (rule 0.7)" % e["n"])
+            continue
+        sid, ev = m.group(1), ev[0]
+        if ev == "start" and not re.search(r"[0-9a-f]{64}", e["body"]):
+            err("AUDIT-LOG.md: E-%d start of %s has no SHA-256 of the skill read (rule 0.7)" % (e["n"], sid))
+        if ev == "end" and state.get(sid) != "start":
+            err("AUDIT-LOG.md: E-%d ends %s with no start entry (rule 0.7)" % (e["n"], sid))
+        if ev == "end":
+            for path in re.findall(r"`([^`\s]+\.[A-Za-z0-9]+)`", e["body"]):
+                if not (folder / path).exists() and not Path(path).exists():
+                    err("AUDIT-LOG.md: E-%d names artifact %s, which does not exist (rule 0.7)" % (e["n"], path))
+        if ev != "progress":
+            state[sid] = ev
+    needed = {"plan": range(1, 7), "unit": range(1, 7), "delivery": range(1, 12)}[stage]
+    for i in needed:
+        sid = "S%d" % i
+        if state.get(sid) not in ("end", "skipped"):
+            err("AUDIT-LOG.md: stage %s has no end or skipped entry (rule 0.7)" % sid)
+
+    # --- criteria approval (rule 3.3) ---
+    crit = by_type.get("CRITERIA", [])
+    if crit:
+        last = crit[-1]["body"]
+        frozen = re.search(r"^- State:\s*FROZEN", last, re.M)
+        quoted = re.search(r'^- Approval:\s*["“].+["”]', last, re.M)
+        if frozen and not quoted:
+            err("AUDIT-LOG.md: E-%d is FROZEN with no quoted approval (rule 3.3)" % crit[-1]["n"])
+        if stage in ("unit", "delivery") and not frozen:
+            err("AUDIT-LOG.md: CRITERIA are not FROZEN; no WORK UNIT may be reported VERIFIED (rule 3.3)")
+
+    # --- custody (rules 1.5 to 1.7) ---
+    cited_reports = set()
+    for e in by_type.get("LAUNCH", []):
+        b = e["body"]
+        scope = re.search(r"`(prompts/[^`]+)`", field(b, "Scope") or "")
+        report = re.search(r"`((?:audits|memos|evidence)/[^`]+)`", field(b, "Report") or "")
+        ident = field(b, "SUB-AGENT identifier")
+        if not scope or not (folder / scope.group(1)).is_file():
+            err("AUDIT-LOG.md: E-%d LAUNCH scope file is missing (rule 1.5)" % e["n"])
+        if not ident or ident.startswith("<"):
+            err("AUDIT-LOG.md: E-%d LAUNCH has no SUB-AGENT identifier (rule 1.5)" % e["n"])
+        if not field(b, "Commit under review"):
+            err("AUDIT-LOG.md: E-%d LAUNCH names no commit and no `no git` (rule 1.5)" % e["n"])
+        if not report or not (folder / report.group(1)).is_file():
+            err("AUDIT-LOG.md: E-%d LAUNCH has no saved report (rule 1.7)" % e["n"])
+            continue
+        cited_reports.add(report.group(1))
+        lines = (folder / report.group(1)).read_text(encoding="utf-8").splitlines()
+        first = lines[0] if lines else ""
+        if ident and ident not in first and not first.startswith("DEGRADED — single-agent audit"):
+            err("%s: first line does not hold the identifier of E-%d (rule 1.6)" % (report.group(1), e["n"]))
+    for sub in ("audits", "memos"):
+        d = folder / sub
+        if d.is_dir():
+            for p in sorted(d.glob("*.md")):
+                rel = "%s/%s" % (sub, p.name)
+                if rel not in cited_reports:
+                    err("%s: report matches no LAUNCH entry (rule 1.8)" % rel)
+
+    # --- findings (rules 15.1, 15.4, 15.5, 15.6) ---
+    findings = {}
+    for e in by_type.get("FINDING", []):
+        b = e["body"]
+        fid = field(b, "ID")
+        if not fid:
+            err("AUDIT-LOG.md: E-%d FINDING has no ID (rule 15.1)" % e["n"])
+            continue
+        fid = fid.split()[0]
+        cls = (field(b, "Class") or "").split()[0:1]
+        if not cls or cls[0] not in CLASSES:
+            err("AUDIT-LOG.md: %s has no class (rule 15.1)" % fid)
+        for name in ("Where", "Trigger", "Violates", "Raised by", "Lens"):
+            if not field(b, name):
+                err("AUDIT-LOG.md: %s lacks the field %s (rule 15.1)" % (fid, name))
+        if fid in findings:
+            err("AUDIT-LOG.md: %s is logged 2 times (rule 9.5)" % fid)
+        findings[fid] = {"class": cls[0] if cls else "", "closed": 0}
+    for e in by_type.get("RESOLUTION", []) + by_type.get("OVERRULE", []):
+        b = e["body"]
+        fid = (field(b, "Finding") or "?").split()[0]
+        if fid not in findings:
+            err("AUDIT-LOG.md: E-%d closes %s, which has no FINDING entry (rule 15.4)" % (e["n"], fid))
+            continue
+        findings[fid]["closed"] += 1
+        if e["type"] == "OVERRULE":
+            if findings[fid]["class"] == "BLOCKER":
+                err("AUDIT-LOG.md: E-%d overrules BLOCKER %s (rule 14.4)" % (e["n"], fid))
+            elif findings[fid]["class"] in ("DEFECT", "FRAGILITY") and not re.search(r'USER\s*—\s*["“]', b):
+                err("AUDIT-LOG.md: E-%d overrules %s with no quoted USER message (rule 15.5)" % (e["n"], fid))
+        else:
+            result = (field(b, "Result") or "").split()[0:1]
+            if not result or result[0] not in ("FIXED", "WITHDRAWN"):
+                err("AUDIT-LOG.md: E-%d has no result FIXED or WITHDRAWN (rule 15.4)" % e["n"])
+            ra = re.search(r"`(audits/[^`]+)`", b)
+            if not ra or not (folder / ra.group(1)).is_file():
+                err("AUDIT-LOG.md: E-%d cites no existing re-audit report (rule 14.3)" % e["n"])
+    for fid, f in findings.items():
+        if f["closed"] > 1:
+            err("AUDIT-LOG.md: %s has %d closing entries (rule 15.4)" % (fid, f["closed"]))
+    open_ids = sorted(fid for fid, f in findings.items() if f["closed"] == 0)
+
+    # --- governed words (drafting rule) ---
+    for name in ("AUDIT-LOG.md", "FRAMEWORK.md", "SESSION-STATE.md", "MINDMAP.md", "CONNECTIONS.md",
+                 "COVERAGE-LEDGER.md", "DELIVERY-REPORT.md"):
+        p = folder / name
+        if p.is_file():
+            for i, line in enumerate(strip_quotes(p.read_text(encoding="utf-8")).splitlines(), 1):
+                m = BANNED_RE.search(line)
+                if m:
+                    err("%s:%d: banned word %r (rule 22 drafting list)" % (name, i, m.group(1)))
+                if "<…>" in line or re.search(r"<[a-z][^<>|]*\|[^<>]*>", line):
+                    err("%s:%d: template placeholder left in place" % (name, i))
+
+    # --- connections (rule 9.3) ---
+    p = folder / "CONNECTIONS.md"
+    if p.is_file():
+        text = p.read_text(encoding="utf-8")
+        for m in re.finditer(r"^\s*(\w+)[^\n|]*?--+>(?!\|)\s*(\w+)", text, re.M):
+            err("CONNECTIONS.md: edge %s --> %s has no label (rule 9.3)" % (m.group(1), m.group(2)))
+
+    if stage == "plan":
+        return errors
+
+    # --- ledger (section 10) ---
+    p = folder / "COVERAGE-LEDGER.md"
+    if p.is_file():
+        for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+            if not line.startswith("|") or re.match(r"\|\s*-", line) or re.match(r"\|\s*Row\s*\|", line):
+                continue
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) != 11:
+                err("COVERAGE-LEDGER.md:%d: row has %d cells; 11 required (rule 10.2)" % (i, len(cells)))
+                continue
+            for c in cells[1:]:
+                if not c:
+                    if stage == "delivery":
+                        err("COVERAGE-LEDGER.md:%d: empty cell (rule 10.6)" % i)
+                    continue
+                m = re.match(r"`?(PASS|FAIL|N/A|UNVERIFIED)`?\b\s*(.*)$", c)
+                if not m:
+                    err("COVERAGE-LEDGER.md:%d: cell %r is not PASS, FAIL, N/A or UNVERIFIED (rule 10.3)" % (i, c))
+                    continue
+                kind, rest = m.group(1), m.group(2).strip(" —-")
+                if kind == "PASS":
+                    ev = re.search(r"`((?:audits|evidence)/[^`]+)`", rest)
+                    if not ev:
+                        err("COVERAGE-LEDGER.md:%d: PASS cites no report or evidence (rule 10.5)" % i)
+                    elif not (folder / ev.group(1).split("#")[0]).is_file():
+                        err("COVERAGE-LEDGER.md:%d: PASS cites %s, which does not exist (rule 17.4)" % (i, ev.group(1)))
+                elif kind == "FAIL":
+                    fm = re.search(r"F-\d+", rest)
+                    if not fm or fm.group(0) not in findings:
+                        err("COVERAGE-LEDGER.md:%d: FAIL names no logged FINDING (rule 10.3)" % i)
+                elif not rest:
+                    err("COVERAGE-LEDGER.md:%d: %s gives no reason (rule 10.3)" % (i, kind))
+
+    if stage == "unit":
+        return errors
+
+    # --- delivery report (sections 17, 19, 20) ---
+    p = folder / "DELIVERY-REPORT.md"
+    if p.is_file():
+        text = p.read_text(encoding="utf-8")
+        heads = re.findall(r"^## (.+)$", text, re.M)
+        if heads != REPORT_HEADINGS:
+            err("DELIVERY-REPORT.md: headings %s; rule 19.1 requires %s" % (heads, REPORT_HEADINGS))
+        sections = dict((h, b) for h, b in re.findall(r"^## (.+)\n(.*?)(?=^## |\Z)", text, re.M | re.S))
+        summary = sections.get("Summary", "")
+        words = len(re.findall(r"\S+", re.sub(r"\[[^\]]*\]", "", summary)))
+        if words > 200:
+            err("DELIVERY-REPORT.md: Summary has %d words; limit 200 (rule 19.3)" % words)
+        for sub in ("What you got", "What was proven", "What was not proven", "What you need to decide next"):
+            if "**%s" % sub not in summary:
+                err("DELIVERY-REPORT.md: Summary lacks %r (rule 19.3)" % sub)
+        checks = sections.get("Check it yourself in 5 minutes", "")
+        if len(re.findall(r"^\d+\. ", checks, re.M)) != 3:
+            err("DELIVERY-REPORT.md: the 5-minute section does not hold exactly 3 checks (rule 19.2)")
+        status = sections.get("Status", "").strip()
+        is_done = status.startswith("DONE")
+        if not (is_done or status.startswith("DELIVERED — NOT DONE")):
+            err("DELIVERY-REPORT.md: Status is neither DONE nor DELIVERED — NOT DONE (rule 19.4)")
+        ledger = (folder / "COVERAGE-LEDGER.md")
+        ledger_text = ledger.read_text(encoding="utf-8") if ledger.is_file() else ""
+        unverified_criteria = [l for l in ledger_text.splitlines()
+                               if re.match(r"\|\s*C\d+", l) and "UNVERIFIED" in l]
+        if is_done and open_ids:
+            err("DELIVERY-REPORT.md: Status DONE with open FINDINGS %s (DONE, part 4)" % ", ".join(open_ids))
+        if is_done and unverified_criteria:
+            err("DELIVERY-REPORT.md: Status DONE with %d UNVERIFIED CRITERION rows (rule 22.4)" % len(unverified_criteria))
+        if is_done and entries and (field(entries[0]["body"], "Mode") or "").startswith("DEGRADED"):
+            err("DELIVERY-REPORT.md: Status DONE in a DEGRADED run (rule 21.6)")
+        for fid in open_ids:
+            if fid not in text:
+                err("DELIVERY-REPORT.md: open FINDING %s is not listed (rule 15.6)" % fid)
+        for path in sorted(set(re.findall(r"`((?:audits|memos|evidence|prompts)/[^`\s<>]+)`", text))):
+            if not (folder / path.split("#")[0]).is_file():
+                err("DELIVERY-REPORT.md: cites %s, which does not exist (rule 17.4)" % path)
+        for ref in sorted(set(re.findall(r"\bE-(\d+)\b", text)), key=int):
+            if int(ref) >= expected:
+                err("DELIVERY-REPORT.md: cites E-%s, which is not in the log (rule 17.4)" % ref)
+        for label in ("What you got", "What was proven"):
+            m = re.search(r"\*\*%s\.?\*\*(.*?)(?=\n\*\*|\Z)" % label, summary, re.S)
+            if m and not re.search(r"\[[^\]]+\]", m.group(1)):
+                err("DELIVERY-REPORT.md: %r has no citation; it is ASSERTED (rule 17.2)" % label)
+        if not by_type.get("LESSON"):
+            err("AUDIT-LOG.md: no LESSON entry (rule 20.4)")
+        final = [r for r in cited_reports if r.startswith("audits/final-audit-")]
+        if not final:
+            err("audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)")
+    return errors
+
+
+def main(argv):
+    args = argv[1:]
+    stage = "delivery"
+    if "--stage" in args:
+        i = args.index("--stage")
+        if i + 1 >= len(args) or args[i + 1] not in STAGE_FILES:
+            print(__doc__.strip(), file=sys.stderr)
+            return 2
+        stage = args[i + 1]
+        del args[i:i + 2]
+    if len(args) != 1 or not Path(args[0]).is_dir():
+        print(__doc__.strip(), file=sys.stderr)
+        return 2
+    errors = check(args[0], stage)
+    for e in errors:
+        print("FAIL " + e)
+    print("hinshitsu_check (%s): %d failure(s)." % (stage, len(errors)))
+    print("This script tests the shape of the record. It does not prove that any check ran.")
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

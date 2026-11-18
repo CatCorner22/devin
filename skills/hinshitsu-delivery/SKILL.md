@@ -19,7 +19,7 @@ This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (
    (b) for each cited file, state whether it shows what the citing claim says;
    (c) re-run every recorded command and compare the result with the saved output;
    (d) state whether `MINDMAP.md` and `CONNECTIONS.md` name only files and parts that exist in the DELIVERABLE, and miss none;
-   (e) match every file under `audits/` and `memos/` to a `LAUNCH` entry and an identifier line, and list each `LAUNCH` entry with no report;
+   (e) match every file under `audits/` and `memos/` to a `LAUNCH` entry and an identifier line, list each `LAUNCH` entry with no report, and check that no entry cites a later entry and that, where git exists, the history of `AUDIT-LOG.md` shows only added lines;
    (f) check the reason in every `N/A` cell that rule 10.4 does not cover;
    (g) record `counts` or `does not count` for each RED CELL attack on an unflagged PREMISE (rule 6.5);
    (h) run `scripts/hinshitsu_check.py --stage delivery` on the RUN FOLDER where Python exists;
