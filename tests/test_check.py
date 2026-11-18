@@ -1,0 +1,209 @@
+import importlib.util
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+spec = importlib.util.spec_from_file_location("hcheck", ROOT / "scripts/hinshitsu_check.py")
+hcheck = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(hcheck)
+
+SHA = "a" * 64
+ROW = "| %s | " + " | ".join(["`PASS` `audits/WU-1-correctness-E-19.md`"] * 10) + " |"
+
+
+def good_run():
+    """Build a run folder that passes at stage delivery. Tests then break 1 thing."""
+    d = Path(tempfile.mkdtemp())
+    for sub in ("prompts", "audits", "memos", "evidence"):
+        (d / sub).mkdir()
+    e = []
+
+    def add(kind, body, role="orchestrator"):
+        e.append("### E-%d · 2026-01-01T00:00Z · %s · %s\n\n%s\n" % (len(e) + 1, kind, role, body))
+
+    add("CAPABILITY", "\n".join("- SWARM-CAPABLE part %d (x): yes — probe" % i for i in range(1, 6))
+        + "\n- Mode: SWARM")
+    add("TIER", "- TIER: FULL")
+    for i in range(1, 5):
+        add("STAGE", "- Stage: S%d\n- Event: start\n- Skill read: `x`, 1 bytes, SHA-256 %s" % (i, SHA))
+        if i == 3:
+            add("VOC", "text")
+            add("GAP", "text")
+        if i == 4:
+            add("ASSUMPTION", "text")
+        add("STAGE", "- Stage: S%d\n- Event: end\n- Artifacts: `AUDIT-LOG.md`" % i)
+    add("STAGE", "- Stage: S5\n- Event: skipped — fixture")
+    add("STAGE", "- Stage: S6\n- Event: start\n- SHA-256 %s" % SHA)
+    add("CRITERIA", '- C1. It works. Test: run it.\n- State: FROZEN\n- Approval: "approve all" (t)')
+    add("STAGE", "- Stage: S6\n- Event: end")
+    add("STAGE", "- Stage: S7\n- Event: start\n- SHA-256 %s" % SHA)
+    n = len(e) + 1
+    assert n == 19, n
+    add("LAUNCH", "- Role: correctness\n- Scope: `prompts/WU-1-correctness.md`\n- Commit under review: no git\n"
+        "- SUB-AGENT identifier: run-abc\n- Report: `audits/WU-1-correctness-E-19.md`")
+    add("FINDING", "- ID: F-1\n- Class: DEFECT\n- Where: a:1\n- Trigger: run\n- Violates: C1\n"
+        "- Raised by: correctness, LAUNCH E-19\n- Lens: structural integrity", "auditor: correctness")
+    add("LAUNCH", "- Role: correctness\n- Scope: `prompts/WU-1-correctness.md`\n- Commit under review: no git\n"
+        "- SUB-AGENT identifier: run-def\n- Report: `audits/WU-1-reaudit-E-21.md`")
+    add("RESOLUTION", "- Finding: F-1\n- Result: FIXED\n- Re-audit: `audits/WU-1-reaudit-E-21.md`")
+    add("STAGE", "- Stage: S7\n- Event: end")
+    for i in (8, 9):
+        add("STAGE", "- Stage: S%d\n- Event: skipped — fixture" % i)
+    add("STAGE", "- Stage: S10\n- Event: start\n- SHA-256 %s" % SHA)
+    k = len(e) + 1
+    add("LAUNCH", "- Role: final auditor\n- Scope: `prompts/WU-1-correctness.md`\n- Commit under review: no git\n"
+        "- SUB-AGENT identifier: run-fin\n- Report: `audits/final-audit-E-%d.md`" % k)
+    add("STAGE", "- Stage: S10\n- Event: end")
+    add("STAGE", "- Stage: S11\n- Event: start\n- SHA-256 %s" % SHA)
+    add("LESSON", "text")
+    add("STAGE", "- Stage: S11\n- Event: end")
+    (d / "AUDIT-LOG.md").write_text("# log\n\n" + "\n".join(e), encoding="utf-8")
+    (d / "prompts/WU-1-correctness.md").write_text("scope", encoding="utf-8")
+    (d / "evidence/capability-probe.md").write_text("run-probe\nNO RECORD", encoding="utf-8")
+    (d / "audits/WU-1-correctness-E-19.md").write_text("run-abc\nreport", encoding="utf-8")
+    (d / "audits/WU-1-reaudit-E-21.md").write_text("run-def\nreport", encoding="utf-8")
+    (d / ("audits/final-audit-E-%d.md" % k)).write_text("run-fin\npassed", encoding="utf-8")
+    for name in ("FRAMEWORK.md", "SESSION-STATE.md", "MINDMAP.md", "GAUGE.svg"):
+        (d / name).write_text("x", encoding="utf-8")
+    (d / "CONNECTIONS.md").write_text("```mermaid\ngraph LR\n  A -->|reads| B\n```\n", encoding="utf-8")
+    (d / "COVERAGE-LEDGER.md").write_text(
+        "| Row | COR | FOR | BP | ADV | RX | DRIFT | LANG | RED | RSV | STAB |\n|---|---|---|---|---|---|---|---|---|---|---|\n"
+        + ROW % "C1 works" + "\n", encoding="utf-8")
+    heads = "\n\n".join("## %s\n\ntext" % h for h in hcheck.REPORT_HEADINGS[3:])
+    (d / "DELIVERY-REPORT.md").write_text(
+        "# report\n\n## Check it yourself in 5 minutes\n\n1. a\n2. b\n3. c\n\n## Summary\n\n"
+        "**What you got.** A page. [E-17]\n\n**What was proven.** It runs. [`audits/WU-1-correctness-E-19.md`]\n\n"
+        "**What was not proven.** Nothing\n\n**What you need to decide next.** Nothing\n\n"
+        "## Status\n\nDONE\n\n" + heads + "\n", encoding="utf-8")
+    return d
+
+
+def edit(d, name, old, new):
+    p = d / name
+    text = p.read_text(encoding="utf-8")
+    assert old in text, old
+    p.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+
+class Check(unittest.TestCase):
+    def assertFails(self, d, fragment, stage="delivery"):
+        errors = hcheck.check(d, stage)
+        self.assertTrue(any(fragment in x for x in errors), "no failure with %r in %s" % (fragment, errors))
+
+    def test_good_run_passes_every_stage(self):
+        d = good_run()
+        for stage in ("plan", "unit", "delivery"):
+            self.assertEqual(hcheck.check(d, stage), [], stage)
+
+    def test_frozen_without_quoted_approval_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", '- Approval: "approve all" (t)', "- Approval: no objection received")
+        self.assertFails(d, "rule 3.3", "plan")
+
+    def test_proposed_criteria_fail_at_unit(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- State: FROZEN", "- State: PROPOSED")
+        self.assertEqual(hcheck.check(d, "plan"), [])
+        self.assertFails(d, "not FROZEN", "unit")
+
+    def test_entry_citing_later_entry_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- TIER: FULL", "- TIER: FULL, see E-9")
+        self.assertFails(d, "cites later entry", "plan")
+
+    def test_gap_in_entry_numbers_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "### E-2 ·", "### E-99 ·")
+        self.assertFails(d, "rule 9.4", "plan")
+
+    def test_launch_without_report_fails(self):
+        d = good_run()
+        (d / "audits/WU-1-correctness-E-19.md").unlink()
+        self.assertFails(d, "rule 1.7", "plan")
+
+    def test_report_without_identifier_line_fails(self):
+        d = good_run()
+        (d / "audits/WU-1-correctness-E-19.md").write_text("report with no id", encoding="utf-8")
+        self.assertFails(d, "rule 1.6", "plan")
+
+    def test_report_with_no_launch_fails(self):
+        d = good_run()
+        (d / "audits/extra.md").write_text("x", encoding="utf-8")
+        self.assertFails(d, "matches no LAUNCH", "plan")
+
+    def test_overruled_blocker_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Class: DEFECT", "- Class: BLOCKER")
+        edit(d, "AUDIT-LOG.md", "· RESOLUTION ·", "· OVERRULE ·")
+        self.assertFails(d, "overrules BLOCKER", "plan")
+
+    def test_done_with_open_finding_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Finding: F-1\n", "- Finding: F-2\n")
+        self.assertFails(d, "Status DONE with open FINDINGS")
+
+    def test_empty_ledger_cell_fails_at_delivery(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "| `PASS` `audits/WU-1-correctness-E-19.md` |", "|  |")
+        self.assertFails(d, "empty cell")
+
+    def test_pass_with_missing_evidence_fails(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "audits/WU-1-correctness-E-19.md", "audits/none.md")
+        self.assertFails(d, "does not exist", "unit")
+
+    def test_pass_without_citation_fails(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "`PASS` `audits/WU-1-correctness-E-19.md`", "PASS builder says so")
+        self.assertFails(d, "rule 10.5", "unit")
+
+    def test_uncited_summary_claim_fails(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "A page. [E-17]", "A page.")
+        self.assertFails(d, "ASSERTED")
+
+    def test_report_citing_absent_entry_fails(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "[E-17]", "[E-999]")
+        self.assertFails(d, "not in the log")
+
+    def test_wrong_heading_order_fails(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "## Maps", "## Charts")
+        self.assertFails(d, "rule 19.1")
+
+    def test_long_summary_fails(self):
+        d = good_run()
+        edit(d, "DELIVERY-REPORT.md", "It runs.", "It runs. " + "word " * 220)
+        self.assertFails(d, "limit 200")
+
+    def test_unlabeled_edge_fails(self):
+        d = good_run()
+        edit(d, "CONNECTIONS.md", "A -->|reads| B", "A --> B")
+        self.assertFails(d, "no label", "plan")
+
+    def test_banned_word_fails_and_quoted_one_passes(self):
+        d = good_run()
+        edit(d, "FRAMEWORK.md", "x", "It should work.")
+        self.assertFails(d, "banned word", "plan")
+        (d / "FRAMEWORK.md").write_text('The USER wrote "it should work".', encoding="utf-8")
+        self.assertEqual(hcheck.check(d, "plan"), [])
+
+    def test_missing_final_audit_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")
+        for p in (d / "audits").glob("final-audit-*"):
+            new = p.with_name("WU-1-other-E-30.md")
+            p.rename(new)
+            edit(d, "AUDIT-LOG.md", "audits/" + p.name, "audits/" + new.name)
+        self.assertFails(d, "no final-audit report")
+
+    def test_same_folder_same_verdict(self):
+        d = good_run()
+        edit(d, "CONNECTIONS.md", "A -->|reads| B", "A --> B")
+        self.assertEqual(hcheck.check(d, "delivery"), hcheck.check(d, "delivery"))
+
+
+if __name__ == "__main__":
+    unittest.main()

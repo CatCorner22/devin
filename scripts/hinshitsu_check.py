@@ -231,7 +231,7 @@ def check(folder, stage):
             for i, line in enumerate(strip_quotes(p.read_text(encoding="utf-8")).splitlines(), 1):
                 m = BANNED_RE.search(line)
                 if m:
-                    err("%s:%d: banned word %r (rule 22 drafting list)" % (name, i, m.group(1)))
+                    err("%s:%d: banned word %r (banned-word rule of the conductor)" % (name, i, m.group(1)))
                 if "<…>" in line or re.search(r"<[a-z][^<>|]*\|[^<>]*>", line):
                     err("%s:%d: template placeholder left in place" % (name, i))
 
@@ -288,7 +288,7 @@ def check(folder, stage):
         heads = re.findall(r"^## (.+)$", text, re.M)
         if heads != REPORT_HEADINGS:
             err("DELIVERY-REPORT.md: headings %s; rule 19.1 requires %s" % (heads, REPORT_HEADINGS))
-        sections = dict((h, b) for h, b in re.findall(r"^## (.+)\n(.*?)(?=^## |\Z)", text, re.M | re.S))
+        sections = dict((h, b) for h, b in re.findall(r"^## ([^\n]+)\n(.*?)(?=^## |\Z)", text, re.M | re.S))
         summary = sections.get("Summary", "")
         words = len(re.findall(r"\S+", re.sub(r"\[[^\]]*\]", "", summary)))
         if words > 200:
