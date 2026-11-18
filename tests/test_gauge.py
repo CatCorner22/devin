@@ -87,6 +87,7 @@ class ReadState(unittest.TestCase):
                     "F-0", "F-1,", "F- 1", "-F-1", "F-1 F-2", "F--1", "E-1", "F-٣"):
             log = "### E-1 · t · FINDING · auditor\n- ID: %s\n- Class: BLOCKER\n" % raw
             accepted = bool(hinshitsu_check.FINDING_ID.fullmatch(raw.split()[0]))
+            self.assertEqual(hinshitsu_check.finding_id(log.split("\n", 1)[1]) is not None, accepted, raw)
             st = gauge.read_state(log)
             self.assertEqual(st["blockers"], [raw.strip()] if accepted else [], raw)
             self.assertEqual(st["unread"], 0 if accepted else 1, raw)
