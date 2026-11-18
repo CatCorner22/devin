@@ -58,13 +58,19 @@ def field(body, name):
     return (m.group(1).strip() or None) if m else None
 
 
-def criteria_ids_of(crit):
-    """IDs in the newest CRITERIA entry: a list item that starts with C<n>, with or without marks."""
+def criteria_ids_of(crit, changes=()):
+    """IDs in the newest CRITERIA entry and in each CRITERIA-CHANGE entry (rule 3.5).
+
+    A CRITERION is a list item or a table row that starts with C<n>, with or without marks.
+    """
     if not crit:
         return set()
-    return set(re.findall(r"^[-*\d.\s`]*\**`?(C\d+)\b", crit[-1]["body"], re.M))
+    bodies = [crit[-1]["body"]] + [e["body"] for e in changes]
+    return set(re.findall(r"^[-*\d.\s`|]*\**`?(C\d+)\b", "\n".join(bodies), re.M))
 
 
+FINDING_ID = re.compile(r"F-\d+")
+QUOTE = r'["“][^"”\n]+["”]'
 PASSED_LINE = re.compile(r"(?:^|[—:;-])\s*`?passed`?\.?$")
 PLANNED_RUNS = re.compile(r"Planned SUB-AGENT runs:\s*(\d+)")
 
@@ -157,13 +163,13 @@ def check(folder, stage):
     else:
         cap = entries_cap["body"]
         for part in range(1, 6):
-            if not re.search(r"SWARM-CAPABLE part %d[^\n]*:\s*(yes|no)\b" % part, cap):
-                err("AUDIT-LOG.md: E-1 does not answer SWARM-CAPABLE part %d (rule 0.1)" % part)
+            if not re.search(r"SWARM-CAPABLE part %d[^\n:]*:\s*(yes|no)\b" % part, cap):
+                err("AUDIT-LOG.md: E-%d does not answer SWARM-CAPABLE part %d (rule 0.1)" % (entries_cap["n"], part))
         mode = field(cap, "Mode") or ""
         if not mode.startswith(("SWARM", "DEGRADED")):
-            err("AUDIT-LOG.md: E-1 states no mode (rule 0.1)")
-        if mode.startswith("SWARM") and re.search(r"SWARM-CAPABLE part \d[^\n]*:\s*no\b", cap):
-            err("AUDIT-LOG.md: E-1 says SWARM with a part answered no (rule 0.3)")
+            err("AUDIT-LOG.md: E-%d states no mode (rule 0.1)" % entries_cap["n"])
+        if mode.startswith("SWARM") and re.search(r"SWARM-CAPABLE part \d[^\n:]*:\s*no\b", cap):
+            err("AUDIT-LOG.md: E-%d says SWARM with a part answered no (rule 0.3)" % entries_cap["n"])
         if mode.startswith("SWARM") and not (folder / "evidence/capability-probe.md").is_file():
             err("evidence/capability-probe.md: missing (rule 0.2)")
     if "TIER" not in by_type:
@@ -181,7 +187,7 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d STAGE entry lacks Stage or Event (rule 0.7)" % e["n"])
             continue
         sid, ev = m.group(1), ev[0]
-        if ev == "start" and not re.search(r"[0-9a-f]{64}", e["body"]):
+        if ev == "start" and not re.search(r"\b[0-9a-fA-F]{64}\b", e["body"]):
             err("AUDIT-LOG.md: E-%d start of %s has no SHA-256 of the skill read (rule 0.7)" % (e["n"], sid))
         if ev == "end" and state.get(sid) != "start":
             err("AUDIT-LOG.md: E-%d ends %s with no start entry (rule 0.7)" % (e["n"], sid))
@@ -204,16 +210,16 @@ def check(folder, stage):
         if state.get(sid) not in ("end", "skipped"):
             err("AUDIT-LOG.md: stage %s has no end or skipped entry (rule 0.7)" % sid)
 
-    # --- criteria approval (rule 3.3) ---
+    # --- criteria approval (rules 3.2 and 3.4) ---
     crit = by_type.get("CRITERIA", [])
     if crit:
         last = crit[-1]["body"]
         frozen = re.search(r"^- (?:State|Status):\s*FROZEN", last, re.M)
-        quoted = re.search(r'^- Approval:\s*(?:USER\s*—\s*)?["“].+["”]', last, re.M)
+        quoted = re.search(r"^- Approval:[^\n]*" + QUOTE, last, re.M)
         if frozen and not quoted:
-            err("AUDIT-LOG.md: E-%d is FROZEN with no quoted approval (rule 3.3)" % crit[-1]["n"])
+            err("AUDIT-LOG.md: E-%d is FROZEN with no quoted approval (rule 3.4)" % crit[-1]["n"])
         if stage in ("unit", "delivery") and not frozen:
-            err("AUDIT-LOG.md: CRITERIA are not FROZEN; no WORK UNIT may be reported VERIFIED (rule 3.3)")
+            err("AUDIT-LOG.md: CRITERIA are not FROZEN; no WORK UNIT may be reported VERIFIED (rule 3.2)")
 
     # --- custody (rules 1.5 to 1.7) ---
     cited_reports = []  # in LAUNCH order, so that the newest final audit is the last
@@ -261,6 +267,9 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d FINDING has no ID (rule 15.1)" % e["n"])
             continue
         fid = fid.split()[0]
+        if not FINDING_ID.fullmatch(fid):
+            err("AUDIT-LOG.md: E-%d FINDING ID %s is not F-<n> (rule 9.5)" % (e["n"], fid))
+            continue
         # An AUDITOR's words are copied whole, so the class word may carry a full stop or a comma.
         cls = [w.strip(".,;:") for w in (field(b, "Class") or "").split()[0:1]]
         if not cls or cls[0] not in CLASSES:
@@ -281,7 +290,7 @@ def check(folder, stage):
         if e["type"] == "OVERRULE":
             if findings[fid]["class"] == "BLOCKER":
                 err("AUDIT-LOG.md: E-%d overrules BLOCKER %s (rule 14.4)" % (e["n"], fid))
-            elif findings[fid]["class"] in ("DEFECT", "FRAGILITY") and not re.search(r'USER\s*—\s*["“]', b):
+            elif findings[fid]["class"] in ("DEFECT", "FRAGILITY") and not re.search(r"USER\b[^\n]*" + QUOTE, b):
                 err("AUDIT-LOG.md: E-%d overrules %s with no quoted USER message (rule 15.5)" % (e["n"], fid))
         else:
             result = (field(b, "Result") or "").split()[0:1]
@@ -294,6 +303,8 @@ def check(folder, stage):
                 rc = re.search(r"`(evidence/record-check-[^`]+)`", b)
                 if not rc or not (folder / rc.group(1)).is_file():
                     err("AUDIT-LOG.md: E-%d cites no existing record-check output (rule 14.6)" % e["n"])
+                elif "hinshitsu_check (record): 0 failure(s)." not in (folder / rc.group(1)).read_text(encoding="utf-8"):
+                    err("AUDIT-LOG.md: E-%d cites %s, which does not show 0 failures (rule 14.6)" % (e["n"], rc.group(1)))
             else:
                 ra = re.search(r"`(audits/[^`]+)`", b)
                 if not ra or not (folder / ra.group(1)).is_file():
@@ -354,11 +365,11 @@ def check(folder, stage):
                     if stage == "delivery":
                         err("COVERAGE-LEDGER.md:%d: empty cell (rule 10.6)" % i)
                     continue
-                m = re.match(r"`?(PASS|FAIL|N/A|UNVERIFIED)`?\b\s*(.*)$", c)
+                m = re.match(r"(`?)(PASS|FAIL|N/A|UNVERIFIED)\1(?![\w`])\s*(.*)$", c)
                 if not m:
                     err("COVERAGE-LEDGER.md:%d: cell %r is not PASS, FAIL, N/A or UNVERIFIED (rule 10.3)" % (i, c))
                     continue
-                kind, rest = m.group(1), m.group(2).strip(" —-")
+                kind, rest = m.group(2), m.group(3).strip(" —-")
                 if kind == "PASS":
                     ev = re.search(r"`((?:audits|evidence)/[^`]+)`", rest)
                     if not ev:
@@ -404,9 +415,9 @@ def check(folder, stage):
         unverified_criteria = [l for l in ledger_text.splitlines()
                                if re.match(r"\|[\s`*]*C\d+", l) and "UNVERIFIED" in l]
         criterion_rows = set(re.findall(r"^\|[\s`*]*(C\d+)\b", ledger_text, re.M))
-        if is_done and not criteria_ids_of(crit):
+        criteria_ids = criteria_ids_of(crit, by_type.get("CRITERIA-CHANGE", []))
+        if is_done and not criteria_ids:
             err("DELIVERY-REPORT.md: Status DONE, and the newest CRITERIA entry lists no CRITERION (DONE, part 1)")
-        criteria_ids = criteria_ids_of(crit)
         if is_done and criteria_ids - criterion_rows:
             err("DELIVERY-REPORT.md: Status DONE, and the ledger has no row for %s (DONE, part 1)"
                 % ", ".join(sorted(criteria_ids - criterion_rows, key=lambda c: int(c[1:]))))
@@ -476,7 +487,7 @@ def check_record(folder):
     for e in log:
         if e["type"] == "FINDING":
             fid = (field(e["body"], "ID") or "").split()[0:1]
-            if fid:
+            if fid and FINDING_ID.fullmatch(fid[0]):
                 state[fid[0]] = "open"
         elif e["type"] in ("RESOLUTION", "OVERRULE"):
             fid = (field(e["body"], "Finding") or "").split()[0:1]

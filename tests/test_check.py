@@ -127,7 +127,7 @@ class Check(unittest.TestCase):
     def test_frozen_without_quoted_approval_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", '- Approval: "approve all" (t)', "- Approval: no objection received")
-        self.assertFails(d, "rule 3.3", "plan")
+        self.assertFails(d, "rule 3.4", "plan")
 
     def test_proposed_criteria_fail_at_unit(self):
         d = good_run()
@@ -405,6 +405,62 @@ class Check(unittest.TestCase):
         edit(d, "AUDIT-LOG.md", "Planned SUB-AGENT runs: 3", "Planned SUB-AGENT runs: 1")
         self.assertFails(d, "exceed the 1 planned")
 
+    # --- round-3 code review, bugs 6, 7, 13 to 17, 19 ---
+
+    def test_cell_in_code_marks_with_no_reason_fails(self):
+        d = good_run()
+        edit(d, "COVERAGE-LEDGER.md", "`PASS` `audits/WU-1-correctness-E-19.md`", "`N/A`")
+        self.assertFails(d, "N/A gives no reason", "unit")
+
+    def test_finding_id_that_is_not_f_n_fails_and_hides_nothing(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- ID: F-1\n", "- ID: F-1.\n")
+        edit(d, "AUDIT-LOG.md", "- Mode: SWARM", "- Mode:")
+        errors = hcheck.check(d, "delivery")
+        self.assertTrue(any("is not F-<n>" in x for x in errors), errors)
+        self.assertTrue(any("states no mode" in x for x in errors), errors)
+
+    def test_approval_quoted_inside_a_sentence_passes(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", '- Approval: "approve all" (t)', '- Approval: the USER wrote "approve all" at 10:00')
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_criteria_written_as_a_table_are_read(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- C1. It works. Test: run it.", "| C1 | It works. | run it |")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_criterion_added_by_a_criteria_change_needs_a_ledger_row(self):
+        d = good_run()
+        append_entry(d, "CRITERIA-CHANGE", '- C2. It is fast. Test: time it.\n- Approval: "yes"')
+        self.assertFails(d, "no row for C2")
+
+    def test_overrule_that_quotes_the_user_in_a_sentence_passes(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "· RESOLUTION ·", "· OVERRULE ·")
+        edit(d, "AUDIT-LOG.md", "- Result: FIXED\n- Re-audit: `audits/WU-1-reaudit-E-21.md`",
+             '- Reason: the USER wrote "leave it" at 10:00')
+        self.assertFalse(any("no quoted USER message" in x for x in hcheck.check(d, "delivery")))
+
+    def test_reason_that_holds_colon_no_is_not_read_as_an_answer(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- SWARM-CAPABLE part 1 (x): yes — probe",
+             "- SWARM-CAPABLE part 1 (x): yes — the probe said: no record")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_sha_256_in_capitals_passes(self):
+        d = good_run()
+        log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+        (d / "AUDIT-LOG.md").write_text(log.replace(SHA, SHA.upper()), encoding="utf-8")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_record_fault_closed_on_an_output_that_shows_failures_fails(self):
+        d = good_run()
+        (d / "evidence/record-check-E-22.txt").write_text("FAIL x\nhinshitsu_check (record): 1 failure(s).", encoding="utf-8")
+        edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`",
+             "- Record fault: yes\n- Check: `evidence/record-check-E-22.txt`")
+        self.assertFails(d, "does not show 0 failures")
+
     def test_missing_final_audit_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")
@@ -480,7 +536,8 @@ class Record(unittest.TestCase):
                 "\n### E-%d · 2026-01-01T00:00Z · RESOLUTION · orchestrator\n\n- Finding: F-77\n- Result: FIXED\n- Record fault: yes\n- Evidence: `evidence/record-check-E-%d.txt`\n" % (n + 1, n + 2, n + 2))
         (d / "AUDIT-LOG.md").write_text(log, encoding="utf-8")
         self.assertTrue(any("record-check output (rule 14.6)" in x for x in hcheck.check(d, "plan")))
-        (d / "evidence" / ("record-check-E-%d.txt" % (n + 2))).write_text("ok", encoding="utf-8")
+        (d / "evidence" / ("record-check-E-%d.txt" % (n + 2))).write_text(
+            "hinshitsu_check (record): 0 failure(s).\n", encoding="utf-8")
         self.assertFalse(any("14.6" in x or "14.3" in x for x in hcheck.check(d, "plan")))
 
 
