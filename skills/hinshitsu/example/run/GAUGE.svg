@@ -25,13 +25,11 @@
 <text x="455.9" y="172.9" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S11</text>
 <path d="M 434.7 206.5 A 180 180 0 0 1 440.0 246.9" fill="none" stroke="#e0e0e0" stroke-width="30"/>
 <text x="470.2" y="226.3" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#424242">S12</text>
-<line x1="260.0" y1="250.0" x2="183.6" y2="120.9" stroke="#c62828" stroke-width="6" stroke-linecap="round"/>
-<circle cx="260.0" cy="250.0" r="12" fill="#c62828"/>
+<line x1="260.0" y1="250.0" x2="183.6" y2="120.9" stroke="#212121" stroke-width="6" stroke-linecap="round"/>
+<circle cx="260.0" cy="250.0" r="12" fill="#212121"/>
 <text x="260.0" y="310.0" font-family="sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#212121">33%</text>
 <text x="260.0" y="334.0" font-family="sans-serif" font-size="14" text-anchor="middle" fill="#424242">4 of 12 stages complete</text>
 <text x="260.0" y="360.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#212121">Now: S5 Lenses and red cell (hinshitsu-challenge)</text>
-<rect x="60" y="368.0" width="400" height="30" rx="4" fill="#c62828"/>
-<text x="260.0" y="388.0" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ffffff">STOPPED - blocker open: F-18</text>
 <rect x="520" y="48" width="14" height="14" fill="#2e7d32" stroke="#757575"/>
 <text x="542" y="60" font-family="sans-serif" font-size="13" font-weight="normal" fill="#212121">S1 Capability and tier</text>
 <text x="542" y="72" font-family="sans-serif" font-size="10" fill="#616161">hinshitsu - done</text>

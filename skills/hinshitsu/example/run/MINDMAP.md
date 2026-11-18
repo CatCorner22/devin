@@ -37,11 +37,11 @@ Form: rule 9.2. Updated within the WORK UNIT in which a node appears.
     - F-13 the session state left out 2 evidence files (DEFECT, FIXED)
     - F-14 a saved scope differed from the scope sent (DEFECT, FIXED)
     - F-15 an entry named a commit that does not exist (BLOCKER, FIXED)
-    - F-16 a card lacked 1 of 3 required choices (DEFECT, open)
+    - F-16 a card lacked 1 of 3 required choices (DEFECT, FIXED)
     - F-17 a reversal had no entry of that type (DEFECT, FIXED)
-    - F-18 2 files named a closed FINDING as open (BLOCKER, open)
-    - F-19 a card offered an exit the rules do not allow (DEFECT, open)
-    - F-20 a card ran over 120 words (STYLE, open)
+    - F-18 2 files named a closed FINDING as open (BLOCKER when raised, DEFECT under rule 14.6; FIXED)
+    - F-19 a card offered an exit the rules do not allow (DEFECT, FIXED)
+    - F-20 a card ran over 120 words (STYLE, overruled)
 
 ```mermaid
 graph TD

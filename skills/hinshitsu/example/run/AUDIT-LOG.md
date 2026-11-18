@@ -933,3 +933,50 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Reply, word for word: "A"
 - Read as: the USER approves the amendment to the skills that choice A of E-88 describes.
 - Effect: the ORCHESTRATOR amends the skills and the checker, then applies the amended rules to the open FINDINGS. The USER did not choose a change to a CRITERION (choice C).
+
+### E-90 · 2026-11-18T16:23:30Z · LESSON · orchestrator
+
+- What happened: 5 fix-and-re-audit rounds on the plan (E-40, E-56, E-65, E-71, E-81) closed 16 FINDINGS, each in the record and none in the DELIVERABLE; each round found a new false or out-of-date line in a record file, and the glossary made each a BLOCKER.
+- Cost: 5 SUB-AGENT runs, 4 cards to the USER, and no WORK UNIT started.
+- Amendment, approved by the USER in E-89 and made at commit 3f01adf:
+  - `skills/hinshitsu/GLOSSARY.md`, BLOCKER (d). Present text: "a statement in the delivery report or in an artifact is false". New text: "a statement in the delivery report or in the DELIVERABLE is false". DEFECT gains: "A false or out-of-date statement in a file of the RUN FOLDER other than the delivery report is a DEFECT (rule 14.6)."
+  - `skills/hinshitsu-audit/SKILL.md`, new rule 14.6 (record faults): correct, run `scripts/hinshitsu_check.py --record`, save the output, log a `RESOLUTION` with `Record fault: yes`; the framework-drift auditor of the next WORK UNIT reads each such entry.
+  - `skills/hinshitsu-record/SKILL.md`, rule 8.1 gains 2 duties: change the state files in the same commit as the entry that changes a fact; copy every commit ID, count and path from the output of a command.
+  - `scripts/hinshitsu_check.py` gains `--record`; `tests/test_check.py` gains 9 tests.
+- What the USER gave up, as the card in E-88 stated: a new SUB-AGENT no longer re-checks each record correction on its own.
+
+### E-91 · 2026-11-18T16:23:30Z · CORRECTION · orchestrator
+
+- Corrects: E-84 (F-18), under the amendment in E-90.
+- F-18 names 2 files of the RUN FOLDER and no part of the DELIVERABLE or of a delivery report. Under the amended glossary its class is DEFECT, and rule 14.6 governs how it closes. The class written in E-84 was right under the text in force when E-84 was written.
+
+### E-92 · 2026-11-18T16:23:44Z · RESOLUTION · orchestrator
+
+- Finding: F-18
+- Result: FIXED
+- Record fault: yes
+- Change: `SESSION-STATE.md` field 2 and `FRAMEWORK.md` part 5 no longer name F-7 (commit of E-88)
+- Evidence: `evidence/record-check-E-92.txt`
+
+### E-93 · 2026-11-18T16:23:44Z · RESOLUTION · orchestrator
+
+- Finding: F-16
+- Result: FIXED
+- Record fault: yes
+- Change: the card in E-88 offered a change to a CRITERION as choice C; E-77 item 2 states what the card in E-69 lacked
+- Evidence: `evidence/record-check-E-92.txt`
+
+### E-94 · 2026-11-18T16:23:44Z · RESOLUTION · orchestrator
+
+- Finding: F-19
+- Result: FIXED
+- Record fault: yes
+- Change: E-87 item 1 withdrew choice B of the card in E-79; the USER did not choose it
+- Evidence: `evidence/record-check-E-92.txt`
+
+### E-95 · 2026-11-18T16:23:45Z · OVERRULE · orchestrator
+
+- Finding: F-20
+- Class: STYLE
+- By: the ORCHESTRATOR
+- Reason: the card in E-79 was sent and answered; its words cannot change. The card in E-88 also runs over 120 words (`wc -w` printed 133) because it carried 4 choices. Later cards hold 1 question of at most 120 words, counted with `wc -w` before sending.

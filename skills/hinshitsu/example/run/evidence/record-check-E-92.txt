@@ -1,0 +1,10 @@
+$ python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run   # before the RESOLUTION entries E-92 to E-94
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+exit: 0
+$ grep -n "F-7" skills/hinshitsu/example/run/SESSION-STATE.md skills/hinshitsu/example/run/FRAMEWORK.md
+exit: 1
+$ python3 scripts/hinshitsu_check.py --record skills/hinshitsu/example/run   # after E-92 to E-95 and the change to MINDMAP.md
+hinshitsu_check (record): 0 failure(s).
+This script compares the state files with the log. It does not prove that the log is true.
+exit: 0
