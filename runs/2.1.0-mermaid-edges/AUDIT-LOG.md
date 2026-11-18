@@ -1087,3 +1087,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Stage: S12
 - Event: end
 - Artifacts: `DELIVERY-REPORT.md` (the heading `LESSONS`), 7 `LESSON` entries (E-107 to E-113)
+
+### E-115 · 2026-11-18T20:54:45Z · CORRECTION · orchestrator
+
+- Corrects: E-100 and E-104
+- What was wrong: each cites an entry that is later than itself, which rule 9.6 forbids. E-100 names a file whose name holds the number of the entry after it (`evidence/record-check-E-101.txt`). E-104 states "after this entry and after" the last entry of S12, by its number. The ORCHESTRATOR fixed the numbers of entries to come and wrote them into earlier entries (`FRICTION.md` item 26). The checker reports both at the stage `delivery`, with the 2 failures on F-14; the log is append-only, so the 4 failures stay.
+- What is true: the file that E-100 and the entry after it cite exists and shows 0 failures at the stage `record`. The report was sent after the last entry of the log. This entry is the last entry of the run: the log holds 115 entries, and `DELIVERY-REPORT.md` states that count.

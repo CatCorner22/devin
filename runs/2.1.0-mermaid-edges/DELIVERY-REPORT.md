@@ -28,7 +28,7 @@ You may stop reading here.
 
 ## Status
 
-DELIVERED — NOT DONE: part 2 (6 BLOCKERS are open: F-13, F-16, F-17, F-18, F-19, F-20 [E-76, E-87, E-88, E-89, E-90, E-91]); part 3 (F-13 was raised as a FRAGILITY and is neither fixed nor overruled [E-76, E-99]); part 5 (the second final AUDITOR found 3 claims of this report with a wrong citation; they are changed, and no SUB-AGENT confirmed the changes [E-88, E-89, E-90, E-99]); part 6 (both audits of the audit ended `not passed` [`audits/final-audit-E-72.md`; `audits/final-audit-E-86.md`]); part 7 (the checker does not exit 0 at the stage `delivery`: 2 failures, on E-80 and on the 2 closing entries of F-14, stay in every run [E-80, E-85, E-98]; and no `ANSWER` entry quotes the USER's statement that the USER opened a final AUDITOR's run and saw the saved report's text there).
+DELIVERED — NOT DONE: part 2 (6 BLOCKERS are open: F-13, F-16, F-17, F-18, F-19, F-20 [E-76, E-87, E-88, E-89, E-90, E-91]); part 3 (F-13 was raised as a FRAGILITY and is neither fixed nor overruled [E-76, E-99]); part 5 (the second final AUDITOR found 3 claims of this report with a wrong citation; they are changed, and no SUB-AGENT confirmed the changes [E-88, E-89, E-90, E-99]); part 6 (both audits of the audit ended `not passed` [`audits/final-audit-E-72.md`; `audits/final-audit-E-86.md`]); part 7 (the checker does not exit 0 at the stage `delivery`: 4 failures stay in every run: 2 on the closing entries of F-14, and 2 entries that cite a later entry [`evidence/delivery-check-final.txt`; E-85, E-115]; and no `ANSWER` entry quotes the USER's statement that the USER opened a final AUDITOR's run and saw the saved report's text there).
 TIER: CORE [E-4, E-30, E-43]. Mode: SWARM [E-2]. SUB-AGENT runs: 5 `LAUNCH` entries (E-1, E-31, E-44, E-72, E-86); planned 3 [E-4], raised by the USER to 4 [E-37] and to 5 [E-83].
 
 Parts of DONE that are met: part 1, with the limit that only the correctness role verified each CRITERION (`CORE`, rule 0.5) [`audits/WU-1-r2-correctness-E-44.md`]; part 4 [`COVERAGE-LEDGER.md`]; part 8 [E-104].
@@ -68,7 +68,7 @@ Links with no arrowhead (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way
 
 ### Corrections made to the record
 
-E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings), E-82 (a record check was run before the entry it supports, and the map still called F-14 open), E-85 (E-80 closed F-14 under rule 14.6, which covers a DEFECT; the final AUDITOR classed F-14 a FRAGILITY) [E-20, E-21, E-65, E-82, E-85]. 4 entries are marked late: E-3, E-17, E-72 and E-86 [E-3, E-17, E-72, E-86].
+E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings), E-82 (a record check was run before the entry it supports, and the map still called F-14 open), E-85 (E-80 closed F-14 under rule 14.6, which covers a DEFECT; the final AUDITOR classed F-14 a FRAGILITY), E-115 (2 entries cite an entry later than themselves) [E-20, E-21, E-65, E-82, E-85, E-115]. 4 entries are marked late: E-3, E-17, E-72 and E-86 [E-3, E-17, E-72, E-86].
 
 ## Voice of the Customer
 
@@ -139,7 +139,7 @@ UNVERIFIED rows, 6: the function rows `test_earlier_link_is_not_the_label_of_a_l
 
 ## Audit log
 
-`AUDIT-LOG.md` — 114 entries at the end of the run (E-1 to E-114); the entries after E-104 are the end of S11 and the `LESSON` entries of S12
+`AUDIT-LOG.md` — 115 entries at the end of the run (E-1 to E-115); the entries after E-104 are the end of S11, the `LESSON` entries of S12, and 1 `CORRECTION` entry
 
 ## LESSONS
 
