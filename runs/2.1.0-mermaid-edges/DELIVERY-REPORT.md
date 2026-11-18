@@ -2,7 +2,7 @@
 
 Form required by section 19 (`skills/hinshitsu-delivery/SKILL.md`). Every claim ends with a citation in square brackets to a file path, a command-output file or an `AUDIT-LOG.md` entry ID. Paths are relative to this folder unless they begin with `scripts/`, `tests/` or `skills/`.
 
-**Read this first.** The status is `DELIVERED — NOT DONE`. The fix is on the branch `devin/hinshitsu-run-2.1.0`, in commit 5099f2a [E-42]. The 3 lines the USER named and all 7 CRITERIA passed in 2 independent audits [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]. 7 faults that the audits found stay in the code as known limits, each accepted by the USER [E-38, E-56, E-57, E-58, E-59, E-60, E-61]. The first final audit ended `not passed`: it found 4 mismatches in this report and the record, and none in the fix [`audits/final-audit-E-72.md`].
+**Read this first.** The status is `DELIVERED — NOT DONE`. The fix is on the branch `devin/hinshitsu-run-2.1.0`, in commit 5099f2a [E-43, E-44]. The 3 lines the USER named and all 7 CRITERIA passed in 2 independent audits [`audits/WU-1-correctness-E-31.md`; `audits/WU-1-r2-correctness-E-44.md`]. 7 faults that the audits found stay in the code as known limits, each accepted by the USER [E-38, E-56, E-57, E-58, E-59, E-60, E-61]. The first final audit ended `not passed`: it found 4 mismatches in this report and the record, and none in the fix [`audits/final-audit-E-72.md`].
 
 ## Check it yourself in 5 minutes
 
