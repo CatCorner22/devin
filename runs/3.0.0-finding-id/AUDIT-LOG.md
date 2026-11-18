@@ -284,3 +284,10 @@ Change: the FINDING branch of `read_state` in `skills/hinshitsu-gauge/scripts/ga
 ### E-27 · 2026-11-18T21:28:25Z · ROLLBACK · orchestrator
 
 Not an action of section 18; written for the record of the push. Action: `git push origin devin/hinshitsu-run-3.0.0` (a new branch, not default and not shared). Undo: `git push origin --delete devin/hinshitsu-run-3.0.0`; not tested.
+
+### E-28 · 2026-11-18T21:29:23Z · TIER · orchestrator
+
+- Change measured: `git diff --stat a3717b1 eda8e66335c25bc2bde4eecb09f8d65d175ef6ab -- . ':!runs'` prints:  skills/hinshitsu-gauge/scripts/gauge.py : 11 +++---; tests/test_gauge.py                     : 63 +++++++++++++++++++++++++++++++++; 2 files changed, 70 insertions(+), 4 deletions(-);
+- Section-18 action in the change: no
+- TIER: CORE
+- Planned SUB-AGENT runs: 4

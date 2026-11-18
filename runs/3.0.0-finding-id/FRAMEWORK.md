@@ -38,7 +38,7 @@ See the newest `CRITERIA` entry of `AUDIT-LOG.md`, named in the block at the end
 
 | ID | Content | Status | LENS memo | Swarm reports |
 |---|---|---|---|---|
-| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py` | building | N/A — CORE | `audits/WU-1-*.md` |
+| WU-1 | `gauge.py`: the FINDING branch of `read_state`, with its tests in `tests/test_gauge.py` | in audit | N/A — CORE | `audits/WU-1-*.md` |
 
 ## 7. Existing implementations checked
 
