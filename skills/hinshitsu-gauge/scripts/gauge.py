@@ -171,10 +171,10 @@ def svg_gauge(st):
     out.append('<text x="%.1f" y="%.1f" font-family="sans-serif" font-size="14" font-weight="bold" '
                'text-anchor="middle" fill="#212121">%s</text>' % (cx, cy + 110, esc(line)))
     if st["blockers"]:
-        out.append('<rect x="60" y="%.1f" width="400" height="30" rx="4" fill="#c62828"/>' % (cy + 122))
+        out.append('<rect x="60" y="%.1f" width="400" height="30" rx="4" fill="#c62828"/>' % (cy + 118))
         out.append('<text x="%.1f" y="%.1f" font-family="sans-serif" font-size="14" font-weight="bold" '
                    'text-anchor="middle" fill="#ffffff">STOPPED - blocker open: %s</text>' % (
-                       cx, cy + 142, esc(", ".join(st["blockers"]))))
+                       cx, cy + 138, esc(", ".join(st["blockers"]))))
     y = 60
     for sid, name, skill in STAGES:
         s = st["state"][sid]
