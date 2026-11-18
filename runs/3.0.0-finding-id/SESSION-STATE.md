@@ -1,7 +1,7 @@
 <!-- from the log: start -->
 Rebuilt by `scripts/hinshitsu_log.py state`. Do not edit between the marks.
 - Newest CRITERIA entry: E-14 (PROPOSED)
-- STAGE now running: S4
+- STAGE now running: none
 - Open FINDINGS: none
 <!-- from the log: end -->
 

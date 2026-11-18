@@ -210,3 +210,9 @@ Working assumption while the card is open (not the USER's decision): Decision 1 
 > 
 > Where the run stands (the gauge, a progress meter drawn from the log; it is not proof that the work is finished):
 > hinshitsu gauge  [######..................] 25%  3 of 12 stages complete (the log's state, not proof of DONE)
+
+### E-17 · 2026-11-18T21:26:18Z · STAGE · orchestrator
+
+- Stage: S4
+- Event: end
+- Artifacts: `AUDIT-LOG.md` ASSUMPTION (E-13), CRITERIA PROPOSED (E-14), CORRECTION (E-15), CARD (E-16); `evidence/premises.txt`
