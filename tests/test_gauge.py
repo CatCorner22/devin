@@ -82,7 +82,7 @@ class Output(unittest.TestCase):
     def test_blocker_shows_stop_in_both(self):
         d, r = self.run_script("### E-1 · t · FINDING · a\n- ID: F-7\n- Class: BLOCKER\n")
         self.assertIn("STOPPED - blocker open: F-7", r.stdout)
-        self.assertIn("STOPPED - blocker open: F-7", (d / "GAUGE.svg").read_text(encoding="utf-8"))
+        self.assertIn("STOPPED - blocker open: 1: F-7", (d / "GAUGE.svg").read_text(encoding="utf-8"))
 
     def test_svg_is_well_formed_and_escapes(self):
         import xml.dom.minidom

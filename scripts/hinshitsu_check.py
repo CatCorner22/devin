@@ -53,8 +53,9 @@ def parse_log(text):
 
 
 def field(body, name):
-    m = re.search(r"^- %s:\s*(.+)$" % re.escape(name), body, re.M)
-    return m.group(1).strip() if m else None
+    # [ \t]* and not \s*: an empty field must not take the next line as its value.
+    m = re.search(r"^- %s:[ \t]*(.*)$" % re.escape(name), body, re.M)
+    return (m.group(1).strip() or None) if m else None
 
 
 def strip_quotes(text):
@@ -350,7 +351,7 @@ def check(folder, stage):
         if is_done and entries and (field(entries[0]["body"], "Mode") or "").startswith("DEGRADED"):
             err("DELIVERY-REPORT.md: Status DONE in a DEGRADED run (rule 21.6)")
         for fid in open_ids:
-            if fid not in text:
+            if not re.search(r"\b%s\b" % re.escape(fid), text):
                 err("DELIVERY-REPORT.md: open FINDING %s is not listed (rule 15.6)" % fid)
         for path in sorted(set(re.findall(r"`((?:audits|memos|evidence|prompts)/[^`\s<>]+)`", text))):
             if not (folder / path.split("#")[0]).is_file():

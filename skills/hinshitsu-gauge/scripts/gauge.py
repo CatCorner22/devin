@@ -43,8 +43,9 @@ def entries(text):
 
 
 def field(body, name):
-    m = re.search(r"^- %s:\s*(.+)$" % re.escape(name), body, re.M)
-    return m.group(1).strip() if m else None
+    # [ \t]* and not \s*: an empty field must not take the next line as its value.
+    m = re.search(r"^- %s:[ \t]*(.*)$" % re.escape(name), body, re.M)
+    return (m.group(1).strip() or None) if m else None
 
 
 def read_state(text):
@@ -59,7 +60,7 @@ def read_state(text):
             if not m or m.group(1) not in state or not event:
                 continue
             sid, event = m.group(1), event[0]
-            if event == "start" and state[sid] == "pending":
+            if event == "start":  # a later start re-opens a stage (rules 0.5 and 5.7)
                 state[sid] = "running"
             elif event == "end":
                 state[sid] = "done"
@@ -174,7 +175,8 @@ def svg_gauge(st):
         out.append('<rect x="60" y="%.1f" width="400" height="30" rx="4" fill="#c62828"/>' % (cy + 118))
         out.append('<text x="%.1f" y="%.1f" font-family="sans-serif" font-size="14" font-weight="bold" '
                    'text-anchor="middle" fill="#ffffff">STOPPED - blocker open: %s</text>' % (
-                       cx, cy + 138, esc(", ".join(st["blockers"]))))
+                       cx, cy + 138, esc("%d: %s%s" % (len(st["blockers"]), ", ".join(st["blockers"][:4]),
+                                              " ..." if len(st["blockers"]) > 4 else ""))))
     y = 60
     for sid, name, skill in STAGES:
         s = st["state"][sid]
