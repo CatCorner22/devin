@@ -19,12 +19,21 @@ Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`).
         - **F-7** DEFECT — `--oB`, `--xB`, a flag-shaped node, a `]` inside quoted text and an empty quoted label count as a label — overruled by the USER (E-59)
         - **F-8** FRAGILITY — a second diagram in a `~~~mermaid` or spaced fence is not read — overruled by the USER (E-60)
         - **F-9** STYLE — the message for `A ---> B` now shows the arrow as written — overruled by the USER (E-61)
-        - **F-10** DEFECT, BLOCKER under rule 17.4 — the report cites E-24 and E-62 for facts that E-23 and E-26 hold — open
-        - **F-11** DEFECT, BLOCKER under rule 17.4 — the report names E-5 as marked late; it is E-3 — open
-        - **F-12** DEFECT, BLOCKER under rule 17.4 — check 2 of the report promises the same text; the run's last message is shorter than the saved report — open
+      - **REC** the run record and `DELIVERY-REPORT.md`
+        - **F-10** DEFECT, BLOCKER under rule 17.4 — the report cites E-24 and E-62 for facts that E-23 and E-26 hold — FIXED (E-95)
+        - **F-11** DEFECT, BLOCKER under rule 17.4 — the report names E-5 as marked late; it is E-3 — FIXED (E-96)
+        - **F-12** DEFECT, BLOCKER under rule 17.4 — check 2 of the report promises the same text; the run's last message is shorter than the saved report — FIXED (E-97)
         - **F-13** FRAGILITY, BLOCKER under rule 17.4 — 9 output files of E-44 record the command with no quotes — open
-        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date — FIXED as a record fault (E-80)
+        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date — FIXED (E-98)
         - **F-15** STYLE — some output files hold no command line or no exit code — overruled by the USER (E-84)
+        - **F-16** BLOCKER under rule 17.4 — command 2 of `evidence/baseline-93311ab.txt` as saved does not give the saved output — open
+        - **F-17** BLOCKER — check 2 of the report said no finding has a higher class than DEFECT — open
+        - **F-18** BLOCKER — the report said 4 mismatches; the first final audit states 5 — open
+        - **F-19** BLOCKER — the report cited E-68 for "nobody ran Mermaid" — open
+        - **F-20** BLOCKER under rule 17.4 — 6 `PASS` cells cite a report that states no verdict for their rows — open
+        - **F-21** DEFECT — `SESSION-STATE.md` items 6 and 7 were out of date — FIXED as a record fault (E-100)
+        - **F-22** DEFECT — the list of this map put the 6 FINDINGS of the first final audit under D-3 — FIXED as a record fault (E-101)
+        - **F-23** STYLE — check 3 of the report held 2 "You see" sentences — open
   - **C2** `C -.-> D` fails with `no label`
   - **C3** `A -- reads --> B` passes
   - **C4** the 2 verdicts of commit 93311ab stay
@@ -53,12 +62,21 @@ graph TD
   D3 --> F7["F-7 DEFECT: circle end, flag node, bracket in quotes (overruled by the USER)"]
   D3 --> F8["F-8 FRAGILITY: other mermaid fences not read (overruled by the USER)"]
   D3 --> F9["F-9 STYLE: message shows the arrow as written (overruled by the USER)"]
-  REC["the run record and DELIVERY-REPORT.md"] --> F10["F-10 report cites the wrong entries (open)"]
-  REC --> F11["F-11 report names the wrong late entry (open)"]
-  REC --> F12["F-12 check 2 promises the same text (open)"]
+  WU1 --> REC["REC the run record and DELIVERY-REPORT.md"]
+  REC --> F10["F-10 report cites the wrong entries (FIXED)"]
+  REC --> F11["F-11 report names the wrong late entry (FIXED)"]
+  REC --> F12["F-12 check 2 promises the same text (FIXED)"]
   REC --> F13["F-13 saved commands have no quotes (open)"]
   REC --> F14["F-14 session state out of date (FIXED)"]
   REC --> F15["F-15 output files lack command or exit code (overruled by the USER)"]
+  REC --> F16["F-16 saved baseline command does not give its output (open)"]
+  REC --> F17["F-17 check 2 names the wrong highest class (open)"]
+  REC --> F18["F-18 report counts 4 mismatches, not 5 (open)"]
+  REC --> F19["F-19 wrong entry cited for Mermaid not run (open)"]
+  REC --> F20["F-20 6 PASS cells with no verdict in the report (open)"]
+  REC --> F21["F-21 session state items 6 and 7 out of date (FIXED)"]
+  REC --> F22["F-22 map list put 6 record findings under D-3 (FIXED)"]
+  REC --> F23["F-23 check 3 held 2 sentences to see (open)"]
   D1 --> F1["F-1 DEFECT: earlier link counts as a label (FIXED)"]
   D1 --> F2["F-2 DEFECT: quoted label fails (FIXED)"]
   D1 --> F3["F-3 DEFECT: second link on a line not tested (overruled by the USER)"]
@@ -72,4 +90,4 @@ graph TD
 | CRITERIA | 7 | 7 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 3 | 3 |
-| FINDINGS | 15 | 15 |
+| FINDINGS | 23 | 23 |

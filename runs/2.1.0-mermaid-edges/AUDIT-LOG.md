@@ -860,3 +860,140 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - SUB-AGENT identifier: a694304af49f4d7698d17b6c0e04bf1d https://app.devin.ai/sessions/a694304af49f4d7698d17b6c0e04bf1d
 - Report: `audits/final-audit-E-86.md`
 - Late: the SUB-AGENT started before this entry was written, since the entry holds the identifier that the start returns. The head of the branch moves by this commit while the SUB-AGENT clones.
+
+### E-87 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-16
+- Class: BLOCKER under rule 17.4 (a mismatch under (c)); by the glossary alone, a DEFECT
+- Where: `evidence/baseline-93311ab.txt`, command 2 (lines 4 to 14); cited by E-13 (A-3) and E-19
+- Trigger: at commit 93311ab, paste lines 4 to 14 into a shell. It prints `mermaidngraph: command not found` and a `TypeError`, and exits 1 (`baseline-cmd2-as-saved-output.txt`). The saved output shows 5 result lines and `exit: 0`. Cause: the here-document `<<SCRIPT` has no quotes, so the shell runs the backticks of "```mermaid" as a command. With `<<'SCRIPT'` the output equals the saved output (`baseline-cmd2-quoted-heredoc-output.txt`).
+- Violates: rule 17.3 and the glossary's EVIDENCE: the saved command is not the command that gave the saved output. The result itself reproduces. Same kind as F-13.
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 1
+- Lens: trust and controls
+- Forward work stopped: yes — no new work on the DELIVERABLE; the USER directed in E-83 that the run ends as `DELIVERED — NOT DONE` (exit (c) of rule 14.3)
+
+### E-88 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-17
+- Class: BLOCKER, class (d)
+- Where: `DELIVERY-REPORT.md` line 12 (check 2)
+- Trigger: line 12 reads "no finding of the run has a higher class" than DEFECT. Lines 31 and 42 to 45 of the same report, and E-73 to E-76, call F-10 to F-13 BLOCKERS under rule 17.4. Both cannot be true. If they are BLOCKERS, rule 19.2 points check 2 at the run that raised them, 2c6f057a….
+- Violates: rule 17.4 (b); rule 19.2 (check 2 names the run that raised the highest-class FINDING).
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 2
+- Lens: trust and controls
+- Forward work stopped: yes — no new work on the DELIVERABLE; the USER directed in E-83 that the run ends as `DELIVERED — NOT DONE` (exit (c) of rule 14.3)
+
+### E-89 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-18
+- Class: BLOCKER, class (d)
+- Where: `DELIVERY-REPORT.md` line 5
+- Trigger: line 5 reads "it found 4 mismatches in this report and the record" and cites `audits/final-audit-E-72.md`. Line 5 of that file reads "3 mismatches under (b), 1 under (c) and 1 under (e)": 5 mismatches, in 4 findings.
+- Violates: rule 17.4 (b).
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 3
+- Lens: trust and controls
+- Forward work stopped: yes — no new work on the DELIVERABLE; the USER directed in E-83 that the run ends as `DELIVERED — NOT DONE` (exit (c) of rule 14.3)
+
+### E-90 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-19
+- Class: BLOCKER, class (d)
+- Where: `DELIVERY-REPORT.md` line 23
+- Trigger: line 23 cites `[E-68]` for "Nobody … ran Mermaid itself". Open E-68: it covers the RECIPIENT task and the stability checks and does not name Mermaid. E-33, E-47 and the "Not examined" part of `audits/WU-1-r2-correctness-E-44.md` hold the fact.
+- Violates: rule 17.4 (b).
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 4
+- Lens: trust and controls
+- Forward work stopped: yes — no new work on the DELIVERABLE; the USER directed in E-83 that the run ends as `DELIVERED — NOT DONE` (exit (c) of rule 14.3)
+
+### E-91 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-20
+- Class: BLOCKER under rule 17.4 (a mismatch under (b)); by the glossary alone, a DEFECT
+- Where: `COVERAGE-LEDGER.md`, 6 `PASS` cells: the function rows `test_quoted_label_between_the_halves_passes`, `test_bare_dot_arrow_is_not_an_edge` and `test_earlier_link_is_not_the_label_of_a_later_arrow`, and the branch rows `tests/test_check.py:234`, `:239` and `:254`
+- Trigger: search `audits/WU-1-r2-correctness-E-44.md` for the 3 test names. The first 2 appear 0 times; the third appears 2 times, each inside a proposed fix. The report's list of branches covers lines 294 to 302 of the script only. So the cited report states no verdict for these 6 rows. What it does show: the whole suite of 81 tests passes, and its probe files give the right result on the same lines.
+- Violates: rule 10.3 (`PASS` with the EVIDENCE path) and rule 17.4 (b). Repair: cite `evidence/WU-1-r2-correctness-E-44/C6-suite.txt` with `F-1.txt`, `F-2.txt` and `F-4.txt` in those cells, or mark them UNVERIFIED.
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 5
+- Lens: trust and controls
+- Forward work stopped: yes — no new work on the DELIVERABLE; the USER directed in E-83 that the run ends as `DELIVERED — NOT DONE` (exit (c) of rule 14.3)
+
+### E-92 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-21
+- Class: DEFECT (record fault, rule 14.6; outside (a) to (e))
+- Where: `SESSION-STATE.md` items 6 and 7
+- Trigger: item 6 reads "`DELIVERY-REPORT.md` (draft, before the final audit)"; commits d7ee32e, d284995 and ae00d74 changed the report after the first final audit. Item 7, "Checks actually run: by AUDITORS", names the folders of E-31 and E-44 and omits `evidence/final-audit-E-72/`. Both lines are the same in commit 8b740fe.
+- Violates: rule 8.1 (the state file holds the current state: artifacts that exist, checks actually run).
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 7
+- Lens: trust and controls
+- Forward work stopped: no
+
+### E-93 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-22
+- Class: DEFECT (record fault, rule 14.6; outside (a) to (e))
+- Where: `MINDMAP.md` lines 22 to 27 and the diagram
+- Trigger: the list puts F-10 to F-15 under decision D-3; the diagram puts them under "the run record and DELIVERY-REPORT.md". The diagram's node for the record is absent from the list. F-10 to F-15 are faults in the record, not in D-3, so the list is wrong. Both places call F-14 "FIXED"; E-85 states that this closure rests on no rule.
+- Violates: rule 9.2 (the list and the diagram hold the same nodes); rule 14.6.
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 8
+- Lens: trust and controls
+- Forward work stopped: no
+
+### E-94 · 2026-11-18T20:52:03Z · FINDING · auditor: final
+
+- ID: F-23
+- Class: STYLE
+- Where: `DELIVERY-REPORT.md` line 13 (check 3)
+- Trigger: the line holds 2 "You see:" sentences. The second, "the word `passed` or `not passed`", is the form's text left in.
+- Violates: rule 19.2 (each check names 1 thing to see).
+- Raised by: final AUDITOR (second run), LAUNCH E-86, `audits/final-audit-E-86.md`, finding 9
+- Lens: trust and controls
+- Forward work stopped: no
+
+### E-95 · 2026-11-18T20:52:03Z · RESOLUTION · orchestrator
+
+- Finding: F-10
+- Result: FIXED
+- Change: `DELIVERY-REPORT.md` (E-79)
+- Re-audit: `audits/final-audit-E-86.md` by the second final AUDITOR, a694304af49f4d7698d17b6c0e04bf1d, which did not raise F-10; its table `FINDINGS re-run (rule 14.3)` states for F-10 that the trigger no longer gives its result.
+
+### E-96 · 2026-11-18T20:52:03Z · RESOLUTION · orchestrator
+
+- Finding: F-11
+- Result: FIXED
+- Change: `DELIVERY-REPORT.md` (E-79)
+- Re-audit: `audits/final-audit-E-86.md` by the second final AUDITOR, a694304af49f4d7698d17b6c0e04bf1d, which did not raise F-11; its table `FINDINGS re-run (rule 14.3)` states for F-11 that the trigger no longer gives its result.
+
+### E-97 · 2026-11-18T20:52:03Z · RESOLUTION · orchestrator
+
+- Finding: F-12
+- Result: FIXED
+- Change: `DELIVERY-REPORT.md` (E-79)
+- Re-audit: `audits/final-audit-E-86.md` by the second final AUDITOR, a694304af49f4d7698d17b6c0e04bf1d, which did not raise F-12; its table `FINDINGS re-run (rule 14.3)` states for F-12 that the trigger no longer gives its result.
+
+### E-98 · 2026-11-18T20:52:03Z · RESOLUTION · orchestrator
+
+- Finding: F-14
+- Result: FIXED
+- Change: `SESSION-STATE.md` (commit of E-80 and later)
+- Re-audit: `audits/final-audit-E-86.md` by the second final AUDITOR, a694304af49f4d7698d17b6c0e04bf1d, which did not raise F-14; its table `FINDINGS re-run (rule 14.3)` states for F-14 that the trigger no longer gives its result. This entry, not E-80, is the closure of F-14 (E-85).
+
+### E-99 · 2026-11-18T20:52:03Z · CHECK · orchestrator
+
+- What: the second final audit (E-86). Its last line reads `not passed`. Its finding 6 is F-13 again: the trigger still gives its result; F-13 stays open, and no new FINDING entry is written for it. Its findings 1 to 5 and 7 to 9 are F-16 to F-23 (E-87 to E-94).
+- The USER's direction (E-83): "if the check does not end passed, end the run as delivered, not done, without asking again." No card is sent and no further SUB-AGENT runs. 5 `LAUNCH` entries of the 5 allowed.
+- Changes made after that report, none confirmed by a SUB-AGENT: `DELIVERY-REPORT.md` — check 2 now names the run that raised the first BLOCKER (F-17); the count of mismatches reads "5 mismatches, in 4 findings" (F-18); "nobody ran Mermaid" cites `audits/WU-1-r2-correctness-E-44.md` (F-19); check 3 holds 1 "You see" sentence (F-23); V5 cites the second final AUDITOR's test. `COVERAGE-LEDGER.md` — the 6 `PASS` cells that F-20 names now read `UNVERIFIED`: the cited report states no verdict for those 6 rows. F-16: the file `evidence/baseline-93311ab.txt` stays as saved; the command that gives its saved output is the same text with `<<'SCRIPT'` in place of `<<SCRIPT` [`audits/final-audit-E-86.md`, finding 1]; the ORCHESTRATOR typed the command into the file and did not let the command write it (rule 17.3).
+- F-16 to F-20 and F-13 are open BLOCKERS at delivery. F-23 (STYLE) is open: the text is changed, and no SUB-AGENT confirmed it.
+
+### E-100 · 2026-11-18T20:52:25Z · RESOLUTION · orchestrator
+
+- Finding: F-21
+- Result: FIXED
+- Record fault: yes (rule 14.6) — `evidence/record-check-E-101.txt`
+- Change: `SESSION-STATE.md` items 6 and 7 rewritten: the report is no longer called a draft before the final audit, and the 2 folders of the final AUDITORS are named under the checks run.
+
+### E-101 · 2026-11-18T20:52:25Z · RESOLUTION · orchestrator
+
+- Finding: F-22
+- Result: FIXED
+- Record fault: yes (rule 14.6) — `evidence/record-check-E-101.txt`
+- Change: `MINDMAP.md`: the list holds a node REC, "the run record and `DELIVERY-REPORT.md`", under WU-1, as the diagram does, and the FINDINGS of both final audits are under it in the list and in the diagram. F-14 reads FIXED with the entry E-98, not E-80.
