@@ -211,4 +211,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    try:
+        sys.exit(main(sys.argv))
+    except (ValueError, UnicodeDecodeError, OSError) as exc:  # a message, not a traceback
+        print("hinshitsu gauge: the log cannot be read: %s: %s" % (type(exc).__name__, exc), file=sys.stderr)
+        sys.exit(2)

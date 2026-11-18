@@ -310,6 +310,29 @@ class Check(unittest.TestCase):
         edit(d, "AUDIT-LOG.md", "- Re-audit: `audits/WU-1-reaudit-E-21.md`", "- Re-audit: `audits/WU-1-correctness-E-19.md`")
         self.assertFails(d, "matches no LAUNCH entry later than the FINDING")
 
+    def test_log_that_opens_with_the_probe_launch_passes(self):
+        d = good_run()
+        log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+        head, rest = log.split("### E-1 ", 1)
+        nums = re.sub(r"### E-(\d+) ", lambda m: "### E-%d " % (int(m.group(1)) + 1), "### E-1 " + rest)
+        nums = re.sub(r"-E-(\d+)\.md", lambda m: "-E-%d.md" % (int(m.group(1)) + 1), nums)
+        probe = ("### E-1 · 2026-01-01T00:00Z · LAUNCH · orchestrator\n\n- Role: capability probe\n"
+                 "- Scope: `prompts/WU-1-correctness.md`\n- Commit under review: no git\n"
+                 "- SUB-AGENT identifier: run-probe\n- Report: `evidence/capability-probe.md`\n\n")
+        (d / "AUDIT-LOG.md").write_text(head + probe + nums.replace("Planned SUB-AGENT runs: 3", "Planned SUB-AGENT runs: 4"),
+                                        encoding="utf-8")
+        for f in list((d / "audits").iterdir()):
+            m = re.search(r"-E-(\d+)\.md$", f.name)
+            f.rename(f.with_name(f.name.replace("-E-%s.md" % m.group(1), "-E-%d.md" % (int(m.group(1)) + 1))))
+        ledger = (d / "COVERAGE-LEDGER.md").read_text(encoding="utf-8")
+        (d / "COVERAGE-LEDGER.md").write_text(ledger.replace("-E-19.md", "-E-20.md"), encoding="utf-8")
+        report = (d / "DELIVERY-REPORT.md").read_text(encoding="utf-8")
+        report = re.sub(r"-E-(\d+)\.md", lambda m: "-E-%d.md" % (int(m.group(1)) + 1), report)
+        report = re.sub(r"\bE-(\d+)\b(?!\.md)", lambda m: "E-%d" % (int(m.group(1)) + 1), report)
+        (d / "DELIVERY-REPORT.md").write_text(report, encoding="utf-8")
+        sync_state(d)
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
     def test_missing_final_audit_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")

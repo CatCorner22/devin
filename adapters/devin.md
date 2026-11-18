@@ -14,7 +14,7 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 |---|---|---|
 | 1 scope written by the orchestrator | Web: the coordinator session writes each child session's prompt. CLI: the `run_subagent` tool takes the task text. | https://docs.devin.ai/work-with-devin/advanced-capabilities ; https://docs.devin.ai/cli/subagents |
 | 2 no builder conversation | Web: each child session runs in its own isolated machine. CLI: a subagent does not receive the parent's history. | same pages |
-| 3 report returns whole | Web: observed in the run of 2026-11-18 (42 child sessions; each report was read from the parent). The cited pages do not state it: UNVERIFIED from the documents. CLI: `read_subagent` returns the subagent's response. | `skills/hinshitsu/EXAMPLE.md` ; https://docs.devin.ai/cli/subagents |
+| 3 report returns whole | Web: observed in the run of 2026-11-18 (33 `LAUNCH` entries; each report was read from the parent). The cited pages do not state it: UNVERIFIED from the documents. CLI: `read_subagent` returns the subagent's response. | `skills/hinshitsu/example/run/AUDIT-LOG.md` ; https://docs.devin.ai/cli/subagents |
 | 4 identifier | Web: observed in the run of 2026-11-18 (each child session had a session ID and a URL). The cited pages do not state it: UNVERIFIED from the documents. CLI: UNVERIFIED — test in the run under rule 0.2. | `skills/hinshitsu/EXAMPLE.md` |
 | 5 live test call | Performed in the run of 2026-11-18 recorded in this repository. | `skills/hinshitsu/EXAMPLE.md` |
 

@@ -10,7 +10,7 @@ An assistant that writes "done" has produced a sentence, not evidence. hinshitsu
 
 ## The 7 skills
 
-Each skill stands in its own folder and works alone. The conductor calls the others in order.
+Each skill stands in its own folder. The conductor calls the others in order; without a conductor run a skill produces no verdict.
 
 | Skill | What it does |
 |---|---|
@@ -61,7 +61,7 @@ An adapter that was never run on its surface says so in its first line. Each ada
 
 ## Install
 
-The repository is a plugin. `plugin.json` at the root is the manifest in the Agent Plugins format; `.claude-plugin/plugin.json` is the manifest Claude Code reads. The skills are the folders under `skills/`. Each adapter states how its surface installs a plugin or a skill folder.
+The repository is a plugin. `plugin.json` at the root is the manifest in the Agent Plugins format; `.claude-plugin/plugin.json` is the manifest Claude Code reads. The skills are the folders under `skills/`. Each adapter states how its surface installs the plugin. A copy of the skill folders alone is not a supported install.
 
 ## How to tell a real run from a claimed one
 
@@ -91,7 +91,7 @@ See [`TESTING.md`](TESTING.md) for the commands.
 
 ## Status
 
-Version 2.0.0. Independent sessions reviewed the finished set and did not pass it; the amendments made in answer are not yet reviewed. Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
+Version 2.1.0. Independent sessions reviewed the set 2 times and did not pass it either time; the amendments made in answer to the second review are not yet reviewed. Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
 
 License: MIT (`LICENSE`).
 

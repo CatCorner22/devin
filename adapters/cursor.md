@@ -34,4 +34,5 @@ Read on 2026-11-18. A vendor changes its product; rule 0.2 requires a live probe
 ## Install
 
 - Plugin: this repository holds a root `plugin.json` in the Agent Plugins form that Cursor reads (https://cursor.com/docs/plugins, read 2026-11-18).
+- Install the whole repository. The 7 skill folders need `scripts/`, `templates/` and `skills/hinshitsu/GLOSSARY.md`; a copy of the skill folders alone is not a supported install.
 - Rule file: to load the conductor in every chat, add a `.cursor/rules/hinshitsu.mdc` file with `alwaysApply: true` whose body is this 1 line: "Before any task that produces something a person will receive, read `skills/hinshitsu/SKILL.md` and follow it." The rule file points at the skill; it copies no rule.

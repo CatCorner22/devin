@@ -105,10 +105,17 @@ def check(folder, stage):
     for e in entries:
         by_type.setdefault(e["type"], []).append(e)
 
-    if not entries or entries[0]["type"] != "CAPABILITY":
-        err("AUDIT-LOG.md: first entry is not CAPABILITY (rule 0.1)")
+    # Rule 0.1: the probe's LAUNCH entry is E-1 and the CAPABILITY entry is E-2. A log written before
+    # that amendment opens with the CAPABILITY entry; both forms are read.
+    if (len(entries) > 1 and entries[0]["type"] == "LAUNCH" and entries[1]["type"] == "CAPABILITY"
+            and "capability-probe" in (field(entries[0]["body"], "Report") or "")):
+        entries_cap = entries[1]
     else:
-        cap = entries[0]["body"]
+        entries_cap = entries[0] if entries else None
+    if not entries_cap or entries_cap["type"] != "CAPABILITY":
+        err("AUDIT-LOG.md: the log does not open with the probe's LAUNCH entry and a CAPABILITY entry (rule 0.1)")
+    else:
+        cap = entries_cap["body"]
         for part in range(1, 6):
             if not re.search(r"SWARM-CAPABLE part %d[^\n]*:\s*(yes|no)\b" % part, cap):
                 err("AUDIT-LOG.md: E-1 does not answer SWARM-CAPABLE part %d (rule 0.1)" % part)
@@ -142,7 +149,11 @@ def check(folder, stage):
             # Only the Artifacts field names files to test; other fields may quote text that looks like a path.
             # A path is tested against the RUN FOLDER and against each folder above it, never against the working directory.
             for path in re.findall(r"`([^`\s]+\.[A-Za-z0-9]+)`", field(e["body"], "Artifacts") or ""):
-                bases = [folder.resolve()] + list(folder.resolve().parents)
+                bases = [folder.resolve()]
+                for b in folder.resolve().parents:  # up to the root of the repository, no further
+                    bases.append(b)
+                    if (b / ".git").exists():
+                        break
                 if not any((b / path).exists() for b in bases):
                     err("AUDIT-LOG.md: E-%d names artifact %s, which does not exist (rule 0.7)" % (e["n"], path))
         if ev != "progress":
@@ -365,7 +376,7 @@ def check(folder, stage):
             err("DELIVERY-REPORT.md: Status DONE with open FINDINGS %s (DONE, parts 2 and 3)" % ", ".join(open_ids))
         if is_done and unverified_criteria:
             err("DELIVERY-REPORT.md: Status DONE with %d UNVERIFIED CRITERION rows (rule 22.4)" % len(unverified_criteria))
-        if is_done and entries and (field(entries[0]["body"], "Mode") or "").startswith("DEGRADED"):
+        if is_done and any((field(c["body"], "Mode") or "").startswith("DEGRADED") for c in by_type.get("CAPABILITY", [])):
             err("DELIVERY-REPORT.md: Status DONE in a DEGRADED run (rule 21.6)")
         for fid in open_ids:
             if not re.search(r"\b%s\b" % re.escape(fid), text):
@@ -499,4 +510,8 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    sys.exit(main(sys.argv))
+    try:
+        sys.exit(main(sys.argv))
+    except (ValueError, UnicodeDecodeError, OSError) as exc:  # a verdict, not a traceback (rule 17.5)
+        print("FAIL the record cannot be read: %s: %s" % (type(exc).__name__, exc))
+        sys.exit(1)

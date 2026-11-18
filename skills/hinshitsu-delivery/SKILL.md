@@ -7,13 +7,13 @@ description: The delivery skill of hinshitsu - nothing is reported as finished o
 
 Part of the hinshitsu contract. `../hinshitsu/GLOSSARY.md` defines every term in capitals. `../hinshitsu/SKILL.md` (the conductor) sets precedence, roles, custody of reports (rules 1.5 to 1.8) and the 12 STAGES. An imperative sentence binds the ORCHESTRATOR; `must` binds the actor named; `may` grants a discretion that nobody else has. Rules are cited by section and number. Section 17, with section 1, controls over every other section.
 
-This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (section 19) and S12 (section 20); rules 17.1 to 17.3 and 17.6 apply to every message in every STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`. Without a conductor run this skill produces no verdict: say so to the USER and start the conductor.
+This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (section 19) and S12 (section 20); rules 17.1 to 17.3 and 17.6 apply to every message in every STAGE. Before acting, read sections 0 and 1 of the conductor (`hinshitsu`) and `GLOSSARY.md`; the `STAGE` start entry states the SHA-256 of each (rule 0.7). Without a conductor run this skill produces no verdict: say so to the USER and start the conductor.
 
 ## 17. Anti-pretend enforcement
 
 1. **Cite or mark.** Every claim in the delivery report, and in any message that reports progress, must end with a citation in square brackets to EVIDENCE: a file path, a command-output file, a screenshot, or an `AUDIT-LOG.md` entry ID. A claim with no citation is ASSERTED. A statement about the BUILDER's or the ORCHESTRATOR's own work counts only with a source under rule 1.8.
 2. **ASSERTED fails the gate.** 1 ASSERTED claim fails the gate: the DELIVERABLE is not DONE until the claim is cited or removed.
-3. **Re-runnable checks.** Record each check as a command, or as a numbered list of steps, that another party can run again. Save the command and its complete output together in 1 file under `evidence/`. Do not trim output to its last lines. Do not retype output from memory.
+3. **Re-runnable checks.** Record each check as a command, or as a numbered list of steps, that another party can run again. Save the command and its complete output together in 1 file under `evidence/`. Do not trim output to its last lines. Do not retype output: the command itself writes the file under `evidence/` (a redirect, or the tool's saved output), and the entry that cites the file states the command.
 4. **Audit of the audit.** After the last swarm round and the S9 attack, and before the delivery report goes out, start 1 SUB-AGENT that built nothing and audited nothing in the run: the final AUDITOR. Give it the RUN FOLDER, the DELIVERABLE and the draft report. It must:
    (a) open every path that the report and the ledger cite, and list each one that is missing;
    (b) for each cited file, state whether it shows what the citing claim says;
@@ -27,7 +27,7 @@ This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (
 
    It writes `audits/final-audit-<LAUNCH ID>.md`. Each mismatch under (a) to (e) is a BLOCKER of class (d). The branch that RECIPIENTS use moves only to the commit that this report names as `passed` (rule 1.9). A change to the DELIVERABLE after this report makes the report stale; run it again.
 5. **Idempotence.** A check that gives a different verdict on a second run is a FRAGILITY, and its ledger cell is UNVERIFIED until 2 runs in a row agree.
-6. **No pretended action.** Do not describe an action as taken unless a tool call in this run took it. Do not report a SUB-AGENT's work unless its saved report exists.
+6. **No pretended action.** Do not describe an action as taken unless a log entry or a file under `evidence/` shows it. Do not report a SUB-AGENT's work unless its saved report exists.
 7. **What the checker proves.** `scripts/hinshitsu_check.py` tests the form of the record: that entries, citations, cells and files exist and agree with each other. It does not prove that any check ran or that any report is true. Never cite its exit code as proof that the DELIVERABLE works.
 
 ## 19. Delivery report

@@ -319,3 +319,23 @@ Round 2 of the post-build review, ordered by the USER in E-019. Commit under rev
 |---|---|---|---|
 | Red cell, amended skill set | `prompts/round2-red-cell.txt` | https://app.devin.ai/sessions/b4cda1b3418a42b5a523cacbfebe2070 | `audits/round2-red-cell.md` |
 | Auditor, C1 to C15 and re-run of earlier findings | `prompts/round2-auditor.txt` | https://app.devin.ai/sessions/b2f609ee7df940a2911efd2d9cbe6ce5 | `audits/round2-auditor.md` |
+
+### E-022 · 2026-11-18T19:24Z · CHECK · orchestrator
+
+Round 2 reports, saved whole, each with the session identifier on its first line. Both examined commit `874ffb2`.
+
+| Report | Verdict, in the report's words | Count |
+|---|---|---|
+| `audits/round2-red-cell.md` | "SKILL SET FAILS" | 18 findings, 2 of them BLOCKERS; of the 18 earlier findings 9 no longer reproduce, 7 reproduce in whole or in part, 1 could not be tested, 1 reproduces by a new route |
+| `audits/round2-auditor.md` | C1, C2, C4, C9, C10, C11, C13, C14 PASS; C3, C6 PASS with DEFECTS; C7 PASS on the checker test; C5, C8, C12 FAIL; C15 UNVERIFIED | 20 findings, 3 of them BLOCKERS; of the 25 earlier findings 10 no longer reproduce |
+
+### E-023 · 2026-11-18T19:24Z · DECISION · orchestrator
+
+Answers to round 2, listed in `CHANGELOG.md` under 2.1.0. No independent session has reviewed them: each is ASSERTED.
+
+Left open:
+- Red cell 1: a record typed by hand with made-up identifiers passes the script. DONE part 7 now needs the USER's quoted statement that the USER opened the final AUDITOR's run. The defence is a person, not a script.
+- Auditor 2 (C8): this `build-record/` has no mind map, ledger or session state, and its log fails the checker. The ORCHESTRATOR did not write them after the fact: a record written afterwards would be a reconstruction, not a record. The USER decides whether C8 changes.
+- Auditor 14 in part (inputs other than the 3 error types now caught), 18 (glossary BLOCKER classes; report names in rules 5.3 and 6.2; `--record` scope; Mermaid arrow forms; inflected banned words in the checker), 20 (wording). Red cell 17 (gauge text), and the terms seeder, referee and round.
+- C15: no plugin install was run on any surface. Every surface but Devin web: no run.
+
