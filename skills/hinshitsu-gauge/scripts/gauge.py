@@ -24,18 +24,22 @@ STAGES = [
     ("S11", "Delivery report", "hinshitsu-delivery"),
     ("S12", "Lessons", "hinshitsu-delivery"),
 ]
+EVENTS = ("start", "end", "skipped", "progress")
+STOP = "STOPPED — blocker open"
+NOT_PROOF = "the log's state, not proof of DONE"
 HEADING = re.compile(r"^### E-(\d+) · ([^·]*) · ([A-Z-]+) · (.*)$")
 
 
 def entries(text):
-    """Yield (number, type, body) for each log entry."""
+    """Yield (number, type, body) for each log entry. A heading that does not have the form of
+    rule 9.4 yields (None, None, heading), so that the caller can count it."""
     current = None
     for line in text.splitlines():
         m = HEADING.match(line)
-        if m:
+        if m or line.startswith("### E-"):
             if current:
                 yield current[0], current[1], "\n".join(current[2])
-            current = (int(m.group(1)), m.group(3), [])
+            current = (int(m.group(1)), m.group(3), []) if m else (None, None, [line])
         elif current:
             current[2].append(line)
     if current:
@@ -53,11 +57,15 @@ def read_state(text):
     state = {s[0]: "pending" for s in STAGES}
     units = None
     blockers, closed = [], set()
-    for _, kind, body in entries(text):
-        if kind == "STAGE":
+    unread = 0
+    for number, kind, body in entries(text):
+        if number is None:
+            unread += 1
+        elif kind == "STAGE":
             m = re.match(r"(S\d+)\b", field(body, "Stage") or "")
             event = (field(body, "Event") or "").split()[0:1]
-            if not m or m.group(1) not in state or not event:
+            if not m or m.group(1) not in state or not event or event[0] not in EVENTS:
+                unread += 1
                 continue
             sid, event = m.group(1), event[0]
             if event == "start":  # a later start re-opens a stage (rules 0.5 and 5.7)
@@ -74,7 +82,7 @@ def read_state(text):
         elif kind == "FINDING":
             if (field(body, "Class") or "").startswith("BLOCKER"):
                 fid = field(body, "ID")
-                if fid:
+                if fid and fid not in blockers:
                     blockers.append(fid)
         elif kind == "RESOLUTION":
             fid = field(body, "Finding")
@@ -96,19 +104,24 @@ def read_state(text):
         "complete": complete,
         "percent": int(round(100 * share / len(STAGES))),
         "current": current,
-        "started": bool(running) or complete > 0,
+        "unread": unread,
     }
+
+
+def blocker_list(blockers, shown=4):
+    """The count, then the first IDs: the whole list does not fit the picture."""
+    return "%d: %s%s" % (len(blockers), ", ".join(blockers[:shown]), " ..." if len(blockers) > shown else "")
 
 
 def text_gauge(st):
     width = 24
     filled = int(round(width * st["percent"] / 100))
     marks = {"done": "x", "skipped": "-", "running": ">", "pending": " "}
-    lines = ["hinshitsu gauge  [%s%s] %d%%  %d of %d stages complete" % (
-        "#" * filled, "." * (width - filled), st["percent"], st["complete"], len(STAGES))]
+    lines = ["hinshitsu gauge  [%s%s] %d%%  %d of %d stages complete (%s)" % (
+        "#" * filled, "." * (width - filled), st["percent"], st["complete"], len(STAGES), NOT_PROOF)]
     cur = st["current"]
     if cur is None:
-        lines.append("All 12 stages have an end entry. This is the log's state, not proof of DONE.")
+        lines.append("All 12 stages have an end or skipped entry.")
     else:
         verb = "Now" if st["state"][cur[0]] == "running" else "Next"
         extra = ""
@@ -116,7 +129,9 @@ def text_gauge(st):
             extra = "  (work units: %d of %d)" % st["units"]
         lines.append("%s: %s %s  -> skill: %s%s" % (verb, cur[0], cur[1], cur[2], extra))
     if st["blockers"]:
-        lines.append("STOPPED - blocker open: %s" % ", ".join(st["blockers"]))
+        lines.append("%s: %s" % (STOP, blocker_list(st["blockers"])))
+    if st["unread"]:
+        lines.append("%d entries could not be read (rule 9.4, rule 0.7); the gauge leaves them out." % st["unread"])
     for sid, name, skill in STAGES:
         lines.append("  [%s] %-3s %-30s %s" % (marks[st["state"][sid]], sid, name, skill))
     lines.append("  x done   - skipped   > running   (blank) pending")
@@ -163,7 +178,7 @@ def svg_gauge(st):
                'fill="#424242">%d of %d stages complete</text>' % (cx, cy + 84, st["complete"], n))
     cur = st["current"]
     if cur is None:
-        line = "All 12 stages have an end entry"
+        line = "All 12 stages have an end or skipped entry"
     else:
         verb = "Now" if st["state"][cur[0]] == "running" else "Next"
         line = "%s: %s %s (%s)" % (verb, cur[0], cur[1], cur[2])
@@ -174,9 +189,8 @@ def svg_gauge(st):
     if st["blockers"]:
         out.append('<rect x="60" y="%.1f" width="400" height="30" rx="4" fill="#c62828"/>' % (cy + 118))
         out.append('<text x="%.1f" y="%.1f" font-family="sans-serif" font-size="14" font-weight="bold" '
-                   'text-anchor="middle" fill="#ffffff">STOPPED - blocker open: %s</text>' % (
-                       cx, cy + 138, esc("%d: %s%s" % (len(st["blockers"]), ", ".join(st["blockers"][:4]),
-                                              " ..." if len(st["blockers"]) > 4 else ""))))
+                   'text-anchor="middle" fill="#ffffff">%s: %s</text>' % (
+                       cx, cy + 138, esc(STOP), esc(blocker_list(st["blockers"]))))
     y = 60
     for sid, name, skill in STAGES:
         s = st["state"][sid]
@@ -195,7 +209,8 @@ def svg_gauge(st):
 
 def main(argv):
     args = [a for a in argv[1:] if not a.startswith("--")]
-    if len(args) != 1:
+    options = [a for a in argv[1:] if a.startswith("--")]
+    if len(args) != 1 or any(o != "--no-svg" for o in options):
         print(__doc__.strip(), file=sys.stderr)
         return 2
     folder = Path(args[0])
@@ -204,7 +219,7 @@ def main(argv):
         print("gauge: no AUDIT-LOG.md in %s" % folder, file=sys.stderr)
         return 2
     st = read_state(log.read_text(encoding="utf-8"))
-    if "--no-svg" not in argv:
+    if not options:
         (folder / "GAUGE.svg").write_text(svg_gauge(st), encoding="utf-8")
     print(text_gauge(st))
     return 0
@@ -214,5 +229,6 @@ if __name__ == "__main__":
     try:
         sys.exit(main(sys.argv))
     except (ValueError, UnicodeDecodeError, OSError) as exc:  # a message, not a traceback
-        print("hinshitsu gauge: the log cannot be read: %s: %s" % (type(exc).__name__, exc), file=sys.stderr)
+        print("hinshitsu gauge: cannot read the log or write the picture: %s: %s" % (type(exc).__name__, exc),
+              file=sys.stderr)
         sys.exit(2)

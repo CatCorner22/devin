@@ -58,10 +58,10 @@ class ReadState(unittest.TestCase):
 
 
 class Output(unittest.TestCase):
-    def run_script(self, log):
+    def run_script(self, log, *options):
         d = Path(tempfile.mkdtemp())
         (d / "AUDIT-LOG.md").write_text(log, encoding="utf-8")
-        r = subprocess.run([sys.executable, str(SCRIPT), str(d)], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, str(SCRIPT), str(d)] + list(options), capture_output=True, text=True)
         return d, r
 
     def test_writes_svg_and_text_that_agree(self):
@@ -81,8 +81,41 @@ class Output(unittest.TestCase):
 
     def test_blocker_shows_stop_in_both(self):
         d, r = self.run_script("### E-1 · t · FINDING · a\n- ID: F-7\n- Class: BLOCKER\n")
-        self.assertIn("STOPPED - blocker open: F-7", r.stdout)
-        self.assertIn("STOPPED - blocker open: 1: F-7", (d / "GAUGE.svg").read_text(encoding="utf-8"))
+        self.assertIn("STOPPED — blocker open: 1: F-7", r.stdout)
+        self.assertIn("STOPPED — blocker open: 1: F-7", (d / "GAUGE.svg").read_text(encoding="utf-8"))
+
+    # --- round-3 code review, bugs 38 to 41; round-2 red cell, finding 17 ---
+
+    def test_entries_that_cannot_be_read_are_counted(self):
+        log = ("### E-1 - t - STAGE - orchestrator\n- Stage: S1\n- Event: end\n"   # wrong separator
+               + stage(2, "S2", "ended") + stage(3, "S13", "end") + stage(4, "S3", "end"))
+        d, r = self.run_script(log)
+        self.assertIn("3 entries could not be read", r.stdout)
+        self.assertIn("1 of 12 stages complete", r.stdout)
+
+    def test_mistyped_option_is_a_usage_error(self):
+        d, r = self.run_script(stage(1, "S1", "end"), "--nosvg")
+        self.assertEqual(r.returncode, 2)
+        self.assertFalse((d / "GAUGE.svg").exists())
+
+    def test_all_skipped_is_not_called_an_end_entry(self):
+        d, r = self.run_script("".join(stage(i, "S%d" % i, "skipped") for i in range(1, 13)))
+        self.assertIn("All 12 stages have an end or skipped entry", r.stdout)
+        self.assertNotIn("have an end entry", (d / "GAUGE.svg").read_text(encoding="utf-8"))
+
+    def test_bar_line_says_it_is_not_proof_of_done(self):
+        d, r = self.run_script(stage(1, "S1", "end"))
+        self.assertIn("not proof of DONE", r.stdout.splitlines()[0])
+
+    def test_blocker_logged_2_times_is_listed_1_time(self):
+        finding = "### E-%d · t · FINDING · a\n- ID: F-7\n- Class: BLOCKER\n"
+        d, r = self.run_script(finding % 1 + finding % 2)
+        self.assertIn("STOPPED — blocker open: 1: F-7", r.stdout)
+
+    def test_overruled_blocker_stays_open(self):
+        d, r = self.run_script("### E-1 · t · FINDING · a\n- ID: F-7\n- Class: BLOCKER\n"
+                               "### E-2 · t · OVERRULE · a\n- Finding: F-7\n")
+        self.assertIn("STOPPED — blocker open: 1: F-7", r.stdout)
 
     def test_svg_is_well_formed_and_escapes(self):
         import xml.dom.minidom
