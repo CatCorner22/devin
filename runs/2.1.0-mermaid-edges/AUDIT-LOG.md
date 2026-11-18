@@ -688,3 +688,9 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 
 - What: S8, sections 11 and 12. No AUDITOR performed a RECIPIENT task and no AUDITOR ran a stability check: a `CORE` run has 2 AUDITORS (rule 0.5), and the 1 SUB-AGENT run left of the 4 the USER allowed (E-37) is the final AUDITOR's. The BUILDER must not perform these checks (rule 11.2).
 - Result: recipient-side verification and stability testing are UNVERIFIED — not run (rule 22.1). The RSV and STAB cells of `COVERAGE-LEDGER.md` read `N/A` — CORE, as rule 0.5 words it (`FRICTION.md` item 11). The delivery report lists both under what was not proven.
+
+### E-69 · 2026-11-18T20:18:54Z · STAGE · orchestrator
+
+- Stage: S8
+- Event: end
+- Artifacts: `COVERAGE-LEDGER.md` (the RSV and STAB columns)
