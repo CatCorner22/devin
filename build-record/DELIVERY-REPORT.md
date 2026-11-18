@@ -4,11 +4,13 @@ Status: `DELIVERED — NOT DONE`. Paths are relative to the root of the reposito
 
 ## Summary
 
-The repository holds 7 skills, 1 glossary, templates, 7 adapters, 2 plugin manifests, 3 scripts with 134 unit tests, 1 worked example and the record of 1 run on a real task. Independent sessions reviewed the set 3 times and did not pass it: 2 red cells said "SKILL SET FAILS", and a line-by-line review of the scripts said "SCRIPTS UNSOUND" with 41 bugs, 38 of them now answered in version 2.2.0 [E-022, E-025 to E-027; `CHANGELOG.md`]. No independent session has reviewed version 2.2.0.
+Version 3.1.0. The repository holds 7 skills for surfaces with sub-agents, 2 single-assistant skills for ordinary Claude chat and ordinary ChatGPT, 1 glossary, templates, 7 adapters, 2 plugin manifests, 5 scripts with 187 unit tests, 3 zip files, 1 worked example and the records of 2 runs on real tasks.
 
-**What the first real run showed** [`build-record/audits/round3-real-run.md`]. A fresh agent used version 2.1.0 to fix a real fault in the checker. Independent sessions found 9 faults that the builder had missed, 1 of them a regression the fix itself made. The budget rule stopped the run at its planned 3 sub-agent runs and asked before spending more. The run did not reach `DONE`: both final audits failed on faults in the agent's report and record (a wrong entry number in a citation, a stale line in a state file), none in the fix. It used 5 sub-agent runs.
+**What was proven.** In 2 runs on real tasks, independent sessions found 16 faults that the builder had missed, 1 of them a regression [`build-record/audits/round3-real-run.md`, `round4-proof-run.md`]. The budget rule stopped both runs at the planned number of sub-agent runs and asked. The scripts pass their own 187 tests.
 
-**What that means.** The skills do their main job: independent checkers catch faults that the builder misses. They do not yet reach `DONE` at a cost a small task can bear, because every slip in the hand-kept record stops the run and needs a new sub-agent. No run made with the skills has ended `DONE`.
+**What was not proven.** No run made with the skills has ended `DONE`: both real runs and the worked example ended `DELIVERED — NOT DONE`. Version 3.1.0 changes the rules that caused this (what stops a run, accepted limits, the end of the audit rounds); no independent session has reviewed it and no run has used it. No file was run on Claude, ChatGPT, Claude Code, Codex, Cursor, Gemini CLI, Muse Code CLI or Kimi Code CLI. 3 independent reviews of earlier versions did not pass the set [E-022, E-025].
+
+**What that means.** The skills do their main job: independent checkers catch faults that the builder misses. Whether a run can now finish at a cost a small task can bear is unknown until 1 run is made under 3.1.0.
 
 ## Check it yourself in 5 minutes
 
@@ -67,7 +69,8 @@ The USER, 2026-11-18 14:00 EST: "I agree with all of your recommendations.  Plea
 
 ## What you need to decide next
 
-1. **Version 3: take the bookkeeping away from the agent.** Recommended: yes. A small tool writes every log entry (number, clock time, required fields) and rebuilds the state files and the report's citations from the log, so the agent cannot mis-keep them. A slip in the record becomes a fault the tool fixes, not a stop. The final audit tests the delivered work and the report's claims, 1 time. This answers the largest class of fault in all 3 runs made so far.
-2. **C8.** Recommended: change it to "the example run holds the full record; the build holds a log and the saved reports".
-3. **GitHub Pages.** My access cannot turn it on (HTTP 403). In the repository: Settings, Pages, Source "Deploy from a branch", branch `main`, folder `/ (root)`.
-4. **The 6 proposed lessons** in `skills/hinshitsu/example/run/DELIVERY-REPORT.md`, section `LESSONS`.
+1. **1 run under version 3.1.0** (about 5 paid sessions). Recommended: yes, when you are ready to spend; it is the only way to learn whether a run can now end `DONE`. No session starts without your word [E-031].
+2. **Try the 2 chat skills yourself.** Upload `dist/hinshitsu-claude.zip` to Claude and `dist/hinshitsu-chatgpt.zip` to ChatGPT (`INSTALL.md`), and write "baby bird me" with a small request. This session has no account on either.
+3. **C8.** Recommended: change it to "the example run holds the full record; the build holds a log and the saved reports".
+4. **GitHub Pages.** My access cannot turn it on (HTTP 403). In the repository: Settings, Pages, Source "Deploy from a branch", branch `main`, folder `/ (root)`.
+5. **The 6 proposed lessons** in `skills/hinshitsu/example/run/DELIVERY-REPORT.md`, section `LESSONS`.
