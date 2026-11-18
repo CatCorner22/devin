@@ -300,3 +300,12 @@ Left open:
 - The recommendations it answers are the 4 in the ORCHESTRATOR's message before it: (1) move `main` to this work; (2) 1 more independent round, 2 sessions (red cell and auditor), on the amendments; (3) license MIT; (4) approve C1 to C15, the 7 platforms and the tiers.
 - Effect: C1 to C15 are frozen as written in E-005 to E-014. Under rule 1.9, `main` may move to a commit the USER approved; this answer approves the commit that holds the license and this entry.
 
+
+### E-020 · 2026-11-18T19:02Z · LAUNCH · orchestrator
+
+Round 2 of the post-build review, ordered by the USER in E-019. Commit under review: `874ffb27d26f9eac7eaabf6b580dbed37e6080a1` (branch `main`).
+
+| Role | Scope | Devin session (platform identifier) | Report |
+|---|---|---|---|
+| Red cell, amended skill set | `prompts/round2-red-cell.txt` | https://app.devin.ai/sessions/21ae0aafc0e042959d10663b893dc90c | `audits/round2-red-cell.md` |
+| Auditor, C1 to C15 and re-run of earlier findings | `prompts/round2-auditor.txt` | https://app.devin.ai/sessions/af090f986d3e46d396185fea82377935 | `audits/round2-auditor.md` |
