@@ -455,6 +455,19 @@ class Check(unittest.TestCase):
         edit(d, "AUDIT-LOG.md", "Planned SUB-AGENT runs: 3", "Planned SUB-AGENT runs: 1")
         self.assertFails(d, "exceed the 1 planned")
 
+    def test_an_answer_that_states_a_higher_number_before_the_limit_is_reached_raises_it(self):
+        # The USER's leave for 1 more run comes before the planned runs are used (proof run 3.0.0, item 21).
+        self.assertEqual(hcheck.first_launch_over_budget(
+            [{"type": "TIER", "n": 1, "body": "- Planned SUB-AGENT runs: 1"},
+             {"type": "ANSWER", "n": 2, "body": '- USER — "go on"\n- Planned SUB-AGENT runs: 2'},
+             {"type": "LAUNCH", "n": 3, "body": ""}, {"type": "LAUNCH", "n": 4, "body": ""}]), None)
+
+    def test_an_answer_never_lowers_the_number(self):
+        self.assertEqual(hcheck.first_launch_over_budget(
+            [{"type": "TIER", "n": 1, "body": "- Planned SUB-AGENT runs: 2"},
+             {"type": "ANSWER", "n": 2, "body": "- Planned SUB-AGENT runs: 1"},
+             {"type": "LAUNCH", "n": 3, "body": ""}, {"type": "LAUNCH", "n": 4, "body": ""}]), None)
+
     # --- round-3 code review, bugs 6, 7, 13 to 17, 19 ---
 
     def test_cell_in_code_marks_with_no_reason_fails(self):

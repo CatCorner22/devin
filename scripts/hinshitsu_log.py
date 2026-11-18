@@ -111,7 +111,7 @@ def add_entry(folder, kind, fields=None, text="", role="orchestrator", now=None)
     body = "\n".join("- %s: %s" % item for item in fields.items())
     body = "\n\n".join(part for part in (body, text.strip()) if part)
     for ref in re.findall(r"\bE-(\d+)\b", body):
-        if int(ref) >= number:
+        if int(ref) > number:  # an entry may hold its own number, as in the name of its report (rule 1.6)
             raise ValueError("the entry cites E-%s, which does not exist yet (rule 9.6)" % ref)
     stamp = (now or datetime.datetime.now(datetime.timezone.utc)).strftime("%Y-%m-%dT%H:%M:%SZ")
     path = folder / "AUDIT-LOG.md"

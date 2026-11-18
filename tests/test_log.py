@@ -93,6 +93,15 @@ class Add(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "cites E-5, which does not exist yet"):
             hlog.add_entry(d, "DECISION", text="As E-5 says.")
 
+    def test_an_entry_may_hold_its_own_number(self):
+        d = run_folder()  # rule 1.6: the report's file name holds the LAUNCH entry's own ID (proof run, items 15, 22)
+        hlog.add_entry(d, "LAUNCH", fields={"Role": "final AUDITOR", "Scope": "prompts/final.txt",
+                                            "Commit under review": "abc1234", "SUB-AGENT identifier": "x-1",
+                                            "Report": "audits/final-audit-E-1.md"})
+        self.assertIn("audits/final-audit-E-1.md", log_text(d))
+        with self.assertRaisesRegex(ValueError, "cites E-3, which does not exist yet"):
+            hlog.add_entry(d, "DECISION", text="As E-3 says.")
+
     def test_stage_entries_must_follow_the_order_start_then_end(self):
         d = run_folder()
         with self.assertRaisesRegex(ValueError, "S1 has no start entry"):

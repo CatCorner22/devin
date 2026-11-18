@@ -134,15 +134,15 @@ def planned_runs(entries):
 def first_launch_over_budget(entries):
     """Return (entry number, ordinal, budget) of the first LAUNCH past the budget, or None.
 
-    The budget is the number in the first TIER entry. An ANSWER entry that states a new number raises it
-    from that entry on; an ANSWER written before the budget was reached does not.
+    The budget is the number in the first TIER entry. An ANSWER entry that states a higher number raises it
+    from that entry on, whether the planned runs are used yet or not; an ANSWER with no number changes nothing.
     """
     budget = planned_runs(entries)
     if budget is None:
         return None
     used = 0
     for e in entries:
-        if e["type"] == "ANSWER" and used >= budget:
+        if e["type"] == "ANSWER":
             m = PLANNED_RUNS.search(e["body"])
             if m:
                 budget = max(budget, int(m.group(1)))
@@ -518,8 +518,8 @@ def check(folder, stage):
             err("AUDIT-LOG.md: Status DONE, and no TIER entry states Planned SUB-AGENT runs (rule 0.9)")
         over = first_launch_over_budget(entries)
         if over:
-            err("AUDIT-LOG.md: E-%d is LAUNCH %d; LAUNCH entries exceed the %d planned, and no ANSWER entry after "
-                "the last planned LAUNCH raises the number (rule 0.9)" % over)
+            err("AUDIT-LOG.md: E-%d is LAUNCH %d; LAUNCH entries exceed the %d planned, and no ANSWER entry "
+                "before it states a higher number (rule 0.9)" % over)
         if not final:
             err("audits/: no final-audit report matched to a LAUNCH entry (rule 17.4)")
     return errors
