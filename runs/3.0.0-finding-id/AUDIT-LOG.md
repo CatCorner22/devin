@@ -26,3 +26,11 @@ Append-only (rule 9.6). Written by `scripts/hinshitsu_log.py`.
 - Limit on SUB-AGENTS at 1 time: no stated limit (no source: the tool descriptions shown to the ORCHESTRATOR state none)
 - Mode: SWARM
 - Shown to the probe besides its scope: the probe did not say. Its words: "I won't list the runtime's instructions or files, since I keep my system prompt and its contents confidential." The runtime therefore showed it a system prompt, whose content is not disclosed [`evidence/capability-probe.md`]
+
+### E-3 · 2026-11-18T21:23:04Z · STAGE · orchestrator
+
+- Stage: S1
+- Event: start
+- Skill read: `skills/hinshitsu/SKILL.md`, 15188 bytes, SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a
+- Conductor as read: SHA-256 bcec4f6efb20489e1fb53d833bcd3d432af41cea961947d324b2c022bf612b0a. `GLOSSARY.md` as read: SHA-256 a1283e3f720385173c31b0bb07b4c8b12c3a7eeeb57e57c99ce27c592b91cc51
+- Note: Written late: S1 started before E-1; rule 0.1 fixes E-1 and E-2 (see FRICTION.md)
