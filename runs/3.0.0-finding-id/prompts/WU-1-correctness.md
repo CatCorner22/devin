@@ -8,7 +8,7 @@ Test each CRITERION against the DELIVERABLE. Run every test the CRITERIA name. R
 
 ## Filled in by the ORCHESTRATOR
 
-- DELIVERABLE and files to examine: repository `CatCorner22/devin` on GitHub, branch `devin/hinshitsu-run-3.0.0`. Files: `skills/hinshitsu-gauge/scripts/gauge.py` (whole; the change is at lines 31 and 83 to 89) and `tests/test_gauge.py` (whole; the added tests are at lines 60 to 97 and 167 to 192). The change is `git diff a3717b1 eda8e66335c25bc2bde4eecb09f8d65d175ef6ab -- skills tests`. Files those files reference: `scripts/hinshitsu_check.py` (lines 85 and 295 to 306), `scripts/lint.py`.
+- DELIVERABLE and files to examine: repository `CatCorner22/devin` on GitHub, branch `devin/hinshitsu-run-3.0.0`. Files: `skills/hinshitsu-gauge/scripts/gauge.py` (whole; the change is at lines 31 and 83 to 89) and `tests/test_gauge.py` (whole; the added tests are at lines 59 to 96 and 164 to 191). The change is `git diff a3717b1 eda8e66335c25bc2bde4eecb09f8d65d175ef6ab -- skills tests`. Files those files reference: `scripts/hinshitsu_check.py` (lines 85 and 295 to 306), `scripts/lint.py`.
 - Commit under review: eda8e66335c25bc2bde4eecb09f8d65d175ef6ab
 - CRITERIA, word for word from entry E-21:
 
