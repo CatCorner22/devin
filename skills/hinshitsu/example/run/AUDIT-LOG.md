@@ -740,3 +740,16 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Rests on: A-3, A-6
 - Reason: the USER's answer in E-64 ("3.  A.").
 - Alternatives rejected: no hosting (the USER chose hosting).
+
+### E-69 · 2026-11-18T15:58:42Z · CARD · orchestrator
+
+- Sent to: the USER, in the session chat
+- Why now: F-7 (a BLOCKER) is open after 3 fix-and-re-audit rounds; rule 14.5 bars a fourth round without the USER's answer.
+- Working assumption while the card is open: A. No re-audit, freeze or build happens before an ANSWER entry.
+- Card, word for word:
+
+> **One more check round, again?** The third check closed 1 of the 2 open faults. The last one, my summary files lagging behind the log, came back in a new form: your answer changed 5 facts (approved, hosted), and I logged your answer before updating those 3 files. I have now updated them in the same save as the log, and I do this from now on.
+> Recommended: A, because the files and the log now agree and 1 session can confirm it.
+> - A: 1 more independent session checks it. About 5 minutes. You get a clean record before the page is built.
+> - B: stop the example here, marked "delivered, not done", with the fault listed open. You get no page.
+> Reply "A" or "B".
