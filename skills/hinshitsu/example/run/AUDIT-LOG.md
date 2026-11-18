@@ -333,3 +333,136 @@ Replaces the RECIPIENT, need and translation parts of E-8 (see the `CORRECTION` 
 - Raised by: RED CELL, LAUNCH E-23, `audits/redcell-plan-E-23.md`, finding F-RC7
 - Lens: structural integrity
 - Stop: no WORK UNIT has started; none starts while this BLOCKER is open (rule 14.1).
+
+### E-33 · 2026-11-18T15:35:11Z · ASSUMPTION · orchestrator
+
+Replaces the table in E-12. A-3 and A-4 are no longer PREMISES: each was settled by a command (rule 4.2).
+
+| ID | PREMISE | Decision that rests on it | EVIDENCE | If false |
+|---|---|---|---|---|
+| A-1 | The friends split evenly | D-4 | not verified (VA1); put to the USER on the card at S6 as part of the CRITERIA | An item-by-item mode is needed |
+| A-2 | The currency has 2 decimal places | D-5 | not verified (VA1) | Payments show cents that do not exist |
+| A-3 | settled: a local HTML file runs its script in desktop Chrome 156 on Linux | D-6 | `evidence/a3-local-script.txt` | — |
+| A-4 | settled, and reworded: with amounts held as whole cents and whole-number tip percents, every product stays below the largest exact integer, and the text-to-cents step done on the digits is exact | D-5 | `evidence/a4-integer-arithmetic.txt` | — |
+| A-5 | "Tip added" means a percentage of the amount typed, tax included | D-4 | not verified (VA1); the label on the page states it | The tip is higher or lower than the group intends |
+| A-6 | 1 person opens the page on a laptop from the downloaded repository, or on any device from a link if the USER approves hosting; nobody opens the raw file from github.com on a phone | D-6 | from the RED CELL, `audits/redcell-plan-E-23.md` P1; not verified on any phone | No friend can reach the page; put to the USER on the card at S6 |
+| A-7 | Amounts are typed with a dot and no thousands mark | D-5 | from the RED CELL, P3; not verified (VA1) | A person who types `12,50` gets a message and must retype |
+| A-8 | The reader of the example opens files in a browser on github.com and does not use a terminal | D-7 | USER, V2 | The 3 checks of C8 ask for more than the reader can do |
+
+Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
+
+### E-34 · 2026-11-18T15:35:11Z · RECONCILIATION · orchestrator
+
+Memos: RX = `memos/lens-recipient-experience-E-19.md`; MVS = `memos/lens-minimal-viable-sequence-E-20.md`; SI = `memos/lens-structural-integrity-E-21.md`; TC = `memos/lens-trust-controls-E-22.md`; RC = `audits/redcell-plan-E-23.md`. "v2" is the `CRITERIA` entry that follows this one.
+
+| Point | LENS | Result | Changed | Reason |
+|---|---|---|---|---|
+| RX breaks 1: the USER cannot open the page from github.com | recipient experience | ACCEPTED | A-6; C8; card question 2 | GitHub shows source, not the page |
+| RX breaks 2: friends cannot get the page onto a phone | recipient experience | ACCEPTED | A-6; card question 2 | same |
+| RX breaks 3: first open shows errors | recipient experience | ACCEPTED | v2 C4 (3 named states) | G2 and C4 disagreed |
+| RX breaks 4: which number to type | recipient experience | ACCEPTED | v2 C5 (label "Bill total, tax included") | — |
+| RX breaks 5: comma decimal | recipient experience | ACCEPTED | v2 C4; A-7 | — |
+| RX breaks 6: extra cent and 100 rows | recipient experience | ACCEPTED | v2 C2 (grouped lines); card question 3 | — |
+| RX cut: per-person list | recipient experience | ACCEPTED | v2 C2 | — |
+| RX cut: every friend uses the page | recipient experience | ACCEPTED | VA1 in E-25 | — |
+| RX add: CRITERION for G2 | recipient experience | ACCEPTED | v2 C4 | — |
+| RX add: label wording | recipient experience | ACCEPTED | v2 C5 | — |
+| RX add: commas and currency signs | recipient experience | ACCEPTED | v2 C4 | — |
+| RX add: keypad test | recipient experience | ACCEPTED | v2 C5 (`inputmode="decimal"`, read from the markup; a real phone is reported UNVERIFIED) | no phone exists in this runtime |
+| RX add: tip rounding rule | recipient experience | ACCEPTED | v2 C2; D-5 | — |
+| RX add: 3 no-terminal checks | recipient experience | ACCEPTED | v2 C8 | — |
+| RX insists: 1 link, tested on a phone | recipient experience | ACCEPTED in part | card question 2 | hosting publishes a public site, which the USER owns; with no approval the page stays a file and phone use is reported UNVERIFIED |
+| MVS breaks 1: tip rounding | minimal viable sequence | ACCEPTED | v2 C2; D-5 | — |
+| MVS breaks 2: G2, G12, C4, C7 conflict | minimal viable sequence | ACCEPTED | v2 C4; tip buttons and default cut | — |
+| MVS breaks 3: C3 needs a contract | minimal viable sequence | ACCEPTED | D-5; `FRAMEWORK.md` part 4 | — |
+| MVS breaks 4: FRAMEWORK behind the log | minimal viable sequence | ACCEPTED | `FRAMEWORK.md` | — |
+| MVS cut: tip buttons and default 18 | minimal viable sequence | ACCEPTED | G12 answered: 1 tip field, no default | no CRITERION needs them |
+| MVS add: rounding sentence and test | minimal viable sequence | ACCEPTED | v2 C2 | — |
+| MVS add: contract line | minimal viable sequence | ACCEPTED | `FRAMEWORK.md` part 4 | — |
+| MVS add: 2 boundary tests | minimal viable sequence | ACCEPTED | v2 C3 | — |
+| MVS add: build order | minimal viable sequence | ACCEPTED | `FRAMEWORK.md` part 6 | — |
+| MVS add: count behind "more than 100 lines" | minimal viable sequence | ACCEPTED | `FRAMEWORK.md` part 6 holds the estimate by part; the TIER is measured again from `git diff --stat` when WU-1 is built | — |
+| MVS insists: rounding rule before freeze | minimal viable sequence | ACCEPTED | v2 C2 | — |
+| SI breaks 1: tip rounding | structural integrity | ACCEPTED | v2 C2; D-5 | — |
+| SI breaks 2: no contract for the function | structural integrity | ACCEPTED | D-5; `FRAMEWORK.md` part 4 | — |
+| SI breaks 3: gaps with no CRITERION | structural integrity | ACCEPTED | v2 lists the gap each CRITERION covers; G10 carries a reason | — |
+| SI breaks 4: first-open state | structural integrity | ACCEPTED | v2 C4 | — |
+| SI breaks 5: tip format | structural integrity | ACCEPTED | v2 C2, C4 (whole number only) | — |
+| SI breaks 6: FRAMEWORK stale | structural integrity | ACCEPTED | `FRAMEWORK.md` | — |
+| SI breaks 7: CONNECTIONS lacks decisions, assumptions, approval, re-audit | structural integrity | ACCEPTED | `CONNECTIONS.md` | — |
+| SI breaks 8: `LAUNCH ID` undefined | structural integrity | ACCEPTED | `FRAMEWORK.md` part 3 now says "the number of the `LAUNCH` entry" | — |
+| SI cut: tip buttons | structural integrity | ACCEPTED | as MVS | — |
+| SI add: 4 items | structural integrity | ACCEPTED | as the rows above | — |
+| SI insists: 1 pure, reachable, named function | structural integrity | ACCEPTED | D-5; `FRAMEWORK.md` part 4 | — |
+| TC breaks 1: quotes do not trace | trust and controls | ACCEPTED | E-24, E-25 | — |
+| TC breaks 2: C1 and C7 pass on a page that sends data | trust and controls | ACCEPTED | v2 C7 (policy tag; blocked `fetch` test) | — |
+| TC breaks 3: reload test covers Chrome only | trust and controls | ACCEPTED in part | v2 C7 (`autocomplete="off"`); Firefox reported UNVERIFIED | `which firefox` prints nothing in this runtime |
+| TC breaks 4: tip rounding | trust and controls | ACCEPTED | v2 C2 | — |
+| TC breaks 5: sweep tests a function, not the page | trust and controls | ACCEPTED | v2 C3 | — |
+| TC breaks 6: stale shares beside changed input | trust and controls | ACCEPTED | v2 C4 (recompute on every change) | — |
+| TC breaks 7: handover record stale | trust and controls | ACCEPTED | `SESSION-STATE.md`, `FRAMEWORK.md` | — |
+| TC breaks 8: probe has no `LAUNCH` | trust and controls | ACCEPTED | E-24 | — |
+| TC cut: "larger shares first" | trust and controls | ACCEPTED | v2 C3 | — |
+| TC cut: "(the USER's words)" | trust and controls | ACCEPTED | `SESSION-STATE.md` | — |
+| TC add: result restates the inputs | trust and controls | ACCEPTED | v2 C2 | — |
+| TC add: SHA-256 of `index.html` in each scope and in the report | trust and controls | ACCEPTED | `FRAMEWORK.md` part 4; v2 C8 | — |
+| TC add: G1 to G9 and G11 on the card | trust and controls | REJECTED | none | rule 23.3 gives the AGENT each gap that is cheap to undo; each is a few lines in 1 file; rule 23.4 limits the card to what the USER owns. The delivery report lists all of them. |
+| TC insists: policy tag in the page | trust and controls | ACCEPTED | v2 C7 | — |
+| RC demand 1: say the request was invented; add the reader as RECIPIENT | red cell | ACCEPTED | E-24, E-25; v2 C8; card question 1 | — |
+| RC demand 2: phone delivery | red cell | ACCEPTED | A-6; card question 2 | — |
+| RC demand 3: tip rule and tests | red cell | ACCEPTED | v2 C2 | — |
+| RC demand 4: independent total, through the page's fields | red cell | ACCEPTED | v2 C3 | — |
+| RC demand 5: top-of-range tests | red cell | ACCEPTED | v2 C3 | — |
+| RC demand 6: input formats | red cell | ACCEPTED | v2 C4; G13 answered: amounts use a dot | — |
+| RC demand 7: decimal key on a phone keypad | red cell | ACCEPTED in part | v2 C5 | read from the markup; a real phone is reported UNVERIFIED |
+| RC demand 8: extra cent, limits, "tip included" to the card; D-1 a working assumption | red cell | ACCEPTED in part | card question 3 (extra cent); D-4 replaces D-1 as a working assumption; the limits and the reading of "tip added" are stated in v2, which the USER approves or changes as a whole | a card holds what the USER owns in the fewest questions (rule 23.4) |
+| RC demand 9: A-3 and A-4 | red cell | ACCEPTED | E-33 | — |
+| RC demand 10: record files up to date | red cell | ACCEPTED | `SESSION-STATE.md`, `FRAMEWORK.md`, `MINDMAP.md` | — |
+| RC P8: the search in E-6 ran over 0 files | red cell | ACCEPTED | `FRAMEWORK.md` part 7 says so | — |
+
+### E-35 · 2026-11-18T15:35:11Z · DECISION · orchestrator
+
+- ID: D-4
+- Decision: supersedes D-1. Working assumption until the USER answers the card: even split; the tip is a whole-number percentage of the amount typed, tax included.
+- Rests on: A-1, A-5
+- Reason: the smallest task that meets V1 ("a real small deliverable").
+- Alternatives rejected: item-by-item split; tip on a pre-tax amount (each needs more fields than 1 small example carries).
+
+### E-36 · 2026-11-18T15:35:11Z · DECISION · orchestrator
+
+- ID: D-5
+- Decision: supersedes D-2. 1 pure function, `window.splitBill(billCents, tipPercent, people)`, returns `{ tipCents, totalCents, shares }`, where `shares` is a list of `{ count, cents }` groups, larger payment first. `tipCents = floor((billCents × tipPercent + 50) / 100)` (half a cent rounds up). `totalCents = billCents + tipCents`. `floor(totalCents / people)` is the base payment; `totalCents mod people` people pay 1 cent more. The page reads each amount as text and converts it to cents from its digits, with no decimal arithmetic. The page's own fields call this function and no other.
+- Rests on: A-2, A-4, A-7
+- Reason: F-3, F-4, F-5.
+- Alternatives rejected: decimal arithmetic with rounding at display (wrong for 239 of 20,000 cases in the RED CELL's run); tips with a decimal part (a second rounding rule for no stated need).
+
+### E-37 · 2026-11-18T15:35:11Z · DECISION · orchestrator
+
+- ID: D-6
+- Decision: supersedes D-3. 1 self-contained HTML file with inline style and script and a policy tag that blocks every network request. Working assumption until the USER answers the card: the file is not hosted; it is opened from a copy of the repository.
+- Rests on: A-3, A-6
+- Reason: G6, G8; hosting publishes a public site, which is the USER's to approve.
+- Alternatives rejected: a framework and a build step.
+
+### E-38 · 2026-11-18T15:35:12Z · DECISION · orchestrator
+
+- ID: D-7
+- Decision: the delivery report opens with 3 checks that need only a browser on github.com, and states the SHA-256 of `index.html`.
+- Rests on: A-8
+- Reason: V1, V2.
+- Alternatives rejected: checks that need developer tools or a terminal.
+
+### E-39 · 2026-11-18T15:35:12Z · CRITERIA · orchestrator
+
+- Status: PROPOSED
+- Replaces: E-16, which was never approved.
+- C1. `skills/hinshitsu/example/index.html` is 1 file that loads no other file, and its calculator works when the file is opened from disk in desktop Chrome. Test: open the file by its `file://` path; the browser's request log shows 1 request; C2's first test passes. Covers G8, G11.
+- C2. Given a bill from 0.01 to 1,000,000.00, a whole-number tip from 0 to 100 percent and 1 to 100 people, the page shows: the bill, tip percent and people as read; the tip amount; the total; and what each person pays, as 1 line ("4 people pay 29.50 each") or 2 lines ("1 person pays 3.34" and "2 people pay 3.33 each"). Half a cent of tip rounds up. Tests, typed into the page: 100.00, 18, 4 gives tip 18.00, total 118.00, "4 people pay 29.50 each"; 0.30, 15, 1 gives tip 0.05; 10.10, 15, 1 gives tip 1.52 and total 11.62; 12.25, 18, 1 gives tip 2.21. Covers T1, G12.
+- C3. The payments sum to the total, to the cent, and no 2 payments differ by more than 0.01. Test: an AUDITOR types values into the page's own fields in a browser driven by a script, reads the page's own output, and compares it with a tip, total and payments computed by the AUDITOR's own code: every bill from 0.01 to 50.00 with tips 0, 15, 18 and 20 for 1 person; every bill from 0.01 to 5.00 with 1 to 12 people at tip 18; and the spot cases 10.00, 0, 3 (3.34 and 3.33), 1,000,000.00, 100, 100, and 0.01, 0, 100. Covers G3.
+- C4. The page has 3 states. First open: 3 empty fields, 1 line of guidance, no error text, no result. Error: after a person types in a field or leaves it, a value that fails the rules below shows a message in plain words beside that field, and no result shows. Result: when all 3 fields are valid, the result shows and is recomputed on every change. An amount is digits, with an optional dot followed by 1 or 2 digits; spaces at either end are ignored. Each of these gets a message and no result: an empty field once left; letters; a comma (`12,50`, `1,000.00`); `1e3`; `10.`; `.5`; a currency sign; a negative or 0 bill; a bill above 1,000,000; 3 or more decimal places; a tip that is not a whole number from 0 to 100; people not a whole number from 1 to 100. The message for a comma says to use a dot. Test: each input, in the browser. Covers G1, G2, G13.
+- C5. At widths of 360, 768 and 1280 pixels nothing is cut off and nothing scrolls sideways. Every field has a visible label; the bill's label reads "Bill total, tax included". Error text and the result sit in regions that screen readers announce. The bill field carries `inputmode="decimal"` and the other 2 fields `inputmode="numeric"`. Test: screenshots at the 3 widths; reading of the markup. A real phone is not tested and is reported UNVERIFIED. Covers G4, G5.
+- C6. With JavaScript off, the page shows a sentence saying that the calculator needs JavaScript. Test: load with JavaScript disabled. Covers G9.
+- C7. The page stores nothing and sends nothing. The file carries the tag `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">`, and each field carries `autocomplete="off"`. Test: with the page open, `fetch('https://example.com')` run in the browser is blocked; the source holds no storage call; a reload in Chrome clears every field. Firefox is not tested and is reported UNVERIFIED. Covers G6, G7.
+- C8. The delivery report opens with 3 checks that a reader can do in 5 minutes in a browser, with no terminal: each names what to open, what to do, and what to see. The report states the SHA-256 of `index.html` as audited. Test: an AUDITOR who did not build the page follows the 3 checks as written. Covers V1, V2.
+- Not covered by a CRITERION: G10 (license), which is the USER's open decision for the whole repository and changes no line of the page.
+- Approval: pending
