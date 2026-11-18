@@ -694,3 +694,8 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Stage: S8
 - Event: end
 - Artifacts: `COVERAGE-LEDGER.md` (the RSV and STAB columns)
+
+### E-70 · 2026-11-18T20:18:54Z · STAGE · orchestrator
+
+- Stage: S9
+- Event: skipped — `CORE` run (rule 0.5, E-43): no RED CELL attack and no premortem before delivery
