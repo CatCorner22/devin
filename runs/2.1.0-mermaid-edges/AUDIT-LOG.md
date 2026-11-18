@@ -255,3 +255,20 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 
 (d) Reply `3 forms only` or `all forms`.
 
+
+### E-21 · 2026-11-18T19:38:23Z · CORRECTION · orchestrator
+
+- Corrects: E-20, and E-18 through it
+- What was wrong: E-20 says the replacement text of decision 2 is under 120 words. The ORCHESTRATOR wrote that sentence before it read the count. The count of that text was 133 words, so E-20 is false and its text also breaks the limit of 120 words. Neither the card of E-18 nor the text of E-20 was sent to the USER.
+- What is true: the card sent to the USER is the file `evidence/card-as-sent.md`: E-18 with decision 2 replaced by the text below. The count was taken before this entry was written: decision 1 holds 120 words and decision 2 holds 119 words, headings included [`evidence/card-word-count.txt`].
+
+**Decision 2 of 2 — arrow forms you did not name**
+
+(a) Do you want this fix to also test the arrow forms you did not name: no arrowhead (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way arrows (`<-->`), and several links on 1 line?
+
+(b) I recommend `3 forms only`, because each added form can make a file that passes today fail.
+
+(c) `3 forms only`: 2 changed files, checked by 2 independent sessions; the other forms stay untested, and the report lists them. `all forms`: those forms are tested too; decision 1 returns to you with additions, and the full review runs, about 20 more independent sessions.
+
+(d) Reply `3 forms only` or `all forms`.
+
