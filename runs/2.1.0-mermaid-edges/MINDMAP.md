@@ -19,6 +19,12 @@ Form required by rule 9.2 (`skills/hinshitsu-record/SKILL.md`).
         - **F-7** DEFECT — `--oB`, `--xB`, a flag-shaped node, a `]` inside quoted text and an empty quoted label count as a label — overruled by the USER (E-59)
         - **F-8** FRAGILITY — a second diagram in a `~~~mermaid` or spaced fence is not read — overruled by the USER (E-60)
         - **F-9** STYLE — the message for `A ---> B` now shows the arrow as written — overruled by the USER (E-61)
+        - **F-10** DEFECT, BLOCKER under rule 17.4 — the report cites E-24 and E-62 for facts that E-23 and E-26 hold — open
+        - **F-11** DEFECT, BLOCKER under rule 17.4 — the report names E-5 as marked late; it is E-3 — open
+        - **F-12** DEFECT, BLOCKER under rule 17.4 — check 2 of the report promises the same text; the run's last message is shorter than the saved report — open
+        - **F-13** FRAGILITY, BLOCKER under rule 17.4 — 9 output files of E-44 record the command with no quotes — open
+        - **F-14** FRAGILITY — `SESSION-STATE.md` line 3 and field 2 were out of date — open
+        - **F-15** STYLE — some output files hold no command line or no exit code — open
   - **C2** `C -.-> D` fails with `no label`
   - **C3** `A -- reads --> B` passes
   - **C4** the 2 verdicts of commit 93311ab stay
@@ -47,6 +53,12 @@ graph TD
   D3 --> F7["F-7 DEFECT: circle end, flag node, bracket in quotes (overruled by the USER)"]
   D3 --> F8["F-8 FRAGILITY: other mermaid fences not read (overruled by the USER)"]
   D3 --> F9["F-9 STYLE: message shows the arrow as written (overruled by the USER)"]
+  REC["the run record and DELIVERY-REPORT.md"] --> F10["F-10 report cites the wrong entries (open)"]
+  REC --> F11["F-11 report names the wrong late entry (open)"]
+  REC --> F12["F-12 check 2 promises the same text (open)"]
+  REC --> F13["F-13 saved commands have no quotes (open)"]
+  REC --> F14["F-14 session state out of date (open)"]
+  REC --> F15["F-15 output files lack command or exit code (open)"]
   D1 --> F1["F-1 DEFECT: earlier link counts as a label (FIXED)"]
   D1 --> F2["F-2 DEFECT: quoted label fails (FIXED)"]
   D1 --> F3["F-3 DEFECT: second link on a line not tested (overruled by the USER)"]
@@ -60,4 +72,4 @@ graph TD
 | CRITERIA | 7 | 7 |
 | WORK UNITS | 1 | 1 |
 | Decisions | 3 | 3 |
-| FINDINGS | 9 | 9 |
+| FINDINGS | 15 | 15 |

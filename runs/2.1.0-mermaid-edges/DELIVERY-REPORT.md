@@ -9,8 +9,8 @@ Form required by section 19 (`skills/hinshitsu-delivery/SKILL.md`). Every claim 
 3 checks, no terminal needed (rule 19.2).
 
 1. Open https://github.com/CatCorner22/devin/blob/devin/hinshitsu-run-2.1.0/tests/test_check.py and search the page for `test_unlabeled_thick_edge_fails`. You see: a test that expects the message `CONNECTIONS.md: edge A ==> B has no label (rule 9.3)`, and below it the tests for `C -.-> D` and `A -- reads --> B` [`evidence/WU-1-r2-correctness-E-44/test_unlabeled_thick_edge_fails.txt`].
-2. Open https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d (the first correctness auditor's run, which raised the first DEFECT of the run; no finding of the run has a higher class) and compare its last message with `audits/WU-1-correctness-E-31.md`. You see: the same text, with 4 findings.
-3. Open the final AUDITOR's run and compare it with its saved report under `audits/`; this draft was written before that run started, so its link and file name are in the newest `LAUNCH` entry of `AUDIT-LOG.md`. You see: the same text, and the word `passed` or `not passed` in its last line.
+2. Open https://app.devin.ai/sessions/6b750018b2914b0a9b8d30fafc55d59d (the first correctness auditor's run, which raised the first DEFECT of the run; no finding of the run has a higher class) and compare its last message with `audits/WU-1-correctness-E-31.md`. You see: the same 4 findings in the same words; the message names each output file where the saved file prints its contents [`audits/final-audit-E-72.md`].
+3. Open https://app.devin.ai/sessions/2c6f057a16be412f89e76ffa6a5a5a78 (the final AUDITOR's run) and compare its last message with `audits/final-audit-E-72.md`. You see: the same text, and the words `not passed` in its last line [E-72]. You see: the same text, and the word `passed` or `not passed` in its last line.
 
 The checker script tests the shape of the record; it does not prove that any check ran.
 
@@ -55,7 +55,7 @@ Links with no arrowhead (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way
 
 ### Corrections made to the record
 
-E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings) [E-20, E-21, E-65]. 2 entries are marked late: E-5 and E-17 [E-5, E-17].
+E-20 and E-21 (a card over the word limit, then a correction that was itself false; neither text was sent), E-65 (1 ledger cell read `PASS` where the report raised 2 findings) [E-20, E-21, E-65]. 3 entries are marked late: E-3, E-17 and E-72 [E-3, E-17, E-72].
 
 ## Voice of the Customer
 
@@ -91,11 +91,11 @@ E-20 and E-21 (a card over the word limit, then a correction that was itself fal
 
 ## Lens reconciliation
 
-No `RECONCILIATION` table: S5 was skipped in this `CORE` run, and no LENS memo exists (rule 0.5) [E-24, E-62]. The 4 LENSES are UNVERIFIED — not run.
+No `RECONCILIATION` table: S5 was skipped in this `CORE` run, and no LENS memo exists (rule 0.5) [E-23, E-26]. The 4 LENSES are UNVERIFIED — not run.
 
 ## Red-cell verdict
 
-- Plan-time attack: not run — `CORE` run, S5 skipped [E-24].
+- Plan-time attack: not run — `CORE` run, S5 skipped [E-23].
 - Pre-delivery attack: not run — `CORE` run, S9 skipped [E-70].
 - Premortem: not run [E-70].
 - Probes: none; no `PROBE` entry exists [`AUDIT-LOG.md`].

@@ -787,3 +787,41 @@ Sent to: nobody besides this log. This is a `CORE` run: no LENS and no RED CELL 
 - Raised by: final AUDITOR, LAUNCH E-72, `audits/final-audit-E-72.md`, finding 6
 - Lens: trust and controls
 - Forward work stopped: no
+
+### E-79 · 2026-11-18T20:33:58Z · CHECK · orchestrator
+
+- What: F-13. The 9 files `F-1.txt`, `F-2.txt`, `F-4.txt`, `criteria-lines.txt` and `hunt-1-later-link.txt` to `hunt-5-lengths.txt` under `evidence/WU-1-r2-correctness-E-44/` stay as the AUDITOR attached them (rule 1.7). Line 1 of each prints the command with no quotation marks. The command that gives the saved output is `python3 /home/ubuntu/audit/probe.py '<line>' '<line>' …`, with each argument in single quotes, taken from the `line:` lines of the same file; `probe.py` is saved as `evidence/WU-1-r2-correctness-E-44/probe.py.txt`. The final AUDITOR ran them so and reports "with those, all 9 outputs are the same" [`audits/final-audit-E-72.md`, section (c)].
+- What: F-10, F-11, F-12. `DELIVERY-REPORT.md` now cites E-23 and E-26 for the skipped S5, names E-3, E-17 and E-72 as the late entries, and words check 2 as the final AUDITOR proposes. No SUB-AGENT has confirmed these 3 changes; the 3 FINDINGS stay open.
+
+### E-80 · 2026-11-18T20:33:58Z · RESOLUTION · orchestrator
+
+- Finding: F-14
+- Result: FIXED
+- Record fault: yes (rule 14.6) — `evidence/record-check-E-80.txt`
+- Change: `SESSION-STATE.md` line 3 and fields 2, 4, 5, 6 and 8 rewritten to the present state.
+
+### E-81 · 2026-11-18T20:33:58Z · CARD · orchestrator
+
+**Decision — the final check did not pass**
+
+(a) Do you approve 1 more independent session (5 in all) to re-check the 4 faults in my report and record, or do you end the run now?
+
+(b) I recommend `one more check`, because the 4 faults are in my paperwork, not in the fix, and only a new session may confirm a correction.
+
+(c) `one more check`: a new session re-checks the corrected report; if it passes and you confirm that you opened it, the work is "done"; it may find more. `end now`: you get the fix and the report marked "delivered, not done", with the 4 faults listed as open.
+
+(d) Reply `one more check` or `end now`.
+
+**What the final check found** (session 2c6f057a16be412f89e76ffa6a5a5a78; last line: `not passed`)
+
+- The fix itself: every saved test result came out the same when run again; all 81 tests pass.
+- F-10: my draft report cited 2 wrong log entries for "stage 5 was skipped". Corrected.
+- F-11: my draft report named the wrong entry as written late. Corrected.
+- F-12: my draft report said you would see "the same text" when you compare the first tester's session with its saved report; the session's last message is shorter. Corrected.
+- F-13: 9 output files from the second tester record their command without its quotation marks; the results are the same when run with them. I may not change a tester's files; a log entry states the commands with quotes.
+- F-14: my status file had 2 lines out of date. Corrected.
+- F-15, form only: some output files hold no command line or no exit code. I ask you to accept this one; reply `fix F-15` if you do not.
+
+- Word count taken before this entry: the decision holds 120 words [`evidence/card-4-word-count.txt`]. The same text is in `evidence/card-4-as-sent.md`.
+- Runs used: 4 `LAUNCH` entries (E-1, E-31, E-44, E-72) of the 4 the USER allowed (E-37). Rule 14.5 does not apply by its words (this is the first round on these BLOCKERS); the card is sent under rule 0.9, since a re-audit needs a fifth run.
+- Working assumption while the card is open (rule 23.5): none acted on. No SUB-AGENT run and no `DELIVERY` entry before the `ANSWER` entry.
