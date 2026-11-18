@@ -24,10 +24,12 @@ FIXED_TIME = (2026, 1, 1, 0, 0, 0)
 # In the Codex layout the skills sit in `.agents/skills/` and the shared files in `.agents/hinshitsu/`.
 SHARED_PATH = re.compile(r"(?<![\w./-])(scripts|templates|adapters)/")
 SKILLS_PATH = re.compile(r"(?<![\w./-])skills/")
+REPO_PATHS_NOTE = re.compile(r" The folders `scripts/`, `templates/` and `adapters/` named in the skills[^\n]*?in full\.")
 
 
 def codex_text(text):
     """A SKILL.md with each path of the repository layout written as its path in the Codex layout."""
+    text = REPO_PATHS_NOTE.sub("", text)  # the sentence describes the repository layout; these paths are whole
     return SKILLS_PATH.sub(".agents/skills/", SHARED_PATH.sub(r".agents/hinshitsu/\1/", text))
 
 

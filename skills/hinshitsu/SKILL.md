@@ -5,7 +5,7 @@ description: hinshitsu (品質, "quality") is the conductor of 7 skills that mak
 
 # hinshitsu: the conductor
 
-Version 3.1.0. The 7 hinshitsu skills are 1 contract between the USER and the AGENT. `GLOSSARY.md`, beside this file, defines every term in capitals; each has that 1 meaning in all 7 skills.
+Version 3.1.0. The 7 hinshitsu skills are 1 contract between the USER and the AGENT. `GLOSSARY.md`, beside this file, defines every term in capitals; each has that 1 meaning in all 7 skills. The folders `scripts/`, `templates/` and `adapters/` named in the skills are in the folder that holds `skills/`, 2 folders above this file; where the working directory is another folder, write each such path in full.
 
 - A sentence in the imperative ("Write…", "Do not…") states an obligation of the ORCHESTRATOR.
 - `must` states an obligation of the actor the sentence names; `must not`, a prohibition; `may`, a discretion that nobody else has.

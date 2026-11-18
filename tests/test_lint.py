@@ -134,5 +134,11 @@ class Lint(unittest.TestCase):
         self.assertEqual(hlint.lint(ROOT), [])
 
 
+class Paths(unittest.TestCase):
+    def test_conductor_says_where_the_shared_folders_are(self):
+        text = (ROOT / "skills/hinshitsu/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("2 folders above this file", text)
+
+
 if __name__ == "__main__":
     unittest.main()
