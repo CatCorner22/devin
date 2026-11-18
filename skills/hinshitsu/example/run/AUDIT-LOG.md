@@ -1046,3 +1046,80 @@ Sent to: the re-audit SUB-AGENT at S5; the USER, on the card at S6.
 - Report: `audits/WU-1-seed-E-103.md`
 - Written directly after the create call returned, because the runtime issues the identifier only then.
 - The report is saved in the RUN FOLDER only after every AUDITOR of this round has started, so that no AUDITOR can read it.
+
+### E-104 · 2026-11-18T16:32:52Z · LAUNCH · orchestrator
+
+- Role: correctness (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-correctness.md`
+- Examines: `review/index.html`, the copy
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-c45d189cffec438da2ac8b7d29af6d8f (https://app.devin.ai/sessions/c45d189cffec438da2ac8b7d29af6d8f)
+- Report: `audits/WU-1-correctness-E-104.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-105 · 2026-11-18T16:32:52Z · LAUNCH · orchestrator
+
+- Role: adversarial (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-adversarial.md`
+- Examines: `review/index.html`, the copy
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-7a092325e36c4bc581c8ec4e6498fbba (https://app.devin.ai/sessions/7a092325e36c4bc581c8ec4e6498fbba)
+- Report: `audits/WU-1-adversarial-E-105.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-106 · 2026-11-18T16:32:52Z · LAUNCH · orchestrator
+
+- Role: forensic-5s (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-forensic-5s.md`
+- Examines: `skills/hinshitsu/example/index.html`
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-075dd2a20b544897b290eb2752939c53 (https://app.devin.ai/sessions/075dd2a20b544897b290eb2752939c53)
+- Report: `audits/WU-1-forensic-5s-E-106.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-107 · 2026-11-18T16:32:52Z · LAUNCH · orchestrator
+
+- Role: best-practices (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-best-practices.md`
+- Examines: `skills/hinshitsu/example/index.html`
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-f58ed8aa997e4691a0d7ca990328c666 (https://app.devin.ai/sessions/f58ed8aa997e4691a0d7ca990328c666)
+- Report: `audits/WU-1-best-practices-E-107.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-108 · 2026-11-18T16:32:52Z · LAUNCH · orchestrator
+
+- Role: recipient-experience (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-recipient-experience.md`
+- Examines: `skills/hinshitsu/example/index.html`
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-8902b502bb564a76803c41bee1088307 (https://app.devin.ai/sessions/8902b502bb564a76803c41bee1088307)
+- Report: `audits/WU-1-recipient-experience-E-108.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-109 · 2026-11-18T16:32:53Z · LAUNCH · orchestrator
+
+- Role: framework-drift (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-framework-drift.md`
+- Examines: `skills/hinshitsu/example/index.html`
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-ad551496f9e64b7eb15bb7db26164132 (https://app.devin.ai/sessions/ad551496f9e64b7eb15bb7db26164132)
+- Report: `audits/WU-1-framework-drift-E-109.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
+
+### E-110 · 2026-11-18T16:32:53Z · LAUNCH · orchestrator
+
+- Role: language (rule 13.1)
+- WORK UNIT: WU-1
+- Scope: `prompts/WU-1-language.md`
+- Examines: `skills/hinshitsu/example/index.html`
+- Commit under review: d125232
+- SUB-AGENT identifier: devin-352a89a6d8da419ebea30c0cc597bb21 (https://app.devin.ai/sessions/352a89a6d8da419ebea30c0cc597bb21)
+- Report: `audits/WU-1-language-E-110.md`
+- Written directly after the create call returned, because the runtime issues the identifier only then.
