@@ -91,7 +91,7 @@ See [`TESTING.md`](TESTING.md) for the commands.
 
 ## Status
 
-Version 2.1.0. Independent sessions reviewed the set 2 times and did not pass it either time; the amendments made in answer to the second review are not yet reviewed. Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
+Version 2.2.0. Independent sessions reviewed the set 2 times and did not pass it either time; the amendments made in answer to the second review are not yet reviewed. Read `build-record/DELIVERY-REPORT.md` before relying on these skills. Changes: `CHANGELOG.md`.
 
 License: MIT (`LICENSE`).
 

@@ -2,6 +2,21 @@
 
 Rule 20.3 requires 1 entry for each amendment of a skill. Newest first.
 
+## 2.2.0 — 2026-11-18
+
+Answer to the independent line-by-line review of the scripts on commit `93311ab` (`build-record/audits/round3-code-review.md`, verdict "SCRIPTS UNSOUND", 41 bugs). Each fix was written test first: the test failed, the change was made, the test passed. 124 tests (71 before). No independent session has reviewed these changes.
+
+- Checker, the DONE gate (bugs 1 to 4): the newest final audit must end in the verdict "passed" ("0 of 12 checks passed" no longer passes); a CRITERION row that holds `FAIL` or no `PASS` blocks DONE; an earlier final audit that did not pass no longer blocks a later one that did; the budget of rule 0.9 is tested at every delivery check and is raised only by an `ANSWER` entry that states the new number after the number was reached.
+- Checker (bugs 5 to 9, 11 to 22, 25 to 29): a citation for each sentence under the first 2 Summary labels; a cell in code marks needs a reason; a FINDING ID must be `F-<n>`; `--record` reads the STAGE from the Event field and a state from a status word, with "no longer open" read as closed; true line numbers after a code block; a quoted approval or overrule may stand inside a sentence; criteria in a table and in `CRITERIA-CHANGE` entries are read; a reason that holds a colon is not read as an answer; a SHA-256 in capitals passes; a FIXED finding of any class needs a report from a `LAUNCH` later than the FINDING, and a seeder's report closes only a WITHDRAWN one; a record fault closes only on an output that shows 0 failures; every file under `audits/` and `memos/` needs a `LAUNCH` entry; the identifier is matched as a whole word and the report's file name must hold the `LAUNCH` ID; an artifact path cannot leave the repository; a PASS that cites `audits/` must cite a report with a `LAUNCH` entry; a sub-heading inside an entry is allowed; the mind map's list may stand below its diagram.
+- Checker, added: entry times must not run backwards (rule 0.6); a skipped STAGE needs a reason (rule 0.7).
+- `scripts/hinshitsu_text.py` (new): 1 list of banned words, with their inflected forms, shared by the checker and the lint script. Code spans are not read for banned words.
+- Lint (bugs 32 to 37): requires the 3 further templates, the 15 role texts and the scripts; reads a skill saved with Windows line ends; gives a verdict where it gave a traceback; a folder that does not exist is a usage error; literal phrases are matched whole.
+- Gauge (bugs 38 to 41; round-2 red cell 17): counts entries it cannot read; a mistyped option is a usage error; a BLOCKER logged 2 times is listed 1 time; the bar line itself says "the log's state, not proof of DONE"; `STOPPED — blocker open` uses the dash of rule 24.3.
+- Rule 0.9: the USER's reply to the budget card is logged with the new number. Rule 24.3: the count and the first 4 IDs.
+- `TESTING.md`: a section in plain words on what "0 failures" does and does not mean.
+
+Open from the code review: bug 10 (Mermaid edge forms; the subject of the first run under 2.1.0, on branch `devin/hinshitsu-run-2.1.0`); bug 23 (the final auditor cannot get 0 from `--stage delivery` before its own report exists; the fix changes a rule); bug 24 (placeholder forms); bugs 30 and 31 in part (wording, 1 doubled message).
+
 ## 2.1.0 — 2026-11-18
 
 Amendments made after round 2 of the independent review, on commit `874ffb2` (`build-record/audits/round2-red-cell.md`, verdict "SKILL SET FAILS"; `build-record/audits/round2-auditor.md`). No independent session has reviewed these.

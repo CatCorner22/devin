@@ -5,7 +5,7 @@ description: hinshitsu (品質, "quality") is the conductor of 7 skills that mak
 
 # hinshitsu: the conductor
 
-Version 2.1.0. The 7 hinshitsu skills are 1 contract between the USER and the AGENT. `GLOSSARY.md`, beside this file, defines every term in capitals; each has that 1 meaning in all 7 skills.
+Version 2.2.0. The 7 hinshitsu skills are 1 contract between the USER and the AGENT. `GLOSSARY.md`, beside this file, defines every term in capitals; each has that 1 meaning in all 7 skills.
 
 - A sentence in the imperative ("Write…", "Do not…") states an obligation of the ORCHESTRATOR.
 - `must` states an obligation of the actor the sentence names; `must not`, a prohibition; `may`, a discretion that nobody else has.
@@ -49,7 +49,7 @@ This skill holds sections 0, 1, 21 and 22. Perform the 12 STAGES in this order. 
 6. **Clock.** Take each time from a clock command, and name that command in the `CAPABILITY` entry. If the runtime has no clock, write `no clock` in place of each time and rely on entry numbers for order. Do not invent a time: the times of the entries must not decrease from 1 entry to the next.
 7. **STAGES.** Write a `STAGE` entry when each STAGE starts and when it ends. The start entry must state the STAGE (`S1` to `S12`), the event `start`, and the path, byte count and SHA-256 of the `SKILL.md` read for it under the re-read rule, and the SHA-256 of this file and of `GLOSSARY.md` as read. The end entry must state the event `end` and the artifacts the STAGE produced, by path. During S7, write 1 more `STAGE` entry with the event `progress` each time a WORK UNIT ends its audit, stating `Work units: <complete> of <declared>`. A STAGE that a TIER or a WAIVER skips gets 1 entry with the event `skipped` and the reason. Do not write an `end` entry for a STAGE whose artifacts do not exist.
 8. **Gauge.** After each `STAGE` entry, run `hinshitsu-gauge` (rule 24.1) and show the USER the result in the next message the USER receives.
-9. **Budget.** The first `TIER` entry must hold a line `Planned SUB-AGENT runs: <n>`, and the S6 card must state that number. When the count of `LAUNCH` entries reaches the number, start no further SUB-AGENT; send the USER a DECISION CARD that states the runs used, the runs asked for and what they buy. A SUB-AGENT run is not an action of section 18.
+9. **Budget.** The first `TIER` entry must hold a line `Planned SUB-AGENT runs: <n>`, and the S6 card must state that number. When the count of `LAUNCH` entries reaches the number, start no further SUB-AGENT; send the USER a DECISION CARD that states the runs used, the runs asked for and what they buy. Log the USER's reply as an `ANSWER` entry with a line `Planned SUB-AGENT runs: <new n>`; only that line, written after the number was reached, raises it. A SUB-AGENT run is not an action of section 18.
 10. **Unlisted runtime.** On a runtime that this rule does not name, apply rules 0.1 to 0.3 as written. The adapters under `adapters/` map tool names only; they add no rule and remove none.
 
 ## 1. Separation of duties

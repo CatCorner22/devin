@@ -25,6 +25,8 @@ CLASSES = ("BLOCKER", "DEFECT", "FRAGILITY", "STYLE")
 REPORT_HEADINGS = ["Check it yourself in 5 minutes", "Summary", "Status", "Voice of the Customer",
                    "Gaps filled", "Lens reconciliation", "Red-cell verdict", "Swarm verdict",
                    "Coverage ledger", "Maps", "Audit log", "LESSONS"]
+FILE_RULE = {"AUDIT-LOG.md": "9.4", "FRAMEWORK.md": "7.1", "CONNECTIONS.md": "9.3", "SESSION-STATE.md": "8.1",
+             "MINDMAP.md": "9.2", "COVERAGE-LEDGER.md": "10.1", "DELIVERY-REPORT.md": "19.1", "GAUGE.svg": "24.1"}
 STAGE_FILES = {
     "plan": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md"],
     "unit": ["AUDIT-LOG.md", "FRAMEWORK.md", "CONNECTIONS.md", "SESSION-STATE.md", "MINDMAP.md",
@@ -69,6 +71,7 @@ def criteria_ids_of(crit, changes=()):
     return set(re.findall(r"^[-*\d.\s`|]*\**`?(C\d+)\b", "\n".join(bodies), re.M))
 
 
+UTC_TIME = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?Z")
 FINDING_ID = re.compile(r"F-\d+")
 QUOTE = r'["“][^"”\n]+["”]'
 def artifact_bases(folder):
@@ -135,7 +138,7 @@ def check(folder, stage):
     err = errors.append
     for name in STAGE_FILES[stage]:
         if not (folder / name).is_file():
-            err("%s: file is missing (rules 7.1, 8.1, 9.1, 10.1, 19.1, 24.1)" % name)
+            err("%s: file is missing (rule %s)" % (name, FILE_RULE[name]))
     log_path = folder / "AUDIT-LOG.md"
     if not log_path.is_file():
         return errors
@@ -143,6 +146,7 @@ def check(folder, stage):
 
     # --- log form (rules 9.4, 9.6) ---
     expected = 1
+    before = None  # the last entry whose time has the UTC form of rule 9.4
     for e in log:
         if e["n"] is None:
             err("AUDIT-LOG.md: heading %r does not follow rule 9.4" % e["bad"])
@@ -154,6 +158,11 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d has unknown type %s (rule 9.4)" % (e["n"], e["type"]))
         if not e["time"]:
             err("AUDIT-LOG.md: E-%d has no time and no `no clock` (rule 0.6)" % e["n"])
+        elif UTC_TIME.fullmatch(e["time"]):
+            # Times in this form sort as text. Seconds are optional, so only the shared length is compared.
+            if before and e["time"][:16] < before["time"][:16]:
+                err("AUDIT-LOG.md: E-%d has a time earlier than E-%d (rule 0.6)" % (e["n"], before["n"]))
+            before = e
         for ref in re.findall(r"\bE-(\d+)\b", e["body"]):
             if int(ref) > e["n"]:
                 err("AUDIT-LOG.md: E-%d cites later entry E-%s (rule 9.6)" % (e["n"], ref))
@@ -199,6 +208,8 @@ def check(folder, stage):
             err("AUDIT-LOG.md: E-%d STAGE entry lacks Stage or Event (rule 0.7)" % e["n"])
             continue
         sid, ev = m.group(1), ev[0]
+        if ev == "skipped" and not re.search(r"\w", (field(e["body"], "Event") or "")[len("skipped"):]):
+            err("AUDIT-LOG.md: E-%d skips %s with no reason (rule 0.7)" % (e["n"], sid))
         if ev == "start" and not re.search(r"\b[0-9a-fA-F]{64}\b", e["body"]):
             err("AUDIT-LOG.md: E-%d start of %s has no SHA-256 of the skill read (rule 0.7)" % (e["n"], sid))
         if ev == "end" and state.get(sid) != "start":

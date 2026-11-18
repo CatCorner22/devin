@@ -350,3 +350,12 @@ Round 3, on the USER's message of 2026-11-18 14:24 EST: "Please ensure that you 
 | First run under version 2.1.0, on a real fault in the checker (auditor finding 17) | `prompts/round3-real-run.txt` | https://app.devin.ai/sessions/7a48183ed55c47359ba86e1b59999645 | `audits/round3-real-run.md` |
 
 In the second run the USER is this session, acting for the owner. Its answers to that run's cards are the ORCHESTRATOR's, not the owner's; the report of that run must be read with this in mind.
+
+### E-025 · 2026-11-18T20:00Z · CHECK · orchestrator
+
+`audits/round3-code-review.md`, saved whole, identifier on its first line. Verdict, in the report's words: "SCRIPTS UNSOUND". 41 bugs: 2 BLOCKERS (a failed final audit and a failed CRITERION row each passed as DONE), 30 DEFECTS, 5 FRAGILITIES, 4 STYLE. The reviewer ran 13 of its 41 fixes.
+
+### E-026 · 2026-11-18T20:00Z · DECISION · orchestrator
+
+Answer: version 2.2.0, listed in `CHANGELOG.md`. 37 of the 41 bugs are answered in code, each with a test written first and seen to fail; 53 tests added. Open: bugs 10, 23, 24, and 30 and 31 in part. No independent session has reviewed the changes: ASSERTED. Command and result at this entry: `python3 -m unittest discover -s tests` prints "Ran 124 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures; `python3 scripts/hinshitsu_check.py --stage delivery skills/hinshitsu/example/run` prints 1 failure, the same E-92 as before.
+

@@ -549,6 +549,26 @@ class Check(unittest.TestCase):
         edit(d, "FRAMEWORK.md", "CRITERIA:", "Path: `<…>`. CRITERIA:")
         self.assertFails(d, "template placeholder", "plan")
 
+    # --- what the code review said "0 failures" did not show: times in order, a reason for a skipped STAGE ---
+
+    def test_entry_time_earlier_than_the_entry_before_it_fails(self):
+        d = good_run()
+        log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+        (d / "AUDIT-LOG.md").write_text(log.replace("### E-3 · 2026-01-01T00:00Z", "### E-3 · 2025-12-31T23:00Z"),
+                                        encoding="utf-8")
+        self.assertFails(d, "E-3 has a time earlier than E-2 (rule 0.6)", "plan")
+
+    def test_no_clock_entries_are_not_compared(self):
+        d = good_run()
+        log = (d / "AUDIT-LOG.md").read_text(encoding="utf-8")
+        (d / "AUDIT-LOG.md").write_text(log.replace("· 2026-01-01T00:00Z ·", "· no clock ·"), encoding="utf-8")
+        self.assertEqual(hcheck.check(d, "delivery"), [])
+
+    def test_skipped_stage_with_no_reason_fails(self):
+        d = good_run()
+        edit(d, "AUDIT-LOG.md", "- Stage: S5\n- Event: skipped — fixture", "- Stage: S5\n- Event: skipped")
+        self.assertFails(d, "skips S5 with no reason (rule 0.7)", "plan")
+
     def test_missing_final_audit_fails(self):
         d = good_run()
         edit(d, "AUDIT-LOG.md", "- Role: final auditor", "- Role: correctness")
