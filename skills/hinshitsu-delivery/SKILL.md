@@ -22,10 +22,11 @@ This skill holds sections 17, 19 and 20. It serves STAGES S10 (rule 17.4), S11 (
    (e) match every file under `audits/` and `memos/` to a `LAUNCH` entry and an identifier line, list each `LAUNCH` entry with no report, and check that no entry cites a later entry and that, where git exists, the history of `AUDIT-LOG.md` shows only added lines;
    (f) check the reason in every `N/A` cell that rule 10.4 does not cover;
    (g) record `counts` or `does not count` for each RED CELL attack on an unflagged PREMISE (rule 6.5);
-   (h) run `scripts/hinshitsu_check.py --stage delivery` on the RUN FOLDER where Python exists;
-   (i) name the commit, or the file hashes, that it examined, and state `passed` or `not passed`.
+   (h) run `scripts/hinshitsu_check.py --stage unit` on the RUN FOLDER where Python exists (the stage `delivery` cannot print 0 before this report and the STAGES after it exist; the ORCHESTRATOR runs it at S11);
+   (i) save each command it ran, with its output, in its report or beside it;
+   (j) name the commit, or the file hashes, that it examined, and state `passed` or `not passed` as the last word of its report.
 
-   It writes `audits/final-audit-<LAUNCH ID>.md`. Each mismatch under (a) to (e) is a BLOCKER of class (d). The branch that RECIPIENTS use moves only to the commit that this report names as `passed` (rule 1.9). A change to the DELIVERABLE after this report makes the report stale; run it again.
+   It writes `audits/final-audit-<LAUNCH ID>.md`. A mismatch in the DELIVERABLE, or in a claim of the `Summary` or the `Status` of the report, is a BLOCKER. A mismatch in any other file of the RUN FOLDER is a DEFECT under rule 14.6: the report lists it, and it does not change the verdict. The final AUDITOR states `passed` when it found no BLOCKER and each CRITERION test it ran gave the result the ledger states. The final audit runs 1 time; it runs again only after a change to the DELIVERABLE. The branch that RECIPIENTS use moves only to the commit that this report names as `passed` (rule 1.9). A change to the DELIVERABLE after this report makes the report stale; run it again.
 5. **Idempotence.** A check that gives a different verdict on a second run is a FRAGILITY, and its ledger cell is UNVERIFIED until 2 runs in a row agree.
 6. **No pretended action.** Do not describe an action as taken unless a log entry or a file under `evidence/` shows it. Do not report a SUB-AGENT's work unless its saved report exists.
 7. **What the checker proves.** `scripts/hinshitsu_check.py` tests the form of the record: that entries, citations, cells and files exist and agree with each other. It does not prove that any check ran or that any report is true. Never cite its exit code as proof that the DELIVERABLE works.

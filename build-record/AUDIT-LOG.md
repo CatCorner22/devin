@@ -370,3 +370,9 @@ Answer: version 2.2.0, listed in `CHANGELOG.md`. 37 of the 41 bugs are answered 
 - The budget rule (0.9) worked: the run stopped at 3 runs and asked. The USER in that run was this session; its 5 replies are quoted in that run's log.
 - The run's `FRICTION.md` lists 29 places where a rule could not be followed or 2 rules conflict.
 - The fix of that run (commit `5099f2a`) and its 10 tests are merged into the checker of version 2.2.0. `python3 -m unittest discover -s tests` prints "Ran 134 tests" and "OK".
+
+### E-028 · 2026-11-18T21:20Z · DECISION · orchestrator
+
+- The USER, 2026-11-18, chose "Build version 3 first, then the app-specific versions (recommended)" from the 3 choices this session offered after round 3.
+- Version 3.0.0 is listed in `CHANGELOG.md`: the script `scripts/hinshitsu_log.py` writes the log and rebuilds the tested parts of the state files; rules 9.4, 14.6, 17.4 and 0.5 are amended. Each change to a script was written test first. `python3 -m unittest discover -s tests` prints "Ran 156 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
+- ASSERTED: no independent session has reviewed version 3.0.0, and no run has been made under it. 17 of the 29 friction items of the first real run are open.

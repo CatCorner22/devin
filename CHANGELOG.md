@@ -2,6 +2,17 @@
 
 Rule 20.3 requires 1 entry for each amendment of a skill. Newest first.
 
+## 3.0.0 — 2026-11-18
+
+Answer to the first run on a real task (`build-record/audits/round3-real-run.md`): independent sessions found 9 faults the builder had missed, and the run still could not reach DONE, because each slip in the hand-kept record stopped it. The USER chose this version before the app-specific files. No independent session has reviewed it, and no run has been made under it.
+
+- `scripts/hinshitsu_log.py` (new), `add`: writes each log entry with its number and the clock's time, and refuses an unknown type, a missing field, a FINDING ID out of order, a closing entry for a FINDING that is not open, an overrule of a BLOCKER, a STAGE event out of order, and a citation of an entry that does not exist yet. `state`: rebuilds from the log the parts of `SESSION-STATE.md`, `FRAMEWORK.md` and `MINDMAP.md` that rule 14.6 tests, and keeps every other line. 22 tests (156 in all).
+- Rule 9.4: entries are written with the script. Rule 14.6: a record fault is corrected by `state`.
+- Rule 17.4: a mismatch in the DELIVERABLE or in the report's `Summary` or `Status` is a BLOCKER; a mismatch elsewhere in the record is a DEFECT and does not change the verdict. The final audit runs 1 time, saves its commands, and runs the checker at the stage `unit` (code review bug 23).
+- Rule 0.5: a `CORE` run plans 4 SUB-AGENT runs, so that 1 re-audit after a fix does not break the budget.
+
+Open from the real run's list of 29 places where rules conflict (`runs/2.1.0-mermaid-edges/FRICTION.md`): items 1, 2, 5, 6, 8, 9, 11, 14, 16, 17, 20, 22, 24 to 27 and 29 are not yet answered.
+
 ## 2.2.0 — 2026-11-18
 
 Answer to the independent line-by-line review of the scripts on commit `93311ab` (`build-record/audits/round3-code-review.md`, verdict "SCRIPTS UNSOUND", 41 bugs). Each fix was written test first: the test failed, the change was made, the test passed. 124 tests (71 before). No independent session has reviewed these changes.

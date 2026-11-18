@@ -6,6 +6,7 @@ All commands run from the repository root and need Python 3 only.
 |---|---|---|
 | `python3 -m unittest discover -s tests` | the gauge, the run checker and the lint script, against fixtures | that any skill produces good work |
 | `python3 scripts/hinshitsu_check.py --record <run-folder>` | that `SESSION-STATE.md`, `FRAMEWORK.md` and `MINDMAP.md` agree with the log on 4 things: the state of each FINDING, the newest `CRITERIA` entry, the STAGE that runs, and 1 line for each FINDING in the mind map | that the log is true, or any other fact in those files |
+| `python3 scripts/hinshitsu_log.py add <run-folder> <TYPE> …` and `… state <run-folder>` | writes 1 log entry with its number and clock time, refusing an entry the rules forbid; rebuilds the tested parts of the state files from the log | that an entry is true |
 | `python3 scripts/lint.py` | form: required files, frontmatter, size limits, section order, rule numbering, defined terms, banned words, adapter links, manifest keys | that any rule is sound |
 | `python3 scripts/hinshitsu_check.py --stage plan\|unit\|delivery <run-folder>` | the form of a run's record at that stage | that any check in the record ran |
 | `python3 skills/hinshitsu-gauge/scripts/gauge.py <run-folder>` | draws `GAUGE.svg` and prints the text gauge from `AUDIT-LOG.md` | that the logged stages did what they say |
