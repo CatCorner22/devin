@@ -238,3 +238,20 @@ In each CRITERION, "the fixture" is the run folder that `good_run()` in `tests/t
 - Stage: S4
 - Event: end
 - Artifacts: `AUDIT-LOG.md` (E-13 `ASSUMPTION`, E-14 and E-15 `DECISION`, E-16 `CRITERIA`, E-18 `CARD`), `evidence/baseline-93311ab.txt`, `evidence/existing-connections-forms.txt`
+
+### E-20 · 2026-11-18T19:37:57Z · CORRECTION · orchestrator
+
+- Corrects: E-18
+- What was wrong: decision 2 of the card in E-18 holds 151 words; a card holds at most 120 words for each decision (rule 23.4). The ORCHESTRATOR counted the words after it wrote the entry. The card of E-18 was not sent.
+- What is true: the card sent to the USER is E-18 with decision 2 replaced by the text below (word count by `wc -w`-style split: under 120). Every other line of the card is as in E-18.
+
+**Decision 2 of 2 — arrow forms you did not name**
+
+(a) Do you want this fix to also test the Mermaid arrow forms you did not name: no arrowhead (`A --- B`), circle and cross ends (`--o`, `--x`), 2-way arrows (`<-->`), and several links on 1 line?
+
+(b) I recommend `3 forms only`, because you named 3 forms, and each added form can make a file that passes today fail.
+
+(c) `3 forms only`: a change of 2 files, checked by 2 independent sessions; the other forms stay untested, and the report lists them. `all forms`: an edge with no label in those forms is caught; decision 1 comes back to you with additions, and the full review runs: about 20 more independent sessions.
+
+(d) Reply `3 forms only` or `all forms`.
+
