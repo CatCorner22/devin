@@ -2,6 +2,15 @@
 
 Rule 20.3 requires 1 entry for each amendment of a skill. Newest first.
 
+## 3.2.0 — 2026-11-24
+
+For day-to-day use on Devin, at the USER's request ("save Hinshitsu for Devin, but only after you optimize it for operational use"). Each item answers a friction item of the 2 recorded runs (`runs/*/FRICTION.md`). No independent session has reviewed this version, and no run has been made under it.
+
+- Descriptions of the 7 skills: a run starts when the USER asks for it by name, not on every task; the conductor may offer a run in 1 line with its cost. Before this change an installed plugin matched every request to review, test or finish work, and each match costs sub-agent runs.
+- `adapters/devin.md`, new part "Operating on Devin": where the plugin's folder is, the RUN FOLDER and branch, how a child session is started and read, the probe, cost, cards, and the log and gauge commands.
+- Rule 0.1: the RUN FOLDER, the branch and the probe's scope come before the probe; the S1 start entry follows the `CAPABILITY` entry. Rule 0.5: the first `TIER` entry holds an estimate; S8 is skipped in a `CORE` run and its checks are UNVERIFIED. Re-read rule: a file whose SHA-256 is unchanged in the run need not be read again. Rule 1.5: a scope may hold what the runtime needs to find the work and return the report. Rule 23.4: the decisions come first, and the CRITERIA follow outside the 120-word limit.
+- `scripts/hinshitsu_check.py --record`: where a state file holds the part that `hinshitsu_log.py state` rebuilds, only that part is read for the state of a FINDING, so the USER's own words no longer fail the check. 3 tests (199 in all).
+
 ## 3.1.0 — 2026-11-18
 
 Answer to the proof run under 3.0.0 (`build-record/audits/round4-proof-run.md`): 5 SUB-AGENT runs and 4 cards for a change of 102 lines, no failed CRITERION in 3 audits, and the run still ended `DELIVERED — NOT DONE`, because each re-audit raised new faults and 2 AUDITORS classed as BLOCKER a fault the USER had set aside. The USER chose this version, with no further paid run. No independent session has reviewed it, and no run has been made under it.

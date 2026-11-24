@@ -413,3 +413,10 @@ App-specific files, after the code double-check the USER asked for (E-025 to E-0
 - `dist/hinshitsu-codex.zip`, written by `scripts/package.py`: the 7 skills under `agents/skills/`, the scripts and templates under `agents/hinshitsu/`, `install.py` and `README.md`. Each path in a packaged `SKILL.md` is written for the layout Codex reads, `.agents/skills` (https://developers.openai.com/codex/skills, read 2026-11-18).
 - `python3 -m unittest discover -s tests` prints "Ran 195 tests" and "OK": the tests unzip the file, run the installer into an empty project and into a home folder, and run the log script and the gauge from the installed place.
 - UNVERIFIED: the file was never opened by Codex; this session has no Codex.
+
+### E-034 · 2026-11-24T17:53Z · DECISION · orchestrator
+
+- The USER, 2026-11-24 12:50 EST: "please save Hinshitsu for Devin, but only after you optimize it for operational use."
+- Version 3.2.0 is listed in `CHANGELOG.md`. Read as: remove what stalls or wastes a run on Devin (friction items of the 2 recorded runs), and stop the installed plugin from starting a paid run on a task the USER did not ask it for.
+- `python3 -m unittest discover -s tests` prints "Ran 199 tests" and "OK"; `python3 scripts/lint.py` prints 0 failures.
+- ASSERTED: no independent session has reviewed version 3.2.0, and no run has been made under it.

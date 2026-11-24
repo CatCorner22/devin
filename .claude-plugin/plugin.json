@@ -1,6 +1,6 @@
 {
   "name": "hinshitsu",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "license": "MIT",
   "description": "hinshitsu (品質, quality): 7 skills that make an AI coding agent deliver stable, verified, end-user-ready work instead of self-graded output. Baby Bird gap finding, user-approved criteria, 4 design lenses, a standing red cell, 8 independent auditors, a coverage ledger, an evidence-cited delivery report and a speedometer progress gauge. Needs a runtime that can start sub-agents.",
   "author": {

@@ -1,6 +1,6 @@
 # hinshitsu for Codex
 
-Version 3.1.0. UNVERIFIED — never run on Codex. The layout follows OpenAI's page on where Codex reads skills (https://developers.openai.com/codex/skills, read 2026-11-18).
+Version 3.2.0. UNVERIFIED — never run on Codex. The layout follows OpenAI's page on where Codex reads skills (https://developers.openai.com/codex/skills, read 2026-11-18).
 
 ## Install
 

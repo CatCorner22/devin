@@ -1,6 +1,6 @@
 # Install hinshitsu
 
-Version 3.1.0. Pick your surface. Only Devin was run in this repository; every other row is UNVERIFIED — never run on that surface. The vendor pages were read on 2026-11-18; a vendor changes its product.
+Version 3.2.0. Pick your surface. Only Devin was run in this repository; every other row is UNVERIFIED — never run on that surface. The vendor pages were read on 2026-11-18; a vendor changes its product.
 
 | You use | Install this | Independent checkers |
 |---|---|---|

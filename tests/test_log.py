@@ -185,6 +185,27 @@ class State(unittest.TestCase):
         self.assertIn("Open FINDINGS: none", text)
         self.assertEqual(hcheck_record(d), [])
 
+    def test_the_users_words_outside_the_marks_are_not_read_as_state(self):
+        # Proof run 3.0.0, friction items 7 and 16: the USER's request held the example ID `F-1.` and "open".
+        d = self.started_run()
+        hlog.write_state(d)
+        p = d / "SESSION-STATE.md"
+        p.write_text('Objective, in the USER\'s words: "an ID such as F-9 is shown as an open blocker"; F-1 is open.\n\n'
+                     + p.read_text(encoding="utf-8"), encoding="utf-8")
+        self.assertEqual(hcheck_record(d), [])
+
+    def test_a_false_line_between_the_marks_still_fails(self):
+        d = self.started_run()
+        hlog.write_state(d)
+        p = d / "SESSION-STATE.md"
+        p.write_text(p.read_text(encoding="utf-8").replace("F-2 (BLOCKER)", "F-2 closed"), encoding="utf-8")
+        self.assertTrue(any("calls F-2 closed" in f for f in hcheck_record(d)), hcheck_record(d))
+
+    def test_a_file_with_no_marks_is_read_whole_as_before(self):
+        d = self.started_run()
+        (d / "SESSION-STATE.md").write_text("E-1. S7. F-9 is open.\n", encoding="utf-8")
+        self.assertTrue(any("names F-9" in f for f in hcheck_record(d)), hcheck_record(d))
+
     def test_same_log_gives_the_same_bytes(self):
         d = self.started_run()
         hlog.write_state(d)

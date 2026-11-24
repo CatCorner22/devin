@@ -525,6 +525,9 @@ def check(folder, stage):
     return errors
 
 
+STATE_START, STATE_END = "<!-- from the log: start -->", "<!-- from the log: end -->"
+
+
 def check_record(folder):
     """Compare the state files with the log (rule 14.6). Returns a list of failures."""
     folder = Path(folder)
@@ -558,7 +561,16 @@ def check_record(folder):
         if p.is_file():
             texts[name] = p.read_text(encoding="utf-8")
     for name, text in texts.items():
-        for i, line in enumerate(text.splitlines(), 1):
+        lines = text.splitlines()
+        # Where the file holds the part that `hinshitsu_log.py state` rebuilds, only that part states the
+        # state of a FINDING; the rest holds the USER's words and notes, which may name an ID as an example.
+        first, last = 0, len(lines)
+        if STATE_START in text and STATE_END in text:
+            first = next(i for i, l in enumerate(lines) if STATE_START in l)
+            last = next(i for i, l in enumerate(lines) if STATE_END in l)
+        for i, line in enumerate(lines, 1):
+            if not first < i <= last and (first or last != len(lines)):
+                continue
             for fid in re.findall(r"\bF-\d+\b", line):
                 if fid not in state:
                     err("%s:%d: names %s, which has no FINDING entry (rule 14.6)" % (name, i, fid))

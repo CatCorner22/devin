@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hinshitsu_check import CLASSES, TYPES, check_record, field, parse_log  # noqa: E402
+from hinshitsu_check import CLASSES, STATE_END, STATE_START, TYPES, check_record, field, parse_log  # noqa: E402
 
 REQUIRED_FIELDS = {
     "STAGE": ("Stage", "Event"),
@@ -123,7 +123,7 @@ def add_entry(folder, kind, fields=None, text="", role="orchestrator", now=None)
     return number
 
 
-START, END = "<!-- from the log: start -->", "<!-- from the log: end -->"
+START, END = STATE_START, STATE_END
 
 
 def replace_block(path, lines):

@@ -1,6 +1,6 @@
 ---
 name: hinshitsu-gauge
-description: The progress gauge of hinshitsu - a speedometer picture that shows where a run stands among its 12 stages, drawn from the audit log and not from the agent's opinion. A small script reads the STAGE entries, counts the stages that are complete, finds the stage now running and the skill it uses, and writes GAUGE.svg plus a text version for chat; the needle sits in a red stop zone while a blocker has stopped the line. Use it after every stage starts or ends in a hinshitsu run, in every progress message to the user, and when the user says "where are we", "how far along", "progress", "status", "show the gauge", "speedometer", "what stage is this" or "what is left".
+description: The progress gauge of hinshitsu - a speedometer picture that shows where a run stands among its 12 stages, drawn from the audit log and not from the agent's opinion. A small script reads the STAGE entries and writes GAUGE.svg plus a text version for chat; the needle sits in a red stop zone while a blocker has stopped the line. Use it after every stage starts or ends in a hinshitsu run, in every progress message of a run, and when the user asks about a run: "where are we", "show the gauge", "speedometer", "what stage is this". It runs inside a hinshitsu run that the conductor skill `hinshitsu` started; outside a run, use it only when the user names it.
 ---
 
 # hinshitsu-gauge: where the run stands
